@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../style/style.dart';
+import '../user_profile/user_profile_screen.dart';
+import '../widget/sized_placeholder.dart';
 import 'style.dart';
 
 class Comment extends StatelessWidget {
@@ -29,7 +31,6 @@ class Comment extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    print(depth);
     return Padding(
       padding: commentPadding(depth),
       child: Column(
@@ -37,9 +38,19 @@ class Comment extends StatelessWidget {
         children: [
           Row(
             children: [
-              Placeholder(fallbackWidth: 20, fallbackHeight: 20),
+              SizedPlaceholder(width: 20, height: 20),
               SizedBox(width: 10),
-              Text('user name * 4h'),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => UserProfileScreen()),
+                  );
+                },
+                child: Text('u/User'),
+              ),
+              Text(' * '),
+              Text('4h'),
             ],
           ),
           Text('user comment text'),

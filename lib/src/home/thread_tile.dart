@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../style/style.dart';
 import '../thread/thread_screen.dart';
+import '../user_profile/user_profile_screen.dart';
+import '../widget/sized_placeholder.dart';
 
 class ThreadTile extends StatelessWidget {
   const ThreadTile({
@@ -25,13 +27,28 @@ class ThreadTile extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Placeholder(fallbackWidth: 20, fallbackHeight: 20),
+                    SizedPlaceholder(width: 20, height: 20),
                     SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('r/subreddit'),
-                        Text('Posted by u/User * 3h * v.redd.it'),
+                        Row(children: [
+                          Text('Posted by'),
+                          Text(' '),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => UserProfileScreen()),
+                              );
+                            },
+                            child: Text('u/User'),
+                          ),
+                          Text(' * '),
+                          Text('v.redd.it'),
+                        ]),
                       ],
                     ),
                   ],

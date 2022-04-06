@@ -9,19 +9,21 @@ class Thread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: scrollPadding,
-      child: ListView(
-        children: [
-          ThreadTile(activeLink: false),
-          Comments(),
-          TextField(
-            decoration: InputDecoration(
-              helperText: 'Add a comment',
-            ),
-          ),
-        ],
-      ),
+    return ListView(
+      children: [
+        ThreadTile(activeLink: false),
+        Comments(),
+        // Positioned(
+        //   left: 0,
+        //   right: 0,
+        //   bottom: 0,
+        //   child: TextField(
+        //     decoration: InputDecoration(
+        //       helperText: 'Add a comment',
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }

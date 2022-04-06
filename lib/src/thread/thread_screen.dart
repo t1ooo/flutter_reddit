@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
+import 'comment_field.dart';
 import 'thread.dart';
 
 class ThreadScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class ThreadScreen extends StatelessWidget {
         title: Text('Thread'),
       ),
       body: Thread(),
+      bottomNavigationBar: CommentField(),
     );
   }
 }
