@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
 import 'comment_field.dart';
-import 'thread.dart';
+import 'post.dart';
 
-class ThreadScreen extends StatelessWidget {
-  const ThreadScreen({Key? key}) : super(key: key);
+class PostScreen extends StatelessWidget {
+  const PostScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thread'),
+        title: Text('Post'),
       ),
-      body: Thread(),
+      body: Post(),
       bottomNavigationBar: CommentField(),
     );
   }

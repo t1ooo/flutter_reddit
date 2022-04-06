@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../widget/sized_placeholder.dart';
 import 'custom_scroll.dart';
-import 'thread_tile.dart';
-import 'thread_tiles.dart';
+import 'post_tile.dart';
+import 'post_tiles.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);
@@ -37,9 +37,7 @@ class Popular extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 50),
         Text('Trending today'),
         // CarouselSlider(
         //   options: CarouselOptions(
@@ -66,6 +64,7 @@ class Popular extends StatelessWidget {
         //     );
         //   }).toList(),
         // ),
+        
         SizedBox(
           height: 200,
           child: CustomScroll(
@@ -75,17 +74,19 @@ class Popular extends StatelessWidget {
                 for (int i = 0; i < 10; i++)
                   Padding(
                     padding: EdgeInsets.only(left: 10),
-                    child: SizedPlaceholder(width: 200, height: 200*3/4),
+                    child: SizedPlaceholder(width: 200, height: 200 * 3 / 4),
                   ),
               ],
             ),
           ),
         ),
 
-        // ThreadTile(),
-        // ThreadTile(),
-        // ThreadTile(),
-        ThreadTiles(),
+        // PostTile(),
+        // PostTile(),
+        // PostTile(),
+        SizedBox(height: 10),
+
+        PostTiles(),
       ],
     );
   }

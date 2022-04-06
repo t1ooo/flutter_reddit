@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../home/thread_tiles.dart';
+import '../home/post_tiles.dart';
 import '../style/style.dart';
+import '../thread/comments.dart';
 import '../widget/sized_placeholder.dart';
+import 'about.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -103,9 +105,9 @@ class UserProfile extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                ThreadTiles(),
-                ThreadTiles(),
-                ThreadTiles(),
+                PostTiles(),
+                Comments(showNested: false,),
+                About(),
               ],
             ),
           ),
@@ -202,7 +204,7 @@ class UserProfile extends StatelessWidget {
     //             //             //   padding: pagePadding,
     //             //             //   child: Popular(),
     //             //             // ),
-    //             //             ThreadTiles(),
+    //             //             PostTiles(),
     //             //             Text('2'),
     //             //             Text('3'),
     //             //           ],
@@ -226,7 +228,7 @@ class UserProfile extends StatelessWidget {
     //             //   height: 1000,
     //             //   child: TabBarView(
     //             //     children: [
-    //             //       // ThreadTiles(),
+    //             //       // PostTiles(),
     //             //       Text('1'),
     //             //       Text('2'),
     //             //       Text('3'),
@@ -236,7 +238,7 @@ class UserProfile extends StatelessWidget {
     //             Expanded(
     //               child: TabBarView(
     //                 children: [
-    //                   // ThreadTiles(),
+    //                   // PostTiles(),
     //                   Text('1'),
     //                   Text('2'),
     //                   Text('3'),

@@ -9,9 +9,11 @@ class Comment extends StatelessWidget {
   const Comment({
     Key? key,
     this.depth = 0,
+    this.showNested = true,
   }) : super(key: key);
 
   final int depth;
+  final bool showNested;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,11 @@ class Comment extends StatelessWidget {
             ],
           ),
           if (depth < 2) ...[
-            for (int i = 0; i < 2; i++) Comment(depth: depth + 1),
+            for (int i = 0; i < 2; i++)
+              Comment(
+                depth: depth + 1,
+                showNested: showNested,
+              ),
           ],
         ],
       ),

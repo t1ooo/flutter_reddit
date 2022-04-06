@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../style/style.dart';
-import '../thread/thread_screen.dart';
+import '../thread/post_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
-import 'thread_tile.dart';
+import 'post_tile.dart';
 
-class ThreadTiles extends StatelessWidget {
-  const ThreadTiles({
+class PostTiles extends StatelessWidget {
+  const PostTiles({
     Key? key,
     this.activeLink = true,
   }) : super(key: key);
@@ -23,16 +23,16 @@ class ThreadTiles extends StatelessWidget {
       // physics: ClampingScrollPhysics(),
       children: [
         Padding(
-          padding: const EdgeInsets.all(20),
-          child: ThreadTile(activeLink:activeLink),
+          padding: scrollPadding,
+          child: PostTile(activeLink: activeLink),
         ),
         Padding(
-          padding: const EdgeInsets.all(20),
-          child: ThreadTile(activeLink:activeLink),
+          padding: scrollPadding,
+          child: PostTile(activeLink: activeLink),
         ),
         Padding(
-          padding: const EdgeInsets.all(20),
-          child: ThreadTile(activeLink:activeLink),
+          padding: scrollPadding,
+          child: PostTile(activeLink: activeLink),
         ),
       ],
     );

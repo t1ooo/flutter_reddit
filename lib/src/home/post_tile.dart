@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../style/style.dart';
-import '../thread/thread_screen.dart';
+import '../thread/post_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
 
-class ThreadTile extends StatelessWidget {
-  const ThreadTile({
+class PostTile extends StatelessWidget {
+  const PostTile({
     Key? key,
     this.activeLink = true,
   }) : super(key: key);
@@ -70,7 +70,7 @@ class ThreadTile extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => ThreadScreen()),
+                  MaterialPageRoute(builder: (_) => PostScreen()),
                 );
               },
               child: Text('Some Title', textScaleFactor: 2),
