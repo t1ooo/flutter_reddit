@@ -1,9 +1,20 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:draw/draw.dart' as draw;
 
-import '../model/submission.dart';
+import 'submission.dart';
 
-class RedditApi {
+abstract class RedditApi {
   RedditApi(this.reddit);
+
+  final draw.Reddit reddit;
+
+  Future<List<Submission>> frontBest({int limit = 10});
+}
+
+class RedditApiImpl implements RedditApi {
+  RedditApiImpl(this.reddit);
 
   final draw.Reddit reddit;
 
@@ -14,5 +25,21 @@ class RedditApi {
       subs.add(sub);
     }
     return subs;
+  }
+}
+
+class FakeRedditApi implements RedditApi {
+  FakeRedditApi(this.reddit);
+
+  final draw.Reddit reddit;
+
+  Future<List<Submission>> frontBest({int limit = 10}) async {
+    final data =
+        await File('data/user.reddit.front.best.limit_10.json').readAsString();
+    return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => draw.Submission.parse(reddit, v))
+        .map((v) => Submission.fromDrawSubmission(v))
+        .toList();
   }
 }

@@ -2,6 +2,7 @@ import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
 // TODO: awards
+// TODO: subreddit icon
 class Submission extends Equatable {
   Submission({
     required this.author,
@@ -20,6 +21,7 @@ class Submission extends Equatable {
     required this.score,
     required this.selftext,
     required this.subreddit,
+    required this.subredditNamePrefixed,
     required this.thumbnail,
     required this.title,
     required this.upvotes,
@@ -42,12 +44,21 @@ class Submission extends Equatable {
   final int score;
   final String selftext;
   final String subreddit;
+  final String subredditNamePrefixed;
   final String thumbnail;
   final String title;
   final int upvotes;
   final Uri url;
 
+  static const _descLen = 200;
+  String get desc {
+    final text = selftext.replaceAll(RegExp(r'\s+'), ' ');
+    // return selftext.length <= _descLen ? selftext : selftext.substring(0, _descLen);
+    return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
+  }
+
   factory Submission.fromDrawSubmission(draw.Submission sub) {
+    final data = sub.data!;
     return Submission(
       author: sub.author,
       createdUtc: sub.createdUtc,
@@ -65,14 +76,13 @@ class Submission extends Equatable {
       score: sub.score,
       selftext: sub.selftext ?? '',
       // thumbnail: (sub.thumbnail.toString() == 'self') ? '' : sub.thumbnail.toString(),
-      thumbnail: (sub.data!['thumbnail'].startsWith('http'))
-          ? sub.data!['thumbnail']
-          : '',
+      thumbnail:
+          (data['thumbnail'].startsWith('http')) ? data['thumbnail'] : '',
       title: sub.title,
       upvotes: sub.upvotes,
       url: sub.url,
       subreddit: sub.subreddit.displayName,
-      // subreddit: sub.data!['subreddit'],
+      subredditNamePrefixed: data['subreddit_name_prefixed'],
     );
   }
 
@@ -95,6 +105,7 @@ class Submission extends Equatable {
       score,
       selftext,
       subreddit,
+      subredditNamePrefixed,
       thumbnail,
       title,
       upvotes,

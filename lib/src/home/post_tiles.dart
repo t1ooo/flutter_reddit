@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
 import '../style/style.dart';
-import '../thread/post_screen.dart';
+import '../post/post_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
 import 'custom_scroll.dart';

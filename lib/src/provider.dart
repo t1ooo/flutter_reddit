@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 import 'notifier/reddir_notifier.dart';
+import 'reddit_api/reddir_api.dart';
 
 Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
   const clientId = 'JmK31vyAOebqCsKrwUticg';
@@ -21,8 +22,10 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
     username: username,
     password: password, // Fake
   );
+  // final redditApi = RedditApiImpl(reddit);
+  final redditApi = FakeRedditApi(reddit);
 
-  final redditNotifier = RedditNotifier(reddit);
+  final redditNotifier = RedditNotifier(redditApi);
   await redditNotifier.loadFrontBest();
   return ChangeNotifierProvider.value(value: redditNotifier);
 }

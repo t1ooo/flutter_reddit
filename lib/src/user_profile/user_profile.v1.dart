@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../home/post_tiles.dart';
 import '../style/style.dart';
-import '../thread/comments.dart';
+import '../post/comments.dart';
 import '../widget/sized_placeholder.dart';
 import 'about.dart';
 

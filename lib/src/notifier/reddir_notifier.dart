@@ -1,24 +1,19 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
 
-import '../model/submission.dart';
+import '../reddit_api/reddir_api.dart';
+import '../reddit_api/submission.dart';
 
 class RedditNotifier extends ChangeNotifier {
-  RedditNotifier(this.reddit);
+  RedditNotifier(this.redditApi);
 
-  final draw.Reddit reddit;
+  final RedditApi redditApi;
   List<Submission>? _frontBest;
 
   List<Submission>? get frontBest => _frontBest;
 
   Future<void> loadFrontBest({int limit = 10}) async {
-    final subs = <Submission>[];
-    await for (final v in reddit.front.best(limit: limit)) {
-      final sub = Submission.fromDrawSubmission(v as draw.Submission);
-      subs.add(sub);
-    }
-    _frontBest = subs;
-
+    _frontBest = await redditApi.frontBest(limit: limit);
     notifyListeners();
   }
 }

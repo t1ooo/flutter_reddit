@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../model/submission.dart';
+import '../reddit_api/submission.dart';
 import '../style/style.dart';
-import '../thread/post_screen.dart';
+import '../post/post_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
 
@@ -37,7 +37,7 @@ class PostTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Text('r/subreddit'),
-                        Text(submission?.subreddit ?? ''),
+                        Text(submission?.subredditNamePrefixed ?? ''),
                         Row(children: [
                           Text('Posted by'),
                           Text(' '),
@@ -85,6 +85,8 @@ class PostTile extends StatelessWidget {
             // Placeholder(),
             if (submission?.thumbnail != '')
               Image.network(submission!.thumbnail),
+            SizedBox(height: 10),
+            Text(submission?.desc ?? ''),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
