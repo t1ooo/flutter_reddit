@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/subscriptions/subscriptions_screen.dart';
 
 import 'home/home.dart';
 import 'home/home_screen.dart';
@@ -13,9 +14,9 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   int _selectedIndex = 0;
 
-  List<Widget> screens = [
-    Home(),
-    Home(),
+  List<Widget> _screens = [
+    HomeScreen(),
+    SubscriptionsScreen(),
     Home(),
     Home(),
     Home(),
@@ -28,7 +29,7 @@ class _TabsState extends State<Tabs> {
       //   title: Text('User Profile'),
       // ),
       // body: screens[_selectedIndex],
-      body: HomeScreen(),
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

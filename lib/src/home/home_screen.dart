@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
+import '../widget/sized_placeholder.dart';
 import 'home.dart';
 import 'popular.dart';
 
@@ -11,11 +12,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          // backgroundColor: Colors.white,
-          flexibleSpace: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
@@ -23,32 +23,70 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          bottom: TabBar(
-            tabs: [
-              Tab(text: 'Home'),
-              Tab(text: 'Popular'),
-            ],
+          Container(
+            child: TabBar(
+              labelColor: Colors.blue,
+              tabs: [
+                Text('Home'),
+                Text('Popular'),
+              ],
+            ),
           ),
-          // title: Text('Hacker News'),
-        ),
-        body: TabBarView(
-          children: [
-            // Padding(
-            //   padding: pagePadding,
-            //   child: Home(),
-            // ),
-            // Padding(
-            //   padding: pagePadding,
-            //   child: Popular(),
-            // ),
-            Home(),
-            Popular(),
-          ],
-        ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                Home(),
+                Popular(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return DefaultTabController(
+  //     length: 2,
+  //     child: Scaffold(
+  //       appBar: AppBar(
+  //         // backgroundColor: Colors.white,
+  //         flexibleSpace: Padding(
+  //           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+  //           child: TextField(
+  //             decoration: InputDecoration(
+  //               hintText: 'Search',
+  //               border: OutlineInputBorder(),
+  //             ),
+  //           ),
+  //         ),
+
+  //         bottom: TabBar(
+  //           tabs: [
+  //             Tab(text: 'Home'),
+  //             Tab(text: 'Popular'),
+  //           ],
+  //         ),
+  //         // title: Text('Hacker News'),
+  //       ),
+  //       body: TabBarView(
+  //         children: [
+  //           // Padding(
+  //           //   padding: pagePadding,
+  //           //   child: Home(),
+  //           // ),
+  //           // Padding(
+  //           //   padding: pagePadding,
+  //           //   child: Popular(),
+  //           // ),
+  //           Home(),
+  //           Popular(),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // Widget build(BuildContext context) {
   //   return Scaffold(

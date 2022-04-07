@@ -2,6 +2,11 @@
 
 deps=(
     # carousel_slider
+    draw
+    provider
+    logger
+    equatable
+    clock
 )
 
 dev_deps=(

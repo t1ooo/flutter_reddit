@@ -105,8 +105,13 @@ class UserProfile extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                PostTiles(),
-                Comments(showNested: false,),
+                PostTiles(
+                  showTrending: false,
+                  showTypeSelector: false,
+                ),
+                Comments(
+                  showNested: false,
+                ),
                 About(),
               ],
             ),

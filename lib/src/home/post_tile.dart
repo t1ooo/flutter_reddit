@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../model/submission.dart';
 import '../style/style.dart';
 import '../thread/post_screen.dart';
 import '../user_profile/user_profile_screen.dart';
@@ -8,13 +9,16 @@ import '../widget/sized_placeholder.dart';
 class PostTile extends StatelessWidget {
   const PostTile({
     Key? key,
+    this.submission = null,
     this.activeLink = true,
   }) : super(key: key);
 
+  final Submission? submission;
   final bool activeLink;
 
   @override
   Widget build(BuildContext context) {
+    // print(submission?.thumbnail.toString());
     return Card(
       child: Padding(
         padding: cardPadding,
@@ -32,7 +36,8 @@ class PostTile extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('r/subreddit'),
+                        // Text('r/subreddit'),
+                        Text(submission?.subreddit ?? ''),
                         Row(children: [
                           Text('Posted by'),
                           Text(' '),
@@ -44,10 +49,10 @@ class PostTile extends StatelessWidget {
                                     builder: (_) => UserProfileScreen()),
                               );
                             },
-                            child: Text('u/User'),
+                            child: Text(submission?.author ?? ''),
                           ),
                           Text(' * '),
-                          Text('v.redd.it'),
+                          Text(submission?.domain ?? ''),
                         ]),
                       ],
                     ),
@@ -64,7 +69,7 @@ class PostTile extends StatelessWidget {
             // Text('r/subreddit'),
             // Text('Posted by u/User * 3h * v.redd.it'),
             SizedBox(height: 10),
-            Text('26 Awards'),
+            Text('26 Awards [TODO]'),
             SizedBox(height: 10),
             InkWell(
               onTap: () {
@@ -73,19 +78,21 @@ class PostTile extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => PostScreen()),
                 );
               },
-              child: Text('Some Title', textScaleFactor: 2),
+              child: Text(submission?.title ?? '', textScaleFactor: 2),
             ),
 
             SizedBox(height: 10),
-            Placeholder(),
+            // Placeholder(),
+            if (submission?.thumbnail != '')
+              Image.network(submission!.thumbnail),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               // runAlignment: WrapAlignment.spaceBetween,
               children: [
-                Text('30.2k'),
+                Text(submission?.upvotes.toString() ?? 'Vote'),
                 // Spacer(),
-                Text('5.4k'),
+                Text(submission?.numComments.toString() ?? 'Comment'),
                 // Spacer(),
                 Text('Share'),
                 Text('+'),
