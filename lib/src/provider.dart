@@ -23,13 +23,20 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
     password: password, // Fake
   );
 
-  
+  final anonymousReddit = await draw.Reddit.createReadOnlyInstance(
+    clientId: clientId,
+    clientSecret: secret,
+    userAgent: 'Flutter Client',
+  );
 
-  // final redditApi = RedditApiImpl(reddit);
-  final redditApi = FakeRedditApi(reddit);
+  final redditApi = RedditApiImpl(reddit, anonymousReddit);
+  // final redditApi = FakeRedditApi(reddit, anonymousReddit);
 
   final redditNotifier = RedditNotifier(redditApi);
+  
   await redditNotifier.loadFrontBest();
+  await redditNotifier.loadPopular();
+  
   return ChangeNotifierProvider.value(value: redditNotifier);
 }
 

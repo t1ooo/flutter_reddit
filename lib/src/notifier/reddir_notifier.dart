@@ -9,11 +9,18 @@ class RedditNotifier extends ChangeNotifier {
 
   final RedditApi redditApi;
   List<Submission>? _frontBest;
+  List<Submission>? _popular;
 
+  List<Submission>? get popular => _popular;
   List<Submission>? get frontBest => _frontBest;
 
   Future<void> loadFrontBest({int limit = 10}) async {
     _frontBest = await redditApi.frontBest(limit: limit);
+    notifyListeners();
+  }
+
+  Future<void> loadPopular({int limit = 10}) async {
+    _popular = await redditApi.popular(limit: limit);
     notifyListeners();
   }
 }

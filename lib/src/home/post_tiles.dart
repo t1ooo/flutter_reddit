@@ -12,12 +12,14 @@ import 'post_tile.dart';
 class PostTiles extends StatelessWidget {
   const PostTiles({
     Key? key,
+    
     this.activeLink = true,
     this.showTrending = true,
     this.showTypeSelector = true,
     this.showLocationSelector = true,
   }) : super(key: key);
 
+  
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
