@@ -22,6 +22,9 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
     username: username,
     password: password, // Fake
   );
+
+  
+
   // final redditApi = RedditApiImpl(reddit);
   final redditApi = FakeRedditApi(reddit);
 
