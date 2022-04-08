@@ -32,9 +32,11 @@ class Subscriptions extends StatelessWidget {
           title: Text(subreddit.displayNamePrefixed),
           trailing: Icon(Icons.star),
           onTap: () {
-             Navigator.push(
+            Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => SubredditScreen()),
+              MaterialPageRoute(
+                builder: (_) => SubredditScreen(subreddit: subreddit),
+              ),
             );
           },
         ),

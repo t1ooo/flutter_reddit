@@ -50,7 +50,6 @@ class Subreddit extends Equatable {
 
   factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
     final data = sub.data!;
-
     return Subreddit(
       communityIcon: _parseIcon(data['community_icon']),
       created: _parseTime(data['created']),

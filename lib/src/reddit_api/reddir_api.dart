@@ -28,6 +28,10 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<List<Submission>> popular({required int limit}) async {
+    // TODO: replace to
+    // for submission in reddit.subreddit("all").best(limit=25):
+    // https://praw.readthedocs.io/en/stable/code_overview/models/subreddit.html
+    // TODO: remove anonymousReddit
     final subs = <Submission>[];
     await for (final v in anonymousReddit.front.best(limit: limit)) {
       final sub = Submission.fromDrawSubmission(v as draw.Submission);
@@ -41,6 +45,19 @@ class RedditApiImpl implements RedditApi {
     await for (final v in reddit.user.subreddits(limit: limit)) {
       final sub = Subreddit.fromDrawSubreddit(v);
       subs.add(sub);
+    }
+    return subs;
+  }
+
+  Future<List<Submission>> subredditPosts(String name,
+      {required int limit}) async {
+    final subs = <Submission>[];
+    await for (final v
+        in reddit.subreddit(name).stream.submissions(limit: limit)) {
+      if (v != null) {
+        final sub = Submission.fromDrawSubmission(v);
+        subs.add(sub);
+      }
     }
     return subs;
   }
@@ -72,7 +89,7 @@ class FakeRedditApi implements RedditApi {
         await File('data/user.reddit.subreddits.limit_100.json').readAsString();
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => draw.Subreddit.parse(reddit, {'data':v}))
+        .map((v) => draw.Subreddit.parse(reddit, {'data': v}))
         .map((v) => Subreddit.fromDrawSubreddit(v))
         .toList();
   }
