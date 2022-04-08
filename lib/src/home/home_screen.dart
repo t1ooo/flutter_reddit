@@ -12,35 +12,40 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                border: OutlineInputBorder(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('HomeScreen'),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Container(
-            child: TabBar(
-              labelColor: Colors.blue,
-              tabs: [
-                Text('Home'),
-                Text('Popular'),
-              ],
+            Container(
+              child: TabBar(
+                labelColor: Colors.blue,
+                tabs: [
+                  Text('Home'),
+                  Text('Popular'),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              children: [
-                Home(),
-                Popular(),
-              ],
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Home(),
+                  Popular(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

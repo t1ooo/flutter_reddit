@@ -12,39 +12,36 @@ class SubscriptionsScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.white,
-          flexibleSpace: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                border: OutlineInputBorder(),
+          title: Text('SubscriptionsScreen'),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-
-          bottom: TabBar(
-            tabs: [
-              Tab(text: 'Subscriptions'),
-              Tab(text: 'Popular'),
-            ],
-          ),
-          // title: Text('Hacker News'),
-        ),
-        body: TabBarView(
-          children: [
-            // Padding(
-            //   padding: pagePadding,
-            //   child: Subscriptions(),
-            // ),
-            // Padding(
-            //   padding: pagePadding,
-            //   child: Popular(),
-            // ),
-            // Subscriptions(),
-            // Popular(),
-            Subscriptions(),
-            Text('Custom Feed'),
+            Container(
+              child: TabBar(
+                labelColor: Colors.blue,
+                tabs: [
+                  Tab(text: 'Subscriptions'),
+                  Tab(text: 'Popular'),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Subscriptions(),
+                  Text('Custom Feed'),
+                ],
+              ),
+            ),
           ],
         ),
       ),
