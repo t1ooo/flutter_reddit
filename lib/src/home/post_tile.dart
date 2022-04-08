@@ -9,16 +9,16 @@ import '../widget/sized_placeholder.dart';
 class PostTile extends StatelessWidget {
   const PostTile({
     Key? key,
-    this.submission = null,
+    required this.submission,
     this.activeLink = true,
   }) : super(key: key);
 
-  final Submission? submission;
+  final Submission submission;
   final bool activeLink;
 
   @override
   Widget build(BuildContext context) {
-    // print(submission?.thumbnail.toString());
+    // print(submission.thumbnail.toString());
     return Card(
       child: Padding(
         padding: cardPadding,
@@ -37,7 +37,7 @@ class PostTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Text('r/subreddit'),
-                        Text(submission?.subredditNamePrefixed ?? ''),
+                        Text(submission.subredditNamePrefixed),
                         Row(children: [
                           Text('Posted by'),
                           Text(' '),
@@ -49,10 +49,10 @@ class PostTile extends StatelessWidget {
                                     builder: (_) => UserProfileScreen()),
                               );
                             },
-                            child: Text(submission?.author ?? ''),
+                            child: Text(submission.author),
                           ),
                           Text(' * '),
-                          Text(submission?.domain ?? ''),
+                          Text(submission.domain),
                         ]),
                       ],
                     ),
@@ -69,7 +69,13 @@ class PostTile extends StatelessWidget {
             // Text('r/subreddit'),
             // Text('Posted by u/User * 3h * v.redd.it'),
             SizedBox(height: 10),
-            Text('26 Awards [TODO]'),
+            Row(children: [
+              for (final icon in (submission.awardIcons).take(4))
+                Image.network(icon, width: 16, height: 16),
+              SizedBox(width: 5),
+              if (submission.numAwards != 0)
+                Text('${submission.numAwards} Awards'),
+            ]),
             SizedBox(height: 10),
             InkWell(
               onTap: () {
@@ -78,23 +84,26 @@ class PostTile extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => PostScreen()),
                 );
               },
-              child: Text(submission?.title ?? '', textScaleFactor: 2),
+              child: Text(submission.title, textScaleFactor: 2),
             ),
 
             SizedBox(height: 10),
             // Placeholder(),
-            if (submission?.thumbnail != '')
-              Image.network(submission!.thumbnail),
+            if (submission.thumbnail != '') Image.network(submission.thumbnail),
             SizedBox(height: 10),
-            Text(submission?.desc ?? ''),
+            Text(submission.desc),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               // runAlignment: WrapAlignment.spaceBetween,
               children: [
-                Text(submission?.upvotes.toString() ?? 'Vote'),
+                Text(submission.upvotes > 0
+                    ? submission.upvotes.toString()
+                    : 'Vote'),
                 // Spacer(),
-                Text(submission?.numComments.toString() ?? 'Comment'),
+                Text(submission.numComments > 0
+                    ? submission.numComments.toString()
+                    : 'Comment'),
                 // Spacer(),
                 Text('Share'),
                 Text('+'),

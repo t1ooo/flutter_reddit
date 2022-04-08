@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
+import 'subscriptions.dart';
 
 class SubscriptionsScreen extends StatelessWidget {
   const SubscriptionsScreen({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class SubscriptionsScreen extends StatelessWidget {
             // ),
             // Subscriptions(),
             // Popular(),
-            Text('Subscriptions'),
+            Subscriptions(),
             Text('Custom Feed'),
           ],
         ),

@@ -29,13 +29,14 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
     userAgent: 'Flutter Client',
   );
 
-  final redditApi = RedditApiImpl(reddit, anonymousReddit);
-  // final redditApi = FakeRedditApi(reddit, anonymousReddit);
+  // final redditApi = RedditApiImpl(reddit, anonymousReddit);
+  final redditApi = FakeRedditApi(reddit, anonymousReddit);
 
   final redditNotifier = RedditNotifier(redditApi);
   
   await redditNotifier.loadFrontBest();
   await redditNotifier.loadPopular();
+  await redditNotifier.loadUserSubreddits();
   
   return ChangeNotifierProvider.value(value: redditNotifier);
 }

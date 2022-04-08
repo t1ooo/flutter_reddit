@@ -1,9 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../widget/sized_placeholder.dart';
-import 'custom_scroll.dart';
-import 'post_tile.dart';
+import '../notifier/reddir_notifier.dart';
 import 'post_tiles.dart';
 
 class Popular extends StatelessWidget {
@@ -11,6 +9,9 @@ class Popular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PostTiles();
+    final notifier = context.read<RedditNotifier>();
+    return PostTiles(
+      submissions: notifier.popular,
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../reddit_api/submission.dart';
 import '../style/style.dart';
 import '../post/post_screen.dart';
 import '../user_profile/user_profile_screen.dart';
@@ -10,16 +11,16 @@ import 'custom_scroll.dart';
 import 'post_tile.dart';
 
 class PostTiles extends StatelessWidget {
-  const PostTiles({
+  PostTiles({
     Key? key,
-    
+    this.submissions,
     this.activeLink = true,
     this.showTrending = true,
     this.showTypeSelector = true,
     this.showLocationSelector = true,
   }) : super(key: key);
 
-  
+  List<Submission>? submissions;
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
@@ -28,7 +29,7 @@ class PostTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return Column(
-    final notifier = context.read<RedditNotifier>();
+    // final notifier = context.read<RedditNotifier>();
     return ListView(
       // controller: ScrollController(),
       shrinkWrap: true,
@@ -91,7 +92,8 @@ class PostTiles extends StatelessWidget {
         ],
         // PostTiles(),
         // for (int i = 0; i < 3; i++)
-        for(final sub in notifier.frontBest!)
+        // for(final sub in notifier.frontBest!)
+        for(final sub in submissions ?? [])
           Padding(
             padding: scrollPadding,
             child: PostTile(submission: sub, activeLink: activeLink),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
 import '../home/post_tile.dart';
+import '../reddit_api/submission.dart';
 import 'comments.dart';
 
 class Post extends StatelessWidget {
@@ -11,7 +12,10 @@ class Post extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        PostTile(activeLink: false),
+        PostTile(
+          submission: placeholderSubmission(),
+          activeLink: false,
+        ),
         Comments(),
         // Positioned(
         //   left: 0,

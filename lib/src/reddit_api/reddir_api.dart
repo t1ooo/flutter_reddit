@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:draw/draw.dart' as draw;
 
 import 'submission.dart';
+import 'subreddit.dart';
 
 abstract class RedditApi {
   Future<List<Submission>> frontBest({required int limit});
   Future<List<Submission>> popular({required int limit});
+  Future<List<Subreddit>> userSubreddits({required int limit});
 }
 
 class RedditApiImpl implements RedditApi {
@@ -33,6 +35,15 @@ class RedditApiImpl implements RedditApi {
     }
     return subs;
   }
+
+  Future<List<Subreddit>> userSubreddits({required int limit}) async {
+    final subs = <Subreddit>[];
+    await for (final v in reddit.user.subreddits(limit: limit)) {
+      final sub = Subreddit.fromDrawSubreddit(v);
+      subs.add(sub);
+    }
+    return subs;
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -45,7 +56,7 @@ class FakeRedditApi implements RedditApi {
     final data =
         await File('data/user.reddit.front.best.limit_10.json').readAsString();
     return (jsonDecode(data) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => draw.Submission.parse(reddit, v))
         .map((v) => Submission.fromDrawSubmission(v))
         .toList();
@@ -53,5 +64,16 @@ class FakeRedditApi implements RedditApi {
 
   Future<List<Submission>> popular({required int limit}) async {
     return frontBest(limit: limit);
+  }
+
+  @override
+  Future<List<Subreddit>> userSubreddits({required int limit}) async {
+    final data =
+        await File('data/user.reddit.subreddits.limit_100.json').readAsString();
+    return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
+        .map((v) => draw.Subreddit.parse(reddit, {'data':v}))
+        .map((v) => Subreddit.fromDrawSubreddit(v))
+        .toList();
   }
 }

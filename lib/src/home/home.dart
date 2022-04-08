@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:provider/provider.dart';
 
+import '../notifier/reddir_notifier.dart';
 import 'post_tiles.dart';
 
 class Home extends StatelessWidget {
@@ -8,6 +10,10 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PostTiles(showLocationSelector:false);
+    final notifier = context.read<RedditNotifier>();
+    return PostTiles(
+      submissions: notifier.frontBest,
+      showLocationSelector: false,
+    );
   }
 }

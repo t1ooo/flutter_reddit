@@ -43,7 +43,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         currentIndex: _selectedIndex,
         // selectedItemColor: Colors.amber[800],
         onTap: (int index) {
-          print(type[_selectedIndex]);
+          // print(type[_selectedIndex]);
           setState(() {
             _selectedIndex = index;
           });
