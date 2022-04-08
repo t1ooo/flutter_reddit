@@ -19,7 +19,21 @@ class Subscriptions extends StatelessWidget {
     final notifier = context.read<RedditNotifier>();
     return ListView(shrinkWrap: true, children: [
       for (final subreddit in notifier.userSubreddits ?? [])
-        Text(subreddit.displayName)
+        // Text(subreddit.displayName)
+        ListTile(
+          leading: SizedBox(
+            width: 16,
+            height: 16,
+            child: (subreddit.communityIcon != '')
+                ? Image.network(subreddit.communityIcon)
+                : Image.asset('communityIcon.png'),
+          ),
+          title: Text(subreddit.displayNamePrefixed),
+          trailing: Icon(Icons.star),
+          onTap: () {
+            
+          },
+        ),
     ]);
   }
 }

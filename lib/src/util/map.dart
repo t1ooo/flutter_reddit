@@ -10,8 +10,8 @@ T mapGet<T>(Map data, String key, T defaultValue) {
     return defaultValue;
   }
 
-  if (v! is T) {
-    _log.info('fail to cast: $key => $v to <$T>');
+  if (!(v is T)) {
+    _log.info('fail to cast: {$key: $v} to <$T>');
     return defaultValue;
   }
 

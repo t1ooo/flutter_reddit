@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
+import '../util/map.dart';
 
 class Subreddit extends Equatable {
   Subreddit({
@@ -51,25 +52,39 @@ class Subreddit extends Equatable {
     final data = sub.data!;
 
     return Subreddit(
-      communityIcon: data['community_icon'],
+      communityIcon: _parseIcon(data['community_icon']),
       created: _parseTime(data['created']),
       createdUtc: _parseTime(data['created_utc'], isUtc: true),
-      description: cast(data['description'], ''),
-      descriptionHtml: cast(data['description_html'], ''),
+      description: mapGet(data, 'description', ''),
+      descriptionHtml: mapGet(data, 'description_html', ''),
       displayName: sub.displayName,
-      displayNamePrefixed: cast(data['display_name_prefixed'], ''),
-      id: cast(data['id'], ''),
-      lang: cast(data['lang'], ''),
-      name: cast(data['name'], ''),
-      publicDescription: cast(data['public_description'], ''),
-      publicDescriptionHtml: cast(data['public_description_html'], ''),
-      submitTextHtml: cast(data['submit_text_html'], ''),
-      submitText: cast(data['submit_text'], ''),
-      subredditType: cast(data['subreddit_type'], ''),
-      subscribers: cast(data['subscribers'], 0),
+      displayNamePrefixed: mapGet(data, 'display_name_prefixed', ''),
+      id: mapGet(data, 'id', ''),
+      lang: mapGet(data, 'lang', ''),
+      name: mapGet(data, 'name', ''),
+      publicDescription: mapGet(data, 'public_description', ''),
+      publicDescriptionHtml: mapGet(data, 'public_description_html', ''),
+      submitTextHtml: mapGet(data, 'submit_text_html', ''),
+      submitText: mapGet(data, 'submit_text', ''),
+      subredditType: mapGet(data, 'subreddit_type', ''),
+      subscribers: mapGet(data, 'subscribers', 0),
       title: sub.title,
-      url: cast(data['url'], ''),
+      url: mapGet(data, 'url', ''),
     );
+  }
+
+  static String _parseIcon(dynamic data) {
+    final s = cast<String>(data, '');
+    if (s == '') {
+      _log.warning('fail to parse icon: $data');
+      return '';
+    }
+    final uri = Uri.tryParse(s);
+    if (uri == null) {
+      _log.warning('fail to parse icon: $data');
+      return '';
+    }
+    return uri.scheme + ':' + '//' + uri.authority + uri.path;
   }
 
   // static DateTime _parseTime(dynamic data) {

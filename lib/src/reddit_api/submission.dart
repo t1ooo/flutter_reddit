@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
+import '../util/map.dart';
 
 // TODO: awards 'total_awards_received'
 // TODO: subreddit icon
@@ -81,14 +82,14 @@ class Submission extends Equatable {
       id: sub.id ?? '',
       isVideo: sub.isVideo,
       linkFlairText: sub.linkFlairText ?? '',
-      numAwards: cast(data['total_awards_received'], 0,),
+      numAwards: mapGet(data, 'total_awards_received', 0),
       numComments: sub.numComments,
       over18: sub.over18,
       pinned: sub.pinned,
       score: sub.score,
       selftext: sub.selftext ?? '',
       subreddit: sub.subreddit.displayName,
-      subredditNamePrefixed: cast(data['subreddit_name_prefixed'], ''),
+      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
       thumbnail: _parseThumbnail(data['thumbnail']),
       title: sub.title,
       upvotes: sub.upvotes,

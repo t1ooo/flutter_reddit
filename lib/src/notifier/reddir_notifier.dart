@@ -28,7 +28,8 @@ class RedditNotifier extends ChangeNotifier {
   }
 
   Future<void> loadUserSubreddits({int limit = 10}) async {
-    _userSubreddits = await redditApi.userSubreddits(limit: limit);
+    _userSubreddits = await redditApi.userSubreddits(limit: limit)
+      ..sort((a, b) => a.displayName.compareTo(b.displayName));
     notifyListeners();
   }
 }
