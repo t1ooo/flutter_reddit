@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/subreddit.dart';
+import '../subreddit/subreddit_screen.dart';
 
 class Subscriptions extends StatelessWidget {
   const Subscriptions({
@@ -31,7 +32,10 @@ class Subscriptions extends StatelessWidget {
           title: Text(subreddit.displayNamePrefixed),
           trailing: Icon(Icons.star),
           onTap: () {
-            
+             Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => SubredditScreen()),
+            );
           },
         ),
     ]);
