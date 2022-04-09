@@ -7,6 +7,7 @@ import 'package:draw/draw.dart' as draw;
 import '../logging/logging.dart';
 import '../util/cast.dart';
 import 'submission.dart';
+import 'submission_type.dart';
 import 'subreddit.dart';
 
 // abstract class RedditApi {
@@ -16,22 +17,13 @@ import 'subreddit.dart';
 // }
 
 abstract class RedditApi {
-  Stream<Submission> frontBest({required int limit});
+  Stream<Submission> frontBest({required int limit, required SubType type});
   Stream<Submission> popular({required int limit});
   Stream<Subreddit> userSubreddits({required int limit});
   Stream<Submission> subredditSubmissions(
     String name, {
     required int limit,
   });
-}
-
-enum Type {
-  best,
-  hot,
-  newest,
-  top,
-  rising,
-  controversial,
 }
 
 // class RedditApiImpl implements RedditApi {
@@ -110,20 +102,20 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Stream<Submission> frontBest({required int limit, Type type = Type.best}) {
+  Stream<Submission> frontBest({required int limit, required SubType type}) {
     final front = reddit.front;
     switch (type) {
-      case Type.best:
+      case SubType.best:
         return _submissionsStream(front.best(limit: limit));
-      case Type.hot:
+      case SubType.hot:
         return _submissionsStream(front.hot(limit: limit));
-      case Type.newest:
+      case SubType.newest:
         return _submissionsStream(front.newest(limit: limit));
-      case Type.top:
+      case SubType.top:
         return _submissionsStream(front.top(limit: limit));
-      case Type.rising:
+      case SubType.rising:
         return _submissionsStream(front.rising(limit: limit));
-      case Type.controversial:
+      case SubType.controversial:
         return _submissionsStream(front.controversial(limit: limit));
     }
   }
@@ -183,9 +175,10 @@ class FakeRedditApi implements RedditApi {
   FakeRedditApi(this.reddit);
 
   final draw.Reddit reddit;
-  Duration _delay = Duration(seconds: 1) ~/ 10;
+  Duration _delay = Duration(seconds: 1);
 
-  Stream<Submission> frontBest({required int limit}) async* {
+  Stream<Submission> frontBest(
+      {required int limit, required SubType type}) async* {
     final data =
         await File('data/user.reddit.front.best.limit_10.json').readAsString();
     final items = (jsonDecode(data) as List<dynamic>)
@@ -200,7 +193,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   Stream<Submission> popular({required int limit}) {
-    return frontBest(limit: limit);
+    return frontBest(limit: limit, type: SubType.best);
   }
 
   @override
@@ -219,6 +212,6 @@ class FakeRedditApi implements RedditApi {
   }
 
   Stream<Submission> subredditSubmissions(String name, {required int limit}) {
-    return frontBest(limit: limit);
+    return frontBest(limit: limit, type: SubType.best);
   }
 }

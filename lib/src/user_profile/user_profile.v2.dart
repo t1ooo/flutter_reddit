@@ -94,7 +94,12 @@ class UserProfile extends StatelessWidget {
             ],
           ),
         ),
-        SubmissionTiles(),
+        SubmissionTiles(
+          submissions: [],
+          onTypeChanged: (type) {
+            // TODO
+          },
+        ),
       ],
     );
   }

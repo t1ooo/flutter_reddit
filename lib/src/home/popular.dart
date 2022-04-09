@@ -33,6 +33,9 @@ class Popular extends StatelessWidget {
       stream: context.read<RedditNotifier>().popular(),
       onData: (context, List<Submission> submissions) {
         return SubmissionTiles(
+          onTypeChanged: (type) {
+            // TODO
+          },
           submissions: submissions,
         );
       },

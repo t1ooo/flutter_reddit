@@ -106,6 +106,10 @@ class UserProfile extends StatelessWidget {
             child: TabBarView(
               children: [
                 SubmissionTiles(
+                  submissions: [],
+                  onTypeChanged: (type) {
+                    // TODO
+                  },
                   showTrending: false,
                   showTypeSelector: false,
                 ),

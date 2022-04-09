@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
+import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 
 // class RedditNotifier extends ChangeNotifier {
@@ -40,7 +41,7 @@ class RedditNotifier extends ChangeNotifier {
   final RedditApi redditApi;
 
   Stream<Submission> frontBest({int limit = 10}) {
-    return redditApi.frontBest(limit: limit);
+    return redditApi.frontBest(limit: limit, type: SubType.best);
   }
 
   Stream<Submission> popular({int limit = 10}) {
@@ -54,5 +55,24 @@ class RedditNotifier extends ChangeNotifier {
 
   Stream<Submission> subredditSubmissions(String name, {int limit = 10}) {
     return redditApi.subredditSubmissions(name, limit: limit);
+  }
+}
+
+class RedditNotifierFront extends ChangeNotifier {
+  RedditNotifierFront(this.redditApi);
+
+  final RedditApi redditApi;
+  SubType _type = SubType.best;
+
+  SubType get type => _type;
+
+  set type(SubType type) {
+    _type = type;
+    notifyListeners();
+  }
+
+  Stream<Submission> front({int limit = 10}) {
+    print(_type);
+    return redditApi.frontBest(limit: limit, type: _type);
   }
 }

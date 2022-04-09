@@ -96,8 +96,11 @@ class SubredditWidget extends StatelessWidget {
                 .subredditSubmissions(subreddit.displayName),
             onData: (context, List<Submission> submissions) {
               return SubmissionTiles(
+                onTypeChanged: (type) {
+                  // TODO
+                },
                 submissions: submissions,
-                showLocationSelector: false,
+                // showLocationSelector: false,
               );
             },
           ),

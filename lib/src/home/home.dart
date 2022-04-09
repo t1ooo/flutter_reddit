@@ -32,11 +32,15 @@ class Home extends StatelessWidget {
     // );
 
     return StreamListBuilder(
-      stream: context.read<RedditNotifier>().frontBest(),
+      // stream: context.read<RedditNotifier>().frontBest(),
+      stream: context.read<RedditNotifierFront>().front(),
       onData: (context, List<Submission> submissions) {
         return SubmissionTiles(
+          onTypeChanged: (type) {
+            context.read<RedditNotifierFront>().type = type;
+          },
           submissions: submissions,
-          showLocationSelector: false,
+          // showLocationSelector: false,
         );
       },
     );

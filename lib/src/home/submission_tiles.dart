@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
+import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
@@ -13,18 +15,20 @@ import 'submission_tile.dart';
 class SubmissionTiles extends StatelessWidget {
   SubmissionTiles({
     Key? key,
-    this.submissions,
+    required this.submissions,
+    required this.onTypeChanged,
     this.activeLink = true,
     this.showTrending = true,
     this.showTypeSelector = true,
-    this.showLocationSelector = true,
+    // this.showLocationSelector = true,
   }) : super(key: key);
 
-  List<Submission>? submissions;
+  final List<Submission> submissions;
+  final Function(SubType) onTypeChanged;
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
-  final bool showLocationSelector;
+  // final bool showLocationSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +55,28 @@ class SubmissionTiles extends StatelessWidget {
             // ),
             // Text('HOT POSTS'),
             if (showTypeSelector)
-              TextButton(
-                child: Text('HOT POSTS'),
-                onPressed: () {},
+              // TextButton(
+              //   child: Text('HOT POSTS'),
+              //   onPressed: () {},
+              // ),
+              DropdownButton<SubType>(
+                value: SubType.best,
+                onChanged: (SubType? type) {
+                  if (type != null ) onTypeChanged(type);
+                },
+                items: SubType.values
+                    .map<DropdownMenuItem<SubType>>((SubType type) {
+                  return DropdownMenuItem<SubType>(
+                    value: type,
+                    child: Text(type.toString()),
+                  );
+                }).toList(),
               ),
-            if (showLocationSelector)
-              TextButton(
-                child: Text('GLOBAL'),
-                onPressed: () {},
-              ),
+            // if (showLocationSelector)
+            //   TextButton(
+            //     child: Text('GLOBAL'),
+            //     onPressed: () {},
+            //   ),
             Spacer(),
             Text('...'),
           ],
@@ -93,7 +110,7 @@ class SubmissionTiles extends StatelessWidget {
         // SubmissionTiles(),
         // for (int i = 0; i < 3; i++)
         // for(final sub in notifier.frontBest!)
-        for(final sub in submissions ?? [])
+        for (final sub in submissions)
           Padding(
             padding: scrollPadding,
             child: SubmissionTile(submission: sub, activeLink: activeLink),
