@@ -52,7 +52,7 @@ class Submission extends Equatable {
   final String subreddit;
   final String subredditNamePrefixed;
   final String thumbnail;
-  final String title;
+  String title; // TODO: make final
   final int upvotes;
   final Uri url;
   final List<String> awardIcons;

@@ -15,11 +15,11 @@ import '../reddit_api/subreddit.dart';
 //   List<Subreddit>? _userSubreddits;
 
 //   List<Submission>? get popular => _popular;
-//   List<Submission>? get frontBest => _frontBest;
+//   List<Submission>? get front => _frontBest;
 //   List<Subreddit>? get userSubreddits => _userSubreddits;
 
 //   Future<void> loadFrontBest({int limit = 10}) async {
-//     _frontBest = await redditApi.frontBest(limit: limit);
+//     _frontBest = await redditApi.front(limit: limit);
 //     notifyListeners();
 //   }
 
@@ -41,8 +41,8 @@ class RedditNotifier extends ChangeNotifier {
   final RedditApi redditApi;
 
   // TODO: rename to front
-  Stream<Submission> frontBest({int limit = 10, SubType type=SubType.best}) {
-    return redditApi.frontBest(limit: limit, type: type);
+  Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
+    return redditApi.front(limit: limit, type: type);
   }
 
   Stream<Submission> popular({int limit = 10}) {
@@ -60,13 +60,15 @@ class RedditNotifier extends ChangeNotifier {
 }
 
 class SubmissionTypeNotifier extends ChangeNotifier {
-  SubmissionTypeNotifier([SubType type=SubType.best]) : _type = type;
+  SubmissionTypeNotifier([SubType type = SubType.best]) : _type = type;
 
   SubType _type = SubType.best;
 
   SubType get type => _type;
 
   set type(SubType type) {
+    if (_type == type) return;
+
     _type = type;
     notifyListeners();
   }
@@ -87,6 +89,6 @@ class SubmissionTypeNotifier extends ChangeNotifier {
 
 //   Stream<Submission> front({int limit = 10}) {
 //     print(_type);
-//     return redditApi.frontBest(limit: limit, type: _type);
+//     return redditApi.front(limit: limit, type: _type);
 //   }
 // }

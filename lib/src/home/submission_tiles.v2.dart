@@ -9,24 +9,30 @@ import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
+import '../widget/stream_list_builder.dart';
 import 'custom_scroll.dart';
 import 'submission_tile.dart';
+
+String _formatSubType(SubType type) {
+  return type.toString().split('.').last.toUpperCase();
+}
 
 class SubmissionTiles extends StatelessWidget {
   SubmissionTiles({
     Key? key,
-    this.type = SubType.best, // TODO: make required
-    required this.submissions,
-    required this.onTypeChanged,
+    // this.type = SubType.best, // TODO: make required
+    // this.showLocationSelector = true,
+    // required this.submissions,
+    required this.stream,
     this.activeLink = true,
     this.showTrending = true,
     this.showTypeSelector = true,
-    // this.showLocationSelector = true,
   }) : super(key: key);
 
-  final SubType type;
-  final List<Submission> submissions;
-  final Function(SubType?) onTypeChanged;
+  // final SubType type;
+  // final List<Submission> submissions;
+  final Function(BuildContext, SubType) stream;
+  // final Function(SubType?) onTypeChanged;
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
@@ -34,6 +40,22 @@ class SubmissionTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.watch<SubmissionTypeNotifier>();
+    return StreamListBuilder(
+      stream: stream(context, notifier.type),
+      onData: (context, List<Submission> submissions) {
+        return builder(
+          context,
+          notifier,
+          submissions,
+          // showLocationSelector: false,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget builder(BuildContext context, notifier, submissions) {
     // return Column(
     // final notifier = context.read<RedditNotifier>();
     return ListView(
@@ -62,13 +84,15 @@ class SubmissionTiles extends StatelessWidget {
               //   onPressed: () {},
               // ),
               DropdownButton<SubType>(
-                value: type,
-                onChanged: onTypeChanged,
+                value: notifier.type,
+                onChanged: (type) {
+                  if (type != null) notifier.type = type;
+                },
                 items: SubType.values
                     .map<DropdownMenuItem<SubType>>((SubType type) {
                   return DropdownMenuItem<SubType>(
                     value: type,
-                    child: Text(type.toString()),
+                    child: Text(_formatSubType(type)),
                   );
                 }).toList(),
               ),

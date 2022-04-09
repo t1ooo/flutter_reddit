@@ -19,12 +19,20 @@ class StreamListBuilder<T> extends StatefulWidget {
 }
 
 class _StreamListBuilderState<T> extends State<StreamListBuilder<T>> {
-  late StreamSubscription<T>? _sub;
+  StreamSubscription<T>? _sub;
   List<T> _list = [];
 
   @override
-  void initState() {
-    super.initState();
+  void didUpdateWidget(StreamListBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.stream != widget.stream) {
+      _list.clear();
+      _unsubscribe();
+      _subscribe();
+    }
+  }
+
+  void _subscribe() {
     _sub = widget.stream.listen((T data) {
       setState(() {
         _list.add(data);
@@ -32,14 +40,28 @@ class _StreamListBuilderState<T> extends State<StreamListBuilder<T>> {
     });
   }
 
+  void _unsubscribe() {
+    if (_sub != null) {
+      _sub!.cancel();
+      _sub = null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _subscribe();
+  }
+
   @override
   void dispose() {
-    _sub?.cancel();
+    _unsubscribe();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(_list.length);
     if (_list.isNotEmpty) {
       return widget.onData(context, _list);
     }
