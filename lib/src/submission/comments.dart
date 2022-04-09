@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
-import '../home/post_tile.dart';
+import '../home/submission_tile.dart';
 import 'comment.dart';
 
 class Comments extends StatelessWidget {

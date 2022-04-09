@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/submission.dart';
 import '../style/style.dart';
-import '../post/post_screen.dart';
+import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
 import 'custom_scroll.dart';
-import 'post_tile.dart';
+import 'submission_tile.dart';
 
-class PostTiles extends StatelessWidget {
-  PostTiles({
+class SubmissionTiles extends StatelessWidget {
+  SubmissionTiles({
     Key? key,
     this.submissions,
     this.activeLink = true,
@@ -85,18 +85,18 @@ class PostTiles extends StatelessWidget {
             ),
           ),
 
-          // PostTile(),
-          // PostTile(),
-          // PostTile(),
+          // SubmissionTile(),
+          // SubmissionTile(),
+          // SubmissionTile(),
           SizedBox(height: 10),
         ],
-        // PostTiles(),
+        // SubmissionTiles(),
         // for (int i = 0; i < 3; i++)
         // for(final sub in notifier.frontBest!)
         for(final sub in submissions ?? [])
           Padding(
             padding: scrollPadding,
-            child: PostTile(submission: sub, activeLink: activeLink),
+            child: SubmissionTile(submission: sub, activeLink: activeLink),
           ),
       ],
     );

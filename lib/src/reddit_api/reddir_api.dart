@@ -13,10 +13,11 @@ abstract class RedditApi {
 }
 
 class RedditApiImpl implements RedditApi {
-  RedditApiImpl(this.reddit, this.anonymousReddit);
+  RedditApiImpl(this.reddit);
+  // RedditApiImpl(this.reddit, this.anonymousReddit);
 
   final draw.Reddit reddit;
-  final draw.Reddit anonymousReddit;
+  // final draw.Reddit anonymousReddit;
 
   Future<List<Submission>> frontBest({required int limit}) async {
     final subs = <Submission>[];
@@ -32,8 +33,11 @@ class RedditApiImpl implements RedditApi {
     // for submission in reddit.subreddit("all").best(limit=25):
     // https://praw.readthedocs.io/en/stable/code_overview/models/subreddit.html
     // TODO: remove anonymousReddit
+
+
     final subs = <Submission>[];
-    await for (final v in anonymousReddit.front.best(limit: limit)) {
+    // await for (final v in anonymousReddit.front.best(limit: limit)) {
+    await for (final v in reddit.subreddit('all').hot(limit:limit)) {
       final sub = Submission.fromDrawSubmission(v as draw.Submission);
       subs.add(sub);
     }
@@ -49,8 +53,10 @@ class RedditApiImpl implements RedditApi {
     return subs;
   }
 
-  Future<List<Submission>> subredditPosts(String name,
-      {required int limit}) async {
+  Future<List<Submission>> subredditSubmissions(
+    String name, {
+    required int limit,
+  }) async {
     final subs = <Submission>[];
     await for (final v
         in reddit.subreddit(name).stream.submissions(limit: limit)) {
@@ -64,10 +70,11 @@ class RedditApiImpl implements RedditApi {
 }
 
 class FakeRedditApi implements RedditApi {
-  FakeRedditApi(this.reddit, this.anonymousReddit);
+  // FakeRedditApi(this.reddit, this.anonymousReddit);
+  FakeRedditApi(this.reddit);
 
   final draw.Reddit reddit;
-  final draw.Reddit anonymousReddit;
+  // final draw.Reddit anonymousReddit;
 
   Future<List<Submission>> frontBest({required int limit}) async {
     final data =

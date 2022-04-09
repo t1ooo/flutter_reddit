@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/home/post_tiles.dart';
+import 'package:flutter_reddit_prototype/src/home/submission_tiles.dart';
 
-import '../home/post_tile.dart';
+import '../home/submission_tile.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
 import 'user_profile.v2.dart';
@@ -16,7 +16,7 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   int _selectedIndex = 0;
 
-  List<String> type = ['posts','comments','about'];
+  List<String> type = ['submissions','comments','about'];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Posts',
+            label: 'Submissions',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
@@ -60,7 +60,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text('Post'),
+//         title: Text('Submission'),
 //       ),
 //       body: UserProfile(),
 //     );
@@ -160,7 +160,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 //                 TabBar(
 //                   labelColor: Colors.black,
 //                   tabs: [
-//                     Text('Posts'),
+//                     Text('Submissions'),
 //                     Text('Comments'),
 //                   ],
 //                 ),
@@ -173,36 +173,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 //                   //     child: Container(
 //                   //   child: TabBarView(
 //                   //     children: [
-//                   //       PostTiles(),
-//                   //       PostTiles(),
+//                   //       SubmissionTiles(),
+//                   //       SubmissionTiles(),
 //                   //     ],
 //                   //   ),
 //                   // )),
 
-//                   // PostTile(),
-//                   // PostTile(),
-//                   // PostTile(),
-//                   // PostTile(),
+//                   // SubmissionTile(),
+//                   // SubmissionTile(),
+//                   // SubmissionTile(),
+//                   // SubmissionTile(),
 
 //                   // SizedBox(
 //                   //   height: 10000,
 //                   //   child: TabBarView(
 //                   //     children: [
-//                   //       // SingleChildScrollView(child: PostTiles()),
-//                   //       // SingleChildScrollView(child: PostTiles()),
-//                   //       PostTiles(),
-//                   //       PostTiles(),
+//                   //       // SingleChildScrollView(child: SubmissionTiles()),
+//                   //       // SingleChildScrollView(child: SubmissionTiles()),
+//                   //       SubmissionTiles(),
+//                   //       SubmissionTiles(),
 //                   //     ],
 //                   //   ),
 //                   // ),
 
 //                   TabBarView(
 //                       children: [
-//                         // SingleChildScrollView(child: PostTiles()),
-//                         // SingleChildScrollView(child: PostTiles()),
-//                         Expanded(child:PostTiles()),
-//                         Expanded(child:PostTiles()),
-//                         // PostTiles(),
+//                         // SingleChildScrollView(child: SubmissionTiles()),
+//                         // SingleChildScrollView(child: SubmissionTiles()),
+//                         Expanded(child:SubmissionTiles()),
+//                         Expanded(child:SubmissionTiles()),
+//                         // SubmissionTiles(),
 //                       ],
 //                     ),
 //                 ],

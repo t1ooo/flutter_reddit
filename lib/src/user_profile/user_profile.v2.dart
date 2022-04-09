@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../home/post_tiles.dart';
+import '../home/submission_tiles.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
 
@@ -94,7 +94,7 @@ class UserProfile extends StatelessWidget {
             ],
           ),
         ),
-        PostTiles(),
+        SubmissionTiles(),
       ],
     );
   }

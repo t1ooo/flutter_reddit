@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../home/post_tiles.dart';
+import '../home/submission_tiles.dart';
 import '../style/style.dart';
-import '../post/comments.dart';
+import '../submission/comments.dart';
 import '../widget/sized_placeholder.dart';
 import 'about.dart';
 
@@ -96,7 +96,7 @@ class UserProfile extends StatelessWidget {
             child: TabBar(
               labelColor: Colors.blue,
               tabs: [
-                Text('Posts'),
+                Text('Submissions'),
                 Text('Comments'),
                 Text('About'),
               ],
@@ -105,7 +105,7 @@ class UserProfile extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                PostTiles(
+                SubmissionTiles(
                   showTrending: false,
                   showTypeSelector: false,
                 ),
@@ -192,7 +192,7 @@ class UserProfile extends StatelessWidget {
     //             //       TabBar(
     //             //         labelColor: Colors.black,
     //             //         tabs: [
-    //             //           Text('Posts'),
+    //             //           Text('Submissions'),
     //             //           Text('Comments'),
     //             //           Text('About'),
     //             //         ],
@@ -209,7 +209,7 @@ class UserProfile extends StatelessWidget {
     //             //             //   padding: pagePadding,
     //             //             //   child: Popular(),
     //             //             // ),
-    //             //             PostTiles(),
+    //             //             SubmissionTiles(),
     //             //             Text('2'),
     //             //             Text('3'),
     //             //           ],
@@ -223,7 +223,7 @@ class UserProfile extends StatelessWidget {
     //               child: TabBar(
     //                 labelColor: Colors.black,
     //                 tabs: [
-    //                   Text('Posts'),
+    //                   Text('Submissions'),
     //                   Text('Comments'),
     //                   Text('About'),
     //                 ],
@@ -233,7 +233,7 @@ class UserProfile extends StatelessWidget {
     //             //   height: 1000,
     //             //   child: TabBarView(
     //             //     children: [
-    //             //       // PostTiles(),
+    //             //       // SubmissionTiles(),
     //             //       Text('1'),
     //             //       Text('2'),
     //             //       Text('3'),
@@ -243,7 +243,7 @@ class UserProfile extends StatelessWidget {
     //             Expanded(
     //               child: TabBarView(
     //                 children: [
-    //                   // PostTiles(),
+    //                   // SubmissionTiles(),
     //                   Text('1'),
     //                   Text('2'),
     //                   Text('3'),
@@ -256,7 +256,7 @@ class UserProfile extends StatelessWidget {
     //             //   children: [
     //             //     InkWell(
     //             //       onTap: () {},
-    //             //       child: Container(child: Text('Posts')),
+    //             //       child: Container(child: Text('Submissions')),
     //             //     ),
     //             //     InkWell(
     //             //       onTap: () {},

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
-import 'post_tiles.dart';
+import 'submission_tiles.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class Popular extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<RedditNotifier>();
-    return PostTiles(
+    return SubmissionTiles(
       submissions: notifier.popular,
     );
   }

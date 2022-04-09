@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
-import '../home/post_tile.dart';
+import '../home/submission_tile.dart';
 import '../reddit_api/submission.dart';
 import 'comments.dart';
 
-class Post extends StatelessWidget {
-  const Post({Key? key}) : super(key: key);
+class Submission extends StatelessWidget {
+  const Submission({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        PostTile(
+        SubmissionTile(
           submission: placeholderSubmission(),
           activeLink: false,
         ),

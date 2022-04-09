@@ -14,7 +14,7 @@ class UserProfileScreen extends StatelessWidget {
   //       // appBar: AppBar(
   //       //   bottom: TabBar(
   //       //     tabs: [
-  //       //        Text('Posts'),
+  //       //        Text('Submissions'),
   //       //             Text('Comments'),
   //       //             Text('About'),
   //       //     ],

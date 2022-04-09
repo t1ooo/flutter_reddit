@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/home/post_tiles.dart';
+import 'package:flutter_reddit_prototype/src/home/submission_tiles.dart';
 
-import '../home/post_tile.dart';
+import '../home/submission_tile.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
 import 'user_profile.v1.dart';
@@ -27,7 +27,7 @@ class UserProfileScreen extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text('Post'),
+//         title: Text('Submission'),
 //       ),
 //       body: UserProfile(),
 //     );
@@ -127,7 +127,7 @@ class UserProfileScreen extends StatelessWidget {
 //                 TabBar(
 //                   labelColor: Colors.black,
 //                   tabs: [
-//                     Text('Posts'),
+//                     Text('Submissions'),
 //                     Text('Comments'),
 //                   ],
 //                 ),
@@ -140,36 +140,36 @@ class UserProfileScreen extends StatelessWidget {
 //                   //     child: Container(
 //                   //   child: TabBarView(
 //                   //     children: [
-//                   //       PostTiles(),
-//                   //       PostTiles(),
+//                   //       SubmissionTiles(),
+//                   //       SubmissionTiles(),
 //                   //     ],
 //                   //   ),
 //                   // )),
 
-//                   // PostTile(),
-//                   // PostTile(),
-//                   // PostTile(),
-//                   // PostTile(),
+//                   // SubmissionTile(),
+//                   // SubmissionTile(),
+//                   // SubmissionTile(),
+//                   // SubmissionTile(),
 
 //                   // SizedBox(
 //                   //   height: 10000,
 //                   //   child: TabBarView(
 //                   //     children: [
-//                   //       // SingleChildScrollView(child: PostTiles()),
-//                   //       // SingleChildScrollView(child: PostTiles()),
-//                   //       PostTiles(),
-//                   //       PostTiles(),
+//                   //       // SingleChildScrollView(child: SubmissionTiles()),
+//                   //       // SingleChildScrollView(child: SubmissionTiles()),
+//                   //       SubmissionTiles(),
+//                   //       SubmissionTiles(),
 //                   //     ],
 //                   //   ),
 //                   // ),
 
 //                   TabBarView(
 //                       children: [
-//                         // SingleChildScrollView(child: PostTiles()),
-//                         // SingleChildScrollView(child: PostTiles()),
-//                         Expanded(child:PostTiles()),
-//                         Expanded(child:PostTiles()),
-//                         // PostTiles(),
+//                         // SingleChildScrollView(child: SubmissionTiles()),
+//                         // SingleChildScrollView(child: SubmissionTiles()),
+//                         Expanded(child:SubmissionTiles()),
+//                         Expanded(child:SubmissionTiles()),
+//                         // SubmissionTiles(),
 //                       ],
 //                     ),
 //                 ],

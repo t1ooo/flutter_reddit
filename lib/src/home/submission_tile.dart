@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../reddit_api/submission.dart';
 import '../style/style.dart';
-import '../post/post_screen.dart';
+import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
 
-class PostTile extends StatelessWidget {
-  const PostTile({
+class SubmissionTile extends StatelessWidget {
+  const SubmissionTile({
     Key? key,
     required this.submission,
     this.activeLink = true,
@@ -39,7 +39,7 @@ class PostTile extends StatelessWidget {
                         // Text('r/subreddit'),
                         Text(submission.subredditNamePrefixed),
                         Row(children: [
-                          Text('Posted by'),
+                          Text('Submissioned by'),
                           Text(' '),
                           InkWell(
                             onTap: () {
@@ -67,7 +67,7 @@ class PostTile extends StatelessWidget {
               ],
             ),
             // Text('r/subreddit'),
-            // Text('Posted by u/User * 3h * v.redd.it'),
+            // Text('Submissioned by u/User * 3h * v.redd.it'),
             SizedBox(height: 10),
             Row(children: [
               for (final icon in (submission.awardIcons).take(4))
@@ -81,7 +81,7 @@ class PostTile extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => PostScreen()),
+                  MaterialPageRoute(builder: (_) => SubmissionScreen()),
                 );
               },
               child: Text(submission.title, textScaleFactor: 2),
