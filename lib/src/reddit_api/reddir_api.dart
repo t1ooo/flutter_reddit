@@ -79,6 +79,7 @@ class FakeRedditApi implements RedditApi {
   FakeRedditApi(this.reddit);
 
   final draw.Reddit reddit;
+  Duration _delay = Duration(seconds: 1);
 
   Stream<Submission> frontBest({required int limit}) async* {
     final data =
@@ -89,7 +90,7 @@ class FakeRedditApi implements RedditApi {
         .map((v) => Submission.fromDrawSubmission(v));
     // return Stream.fromIterable(items);
     for (final item in items) {
-      // print(item);
+      await Future.delayed(_delay);
       yield item;
     }
   }
@@ -108,6 +109,7 @@ class FakeRedditApi implements RedditApi {
         .map((v) => Subreddit.fromDrawSubreddit(v));
     // .toList();
     for (final item in items) {
+      await Future.delayed(_delay);
       yield item;
     }
   }

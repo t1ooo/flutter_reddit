@@ -39,7 +39,7 @@ class SubmissionTile extends StatelessWidget {
                         // Text('r/subreddit'),
                         Text(submission.subredditNamePrefixed),
                         Row(children: [
-                          Text('Submissioned by'),
+                          Text('Post by'),
                           Text(' '),
                           InkWell(
                             onTap: () {
@@ -51,8 +51,8 @@ class SubmissionTile extends StatelessWidget {
                             },
                             child: Text(submission.author),
                           ),
-                          Text(' * '),
-                          Text(submission.domain),
+                          // Text(' * '),
+                          // Text(submission.domain),
                         ]),
                       ],
                     ),
