@@ -30,14 +30,15 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
   // );
 
   // final redditApi = RedditApiImpl(reddit, anonymousReddit);
-  final redditApi = RedditApiImpl(reddit);
+  // final redditApi = RedditApiImpl(reddit);
   // final redditApi = FakeRedditApi(reddit, anonymousReddit);
+  final redditApi = FakeRedditApi(reddit);
 
   final redditNotifier = RedditNotifier(redditApi);
   
-  await redditNotifier.loadFrontBest();
-  await redditNotifier.loadPopular();
-  await redditNotifier.loadUserSubreddits();
+  // await redditNotifier.loadFrontBest();
+  // await redditNotifier.loadPopular();
+  // await redditNotifier.loadUserSubreddits();
   
   return ChangeNotifierProvider.value(value: redditNotifier);
 }

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../reddit_api/submission.dart';
+import '../style/style.dart';
+import '../widget/stream_builder.dart';
+import 'submission_tile.dart';
 import 'submission_tiles.dart';
 
 class Popular extends StatelessWidget {
@@ -9,9 +13,21 @@ class Popular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<RedditNotifier>();
-    return SubmissionTiles(
-      submissions: notifier.popular,
+    // final notifier = context.read<RedditNotifier>();
+    // return SubmissionTiles(
+    //   submissions: notifier.popular,
+    // );
+    return CustomStreamBuilder(
+      stream: context.read<RedditNotifier>().popular(),
+      onData: (context, Submission submission) {
+        return Padding(
+          padding: scrollPadding,
+          child: SubmissionTile(
+            submission: submission,
+            activeLink: true,
+          ),
+        );
+      },
     );
   }
 }
