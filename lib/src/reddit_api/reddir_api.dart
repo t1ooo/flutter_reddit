@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:draw/draw.dart' as draw;
+// import 'package:draw/src/listing/listing_generator.dart' as draw;
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
@@ -18,6 +19,19 @@ abstract class RedditApi {
   Stream<Submission> frontBest({required int limit});
   Stream<Submission> popular({required int limit});
   Stream<Subreddit> userSubreddits({required int limit});
+  Stream<Submission> subredditSubmissions(
+    String name, {
+    required int limit,
+  });
+}
+
+enum Type {
+  best,
+  hot,
+  newest,
+  top,
+  rising,
+  controversial,
 }
 
 // class RedditApiImpl implements RedditApi {
@@ -84,29 +98,58 @@ class RedditApiImpl implements RedditApi {
   static final _log = Logger('RedditApiImpl');
   // final draw.Reddit anonymousReddit;
 
-  Stream<Submission> frontBest({required int limit}) async* {
-    await for (final v in reddit.front.best(limit: limit)) {
+  Stream<Submission> _submissionsStream(Stream<draw.UserContent> s) async* {
+    await for (final v in s) {
       final dsub = cast<draw.Submission?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      if (!(v is draw.Submission)) {
-        _log.warning('not draw.Submission: $v');
-        continue;
-      }
-      final sub = Submission.fromDrawSubmission(v as draw.Submission);
+      final sub = Submission.fromDrawSubmission(dsub);
       yield sub;
     }
   }
 
+  Stream<Submission> frontBest({required int limit, Type type = Type.best}) {
+    final front = reddit.front;
+    switch (type) {
+      case Type.best:
+        return _submissionsStream(front.best(limit: limit));
+      case Type.hot:
+        return _submissionsStream(front.hot(limit: limit));
+      case Type.newest:
+        return _submissionsStream(front.newest(limit: limit));
+      case Type.top:
+        return _submissionsStream(front.top(limit: limit));
+      case Type.rising:
+        return _submissionsStream(front.rising(limit: limit));
+      case Type.controversial:
+        return _submissionsStream(front.controversial(limit: limit));
+    }
+  }
+
+  // Stream<Submission> frontBest({required int limit}) async* {
+  //   // draw.ListingGenerator.createBasicGenerator(reddit, '/best', limit: limit);
+
+  //   await for (final v in reddit.front.best(limit: limit)) {
+  //     final dsub = cast<draw.Submission?>(v, null);
+  //     if (dsub == null) {
+  //       _log.warning('not draw.Submission: $v');
+  //       continue;
+  //     }
+  //     final sub = Submission.fromDrawSubmission(dsub);
+  //     yield sub;
+  //   }
+  // }
+
   Stream<Submission> popular({required int limit}) async* {
     await for (final v in reddit.subreddit('all').hot(limit: limit)) {
-      if (!(v is draw.Submission)) {
+      final dsub = cast<draw.Submission?>(v, null);
+      if (dsub == null) {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(v as draw.Submission);
+      final sub = Submission.fromDrawSubmission(dsub);
       yield sub;
     }
   }
@@ -124,11 +167,12 @@ class RedditApiImpl implements RedditApi {
   }) async* {
     // in reddit.subreddit(name).stream.submissions(limit: limit)) {
     await for (final v in reddit.subreddit(name).hot(limit: limit)) {
-      if (!(v is draw.Submission)) {
+      final dsub = cast<draw.Submission?>(v, null);
+      if (dsub == null) {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(v as draw.Submission);
+      final sub = Submission.fromDrawSubmission(dsub);
       yield sub;
     }
   }
@@ -139,7 +183,7 @@ class FakeRedditApi implements RedditApi {
   FakeRedditApi(this.reddit);
 
   final draw.Reddit reddit;
-  Duration _delay = Duration(seconds: 1);
+  Duration _delay = Duration(seconds: 1) ~/ 10;
 
   Stream<Submission> frontBest({required int limit}) async* {
     final data =

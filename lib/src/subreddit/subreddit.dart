@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../home/submission_tiles.dart';
+import '../notifier/reddir_notifier.dart';
+import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
+import '../widget/stream_list_builder.dart';
 
 class SubredditWidget extends StatelessWidget {
   const SubredditWidget({
@@ -14,7 +19,7 @@ class SubredditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
@@ -43,7 +48,7 @@ class SubredditWidget extends StatelessWidget {
               Text('${subreddit.subscribers} members'),
               SizedBox(height: 20),
               Text(subreddit.publicDescription),
-              
+
               /* Row(
                 children: [
                   Column(
@@ -80,6 +85,21 @@ class SubredditWidget extends StatelessWidget {
               Text('description'),
               SizedBox(height: 20), */
             ],
+          ),
+        ),
+        Divider(),
+        Padding(
+          padding: pagePadding,
+          child: StreamListBuilder(
+            stream: context
+                .read<RedditNotifier>()
+                .subredditSubmissions(subreddit.displayName),
+            onData: (context, List<Submission> submissions) {
+              return SubmissionTiles(
+                submissions: submissions,
+                showLocationSelector: false,
+              );
+            },
           ),
         ),
       ],

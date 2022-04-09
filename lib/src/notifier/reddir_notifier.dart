@@ -51,4 +51,8 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.userSubreddits(limit: limit);
     // ..sort((a, b) => a.displayName.compareTo(b.displayName));
   }
+
+  Stream<Submission> subredditSubmissions(String name, {int limit = 10}) {
+    return redditApi.subredditSubmissions(name, limit: limit);
+  }
 }
