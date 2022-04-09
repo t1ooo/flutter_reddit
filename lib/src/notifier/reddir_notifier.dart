@@ -40,8 +40,9 @@ class RedditNotifier extends ChangeNotifier {
 
   final RedditApi redditApi;
 
-  Stream<Submission> frontBest({int limit = 10}) {
-    return redditApi.frontBest(limit: limit, type: SubType.best);
+  // TODO: rename to front
+  Stream<Submission> frontBest({int limit = 10, SubType type=SubType.best}) {
+    return redditApi.frontBest(limit: limit, type: type);
   }
 
   Stream<Submission> popular({int limit = 10}) {
@@ -58,10 +59,9 @@ class RedditNotifier extends ChangeNotifier {
   }
 }
 
-class RedditNotifierFront extends ChangeNotifier {
-  RedditNotifierFront(this.redditApi);
+class SubmissionTypeNotifier extends ChangeNotifier {
+  SubmissionTypeNotifier([SubType type=SubType.best]) : _type = type;
 
-  final RedditApi redditApi;
   SubType _type = SubType.best;
 
   SubType get type => _type;
@@ -70,9 +70,23 @@ class RedditNotifierFront extends ChangeNotifier {
     _type = type;
     notifyListeners();
   }
-
-  Stream<Submission> front({int limit = 10}) {
-    print(_type);
-    return redditApi.frontBest(limit: limit, type: _type);
-  }
 }
+
+// class RedditNotifierFront extends ChangeNotifier {
+//   RedditNotifierFront(this.redditApi);
+
+//   final RedditApi redditApi;
+//   SubType _type = SubType.best;
+
+//   SubType get type => _type;
+
+//   set type(SubType type) {
+//     _type = type;
+//     notifyListeners();
+//   }
+
+//   Stream<Submission> front({int limit = 10}) {
+//     print(_type);
+//     return redditApi.frontBest(limit: limit, type: _type);
+//   }
+// }

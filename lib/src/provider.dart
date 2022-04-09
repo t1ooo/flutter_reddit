@@ -46,34 +46,34 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
   return ChangeNotifierProvider.value(value: redditNotifier);
 }
 
-Future<ChangeNotifierProvider<RedditNotifierFront>> redditNotifierFrontProvider() async {
-  reddit = reddit ??
-      await draw.Reddit.createScriptInstance(
-        clientId: clientId,
-        clientSecret: secret,
-        userAgent: 'Flutter Client',
-        username: username,
-        password: password, // Fake
-      );
+// Future<ChangeNotifierProvider<RedditNotifierFront>>
+//     redditNotifierFrontProvider() async {
+//   reddit = reddit ??
+//       await draw.Reddit.createScriptInstance(
+//         clientId: clientId,
+//         clientSecret: secret,
+//         userAgent: 'Flutter Client',
+//         username: username,
+//         password: password, // Fake
+//       );
 
-  final redditApi = FakeRedditApi(reddit!);
+//   final redditApi = FakeRedditApi(reddit!);
 
-  final redditNotifier = RedditNotifierFront(redditApi);
+//   final redditNotifier = RedditNotifierFront(redditApi);
 
-  // await redditNotifier.loadFrontBest();
-  // await redditNotifier.loadPopular();
-  // await redditNotifier.loadUserSubreddits();
+//   // await redditNotifier.loadFrontBest();
+//   // await redditNotifier.loadPopular();
+//   // await redditNotifier.loadUserSubreddits();
 
-  return ChangeNotifierProvider.value(value: redditNotifier);
-}
-
-// ChangeNotifierProvider<StoryNotifier> storyProvider() {
-//   return ChangeNotifierProvider(
-//     create: (BuildContext context) => StoryNotifier(
-//       context.read<HackerNewsApi>(),
-//     ),
-//   );
+//   return ChangeNotifierProvider.value(value: redditNotifier);
 // }
+
+ChangeNotifierProvider<SubmissionTypeNotifier>
+    submissionTypeNotifierProvider() {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SubmissionTypeNotifier(),
+  );
+}
 
 // ChangeNotifierProvider<UserNotifier> userProvider() {
 //   return ChangeNotifierProvider(

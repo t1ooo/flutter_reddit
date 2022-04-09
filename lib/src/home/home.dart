@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final notifier = context.read<RedditNotifier>();
+    final notifier = context.watch<SubmissionTypeNotifier>();
     // return SubmissionTiles(
     //   submissions: notifier.frontBest,
     //   showLocationSelector: false,
@@ -30,14 +30,14 @@ class Home extends StatelessWidget {
     //     );
     //   },
     // );
-
+    print(notifier.type);
     return StreamListBuilder(
-      // stream: context.read<RedditNotifier>().frontBest(),
-      stream: context.read<RedditNotifierFront>().front(),
+      stream: context.read<RedditNotifier>().frontBest(type: notifier.type),
       onData: (context, List<Submission> submissions) {
         return SubmissionTiles(
+          type: notifier.type,
           onTypeChanged: (type) {
-            context.read<RedditNotifierFront>().type = type;
+            if(type != null) notifier.type = type;
           },
           submissions: submissions,
           // showLocationSelector: false,

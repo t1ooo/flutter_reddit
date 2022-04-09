@@ -15,6 +15,7 @@ import 'submission_tile.dart';
 class SubmissionTiles extends StatelessWidget {
   SubmissionTiles({
     Key? key,
+    this.type = SubType.best, // TODO: make required
     required this.submissions,
     required this.onTypeChanged,
     this.activeLink = true,
@@ -23,8 +24,9 @@ class SubmissionTiles extends StatelessWidget {
     // this.showLocationSelector = true,
   }) : super(key: key);
 
+  final SubType type;
   final List<Submission> submissions;
-  final Function(SubType) onTypeChanged;
+  final Function(SubType?) onTypeChanged;
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
@@ -60,10 +62,8 @@ class SubmissionTiles extends StatelessWidget {
               //   onPressed: () {},
               // ),
               DropdownButton<SubType>(
-                value: SubType.best,
-                onChanged: (SubType? type) {
-                  if (type != null ) onTypeChanged(type);
-                },
+                value: type,
+                onChanged: onTypeChanged,
                 items: SubType.values
                     .map<DropdownMenuItem<SubType>>((SubType type) {
                   return DropdownMenuItem<SubType>(
