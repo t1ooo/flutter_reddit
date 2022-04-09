@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:draw/draw.dart' as draw;
 
+import '../logging/logging.dart';
+import '../util/cast.dart';
 import 'submission.dart';
 import 'subreddit.dart';
 
@@ -74,6 +76,64 @@ abstract class RedditApi {
 //   }
 // }
 
+class RedditApiImpl implements RedditApi {
+  RedditApiImpl(this.reddit);
+  // RedditApiImpl(this.reddit, this.anonymousReddit);
+
+  final draw.Reddit reddit;
+  static final _log = Logger('RedditApiImpl');
+  // final draw.Reddit anonymousReddit;
+
+  Stream<Submission> frontBest({required int limit}) async* {
+    await for (final v in reddit.front.best(limit: limit)) {
+      final dsub = cast<draw.Submission?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      if (!(v is draw.Submission)) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      final sub = Submission.fromDrawSubmission(v as draw.Submission);
+      yield sub;
+    }
+  }
+
+  Stream<Submission> popular({required int limit}) async* {
+    await for (final v in reddit.subreddit('all').hot(limit: limit)) {
+      if (!(v is draw.Submission)) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      final sub = Submission.fromDrawSubmission(v as draw.Submission);
+      yield sub;
+    }
+  }
+
+  Stream<Subreddit> userSubreddits({required int limit}) async* {
+    await for (final v in reddit.user.subreddits(limit: limit)) {
+      final sub = Subreddit.fromDrawSubreddit(v);
+      yield sub;
+    }
+  }
+
+  Stream<Submission> subredditSubmissions(
+    String name, {
+    required int limit,
+  }) async* {
+    // in reddit.subreddit(name).stream.submissions(limit: limit)) {
+    await for (final v in reddit.subreddit(name).hot(limit: limit)) {
+      if (!(v is draw.Submission)) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      final sub = Submission.fromDrawSubmission(v as draw.Submission);
+      yield sub;
+    }
+  }
+}
+
 class FakeRedditApi implements RedditApi {
   // FakeRedditApi(this.reddit, this.anonymousReddit);
   FakeRedditApi(this.reddit);
@@ -112,5 +172,9 @@ class FakeRedditApi implements RedditApi {
       await Future.delayed(_delay);
       yield item;
     }
+  }
+
+  Stream<Submission> subredditSubmissions(String name, {required int limit}) {
+    return frontBest(limit: limit);
   }
 }
