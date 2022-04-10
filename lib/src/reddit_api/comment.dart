@@ -1,148 +1,169 @@
 import 'package:draw/draw.dart' as draw;
 
-class Comment {
-  String subredditId;
-  bool authorIsBlocked;
-  String commentType;
-  String linkTitle;
-  int ups;
-  String authorFlairType;
-  int totalAwardsReceived;
-  String subreddit;
-  String linkAuthor;
-  int likes;
-  String replies;
-  bool saved;
-  String id;
-  int gilded;
-  bool archived;
-  bool noFollow;
-  String author;
-  int numComments;
-  bool sendReplies;
-  String parentId;
-  int score;
-  String authorFullname;
-  bool over18;
-  int controversiality;
-  String body;
-  bool edited;
-  int downs;
-  bool isSubmitter;
-  bool collapsed;
-  String bodyHtml;
-  bool distinguished;
-  bool stickied;
-  bool authorPremium;
-  String linkId;
-  String permalink;
-  String subredditType;
-  String linkPermalink;
-  String name;
-  String subredditNamePrefixed;
-  List<Null> treatmentTags;
-  int created;
-  int createdUtc;
-  bool locked;
-  bool quarantine;
-  String linkUrl;
+import '../logging/logging.dart';
+import '../util/cast.dart';
+import '../util/map.dart';
 
-  Comment(
-      {required this.subredditId,
-      required this.authorIsBlocked,
-      required this.commentType,
-      required this.linkTitle,
-      required this.ups,
-      required this.authorFlairType,
-      required this.totalAwardsReceived,
-      required this.subreddit,
-      required this.linkAuthor,
-      required this.likes,
-      required this.replies,
-      required this.saved,
-      required this.id,
-      required this.gilded,
-      required this.archived,
-      required this.noFollow,
-      required this.author,
-      required this.numComments,
-      required this.sendReplies,
-      required this.parentId,
-      required this.score,
-      required this.authorFullname,
-      required this.over18,
-      required this.controversiality,
-      required this.body,
-      required this.edited,
-      required this.downs,
-      required this.isSubmitter,
-      required this.collapsed,
-      required this.bodyHtml,
-      required this.distinguished,
-      required this.stickied,
-      required this.authorPremium,
-      required this.linkId,
-      required this.permalink,
-      required this.subredditType,
-      required this.linkPermalink,
-      required this.name,
-      required this.subredditNamePrefixed,
-      required this.treatmentTags,
-      required this.created,
-      required this.createdUtc,
-      required this.locked,
-      required this.quarantine,
-      required this.linkUrl});
+class Comment {
+  Comment({
+    required this.subredditId,
+    required this.authorIsBlocked,
+    required this.commentType,
+    required this.linkTitle,
+    required this.ups,
+    required this.authorFlairType,
+    required this.totalAwardsReceived,
+    required this.subreddit,
+    required this.linkAuthor,
+    required this.likes,
+    required this.replies,
+    required this.saved,
+    required this.id,
+    required this.gilded,
+    required this.archived,
+    required this.noFollow,
+    required this.author,
+    required this.numComments,
+    required this.sendReplies,
+    required this.parentId,
+    required this.score,
+    required this.authorFullname,
+    required this.over18,
+    required this.controversiality,
+    required this.body,
+    required this.edited,
+    required this.downs,
+    required this.isSubmitter,
+    required this.collapsed,
+    required this.bodyHtml,
+    required this.distinguished,
+    required this.stickied,
+    required this.authorPremium,
+    required this.linkId,
+    required this.permalink,
+    required this.subredditType,
+    required this.linkPermalink,
+    required this.name,
+    required this.subredditNamePrefixed,
+    required this.treatmentTags,
+    required this.created,
+    required this.createdUtc,
+    required this.locked,
+    required this.quarantine,
+    required this.linkUrl,
+  });
+
+  final String subredditId;
+  final bool authorIsBlocked;
+  final String commentType;
+  final String linkTitle;
+  final int ups;
+  final String authorFlairType;
+  final int totalAwardsReceived;
+  final String subreddit;
+  final String linkAuthor;
+  final int likes;
+  final String replies;
+  final bool saved;
+  final String id;
+  final int gilded;
+  final bool archived;
+  final bool noFollow;
+  final String author;
+  final int numComments;
+  final bool sendReplies;
+  final String parentId;
+  final int score;
+  final String authorFullname;
+  final bool over18;
+  final int controversiality;
+  final String body;
+  final bool edited;
+  final int downs;
+  final bool isSubmitter;
+  final bool collapsed;
+  final String bodyHtml;
+  final bool distinguished;
+  final bool stickied;
+  final bool authorPremium;
+  final String linkId;
+  final String permalink;
+  final String subredditType;
+  final String linkPermalink;
+  final String name;
+  final String subredditNamePrefixed;
+  final List<String> treatmentTags;
+  final DateTime created;
+  final DateTime createdUtc;
+  final bool locked;
+  final bool quarantine;
+  final String linkUrl;
+
+  static final _log = Logger('Comment');
 
   factory Comment.fromDrawComment(draw.Comment comment) {
     final data = comment.data!;
 
     return Comment(
-      subredditId: data['subreddit_id'],
-      authorIsBlocked: data['author_is_blocked'],
-      commentType: data['comment_type'],
-      linkTitle: data['link_title'],
-      ups: data['ups'],
-      authorFlairType: data['author_flair_type'],
-      totalAwardsReceived: data['total_awards_received'],
-      subreddit: data['subreddit'],
-      linkAuthor: data['link_author'],
-      likes: data['likes'],
-      replies: data['replies'],
-      saved: data['saved'],
-      id: data['id'],
-      gilded: data['gilded'],
-      archived: data['archived'],
-      noFollow: data['no_follow'],
-      author: data['author'],
-      numComments: data['num_comments'],
-      sendReplies: data['send_replies'],
-      parentId: data['parent_id'],
-      score: data['score'],
-      authorFullname: data['author_fullname'],
-      over18: data['over_18'],
-      controversiality: data['controversiality'],
-      body: data['body'],
-      edited: data['edited'],
-      downs: data['downs'],
-      isSubmitter: data['is_submitter'],
-      collapsed: data['collapsed'],
-      bodyHtml: data['body_html'],
-      distinguished: data['distinguished'],
-      stickied: data['stickied'],
-      authorPremium: data['author_premium'],
-      linkId: data['link_id'],
-      permalink: data['permalink'],
-      subredditType: data['subreddit_type'],
-      linkPermalink: data['link_permalink'],
-      name: data['name'],
-      subredditNamePrefixed: data['subreddit_name_prefixed'],
-      treatmentTags: data['treatment_tags'],
-      created: data['created'],
-      createdUtc: data['created_utc'],
-      locked: data['locked'],
-      quarantine: data['quarantine'],
-      linkUrl: data['link_url'],
+      subredditId: mapGet(data, 'subreddit_id', ''),
+      authorIsBlocked: mapGet(data, 'author_is_blocked', false),
+      commentType: mapGet(data, 'comment_type', ''),
+      linkTitle: mapGet(data, 'link_title', ''),
+      ups: mapGet(data, 'ups', 0),
+      authorFlairType: mapGet(data, 'author_flair_type', ''),
+      totalAwardsReceived: mapGet(data, 'total_awards_received', 0),
+      subreddit: mapGet(data, 'subreddit', ''),
+      linkAuthor: mapGet(data, 'link_author', ''),
+      likes: mapGet(data, 'likes', 0),
+      replies: mapGet(data, 'replies', ''),
+      saved: mapGet(data, 'saved', false),
+      id: mapGet(data, 'id', ''),
+      gilded: mapGet(data, 'gilded', 0),
+      archived: mapGet(data, 'archived', false),
+      noFollow: mapGet(data, 'no_follow', false),
+      author: mapGet(data, 'author', ''),
+      numComments: mapGet(data, 'num_comments', 0),
+      sendReplies: mapGet(data, 'send_replies', false),
+      parentId: mapGet(data, 'parent_id', ''),
+      score: mapGet(data, 'score', 0),
+      authorFullname: mapGet(data, 'author_fullname', ''),
+      over18: mapGet(data, 'over_18', false),
+      controversiality: mapGet(data, 'controversiality', 0),
+      body: mapGet(data, 'body', ''),
+      edited: mapGet(data, 'edited', false),
+      downs: mapGet(data, 'downs', 0),
+      isSubmitter: mapGet(data, 'is_submitter', false),
+      collapsed: mapGet(data, 'collapsed', false),
+      bodyHtml: mapGet(data, 'body_html', ''),
+      distinguished: mapGet(data, 'distinguished', false),
+      stickied: mapGet(data, 'stickied', false),
+      authorPremium: mapGet(data, 'author_premium', false),
+      linkId: mapGet(data, 'link_id', ''),
+      permalink: mapGet(data, 'permalink', ''),
+      subredditType: mapGet(data, 'subreddit_type', ''),
+      linkPermalink: mapGet(data, 'link_permalink', ''),
+      name: mapGet(data, 'name', ''),
+      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
+      treatmentTags: mapGet(data, 'treatment_tags', []),
+      created: _parseTime(data['created']),
+      createdUtc: _parseTime(data['created_utc'], isUtc: true),
+      locked: mapGet(data, 'locked', false),
+      quarantine: mapGet(data, 'quarantine', false),
+      linkUrl: mapGet(data, 'link_url', ''),
+    );
+  }
+
+  // TODO: remove function dublicate
+  static DateTime _parseTime(dynamic data, {bool isUtc = false}) {
+    final num = cast<double>(data, 0.0);
+    if (num == 0.0) {
+      _log.warning('fail to parse time: $data');
+      return DateTime.now();
+    }
+    // return DateTime(num.toInt());
+    return DateTime.fromMillisecondsSinceEpoch(
+      num.round() * 1000,
+      isUtc: isUtc,
     );
   }
 }

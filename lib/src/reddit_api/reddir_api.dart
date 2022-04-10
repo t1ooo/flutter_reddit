@@ -90,14 +90,15 @@ class RedditApiImpl implements RedditApi {
   static final _log = Logger('RedditApiImpl');
   // final draw.Reddit anonymousReddit;
 
-  Stream<Submission> _submissionsStream(Stream<draw.UserContent> s, SubType type) async* {
+  Stream<Submission> _submissionsStream(
+      Stream<draw.UserContent> s, SubType type) async* {
     await for (final v in s) {
       final dsub = cast<draw.Submission?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(dsub, type:type);
+      final sub = Submission.fromDrawSubmission(dsub, type: type);
       yield sub;
     }
   }
@@ -116,7 +117,8 @@ class RedditApiImpl implements RedditApi {
       case SubType.rising:
         return _submissionsStream(s.rising(limit: limit), SubType.rising);
       case SubType.controversial:
-        return _submissionsStream(s.controversial(limit: limit), SubType.controversial);
+        return _submissionsStream(
+            s.controversial(limit: limit), SubType.controversial);
     }
   }
 
@@ -150,7 +152,8 @@ class RedditApiImpl implements RedditApi {
     final s = reddit.subreddit('all');
     switch (type) {
       case SubType.best:
-        throw Exception('unsupported type: $type'); // TODO: find a solution without exception
+        throw Exception(
+            'unsupported type: $type'); // TODO: find a solution without exception
       case SubType.hot:
         return _submissionsStream(s.hot(limit: limit), SubType.hot);
       case SubType.newest:
@@ -160,7 +163,8 @@ class RedditApiImpl implements RedditApi {
       case SubType.rising:
         return _submissionsStream(s.rising(limit: limit), SubType.rising);
       case SubType.controversial:
-        return _submissionsStream(s.controversial(limit: limit), SubType.controversial);
+        return _submissionsStream(
+            s.controversial(limit: limit), SubType.controversial);
     }
   }
 
@@ -177,6 +181,21 @@ class RedditApiImpl implements RedditApi {
   }) async* {
     // in reddit.subreddit(name).stream.submissions(limit: limit)) {
     await for (final v in reddit.subreddit(name).hot(limit: limit)) {
+      final dsub = cast<draw.Submission?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      final sub = Submission.fromDrawSubmission(dsub, type: SubType.hot);
+      yield sub;
+    }
+  }
+
+  Stream<Submission> userComments(
+    String name, {
+    required int limit,
+  }) async* {
+    await for (final v in reddit.redditor(name).comments.newest(limit: limit)) {
       final dsub = cast<draw.Submission?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Submission: $v');
