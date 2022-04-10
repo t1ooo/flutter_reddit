@@ -111,10 +111,7 @@ class SubmissionTiles extends StatelessWidget {
         // for (int i = 0; i < 3; i++)
         // for(final sub in notifier.front!)
         for (final sub in submissions)
-          Padding(
-            padding: scrollPadding,
-            child: SubmissionTile(submission: sub, activeLink: activeLink),
-          ),
+          SubmissionTile(submission: sub, activeLink: activeLink)
       ],
     );
   }

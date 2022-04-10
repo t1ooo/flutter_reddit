@@ -104,10 +104,7 @@ class SubmissionTiles extends StatelessWidget {
           SizedBox(height: 10),
         ],
         for (final sub in submissions)
-          Padding(
-            padding: scrollPadding,
-            child: SubmissionTile(submission: sub, activeLink: activeLink),
-          ),
+          SubmissionTile(submission: sub, activeLink: activeLink),
       ],
     );
   }

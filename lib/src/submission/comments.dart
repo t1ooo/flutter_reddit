@@ -20,31 +20,9 @@ class Comments extends StatelessWidget {
       // return Column(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // TextButton(
-        //   child: Text('BEST COMMENTS'),
-        //   onPressed: () {},
-        // ),
-        Padding(
-          padding: scrollPadding,
-          child: Comment(showNested: showNested),
-        ),
-        Padding(
-          padding: scrollPadding,
-          child: Comment(showNested: showNested),
-        ),
-        Padding(
-          padding: scrollPadding,
-          child: Comment(showNested: showNested),
-        ),
-        // Comment(showNested: showNested),
-        // Comment(showNested: showNested),
-        // Comment(showNested: showNested),
-        // Comment(showNested: showNested),
-        // Card(
-        //     child: Padding(
-        //   padding: cardPadding,
-        //   child: Comment(),
-        // )),
+        Comment(showNested: showNested),
+        Comment(showNested: showNested),
+        Comment(showNested: showNested),
       ],
     );
   }

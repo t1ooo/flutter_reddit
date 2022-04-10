@@ -1,3 +1,4 @@
+// TODO: part uri (must start with http)
 // TODO: subreddit type
 // TODO: user comments
 // TODO: search

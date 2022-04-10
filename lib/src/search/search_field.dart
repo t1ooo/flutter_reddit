@@ -16,7 +16,7 @@ class SearchField extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
         ),
-        SizedBox(height: 100),
+        SizedBox(height: 50),
       ],
     );
   }

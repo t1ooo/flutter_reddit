@@ -78,6 +78,10 @@ class Subreddit extends Equatable {
       _log.warning('fail to parse icon: $data');
       return '';
     }
+    if (!s.startsWith('http')) {
+      _log.warning('fail to parse icon: $data');
+      return '';
+    }
     final uri = Uri.tryParse(s);
     if (uri == null) {
       _log.warning('fail to parse icon: $data');
