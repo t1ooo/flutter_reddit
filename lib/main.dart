@@ -9,7 +9,7 @@ import 'src/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
-
+  
   final _redditNotifierProvider = await redditNotifierProvider();
   // final _redditNotifierFrontProvider = await redditNotifierFrontProvider();
   runApp(
