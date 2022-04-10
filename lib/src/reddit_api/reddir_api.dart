@@ -18,7 +18,7 @@ import 'subreddit.dart';
 
 abstract class RedditApi {
   Stream<Submission> front({required int limit, required SubType type});
-  Stream<Submission> popular({required int limit});
+  Stream<Submission> popular({required int limit, required SubType type});
   Stream<Subreddit> userSubreddits({required int limit});
   Stream<Submission> subredditSubmissions(
     String name, {
@@ -90,33 +90,33 @@ class RedditApiImpl implements RedditApi {
   static final _log = Logger('RedditApiImpl');
   // final draw.Reddit anonymousReddit;
 
-  Stream<Submission> _submissionsStream(Stream<draw.UserContent> s) async* {
+  Stream<Submission> _submissionsStream(Stream<draw.UserContent> s, SubType type) async* {
     await for (final v in s) {
       final dsub = cast<draw.Submission?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(dsub);
+      final sub = Submission.fromDrawSubmission(dsub, type:type);
       yield sub;
     }
   }
 
   Stream<Submission> front({required int limit, required SubType type}) {
-    final front = reddit.front;
+    final s = reddit.front;
     switch (type) {
       case SubType.best:
-        return _submissionsStream(front.best(limit: limit));
+        return _submissionsStream(s.best(limit: limit), SubType.best);
       case SubType.hot:
-        return _submissionsStream(front.hot(limit: limit));
+        return _submissionsStream(s.hot(limit: limit), SubType.hot);
       case SubType.newest:
-        return _submissionsStream(front.newest(limit: limit));
+        return _submissionsStream(s.newest(limit: limit), SubType.newest);
       case SubType.top:
-        return _submissionsStream(front.top(limit: limit));
+        return _submissionsStream(s.top(limit: limit), SubType.top);
       case SubType.rising:
-        return _submissionsStream(front.rising(limit: limit));
+        return _submissionsStream(s.rising(limit: limit), SubType.rising);
       case SubType.controversial:
-        return _submissionsStream(front.controversial(limit: limit));
+        return _submissionsStream(s.controversial(limit: limit), SubType.controversial);
     }
   }
 
@@ -134,15 +134,33 @@ class RedditApiImpl implements RedditApi {
   //   }
   // }
 
-  Stream<Submission> popular({required int limit}) async* {
-    await for (final v in reddit.subreddit('all').hot(limit: limit)) {
-      final dsub = cast<draw.Submission?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Submission: $v');
-        continue;
-      }
-      final sub = Submission.fromDrawSubmission(dsub);
-      yield sub;
+  // Stream<Submission> popular({required int limit}) async* {
+  //   await for (final v in reddit.subreddit('all').hot(limit: limit)) {
+  //     final dsub = cast<draw.Submission?>(v, null);
+  //     if (dsub == null) {
+  //       _log.warning('not draw.Submission: $v');
+  //       continue;
+  //     }
+  //     final sub = Submission.fromDrawSubmission(dsub, type: SubType.hot);
+  //     yield sub;
+  //   }
+  // }
+
+  Stream<Submission> popular({required int limit, required SubType type}) {
+    final s = reddit.subreddit('all');
+    switch (type) {
+      case SubType.best:
+        throw Exception('unsupported type: $type'); // TODO: find a solution without exception
+      case SubType.hot:
+        return _submissionsStream(s.hot(limit: limit), SubType.hot);
+      case SubType.newest:
+        return _submissionsStream(s.newest(limit: limit), SubType.newest);
+      case SubType.top:
+        return _submissionsStream(s.top(limit: limit), SubType.top);
+      case SubType.rising:
+        return _submissionsStream(s.rising(limit: limit), SubType.rising);
+      case SubType.controversial:
+        return _submissionsStream(s.controversial(limit: limit), SubType.controversial);
     }
   }
 
@@ -164,7 +182,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(dsub);
+      final sub = Submission.fromDrawSubmission(dsub, type: SubType.hot);
       yield sub;
     }
   }
@@ -187,11 +205,7 @@ class FakeRedditApi implements RedditApi {
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => draw.Submission.parse(reddit, v))
-        .map((v) => Submission.fromDrawSubmission(v))
-        .map((v) {
-          v.title = '$type: ${v.title}';
-          return v;
-        });
+        .map((v) => Submission.fromDrawSubmission(v, type: type));
     // return Stream.fromIterable(items);
     for (final item in items) {
       await Future.delayed(_delay);
@@ -199,8 +213,8 @@ class FakeRedditApi implements RedditApi {
     }
   }
 
-  Stream<Submission> popular({required int limit}) {
-    return front(limit: limit, type: SubType.best);
+  Stream<Submission> popular({required int limit, required SubType type}) {
+    return front(limit: limit, type: type);
   }
 
   @override

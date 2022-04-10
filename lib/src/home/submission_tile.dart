@@ -84,7 +84,10 @@ class SubmissionTile extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => SubmissionScreen()),
                 );
               },
-              child: Text(submission.title, textScaleFactor: 2),
+              child: Text(
+                '${submission.type}: ${submission.title}',
+                textScaleFactor: 2,
+              ),
             ),
 
             SizedBox(height: 10),

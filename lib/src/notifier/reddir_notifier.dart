@@ -45,8 +45,8 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.front(limit: limit, type: type);
   }
 
-  Stream<Submission> popular({int limit = 10}) {
-    return redditApi.popular(limit: limit);
+  Stream<Submission> popular({int limit = 10, SubType type = SubType.best}) {
+    return redditApi.popular(limit: limit, type: type);
   }
 
   Stream<Subreddit> userSubreddits({int limit = 10}) {
@@ -59,8 +59,8 @@ class RedditNotifier extends ChangeNotifier {
   }
 }
 
-class SubmissionTypeNotifier extends ChangeNotifier {
-  SubmissionTypeNotifier([SubType type = SubType.best]) : _type = type;
+class SubTypeNotifier extends ChangeNotifier {
+  SubTypeNotifier([SubType type = SubType.best]) : _type = type;
 
   SubType _type = SubType.best;
 

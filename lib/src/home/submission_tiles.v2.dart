@@ -40,7 +40,7 @@ class SubmissionTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubmissionTypeNotifier>();
+    final notifier = context.watch<SubTypeNotifier>();
     return StreamListBuilder(
       stream: stream(context, notifier.type),
       onData: (context, List<Submission> submissions) {
@@ -55,61 +55,37 @@ class SubmissionTiles extends StatelessWidget {
   }
 
   @override
-  Widget builder(BuildContext context, notifier, submissions) {
-    // return Column(
-    // final notifier = context.read<RedditNotifier>();
+  Widget builder(
+    BuildContext context,
+    SubTypeNotifier notifier,
+    List<Submission> submissions,
+  ) {
     return ListView(
-      // controller: ScrollController(),
       shrinkWrap: true,
-      // physics: ClampingScrollPhysics(),
       children: [
-        // if (showTypeSelector) ...[
-        Row(
-          children: [
-            // DropdownButton(
-            //   value: 'HOT POSTS',
-            //   items: [
-            //     DropdownMenuItem(
-            //       onTap: () {},
-            //       value: 'HOT POSTS',
-            //       child: Text('HOT POSTS'),
-            //     ),
-            //   ],
-            //   onChanged: (_) {},
-            // ),
-            // Text('HOT POSTS'),
-            if (showTypeSelector)
-              // TextButton(
-              //   child: Text('HOT POSTS'),
-              //   onPressed: () {},
-              // ),
+        if (showTypeSelector)
+          Row(
+            children: [
               DropdownButton<SubType>(
                 value: notifier.type,
                 onChanged: (type) {
                   if (type != null) notifier.type = type;
                 },
-                items: SubType.values
-                    .map<DropdownMenuItem<SubType>>((SubType type) {
-                  return DropdownMenuItem<SubType>(
-                    value: type,
-                    child: Text(_formatSubType(type)),
-                  );
-                }).toList(),
+                items: [
+                  for (final st in SubType.values)
+                    DropdownMenuItem<SubType>(
+                      value: st,
+                      child: Text(_formatSubType(st)),
+                    )
+                ],
               ),
-            // if (showLocationSelector)
-            //   TextButton(
-            //     child: Text('GLOBAL'),
-            //     onPressed: () {},
-            //   ),
-            Spacer(),
-            Text('...'),
-          ],
-        ),
+              Spacer(),
+              Text('...'),
+            ],
+          ),
         SizedBox(height: 50),
-        // ],
         if (showTrending) ...[
           Text('Trending today'),
-
           SizedBox(
             height: 200,
             child: CustomScroll(
@@ -125,15 +101,8 @@ class SubmissionTiles extends StatelessWidget {
               ),
             ),
           ),
-
-          // SubmissionTile(),
-          // SubmissionTile(),
-          // SubmissionTile(),
           SizedBox(height: 10),
         ],
-        // SubmissionTiles(),
-        // for (int i = 0; i < 3; i++)
-        // for(final sub in notifier.front!)
         for (final sub in submissions)
           Padding(
             padding: scrollPadding,

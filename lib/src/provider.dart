@@ -68,10 +68,10 @@ Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
 //   return ChangeNotifierProvider.value(value: redditNotifier);
 // }
 
-ChangeNotifierProvider<SubmissionTypeNotifier>
+ChangeNotifierProvider<SubTypeNotifier>
     submissionTypeNotifierProvider() {
   return ChangeNotifierProvider(
-    create: (BuildContext context) => SubmissionTypeNotifier(),
+    create: (BuildContext context) => SubTypeNotifier(),
   );
 }
 

@@ -7,3 +7,4 @@ enum SubType {
   rising,
   controversial,
 }
+

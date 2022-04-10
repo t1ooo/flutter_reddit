@@ -1,6 +1,8 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
+import 'package:flutter_reddit_prototype/src/reddit_api/submission_type.dart';
+
 import '../logging/logging.dart';
 import '../util/cast.dart';
 import '../util/map.dart';
@@ -32,6 +34,7 @@ class Submission extends Equatable {
     required this.url,
     required this.awardIcons,
     required this.numAwards,
+    required this.type,
   });
 
   final String author;
@@ -52,11 +55,12 @@ class Submission extends Equatable {
   final String subreddit;
   final String subredditNamePrefixed;
   final String thumbnail;
-  String title; // TODO: make final
+  final String title;
   final int upvotes;
   final Uri url;
   final List<String> awardIcons;
   final int numAwards;
+  final SubType type;
 
   static final _log = Logger('Submission');
 
@@ -67,7 +71,7 @@ class Submission extends Equatable {
     return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
   }
 
-  factory Submission.fromDrawSubmission(draw.Submission sub) {
+  factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
     final data = sub.data!;
 
     return Submission(
@@ -94,6 +98,7 @@ class Submission extends Equatable {
       title: sub.title,
       upvotes: sub.upvotes,
       url: sub.url,
+      type: type,
     );
   }
 
@@ -149,6 +154,7 @@ class Submission extends Equatable {
       url,
       awardIcons,
       numAwards,
+      type,
     ];
   }
 }
@@ -178,5 +184,6 @@ Submission placeholderSubmission() {
     url: Uri.parse('https://example.com'),
     awardIcons: [],
     numAwards: 0,
+    type: SubType.best,
   );
 }

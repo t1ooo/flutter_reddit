@@ -6,39 +6,47 @@ import '../reddit_api/submission.dart';
 import '../style/style.dart';
 import '../widget/stream_list_builder.dart';
 import 'submission_tile.dart';
-import 'submission_tiles.dart';
+import 'submission_tiles.v2.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   // final notifier = context.read<RedditNotifier>();
+  //   // return SubmissionTiles(
+  //   //   submissions: notifier.popular,
+  //   // );
+  //   // return CustomStreamBuilder(
+  //   //   stream: context.read<RedditNotifier>().popular(),
+  //   //   onData: (context, Submission submission) {
+  //   //     return Padding(
+  //   //       padding: scrollPadding,
+  //   //       child: SubmissionTile(
+  //   //         submission: submission,
+  //   //         activeLink: true,
+  //   //       ),
+  //   //     );
+  //   //   },
+  //   // );
+  //   return StreamListBuilder(
+  //     stream: context.read<RedditNotifier>().popular(),
+  //     onData: (context, List<Submission> submissions) {
+  //       return SubmissionTiles(
+  //         onTypeChanged: (type) {
+  //           // TODO
+  //         },
+  //         submissions: submissions,
+  //       );
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    // final notifier = context.read<RedditNotifier>();
-    // return SubmissionTiles(
-    //   submissions: notifier.popular,
-    // );
-    // return CustomStreamBuilder(
-    //   stream: context.read<RedditNotifier>().popular(),
-    //   onData: (context, Submission submission) {
-    //     return Padding(
-    //       padding: scrollPadding,
-    //       child: SubmissionTile(
-    //         submission: submission,
-    //         activeLink: true,
-    //       ),
-    //     );
-    //   },
-    // );
-    return StreamListBuilder(
-      stream: context.read<RedditNotifier>().popular(),
-      onData: (context, List<Submission> submissions) {
-        return SubmissionTiles(
-          onTypeChanged: (type) {
-            // TODO
-          },
-          submissions: submissions,
-        );
-      },
+    return SubmissionTiles(
+      stream: (context, type) =>
+          context.read<RedditNotifier>().popular(type: type),
     );
   }
 }

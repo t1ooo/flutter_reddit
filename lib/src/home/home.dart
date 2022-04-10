@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
 
   // @override
   // Widget build(BuildContext context) {
-  //   final notifier = context.watch<SubmissionTypeNotifier>();
+  //   final notifier = context.watch<SubTypeNotifier>();
   //   return StreamListBuilder(
   //     stream: context.read<RedditNotifier>().front(type: notifier.type),
   //     onData: (context, List<Submission> submissions) {
