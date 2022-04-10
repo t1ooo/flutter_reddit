@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.dart';
+import '../home/submission_tiles.v2.dart';
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
@@ -22,7 +22,8 @@ class SubredditWidget extends StatelessWidget {
     return ListView(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+          // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+          padding: pagePadding,
           child: TextField(
             decoration: InputDecoration(
               hintText: 'Search',
@@ -88,22 +89,28 @@ class SubredditWidget extends StatelessWidget {
           ),
         ),
         Divider(),
-        Padding(
-          padding: pagePadding,
-          child: StreamListBuilder(
-            stream: context
-                .read<RedditNotifier>()
-                .subredditSubmissions(subreddit.displayName),
-            onData: (context, List<Submission> submissions) {
-              return SubmissionTiles(
-                onTypeChanged: (type) {
-                  // TODO
-                },
-                submissions: submissions,
-                // showLocationSelector: false,
-              );
-            },
-          ),
+
+        // Padding(
+        //   padding: pagePadding,
+        //   child: StreamListBuilder(
+        //     stream: context
+        //         .read<RedditNotifier>()
+        //         .subredditSubmissions(subreddit.displayName),
+        //     onData: (context, List<Submission> submissions) {
+        //       return SubmissionTiles(
+        //         onTypeChanged: (type) {
+        //           // TODO
+        //         },
+        //         submissions: submissions,
+        //         // showLocationSelector: false,
+        //       );
+        //     },
+        //   ),
+        // ),
+
+        SubmissionTiles(
+          stream: (context, type) =>
+              context.read<RedditNotifier>().front(type: type),
         ),
       ],
     );

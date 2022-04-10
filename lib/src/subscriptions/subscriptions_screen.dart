@@ -17,7 +17,8 @@ class SubscriptionsScreen extends StatelessWidget {
         body: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+              // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+              padding: pagePadding,
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search',

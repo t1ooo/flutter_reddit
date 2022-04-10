@@ -8,14 +8,11 @@ import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
+import '../util/enum.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
 import 'custom_scroll.dart';
 import 'submission_tile.dart';
-
-String _formatSubType(SubType type) {
-  return type.toString().split('.').last.toUpperCase();
-}
 
 class SubmissionTiles extends StatelessWidget {
   SubmissionTiles({
@@ -41,16 +38,19 @@ class SubmissionTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<SubTypeNotifier>();
-    return StreamListBuilder(
-      stream: stream(context, notifier.type),
-      onData: (context, List<Submission> submissions) {
-        return builder(
-          context,
-          notifier,
-          submissions,
-          // showLocationSelector: false,
-        );
-      },
+    return Padding(
+      padding: pagePadding,
+      child: StreamListBuilder(
+        stream: stream(context, notifier.type),
+        onData: (context, List<Submission> submissions) {
+          return builder(
+            context,
+            notifier,
+            submissions,
+            // showLocationSelector: false,
+          );
+        },
+      ),
     );
   }
 
@@ -110,5 +110,9 @@ class SubmissionTiles extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  String _formatSubType(SubType type) {
+    return enumToString(type).toUpperCase();
   }
 }

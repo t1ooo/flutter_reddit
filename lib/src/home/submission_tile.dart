@@ -4,6 +4,7 @@ import '../reddit_api/submission.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
+import '../util/enum.dart';
 import '../widget/sized_placeholder.dart';
 
 class SubmissionTile extends StatelessWidget {
@@ -85,7 +86,7 @@ class SubmissionTile extends StatelessWidget {
                 );
               },
               child: Text(
-                '${submission.type}: ${submission.title}',
+                '${enumToString(submission.type)}: ${submission.title}',
                 textScaleFactor: 2,
               ),
             ),
