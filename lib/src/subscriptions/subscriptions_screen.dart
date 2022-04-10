@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
+import '../search/search_field.dart';
 import 'subscriptions.dart';
 
 class SubscriptionsScreen extends StatelessWidget {
@@ -19,12 +20,7 @@ class SubscriptionsScreen extends StatelessWidget {
             Padding(
               // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
               padding: pagePadding,
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: SearchField(),
             ),
             Container(
               child: TabBar(

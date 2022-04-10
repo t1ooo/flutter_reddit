@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
+import '../search/search_field.dart';
 import '../widget/sized_placeholder.dart';
 import 'home.dart';
 import 'popular.dart';
@@ -21,12 +22,7 @@ class HomeScreen extends StatelessWidget {
             Padding(
               // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
               padding: pagePadding,
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+              child: SearchField(),
             ),
             Container(
               child: TabBar(

@@ -5,6 +5,7 @@ import '../home/submission_tiles.v2.dart';
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
+import '../search/search_field.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
@@ -24,12 +25,7 @@ class SubredditWidget extends StatelessWidget {
         Padding(
           // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
           padding: pagePadding,
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search',
-              border: OutlineInputBorder(),
-            ),
-          ),
+          child: SearchField(),
         ),
         Padding(
           padding: pagePadding,
