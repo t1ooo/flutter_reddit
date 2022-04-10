@@ -100,9 +100,7 @@ class Comment {
 
   // static final _log = Logger('Comment');
 
-  factory Comment.fromDrawComment(draw.Comment comment) {
-    final data = comment.data!;
-
+  factory Comment.fromMap(Map data) {
     return Comment(
       subredditId: mapGet(data, 'subreddit_id', ''),
       authorIsBlocked: mapGet(data, 'author_is_blocked', false),

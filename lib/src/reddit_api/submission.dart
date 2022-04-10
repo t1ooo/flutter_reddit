@@ -56,7 +56,7 @@ class Submission extends Equatable {
   final String thumbnail;
   final String title;
   final int upvotes;
-  final Uri url;
+  final String url;
   final List<String> awardIcons;
   final int numAwards;
   final SubType type;
@@ -75,28 +75,28 @@ class Submission extends Equatable {
 
     return Submission(
       author: sub.author,
-      authorFlairText: sub.authorFlairText ?? '',
+      authorFlairText: data['author_flair_text'],
       awardIcons: parseAwardIcons(data['all_awardings']),
-      createdUtc: sub.createdUtc,
-      domain: sub.domain,
-      downvotes: sub.downvotes,
-      edited: sub.edited,
-      hidden: sub.hidden,
-      id: sub.id ?? '',
-      isVideo: sub.isVideo,
-      linkFlairText: sub.linkFlairText ?? '',
+      createdUtc: parseTime(data['created_utc'], isUtc:true),
+      domain: mapGet(data, 'domain', ''),
+      downvotes: mapGet(data, 'downs', 0),
+      edited: mapGet(data, 'edited', false),
+      hidden: mapGet(data, 'hidden', false),
+      id: mapGet(data, 'id', ''),
+      isVideo: mapGet(data, 'is_video', false),
+      linkFlairText: mapGet(data, 'link_flair_text', ''),
       numAwards: mapGet(data, 'total_awards_received', 0),
-      numComments: sub.numComments,
-      over18: sub.over18,
-      pinned: sub.pinned,
-      score: sub.score,
-      selftext: sub.selftext ?? '',
-      subreddit: sub.subreddit.displayName,
+      numComments: mapGet(data, 'num_comments', 0),
+      over18: mapGet(data, 'over_18', false),
+      pinned: mapGet(data, 'pinned', false),
+      score: mapGet(data, 'score', 0),
+      selftext: mapGet(data, 'selftext', ''),
+      subreddit: mapGet(data, 'subreddit', ''),
       subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
       thumbnail: parseUri(data['thumbnail']),
-      title: sub.title,
-      upvotes: sub.upvotes,
-      url: sub.url,
+      title: mapGet(data, 'title', ''),
+      upvotes: mapGet(data, 'ups', 0),
+      url: mapGet(data, 'url', ''),
       type: type,
     );
   }
