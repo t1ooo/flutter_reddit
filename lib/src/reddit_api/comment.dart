@@ -1,7 +1,6 @@
 import 'package:draw/draw.dart' as draw;
+import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
-import '../logging/logging.dart';
-import '../util/cast.dart';
 import '../util/map.dart';
 
 class Comment {
@@ -99,7 +98,7 @@ class Comment {
   final bool quarantine;
   final String linkUrl;
 
-  static final _log = Logger('Comment');
+  // static final _log = Logger('Comment');
 
   factory Comment.fromDrawComment(draw.Comment comment) {
     final data = comment.data!;
@@ -141,29 +140,17 @@ class Comment {
       linkId: mapGet(data, 'link_id', ''),
       permalink: mapGet(data, 'permalink', ''),
       subredditType: mapGet(data, 'subreddit_type', ''),
-      linkPermalink: mapGet(data, 'link_permalink', ''),
+      // linkPermalink: mapGet(data, 'link_permalink', ''),
+      linkPermalink: parseUri(data['link_permalink']),
       name: mapGet(data, 'name', ''),
       subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
       treatmentTags: mapGet(data, 'treatment_tags', []),
-      created: _parseTime(data['created']),
-      createdUtc: _parseTime(data['created_utc'], isUtc: true),
+      created: parseTime(data['created']),
+      createdUtc: parseTime(data['created_utc'], isUtc: true),
       locked: mapGet(data, 'locked', false),
       quarantine: mapGet(data, 'quarantine', false),
-      linkUrl: mapGet(data, 'link_url', ''),
-    );
-  }
-
-  // TODO: remove function dublicate
-  static DateTime _parseTime(dynamic data, {bool isUtc = false}) {
-    final num = cast<double>(data, 0.0);
-    if (num == 0.0) {
-      _log.warning('fail to parse time: $data');
-      return DateTime.now();
-    }
-    // return DateTime(num.toInt());
-    return DateTime.fromMillisecondsSinceEpoch(
-      num.round() * 1000,
-      isUtc: isUtc,
+      // linkUrl: mapGet(data, 'link_url', ''),
+      linkUrl: parseUri(data['link_url']),
     );
   }
 }

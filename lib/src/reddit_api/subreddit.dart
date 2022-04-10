@@ -4,7 +4,9 @@ import 'package:equatable/equatable.dart';
 import '../logging/logging.dart';
 import '../util/cast.dart';
 import '../util/map.dart';
+import 'parse.dart';
 
+// TODO: gen from json
 class Subreddit extends Equatable {
   Subreddit({
     required this.communityIcon,
@@ -25,6 +27,7 @@ class Subreddit extends Equatable {
     required this.subscribers,
     required this.title,
     required this.url,
+    required this.headerImg,
   });
 
   final String communityIcon;
@@ -45,15 +48,16 @@ class Subreddit extends Equatable {
   final int subscribers;
   final String title;
   final String url;
+  final String headerImg;
 
   static final _log = Logger('Subreddit');
 
   factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
     final data = sub.data!;
     return Subreddit(
-      communityIcon: _parseIcon(data['community_icon']),
-      created: _parseTime(data['created']),
-      createdUtc: _parseTime(data['created_utc'], isUtc: true),
+      communityIcon: parseIcon(data['community_icon']),
+      created: parseTime(data['created']),
+      createdUtc: parseTime(data['created_utc'], isUtc: true),
       description: mapGet(data, 'description', ''),
       descriptionHtml: mapGet(data, 'description_html', ''),
       displayName: sub.displayName,
@@ -69,26 +73,27 @@ class Subreddit extends Equatable {
       subscribers: mapGet(data, 'subscribers', 0),
       title: sub.title,
       url: mapGet(data, 'url', ''),
+      headerImg: parseUri(data['header_img']),
     );
   }
 
-  static String _parseIcon(dynamic data) {
-    final s = cast<String>(data, '');
-    if (s == '') {
-      _log.warning('fail to parse icon: $data');
-      return '';
-    }
-    if (!s.startsWith('http')) {
-      _log.warning('fail to parse icon: $data');
-      return '';
-    }
-    final uri = Uri.tryParse(s);
-    if (uri == null) {
-      _log.warning('fail to parse icon: $data');
-      return '';
-    }
-    return uri.scheme + ':' + '//' + uri.authority + uri.path;
-  }
+  // static String _parseIcon(dynamic data) {
+  //   final s = cast<String>(data, '');
+  //   if (s == '') {
+  //     _log.warning('fail to parse icon: $data');
+  //     return '';
+  //   }
+  //   if (!s.startsWith('http')) {
+  //     _log.warning('fail to parse icon: $data');
+  //     return '';
+  //   }
+  //   final uri = Uri.tryParse(s);
+  //   if (uri == null) {
+  //     _log.warning('fail to parse icon: $data');
+  //     return '';
+  //   }
+  //   return uri.scheme + ':' + '//' + uri.authority + uri.path;
+  // }
 
   // static DateTime _parseTime(dynamic data) {
   //   final num = double.tryParse(data);
@@ -98,18 +103,18 @@ class Subreddit extends Equatable {
   //   }
   //   return DateTime(num.toInt());
   // }
-  static DateTime _parseTime(dynamic data, {bool isUtc = false}) {
-    final num = cast<double>(data, 0.0);
-    if (num == 0.0) {
-      _log.warning('fail to parse time: $data');
-      return DateTime.now();
-    }
-    // return DateTime(num.toInt());
-    return DateTime.fromMillisecondsSinceEpoch(
-      num.round() * 1000,
-      isUtc: isUtc,
-    );
-  }
+  // static DateTime _parseTime(dynamic data, {bool isUtc = false}) {
+  //   final num = cast<double>(data, 0.0);
+  //   if (num == 0.0) {
+  //     _log.warning('fail to parse time: $data');
+  //     return DateTime.now();
+  //   }
+  //   // return DateTime(num.toInt());
+  //   return DateTime.fromMillisecondsSinceEpoch(
+  //     num.round() * 1000,
+  //     isUtc: isUtc,
+  //   );
+  // }
 
   @override
   // TODO: implement props
@@ -133,6 +138,7 @@ class Subreddit extends Equatable {
       subscribers,
       title,
       url,
+      headerImg,
     ];
   }
 }

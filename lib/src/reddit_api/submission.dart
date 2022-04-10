@@ -2,11 +2,10 @@ import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_reddit_prototype/src/reddit_api/submission_type.dart';
-
-import '../logging/logging.dart';
-import '../util/cast.dart';
 import '../util/map.dart';
+import 'parse.dart';
 
+// TODO: gen from json
 // TODO: awards 'total_awards_received'
 // TODO: subreddit icon
 class Submission extends Equatable {
@@ -62,7 +61,7 @@ class Submission extends Equatable {
   final int numAwards;
   final SubType type;
 
-  static final _log = Logger('Submission');
+  // static final _log = Logger('Submission');
 
   static const _descLen = 200;
   String get desc {
@@ -77,7 +76,7 @@ class Submission extends Equatable {
     return Submission(
       author: sub.author,
       authorFlairText: sub.authorFlairText ?? '',
-      awardIcons: _parseAwardIcons(data['all_awardings']),
+      awardIcons: parseAwardIcons(data['all_awardings']),
       createdUtc: sub.createdUtc,
       domain: sub.domain,
       downvotes: sub.downvotes,
@@ -94,7 +93,7 @@ class Submission extends Equatable {
       selftext: sub.selftext ?? '',
       subreddit: sub.subreddit.displayName,
       subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
-      thumbnail: _parseThumbnail(data['thumbnail']),
+      thumbnail: parseUri(data['thumbnail']),
       title: sub.title,
       upvotes: sub.upvotes,
       url: sub.url,
@@ -102,31 +101,31 @@ class Submission extends Equatable {
     );
   }
 
-  static String _parseThumbnail(dynamic thumbnail) {
-    try {
-      return thumbnail.startsWith('http') ? thumbnail : '';
-    } on Exception catch (e) {
-      _log.warning(e);
-      return '';
-    }
-  }
+  // static String _parseThumbnail(dynamic thumbnail) {
+  //   try {
+  //     return thumbnail.startsWith('http') ? thumbnail : '';
+  //   } on Exception catch (e) {
+  //     _log.warning(e);
+  //     return '';
+  //   }
+  // }
 
-  static List<String> _parseAwardIcons(dynamic allAwardings) {
-    try {
-      return (allAwardings as List<dynamic>)
-          .map((v) {
-            return v['resized_icons'][0]['url'];
-          })
-          .where((v) {
-            return (v is String) && v.contains('redditstatic.com');
-          })
-          .map((v) => v as String)
-          .toList();
-    } on Exception catch (e) {
-      _log.warning(e);
-      return [];
-    }
-  }
+  // static List<String> _parseAwardIcons(dynamic allAwardings) {
+  //   try {
+  //     return (allAwardings as List<dynamic>)
+  //         .map((v) {
+  //           return v['resized_icons'][0]['url'];
+  //         })
+  //         .where((v) {
+  //           return (v is String) && v.contains('redditstatic.com');
+  //         })
+  //         .map((v) => v as String)
+  //         .toList();
+  //   } on Exception catch (e) {
+  //     _log.warning(e);
+  //     return [];
+  //   }
+  // }
 
   @override
   List<Object> get props {

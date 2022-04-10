@@ -10,7 +10,7 @@ String parseUri(dynamic data) {
     return '';
   }
   if (!s.startsWith('http')) {
-    _log.warning('fail to parse icon: $data');
+    _log.warning('fail to parse uri: $data');
     return '';
   }
   return s;
@@ -35,7 +35,7 @@ String parseIcon(dynamic data) {
 //   return DateTime(num.toInt());
 // }
 DateTime parseTime(dynamic data, {bool isUtc = false}) {
-  final num = cast<double>(data, 0.0);
+  final num = cast<double>(data, 0);
   if (num == 0.0) {
     _log.warning('fail to parse time: $data');
     return DateTime.now();
