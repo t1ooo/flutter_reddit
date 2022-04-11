@@ -99,7 +99,11 @@ class RedditApiImpl implements RedditApi {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(dsub, type: type);
+      if (dsub.data == null) {
+        _log.warning('draw.Submission.data is empty: $v');
+        continue;
+      }
+      final sub = Submission.fromMap(dsub.data!, type: type);
       yield sub;
     }
   }
@@ -170,8 +174,13 @@ class RedditApiImpl implements RedditApi {
   }
 
   Stream<Subreddit> userSubreddits({required int limit}) async* {
+    // reddit.subreddits;
     await for (final v in reddit.user.subreddits(limit: limit)) {
-      final sub = Subreddit.fromDrawSubreddit(v);
+      if (v.data == null) {
+        _log.warning('draw.Subreddit.data is empty: $v');
+        continue;
+      }
+      final sub = Subreddit.fromMap(v.data!);
       yield sub;
     }
   }
@@ -221,7 +230,11 @@ class RedditApiImpl implements RedditApi {
         _log.warning('not draw.Submission: $v');
         continue;
       }
-      final sub = Submission.fromDrawSubmission(dsub, type: SubType.hot);
+      if (dsub.data == null) {
+        _log.warning('draw.Submission.data is empty: $v');
+        continue;
+      }
+      final sub = Submission.fromMap(dsub.data!, type: SubType.hot);
       yield sub;
     }
   }
@@ -229,9 +242,10 @@ class RedditApiImpl implements RedditApi {
 
 class FakeRedditApi implements RedditApi {
   // FakeRedditApi(this.reddit, this.anonymousReddit);
-  FakeRedditApi(this.reddit);
+  // FakeRedditApi(this.reddit);
+  FakeRedditApi();
 
-  final draw.Reddit reddit;
+  // final draw.Reddit reddit;
   Duration _delay = Duration(seconds: 1 ~/ 1000);
 
   Stream<Submission> front({
@@ -243,8 +257,8 @@ class FakeRedditApi implements RedditApi {
         await File('data/user.reddit.front.best.limit_10.json').readAsString();
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => draw.Submission.parse(reddit, v))
-        .map((v) => Submission.fromDrawSubmission(v, type: type));
+        // .map((v) => draw.Submission.parse(reddit, v))
+        .map((v) => Submission.fromMap(v, type: type));
     // return Stream.fromIterable(items);
     for (final item in items) {
       await Future.delayed(_delay);
@@ -262,8 +276,9 @@ class FakeRedditApi implements RedditApi {
         await File('data/user.reddit.subreddits.limit_100.json').readAsString();
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => draw.Subreddit.parse(reddit, {'data': v}))
-        .map((v) => Subreddit.fromDrawSubreddit(v));
+        .map((v) => Subreddit.fromMap(v));
+        // .map((v) => draw.Subreddit.parse(reddit, {'data': v}))
+        // .map((v) => Subreddit.fromDrawSubreddit(v));
     // .toList();
     for (final item in items) {
       await Future.delayed(_delay);

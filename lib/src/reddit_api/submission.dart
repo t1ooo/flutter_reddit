@@ -13,7 +13,7 @@ class Submission extends Equatable {
     required this.author,
     required this.createdUtc,
     required this.domain,
-    required this.downvotes,
+    required this.downs,
     required this.edited,
     required this.hidden,
     required this.id,
@@ -39,7 +39,7 @@ class Submission extends Equatable {
   final String author;
   final DateTime createdUtc;
   final String domain;
-  final int downvotes;
+  final int downs;
   final bool edited;
   final bool hidden;
   final String id;
@@ -70,16 +70,15 @@ class Submission extends Equatable {
     return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
   }
 
-  factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
-    final data = sub.data!;
-
+  // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
+  factory Submission.fromMap(Map data, {required SubType type}) {
     return Submission(
-      author: sub.author,
-      authorFlairText: data['author_flair_text'],
+      author: mapGet(data, 'author', ''),
+      authorFlairText: mapGet(data, 'author_flair_text', ''),
       awardIcons: parseAwardIcons(data['all_awardings']),
       createdUtc: parseTime(data['created_utc'], isUtc:true),
       domain: mapGet(data, 'domain', ''),
-      downvotes: mapGet(data, 'downs', 0),
+      downs: mapGet(data, 'downs', 0),
       edited: mapGet(data, 'edited', false),
       hidden: mapGet(data, 'hidden', false),
       id: mapGet(data, 'id', ''),
@@ -133,7 +132,7 @@ class Submission extends Equatable {
       author,
       createdUtc,
       domain,
-      downvotes,
+      downs,
       edited,
       hidden,
       id,
@@ -163,7 +162,7 @@ Submission placeholderSubmission() {
     author: 'author',
     createdUtc: DateTime.now(),
     domain: 'domain',
-    downvotes: 0,
+    downs: 0,
     edited: true,
     hidden: false,
     id: 'id',
@@ -180,7 +179,7 @@ Submission placeholderSubmission() {
     thumbnail: 'thumbnail',
     title: 'title',
     upvotes: 0,
-    url: Uri.parse('https://example.com'),
+    url: 'https://example.com',
     awardIcons: [],
     numAwards: 0,
     type: SubType.best,

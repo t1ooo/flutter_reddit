@@ -1,5 +1,6 @@
-// submission type
+/// submission type
 enum SubType {
+  // TODO: gilded
   best,
   hot,
   newest,

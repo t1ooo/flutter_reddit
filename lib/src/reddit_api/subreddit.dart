@@ -50,17 +50,18 @@ class Subreddit extends Equatable {
   final String url;
   final String headerImg;
 
-  static final _log = Logger('Subreddit');
+  // static final _log = Logger('Subreddit');
 
-  factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
-    final data = sub.data!;
+  // factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
+  factory Subreddit.fromMap(Map data) {
+    // final data = sub.data!;
     return Subreddit(
       communityIcon: parseIcon(data['community_icon']),
       created: parseTime(data['created']),
       createdUtc: parseTime(data['created_utc'], isUtc: true),
       description: mapGet(data, 'description', ''),
       descriptionHtml: mapGet(data, 'description_html', ''),
-      displayName: sub.displayName,
+      displayName: mapGet(data, 'display_name', ''),
       displayNamePrefixed: mapGet(data, 'display_name_prefixed', ''),
       id: mapGet(data, 'id', ''),
       lang: mapGet(data, 'lang', ''),
@@ -71,7 +72,7 @@ class Subreddit extends Equatable {
       submitText: mapGet(data, 'submit_text', ''),
       subredditType: mapGet(data, 'subreddit_type', ''),
       subscribers: mapGet(data, 'subscribers', 0),
-      title: sub.title,
+      title: mapGet(data, 'title', ''),
       url: mapGet(data, 'url', ''),
       headerImg: parseUri(data['header_img']),
     );
