@@ -46,7 +46,7 @@ class Comment extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => UserProfileScreen()),
+                    MaterialPageRoute(builder: (_) => UserProfileScreen(name: 'TODO')), // TODO
                   );
                 },
                 child: Text('u/User'),

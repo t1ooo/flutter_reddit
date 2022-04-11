@@ -1,9 +1,10 @@
-import 'package:draw/draw.dart' as draw;
+import 'package:equatable/equatable.dart';
+
 import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
 import '../util/map.dart';
 
-class Comment {
+class Comment extends Equatable {
   Comment({
     required this.subredditId,
     required this.authorIsBlocked,
@@ -50,6 +51,7 @@ class Comment {
     required this.locked,
     required this.quarantine,
     required this.linkUrl,
+    required this.submissionId,
   });
 
   final String subredditId;
@@ -97,8 +99,11 @@ class Comment {
   final bool locked;
   final bool quarantine;
   final String linkUrl;
+  final String submissionId;
 
   // static final _log = Logger('Comment');
+
+  // String get submissionId => linkId.split('_').last;
 
   factory Comment.fromMap(Map data) {
     return Comment(
@@ -149,6 +154,59 @@ class Comment {
       quarantine: mapGet(data, 'quarantine', false),
       // linkUrl: mapGet(data, 'link_url', ''),
       linkUrl: parseUri(data['link_url']),
+      submissionId: mapGet(data, 'link_id', '').split('_').last,
     );
+  }
+
+  @override
+  List<Object> get props {
+    return [
+      subredditId,
+      authorIsBlocked,
+      commentType,
+      linkTitle,
+      ups,
+      authorFlairType,
+      totalAwardsReceived,
+      subreddit,
+      linkAuthor,
+      likes,
+      replies,
+      saved,
+      id,
+      gilded,
+      archived,
+      noFollow,
+      author,
+      numComments,
+      sendReplies,
+      parentId,
+      score,
+      authorFullname,
+      over18,
+      controversiality,
+      body,
+      edited,
+      downs,
+      isSubmitter,
+      collapsed,
+      bodyHtml,
+      distinguished,
+      stickied,
+      authorPremium,
+      linkId,
+      permalink,
+      subredditType,
+      linkPermalink,
+      name,
+      subredditNamePrefixed,
+      treatmentTags,
+      created,
+      createdUtc,
+      locked,
+      quarantine,
+      linkUrl,
+      submissionId,
+    ];
   }
 }

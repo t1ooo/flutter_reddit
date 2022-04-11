@@ -1,4 +1,3 @@
-import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_reddit_prototype/src/reddit_api/submission_type.dart';
@@ -8,6 +7,7 @@ import 'parse.dart';
 // TODO: gen from json
 // TODO: awards 'total_awards_received'
 // TODO: subreddit icon
+
 class Submission extends Equatable {
   Submission({
     required this.author,
@@ -76,7 +76,7 @@ class Submission extends Equatable {
       author: mapGet(data, 'author', ''),
       authorFlairText: mapGet(data, 'author_flair_text', ''),
       awardIcons: parseAwardIcons(data['all_awardings']),
-      createdUtc: parseTime(data['created_utc'], isUtc:true),
+      createdUtc: parseTime(data['created_utc'], isUtc: true),
       domain: mapGet(data, 'domain', ''),
       downs: mapGet(data, 'downs', 0),
       edited: mapGet(data, 'edited', false),
@@ -99,32 +99,6 @@ class Submission extends Equatable {
       type: type,
     );
   }
-
-  // static String _parseThumbnail(dynamic thumbnail) {
-  //   try {
-  //     return thumbnail.startsWith('http') ? thumbnail : '';
-  //   } on Exception catch (e) {
-  //     _log.warning(e);
-  //     return '';
-  //   }
-  // }
-
-  // static List<String> _parseAwardIcons(dynamic allAwardings) {
-  //   try {
-  //     return (allAwardings as List<dynamic>)
-  //         .map((v) {
-  //           return v['resized_icons'][0]['url'];
-  //         })
-  //         .where((v) {
-  //           return (v is String) && v.contains('redditstatic.com');
-  //         })
-  //         .map((v) => v as String)
-  //         .toList();
-  //   } on Exception catch (e) {
-  //     _log.warning(e);
-  //     return [];
-  //   }
-  // }
 
   @override
   List<Object> get props {

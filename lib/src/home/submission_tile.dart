@@ -47,7 +47,7 @@ class SubmissionTile extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => UserProfileScreen()),
+                                    builder: (_) => UserProfileScreen(name:submission.author)),
                               );
                             },
                             child: Text(submission.author),
@@ -82,7 +82,7 @@ class SubmissionTile extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => SubmissionScreen()),
+                  MaterialPageRoute(builder: (_) => SubmissionScreen(id:'TODO')), // TODO
                 );
               },
               child: Text(

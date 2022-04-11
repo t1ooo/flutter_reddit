@@ -1,6 +1,7 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
 
+import '../reddit_api/comment.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
@@ -60,6 +61,10 @@ class RedditNotifier extends ChangeNotifier {
     SubType type = SubType.best,
   }) {
     return redditApi.subredditSubmissions(name, limit: limit, type: type);
+  }
+
+  Stream<Comment> userComments(String name, {int limit=10}) {
+    return redditApi.userComments(name, limit: limit);
   }
 }
 

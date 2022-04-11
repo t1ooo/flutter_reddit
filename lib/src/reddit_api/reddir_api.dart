@@ -6,6 +6,7 @@ import 'package:draw/draw.dart' as draw;
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
+import 'comment.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
@@ -25,6 +26,10 @@ abstract class RedditApi {
     required int limit,
     required SubType type,
   });
+  Stream<Comment> userComments(String name, {required int limit});
+  // Future<Submission> user(String name);
+  // Future<Submission> submission(String id);
+  // Stream<Comment> submissionComments(String name, {required int limit});
 }
 
 // class RedditApiImpl implements RedditApi {
@@ -220,12 +225,13 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Stream<Submission> userComments(
+  // TODO: MAYBE: add type support
+  Stream<Comment> userComments(
     String name, {
     required int limit,
   }) async* {
     await for (final v in reddit.redditor(name).comments.newest(limit: limit)) {
-      final dsub = cast<draw.Submission?>(v, null);
+      final dsub = cast<draw.Comment?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Submission: $v');
         continue;
@@ -234,7 +240,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      final sub = Submission.fromMap(dsub.data!, type: SubType.hot);
+      final sub = Comment.fromMap(dsub.data!);
       yield sub;
     }
   }
@@ -277,8 +283,8 @@ class FakeRedditApi implements RedditApi {
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => Subreddit.fromMap(v));
-        // .map((v) => draw.Subreddit.parse(reddit, {'data': v}))
-        // .map((v) => Subreddit.fromDrawSubreddit(v));
+    // .map((v) => draw.Subreddit.parse(reddit, {'data': v}))
+    // .map((v) => Subreddit.fromDrawSubreddit(v));
     // .toList();
     for (final item in items) {
       await Future.delayed(_delay);
@@ -293,4 +299,20 @@ class FakeRedditApi implements RedditApi {
   }) {
     return front(limit: limit, type: type);
   }
+
+  Stream<Comment> userComments(String name, {required int limit}) async* {
+    final data =
+        await File('data/user.reddit.comments.newest.limit_100.json').readAsString();
+    final items = (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
+        .map((v) => Comment.fromMap(v));
+    // .map((v) => draw.Subreddit.parse(reddit, {'data': v}))
+    // .map((v) => Subreddit.fromDrawSubreddit(v));
+    // .toList();
+    for (final item in items) {
+      await Future.delayed(_delay);
+      yield item;
+    }
+  }
+
 }

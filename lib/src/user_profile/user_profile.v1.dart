@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
+import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
+import '../notifier/reddir_notifier.dart';
+import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../submission/comments.dart';
 import '../widget/sized_placeholder.dart';
+import '../widget/stream_list_builder.dart';
 import 'about.dart';
+import 'user_comment.dart';
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  const UserProfile({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +124,11 @@ class UserProfile extends StatelessWidget {
                   showTrending: false,
                   showTypeSelector: false,
                 ),
-                Comments(
-                  showNested: false,
-                ),
+                // Comments(
+                //   showNested: false,
+                // ),
+
+                UserComments(userName: name),
                 About(),
               ],
             ),

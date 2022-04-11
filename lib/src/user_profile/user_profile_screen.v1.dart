@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_reddit_prototype/src/home/submission_tiles.dart';
 
 import '../home/submission_tile.dart';
@@ -7,7 +8,12 @@ import '../widget/sized_placeholder.dart';
 import 'user_profile.v1.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  const UserProfileScreen({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +21,7 @@ class UserProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      body: UserProfile(),
+      body: UserProfile(name: name),
     );
   }
 }
