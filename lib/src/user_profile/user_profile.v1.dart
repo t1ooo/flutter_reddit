@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.dart';
+import '../home/submission_tiles.v2.dart';
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
@@ -107,7 +107,7 @@ class UserProfile extends StatelessWidget {
             child: TabBar(
               labelColor: Colors.blue,
               tabs: [
-                Text('Submissions'),
+                Text('Posts'),
                 Text('Comments'),
                 Text('About'),
               ],
@@ -116,18 +116,20 @@ class UserProfile extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
+                // SubmissionTiles(
+                //   submissions: [],
+                //   onTypeChanged: (type) {
+                //     // TODO
+                //   },
+                //   showTrending: false,
+                //   showTypeSelector: false,
+                // ),
                 SubmissionTiles(
-                  submissions: [],
-                  onTypeChanged: (type) {
-                    // TODO
-                  },
                   showTrending: false,
                   showTypeSelector: false,
+                  stream: (context, type) =>
+                      context.read<RedditNotifier>().userSubmissions(name),
                 ),
-                // Comments(
-                //   showNested: false,
-                // ),
-
                 UserComments(userName: name),
                 About(),
               ],

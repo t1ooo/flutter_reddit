@@ -14,7 +14,7 @@ class Submission extends Equatable {
     required this.createdUtc,
     required this.domain,
     required this.downs,
-    required this.edited,
+    // required this.edited,
     required this.hidden,
     required this.id,
     required this.isVideo,
@@ -40,7 +40,7 @@ class Submission extends Equatable {
   final DateTime createdUtc;
   final String domain;
   final int downs;
-  final bool edited;
+  // final double edited;
   final bool hidden;
   final String id;
   final bool isVideo;
@@ -79,7 +79,7 @@ class Submission extends Equatable {
       createdUtc: parseTime(data['created_utc'], isUtc: true),
       domain: mapGet(data, 'domain', ''),
       downs: mapGet(data, 'downs', 0),
-      edited: mapGet(data, 'edited', false),
+      // edited: mapGet(data, 'edited', 0),
       hidden: mapGet(data, 'hidden', false),
       id: mapGet(data, 'id', ''),
       isVideo: mapGet(data, 'is_video', false),
@@ -107,7 +107,7 @@ class Submission extends Equatable {
       createdUtc,
       domain,
       downs,
-      edited,
+      // edited,
       hidden,
       id,
       isVideo,
@@ -137,7 +137,7 @@ Submission placeholderSubmission() {
     createdUtc: DateTime.now(),
     domain: 'domain',
     downs: 0,
-    edited: true,
+    // edited: 0,
     hidden: false,
     id: 'id',
     isVideo: false,

@@ -60,14 +60,13 @@ List<String> parseAwardIcons(dynamic data) {
   try {
     return (data as List<dynamic>)
         .map((v) {
-          return v['resized_icons'][0]['url'];
+          return v?['resized_icons']?[0]?['url'];
         })
         .where((v) {
-          return (v is String) &&
-              v.startsWith('http') &&
-              v.contains('redditstatic.com');
+          return (v is String) && v.startsWith('http');
+          // v.contains('redditstatic.com');
         })
-        .map((v) => v as String)
+        .map((v) => (v as String).replaceAll('&amp;', '&'))
         .toList();
   } on Exception catch (e) {
     _log.warning(e);

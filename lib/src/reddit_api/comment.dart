@@ -31,7 +31,7 @@ class Comment extends Equatable {
     required this.over18,
     required this.controversiality,
     required this.body,
-    required this.edited,
+    // required this.edited,
     required this.downs,
     required this.isSubmitter,
     required this.collapsed,
@@ -79,7 +79,7 @@ class Comment extends Equatable {
   final bool over18;
   final int controversiality;
   final String body;
-  final bool edited;
+  // final double edited;
   final int downs;
   final bool isSubmitter;
   final bool collapsed;
@@ -132,7 +132,7 @@ class Comment extends Equatable {
       over18: mapGet(data, 'over_18', false),
       controversiality: mapGet(data, 'controversiality', 0),
       body: mapGet(data, 'body', ''),
-      edited: mapGet(data, 'edited', false),
+      // edited: mapGet(data, 'edited', 0),
       downs: mapGet(data, 'downs', 0),
       isSubmitter: mapGet(data, 'is_submitter', false),
       collapsed: mapGet(data, 'collapsed', false),
@@ -147,7 +147,7 @@ class Comment extends Equatable {
       linkPermalink: parseUri(data['link_permalink']),
       name: mapGet(data, 'name', ''),
       subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
-      treatmentTags: mapGet(data, 'treatment_tags', []),
+      treatmentTags: mapGetList(data, 'treatment_tags', []),
       created: parseTime(data['created']),
       createdUtc: parseTime(data['created_utc'], isUtc: true),
       locked: mapGet(data, 'locked', false),
@@ -186,7 +186,7 @@ class Comment extends Equatable {
       over18,
       controversiality,
       body,
-      edited,
+      // edited,
       downs,
       isSubmitter,
       collapsed,

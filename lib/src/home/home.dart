@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return SubmissionTiles(
+    return SubmissionTiles(
       stream: (context, type) =>
           context.read<RedditNotifier>().front(type: type),
     );

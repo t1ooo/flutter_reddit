@@ -21,7 +21,10 @@ class UserProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      body: UserProfile(name: name),
+      // body: UserProfile(name: name),
+      // body: FutureBuilder(
+      //   future: ,
+      // ),
     );
   }
 }

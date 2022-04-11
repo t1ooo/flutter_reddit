@@ -1,6 +1,7 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
 
+import '../reddit_api/User.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
@@ -63,8 +64,16 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.subredditSubmissions(name, limit: limit, type: type);
   }
 
+  Future<User> user(String name) {
+    return redditApi.user(name);
+  }
+
   Stream<Comment> userComments(String name, {int limit=10}) {
     return redditApi.userComments(name, limit: limit);
+  }
+
+  Stream<Submission> userSubmissions(String name, {int limit=10}) {
+    return redditApi.userSubmissions(name, limit: limit);
   }
 }
 
