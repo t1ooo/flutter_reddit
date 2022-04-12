@@ -80,6 +80,11 @@ class RedditNotifier extends ChangeNotifier {
   Future<List<Trophy>> userTrophies(String name) {
     return redditApi.userTrophies(name);
   }
+
+  Future<Submission> submission(String id) async {
+    return redditApi.submission(id);
+
+  }
 }
 
 class SubTypeNotifier extends ChangeNotifier {

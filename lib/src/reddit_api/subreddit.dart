@@ -1,12 +1,8 @@
-import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
-import '../util/cast.dart';
 import '../util/map.dart';
 import 'parse.dart';
 
-// TODO: gen from json
 class Subreddit extends Equatable {
   Subreddit({
     required this.communityIcon,
@@ -118,7 +114,6 @@ class Subreddit extends Equatable {
   // }
 
   @override
-  // TODO: implement props
   List<Object> get props {
     return [
       communityIcon,

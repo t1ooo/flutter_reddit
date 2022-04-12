@@ -82,11 +82,11 @@ class SubmissionTile extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => SubmissionScreen(id:'TODO')), // TODO
+                  MaterialPageRoute(builder: (_) => SubmissionScreen(id:submission.id)), // TODO
                 );
               },
               child: Text(
-                '${enumToString(submission.type)}: ${submission.title}',
+                '${enumToString(submission.type!)}: ${submission.title}',
                 textScaleFactor: 2,
               ),
             ),

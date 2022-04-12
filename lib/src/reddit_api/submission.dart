@@ -1,20 +1,16 @@
+import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_reddit_prototype/src/reddit_api/submission_type.dart';
 import '../util/map.dart';
 import 'parse.dart';
-
-// TODO: gen from json
-// TODO: awards 'total_awards_received'
-// TODO: subreddit icon
+import 'submission_type.dart';
 
 class Submission extends Equatable {
-  Submission({
+  const Submission({
     required this.author,
     required this.createdUtc,
     required this.domain,
     required this.downs,
-    // required this.edited,
     required this.hidden,
     required this.id,
     required this.isVideo,
@@ -34,13 +30,13 @@ class Submission extends Equatable {
     required this.awardIcons,
     required this.numAwards,
     required this.type,
+    required this.comments,
   });
 
   final String author;
   final DateTime createdUtc;
   final String domain;
   final int downs;
-  // final double edited;
   final bool hidden;
   final String id;
   final bool isVideo;
@@ -59,7 +55,8 @@ class Submission extends Equatable {
   final String url;
   final List<String> awardIcons;
   final int numAwards;
-  final SubType type;
+  final SubType? type;
+  final CommentForest? comments;
 
   // static final _log = Logger('Submission');
 
@@ -71,7 +68,11 @@ class Submission extends Equatable {
   }
 
   // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
-  factory Submission.fromMap(Map data, {required SubType type}) {
+  factory Submission.fromMap(
+    Map data, {
+    SubType? type,
+    CommentForest? comments,
+  }) {
     return Submission(
       author: mapGet(data, 'author', ''),
       authorFlairText: mapGet(data, 'author_flair_text', ''),
@@ -97,11 +98,12 @@ class Submission extends Equatable {
       upvotes: mapGet(data, 'ups', 0),
       url: mapGet(data, 'url', ''),
       type: type,
+      comments: comments,
     );
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       author,
       createdUtc,
@@ -127,6 +129,7 @@ class Submission extends Equatable {
       awardIcons,
       numAwards,
       type,
+      comments,
     ];
   }
 }
@@ -157,5 +160,6 @@ Submission placeholderSubmission() {
     awardIcons: [],
     numAwards: 0,
     type: SubType.best,
+    comments: null,
   );
 }

@@ -34,6 +34,9 @@ abstract class RedditApi {
   Future<List<Trophy>> userTrophies(String name);
   // Future<Submission> submission(String id);
   // Stream<Comment> submissionComments(String name, {required int limit});
+  Future<void> subscribe(String name);
+  Future<void> unsubscribe(String name);
+  Future<Submission> submission(String id);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -174,6 +177,20 @@ class RedditApiImpl implements RedditApi {
     }
     return trophies;
   }
+
+  Future<void> subscribe(String name) {
+    return reddit.subreddit(name).subscribe();
+  }
+
+  Future<void> unsubscribe(String name) {
+    return reddit.subreddit(name).unsubscribe();
+  }
+
+  Future<Submission> submission(String id) async {
+    final subRef = reddit.submission(id: id);
+    final sub = await subRef.populate();
+    return Submission.fromMap(sub.data!, comments: sub.comments);
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -264,4 +281,14 @@ class FakeRedditApi implements RedditApi {
 
     return items.toList();
   }
+
+  Future<void> subscribe(String name) async {
+    return;
+  }
+
+  Future<void> unsubscribe(String name) async {
+    return;
+  }
+
+  Future<Submission> submission(String id) {}
 }
