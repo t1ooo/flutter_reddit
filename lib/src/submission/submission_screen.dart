@@ -24,8 +24,11 @@ class SubmissionScreen extends StatelessWidget {
       ),
       // body: Submission(),
       body: CustomFutureBuilder(
-        future: context.read<RedditNotifier>.submission(id:id),
-        onData: ,
+        future: context.read<RedditNotifier>().submission(id),
+        onData: (BuildContext context, Submission submission) {
+          return Text('1');
+          // return Submission(submission:submission);
+        },
       ),
       bottomNavigationBar: CommentField(),
     );

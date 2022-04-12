@@ -64,7 +64,7 @@ class Comment extends Equatable {
   final String subreddit;
   final String linkAuthor;
   final int likes;
-  final String replies;
+  final List<Comment> replies;
   final bool saved;
   final String id;
   final int gilded;
@@ -117,7 +117,8 @@ class Comment extends Equatable {
       subreddit: mapGet(data, 'subreddit', ''),
       linkAuthor: mapGet(data, 'link_author', ''),
       likes: mapGet(data, 'likes', 0),
-      replies: mapGet(data, 'replies', ''),
+      // replies: mapGet(data, 'replies', []),
+      replies: parseCommentReplies(data['replies']),
       saved: mapGet(data, 'saved', false),
       id: mapGet(data, 'id', ''),
       gilded: mapGet(data, 'gilded', 0),

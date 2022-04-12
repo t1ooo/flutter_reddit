@@ -1,7 +1,32 @@
+import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
+
 import '../logging/logging.dart';
 import '../util/cast.dart';
 
 final _log = Logger('parserLog');
+
+List<Comment> parseCommentReplies(dynamic data) {
+  // return (data?['data']?['children'] as List<dynamic>).map((v) {
+  //   try {
+  //     return Comment.fromMap(v?['data']);
+  //   } on Exception catch(e) {
+  //     _log.warning(e);
+  //     return null;
+  //   }
+  // })
+  // .where((Comment? v) v!=null)
+  // .toList();
+
+  final comments = <Comment>[];
+  for (final v in (data?['data']?['children'] as List<dynamic>)) {
+    try {
+      comments.add(Comment.fromMap(v?['data'] as Map));
+    } on Exception catch (e) {
+      _log.warning(e);
+    }
+  }
+  return comments;
+}
 
 String parseUri(dynamic data) {
   final s = cast<String>(data, '');

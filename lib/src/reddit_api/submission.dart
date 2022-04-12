@@ -2,6 +2,7 @@ import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
 
 import '../util/map.dart';
+import 'comment.dart';
 import 'parse.dart';
 import 'submission_type.dart';
 
@@ -56,7 +57,8 @@ class Submission extends Equatable {
   final List<String> awardIcons;
   final int numAwards;
   final SubType? type;
-  final CommentForest? comments;
+  // final CommentForest? comments;
+  final List<Comment> comments;
 
   // static final _log = Logger('Submission');
 
@@ -71,7 +73,8 @@ class Submission extends Equatable {
   factory Submission.fromMap(
     Map data, {
     SubType? type,
-    CommentForest? comments,
+    // CommentForest? comments,
+    List<Comment> comments = const [],
   }) {
     return Submission(
       author: mapGet(data, 'author', ''),
@@ -160,6 +163,6 @@ Submission placeholderSubmission() {
     awardIcons: [],
     numAwards: 0,
     type: SubType.best,
-    comments: null,
+    comments: [],
   );
 }

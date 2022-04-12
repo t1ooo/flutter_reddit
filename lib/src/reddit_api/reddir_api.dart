@@ -189,7 +189,12 @@ class RedditApiImpl implements RedditApi {
   Future<Submission> submission(String id) async {
     final subRef = reddit.submission(id: id);
     final sub = await subRef.populate();
-    return Submission.fromMap(sub.data!, comments: sub.comments);
+    final comments = (sub.comments!.comments)
+        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Comment.fromMap(v))
+        .toList();
+    // return Submission.fromMap(sub.data!, comments: sub.comments!.comments);
+    return Submission.fromMap(sub.data!, comments: comments);
   }
 }
 
@@ -291,15 +296,18 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<Submission> submission(String id) async {
-    // final sData = await File('data/user.submission.json').readAsString();
-    // final cData = await File('data/submission.comments.json').readAsString();
+    final subData = await File('data/user.submission.json').readAsString();
+    final comData = await File('data/submission.comments.json').readAsString();
 
-    
+    final comments = (jsonDecode(comData) as List<dynamic>)
+        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Comment.fromMap(v))
+        .toList();
 
-    final comments = (jsonDecode(sData) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>);
-
-    draw.CommentForest(draw.SubmissionRef(), comments);  
+    return Submission.fromMap(
+      jsonDecode(subData),
+      comments: comments,
+    );
 
     //     .map((v) => Trophy.fromMap(v));
 
