@@ -6,7 +6,8 @@ import 'package:draw/draw.dart' as draw;
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
-import 'User.dart';
+import 'trophy.dart';
+import 'user.dart';
 import 'comment.dart';
 import 'submission.dart';
 import 'submission_type.dart';
@@ -23,13 +24,14 @@ abstract class RedditApi {
   Stream<Submission> popular({required int limit, required SubType type});
   Stream<Subreddit> userSubreddits({required int limit});
   Stream<Submission> subredditSubmissions(
-    String subredditName, {
+    String name, {
     required int limit,
     required SubType type,
   });
-  Future<User> user(String userName);
-  Stream<Comment> userComments(String userName, {required int limit});
-  Stream<Submission> userSubmissions(String userName, {required int limit});
+  Future<User> user(String name);
+  Stream<Comment> userComments(String name, {required int limit});
+  Stream<Submission> userSubmissions(String name, {required int limit});
+  Future<List<Trophy>> userTrophies(String name);
   // Future<Submission> submission(String id);
   // Stream<Comment> submissionComments(String name, {required int limit});
 }
@@ -109,11 +111,11 @@ class RedditApiImpl implements RedditApi {
   }
 
   Stream<Submission> subredditSubmissions(
-    String subredditName, {
+    String name, {
     required int limit,
     required SubType type,
   }) {
-    final s = reddit.subreddit(subredditName);
+    final s = reddit.subreddit(name);
     switch (type) {
       case SubType.best:
         // TODO: find a solution without exception
@@ -134,11 +136,10 @@ class RedditApiImpl implements RedditApi {
 
   // TODO: MAYBE: add type support
   Stream<Comment> userComments(
-    String userName, {
+    String name, {
     required int limit,
   }) async* {
-    await for (final v
-        in reddit.redditor(userName).comments.newest(limit: limit)) {
+    await for (final v in reddit.redditor(name).comments.newest(limit: limit)) {
       final dsub = cast<draw.Comment?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Submission: $v');
@@ -153,12 +154,25 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Future<User> user(String userName) {
+  Future<User> user(String name) {
     throw UnimplementedError();
   }
 
-  Stream<Submission> userSubmissions(String userName, {required int limit}) {
+  Stream<Submission> userSubmissions(String name, {required int limit}) {
     throw UnimplementedError();
+  }
+
+  Future<List<Trophy>> userTrophies(String name) async {
+    final drawTrophies = await reddit.redditor('foo').trophies();
+    final trophies = <Trophy>[];
+    for (final trophy in drawTrophies) {
+      if (trophy.data == null) {
+        _log.warning('draw.Trophy.data is empty: $trophy');
+        continue;
+      }
+      trophies.add(Trophy.fromMap(trophy.data!));
+    }
+    return trophies;
   }
 }
 
@@ -203,14 +217,14 @@ class FakeRedditApi implements RedditApi {
   }
 
   Stream<Submission> subredditSubmissions(
-    String subredditName, {
+    String name, {
     required int limit,
     required SubType type,
   }) {
     return front(limit: limit, type: type);
   }
 
-  Future<User> user(String userName) async {
+  Future<User> user(String name) async {
     final data = await File('data/user.info.json').readAsString();
     return User.fromMap(jsonDecode(data));
   }
@@ -228,8 +242,7 @@ class FakeRedditApi implements RedditApi {
     }
   }
 
-  Stream<Submission> userSubmissions(String userName,
-      {required int limit}) async* {
+  Stream<Submission> userSubmissions(String name, {required int limit}) async* {
     final data = await File('data/user.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -240,5 +253,15 @@ class FakeRedditApi implements RedditApi {
       await Future.delayed(_delay);
       yield item;
     }
+  }
+
+  Future<List<Trophy>> userTrophies(String name) async {
+    final data = await File('data/user.trophies.json').readAsString();
+
+    final items = (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Trophy.fromMap(v));
+
+    return items.toList();
   }
 }

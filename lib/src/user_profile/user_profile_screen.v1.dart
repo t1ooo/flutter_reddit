@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_reddit_prototype/src/home/submission_tiles.dart';
+import 'package:provider/provider.dart';
 
 import '../home/submission_tile.dart';
+import '../notifier/reddir_notifier.dart';
+import '../reddit_api/user.dart';
 import '../style/style.dart';
+import '../widget/custom_future_builder.dart';
 import '../widget/sized_placeholder.dart';
 import 'user_profile.v1.dart';
 
@@ -22,9 +26,12 @@ class UserProfileScreen extends StatelessWidget {
         title: Text('User Profile'),
       ),
       // body: UserProfile(name: name),
-      // body: FutureBuilder(
-      //   future: ,
-      // ),
+      body: CustomFutureBuilder(
+        future: context.read<RedditNotifier>().user(name),
+        onData: (BuildContext context, User user) {
+          return UserProfile(user: user);
+        },
+      ),
     );
   }
 }

@@ -48,3 +48,17 @@ List<T> mapGetList<T>(Map m, String key, List<T> defaultValue) {
     return defaultValue;
   }
 }
+
+// T mapGetNested<T>(Map m, List<String> keys, T defaultValue) {
+//   var val;
+//   try {
+//     val = m;
+//     for (final key in keys) {
+//       val = val[key];
+//     }
+//     return val as T;
+//   } on TypeError catch (_) {
+//     _log.info('fail to cast: {$keys: $val} to <$T>');
+//     return defaultValue;
+//   }
+// }

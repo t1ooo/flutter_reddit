@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/subreddit.dart';
 
+import '../util/cast.dart';
 import '../util/map.dart';
 
 class User extends Equatable {
@@ -21,12 +23,14 @@ class User extends Equatable {
     required this.totalKarma,
     required this.acceptChats,
     required this.name,
+    // required this.displayNamePrefixed,
     required this.created,
     required this.createdUtc,
     required this.snoovatarImg,
     required this.commentKarma,
     required this.acceptFollowers,
     required this.hasSubscribed,
+    required this.subreddit,
   });
 
   final bool isEmployee;
@@ -44,12 +48,14 @@ class User extends Equatable {
   final int totalKarma;
   final bool acceptChats;
   final String name;
+  // final String displayNamePrefixed;
   final DateTime created;
   final DateTime createdUtc;
   final String snoovatarImg;
   final int commentKarma;
   final bool acceptFollowers;
   final bool hasSubscribed;
+  final Subreddit subreddit;
 
   factory User.fromMap(Map data) {
     return User(
@@ -68,12 +74,14 @@ class User extends Equatable {
       totalKarma: mapGet(data, 'total_karma', 0),
       acceptChats: mapGet(data, 'accept_chats', false),
       name: mapGet(data, 'name', ''),
+      // displayNamePrefixed: mapGetNested(data, ['subreddit','display_name_prefixed'], ''),
       created: parseTime(data['created']),
       createdUtc: parseTime(data['created_utc'], isUtc: true),
       snoovatarImg: mapGet(data, 'snoovatar_img', ''),
       commentKarma: mapGet(data, 'comment_karma', 0),
       acceptFollowers: mapGet(data, 'accept_followers', false),
       hasSubscribed: mapGet(data, 'has_subscribed', false),
+      subreddit: Subreddit.fromMap(cast(data['subreddit'], {})),
     );
   }
 
@@ -95,12 +103,14 @@ class User extends Equatable {
       totalKarma,
       acceptChats,
       name,
+      // displayNamePrefixed,
       created,
       createdUtc,
       snoovatarImg,
       commentKarma,
       acceptFollowers,
       hasSubscribed,
+      subreddit,
     ];
   }
 }

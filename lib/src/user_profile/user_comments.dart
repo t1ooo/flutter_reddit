@@ -14,17 +14,17 @@ import '../widget/stream_list_builder.dart';
 class UserComments extends StatelessWidget {
   const UserComments({
     Key? key,
-    required this.userName,
+    required this.name,
   }) : super(key: key);
 
-  final String userName;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: pagePadding,
       child: StreamListBuilder(
-        stream: context.read<RedditNotifier>().userComments(userName),
+        stream: context.read<RedditNotifier>().userComments(name),
         onData: (context, List<Comment> comments) {
           return ListView(
             children: [

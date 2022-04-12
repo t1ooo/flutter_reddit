@@ -4,21 +4,23 @@ import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.v2.dart';
 import '../notifier/reddir_notifier.dart';
+import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../submission/comments.dart';
+import '../util/date_time.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
-import 'about.dart';
+import 'user_about.dart';
 import 'user_comment.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({
     Key? key,
-    required this.name,
+    required this.user,
   }) : super(key: key);
 
-  final String name;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +65,9 @@ class UserProfile extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('UserName', textScaleFactor: 2),
-                        Text('u/username'),
+                        Text(user.name, textScaleFactor: 2),
+                        // Text(user.displayNamePrefixed),
+                        Text(user.subreddit.displayNamePrefixed),
                       ],
                     ),
                     // Spacer(),
@@ -95,10 +98,13 @@ class UserProfile extends StatelessWidget {
                     ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
                   ],
                 ),
+                // Center(child: Text(user.totalKarma.toString())),
+                // Center(child: Text(formatDateTime(user.created))),
                 SizedBox(height: 20),
-                Text('5674 karma * 1y'),
+                Text(
+                    '${user.totalKarma} karma * ${formatDateTime(user.created)}'),
                 SizedBox(height: 10),
-                Text('description'),
+                 Text(user.subreddit.publicDescription),
                 SizedBox(height: 20),
               ],
             ),
@@ -128,10 +134,10 @@ class UserProfile extends StatelessWidget {
                   showTrending: false,
                   showTypeSelector: false,
                   stream: (context, type) =>
-                      context.read<RedditNotifier>().userSubmissions(name),
+                      context.read<RedditNotifier>().userSubmissions(user.name),
                 ),
-                UserComments(userName: name),
-                About(),
+                UserComments(name: user.name),
+                UserAbout(user: user),
               ],
             ),
           ),

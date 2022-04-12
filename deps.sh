@@ -7,6 +7,7 @@ deps=(
     logger
     equatable
     clock
+    intl
 )
 
 dev_deps=(

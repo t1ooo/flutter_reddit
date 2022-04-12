@@ -1,0 +1,28 @@
+[{
+  "icon_70": "https://www.redditstatic.com/awards2/2_year_club-70.png",
+  "granted_at": 1635830328,
+  "url": null,
+  "icon_40": "https://www.redditstatic.com/awards2/2_year_club-40.png",
+  "name": "Two-Year Club",
+  "award_id": null,
+  "id": null,
+  "description": null
+}, {
+  "icon_70": "https://www.redditstatic.com/awards2/second_participant-70.png",
+  "granted_at": 1617984439,
+  "url": "https://www.reddit.com/r/Second/",
+  "icon_40": "https://www.redditstatic.com/awards2/second_participant-40.png",
+  "name": "Second",
+  "award_id": "9k",
+  "id": "2t1jif",
+  "description": "SECOND GUESSER"
+}, {
+  "icon_70": "https://www.redditstatic.com/awards2/verified_email-70.png",
+  "granted_at": null,
+  "url": null,
+  "icon_40": "https://www.redditstatic.com/awards2/verified_email-40.png",
+  "name": "Verified Email",
+  "award_id": "o",
+  "id": "29mdq7",
+  "description": null
+}]
