@@ -290,5 +290,21 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
-  Future<Submission> submission(String id) {}
+  Future<Submission> submission(String id) async {
+    // final sData = await File('data/user.submission.json').readAsString();
+    // final cData = await File('data/submission.comments.json').readAsString();
+
+    
+
+    final comments = (jsonDecode(sData) as List<dynamic>)
+        .map((v) => v as Map<dynamic, dynamic>);
+
+    draw.CommentForest(draw.SubmissionRef(), comments);  
+
+    //     .map((v) => Trophy.fromMap(v));
+
+    // final items = (jsonDecode(data) as List<dynamic>)
+    //     .map((v) => v as Map<dynamic, dynamic>)
+    //     .map((v) => Trophy.fromMap(v));
+  }
 }
