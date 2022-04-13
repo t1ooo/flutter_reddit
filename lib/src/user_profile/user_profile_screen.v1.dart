@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_reddit_prototype/src/home/submission_tiles.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tile.dart';

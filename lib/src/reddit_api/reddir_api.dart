@@ -22,20 +22,25 @@ import 'subreddit.dart';
 abstract class RedditApi {
   Stream<Submission> front({required int limit, required SubType type});
   Stream<Submission> popular({required int limit, required SubType type});
-  Stream<Subreddit> userSubreddits({required int limit});
+
   Stream<Submission> subredditSubmissions(
     String name, {
     required int limit,
     required SubType type,
   });
+  Future<Subreddit> subreddit(String name);
+
   Future<User> user(String name);
+  Stream<Subreddit> userSubreddits({required int limit});
   Stream<Comment> userComments(String name, {required int limit});
   Stream<Submission> userSubmissions(String name, {required int limit});
   Future<List<Trophy>> userTrophies(String name);
   // Future<Submission> submission(String id);
   // Stream<Comment> submissionComments(String name, {required int limit});
+
   Future<void> subscribe(String name);
   Future<void> unsubscribe(String name);
+
   Future<Submission> submission(String id);
 }
 
@@ -196,6 +201,12 @@ class RedditApiImpl implements RedditApi {
     // return Submission.fromMap(sub.data!, comments: sub.comments!.comments);
     return Submission.fromMap(sub.data!, comments: comments);
   }
+
+  Future<Subreddit> subreddit(String name) async {
+    final subRef = reddit.subreddit(name);
+    final sub = await subRef.populate();
+    return Subreddit.fromMap(sub.data!);
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -322,5 +333,10 @@ class FakeRedditApi implements RedditApi {
     // final items = (jsonDecode(data) as List<dynamic>)
     //     .map((v) => v as Map<dynamic, dynamic>)
     //     .map((v) => Trophy.fromMap(v));
+  }
+
+  Future<Subreddit> subreddit(String name) async {
+    final data = await File('data/subreddit.json').readAsString();
+    return Subreddit.fromMap(jsonDecode(data) as Map);
   }
 }

@@ -85,6 +85,10 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.submission(id);
 
   }
+
+  Future<Subreddit> subreddit(String name) async {
+    return redditApi.subreddit(name);
+  }
 }
 
 class SubTypeNotifier extends ChangeNotifier {

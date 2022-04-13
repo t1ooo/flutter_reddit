@@ -22,11 +22,19 @@ class SubredditWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Padding(
-          // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
-          padding: pagePadding,
-          child: SearchField(),
-        ),
+        // if (subreddit.headerImg != '')
+        //   Image.network(subreddit.headerImg),
+        // if (subreddit.communityIcon != '')
+        //   Image.network(subreddit.communityIcon),
+        // if (subreddit.bannerBackgroundImage != '')
+        //   Image.network(subreddit.bannerBackgroundImage),
+        if (subreddit.bannerBackgroundImage != '')
+          SearchFieldImage(src: subreddit.bannerBackgroundImage)
+        else
+          Padding(
+            padding: pagePadding,
+            child: SearchField(),
+          ),
         Padding(
           padding: pagePadding,
           child: Column(
@@ -34,6 +42,13 @@ class SubredditWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  SizedBox(height: 100),
+                  if (subreddit.communityIcon != '')
+                    CircleAvatar(
+                      radius: 16, // Image radius
+                      backgroundImage: NetworkImage(subreddit.communityIcon),
+                    ),
+                  SizedBox(width: 10),
                   Text(subreddit.displayNamePrefixed, textScaleFactor: 2),
                   Spacer(),
                   ElevatedButton(onPressed: () {}, child: Icon(Icons.doorbell)),

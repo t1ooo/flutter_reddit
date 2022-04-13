@@ -1,7 +1,7 @@
 import 'dart:io';
 
 String enumToString(Enum e) {
-  return exitCode.toString().split('.').last;
+  return e.toString().split('.').last;
 }
 
 String enumNToString(Enum? e) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../home/submission_tiles.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
 
@@ -94,12 +93,13 @@ class UserProfile extends StatelessWidget {
             ],
           ),
         ),
-        SubmissionTiles(
+       
+        /* SubmissionTiles(
           submissions: [],
           onTypeChanged: (type) {
             // TODO
           },
-        ),
+        ), */
       ],
     );
   }

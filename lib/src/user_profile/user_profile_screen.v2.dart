@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/home/submission_tiles.dart';
 
 import '../home/submission_tile.dart';
 import '../style/style.dart';
@@ -16,7 +15,7 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   int _selectedIndex = 0;
 
-  List<String> type = ['submissions','comments','about'];
+  List<String> type = ['submissions', 'comments', 'about'];
 
   @override
   Widget build(BuildContext context) {
@@ -24,31 +23,30 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      body: UserProfile(type:type[_selectedIndex]),
+      body: UserProfile(type: type[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Submissions',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Comments',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'About',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        // selectedItemColor: Colors.amber[800],
-        onTap: (int index) {
-          // print(type[_selectedIndex]);
-          setState(() {
-            _selectedIndex = index;
-          });
-        }
-      ),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Submissions',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Comments',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'About',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          // selectedItemColor: Colors.amber[800],
+          onTap: (int index) {
+            // print(type[_selectedIndex]);
+            setState(() {
+              _selectedIndex = index;
+            });
+          }),
     );
   }
 }

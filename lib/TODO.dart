@@ -1,3 +1,7 @@
+// TODO: gestures
+// TODO: user settings
+// TODO: user profile
+// TODO: save post
 // TODO: comment user icon
 // TODO: comment awards
 // TODO: give award to submission
@@ -5,8 +9,8 @@
 // TODO: user subscribe to subreddit
 // TODO: user create comment
 // TODO: user create post
-// TODO: SubmissionScreen
 // TODO: make padding consistent
+// TODO: subreddit screen
 // TODO: subreddit type
 // TODO: search
 // TODO: trendings

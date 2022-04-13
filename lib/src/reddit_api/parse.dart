@@ -51,18 +51,19 @@ String parseUri(dynamic data) {
     _log.warning('fail to parse uri: $data');
     return '';
   }
-  return s;
+  // return s;
+  return s.replaceAll('&amp;', '&');
 }
 
-String parseIcon(dynamic data) {
-  final s = parseUri(data);
-  final uri = Uri.tryParse(s);
-  if (uri == null) {
-    _log.warning('fail to parse icon: $data');
-    return '';
-  }
-  return uri.scheme + ':' + '//' + uri.authority + uri.path;
-}
+// String parseIcon(dynamic data) {
+//   final s = parseUri(data);
+//   final uri = Uri.tryParse(s);
+//   if (uri == null) {
+//     _log.warning('fail to parse icon: $data');
+//     return '';
+//   }
+//   return uri.scheme + ':' + '//' + uri.authority + uri.path;
+// }
 
 // static DateTime _parseTime(dynamic data) {
 //   final num = double.tryParse(data);
@@ -96,16 +97,22 @@ DateTime parseTime(dynamic data, {bool isUtc = false}) {
 
 List<String> parseAwardIcons(dynamic data) {
   try {
-    return (data as List<dynamic>)
-        .map((v) {
-          return v?['resized_icons']?[0]?['url'];
-        })
-        .where((v) {
-          return (v is String) && v.startsWith('http');
-          // v.contains('redditstatic.com');
-        })
-        .map((v) => (v as String).replaceAll('&amp;', '&'))
-        .toList();
+    // return (data as List<dynamic>)
+    //     .map((v) {
+    //       return v?['resized_icons']?[0]?['url'];
+    //     })
+    //     .where((v) {
+    //       return (v is String) && v.startsWith('http');
+    //       // v.contains('redditstatic.com');
+    //     })
+    //     .map((v) => (v as String).replaceAll('&amp;', '&'))
+    //     .toList();
+
+    return (data as List<dynamic>).map((v) {
+      return parseUri(v?['resized_icons']?[0]?['url']);
+    }).where((v) {
+      return v != '';
+    }).toList();
   } on Exception catch (e) {
     _log.warning(e);
     return [];

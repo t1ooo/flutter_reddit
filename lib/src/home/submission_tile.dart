@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 
 import '../reddit_api/submission.dart';
 import '../style/style.dart';
@@ -38,7 +39,18 @@ class SubmissionTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // TODO: active subreddit link
-                        Text(submission.subredditNamePrefixed),
+                        // Text(submission.subredditNamePrefixed),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => SubredditScreenLoader(
+                                      name: submission.subreddit)),
+                            );
+                          },
+                          child: Text(submission.subredditNamePrefixed),
+                        ),
                         Row(children: [
                           Text('Post by'),
                           Text(' '),
@@ -47,7 +59,8 @@ class SubmissionTile extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => UserProfileScreen(name:submission.author)),
+                                    builder: (_) => UserProfileScreen(
+                                        name: submission.author)),
                               );
                             },
                             child: Text(submission.author),
@@ -79,12 +92,16 @@ class SubmissionTile extends StatelessWidget {
             ]),
             SizedBox(height: 10),
             InkWell(
-              onTap: activeLink ? () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SubmissionScreen(id:submission.id)), // TODO
-                );
-              } : null,
+              onTap: activeLink
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                SubmissionScreen(id: submission.id)), // TODO
+                      );
+                    }
+                  : null,
               child: Text(
                 '${enumNToString(submission.type)}: ${submission.title}',
                 textScaleFactor: 2,
@@ -129,7 +146,7 @@ class SubmissionTile extends StatelessWidget {
                   Text('Vote'),
                 Row(
                   children: [
-                      Icon(Icons.share),
+                    Icon(Icons.share),
                     Text('Share'),
                   ],
                 ),
