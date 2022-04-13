@@ -1,6 +1,7 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
 
+import '../logging/logging.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
@@ -110,26 +111,54 @@ class SubscriptionNotifier extends ChangeNotifier {
       : _isSubscriber = isSubscriber;
 
   final RedditApi redditApi;
+  static final _log = Logger('SubscriptionNotifier');
+
+  // bool _isLoading = false;
+  // bool get isLoading => _isLoading;
+
+  Object? _error;
+  Object? get error {
+    final tmp = _error;
+    _error = null;
+    return tmp;
+  }
 
   bool _isSubscriber;
-
   bool get isSubscriber => _isSubscriber;
 
   Future<void> subscribe(String name) async {
-    if (isSubscriber) {
-      return;
+    if (isSubscriber) return;
+
+    // _isLoading = true;
+    // notifyListeners();
+
+    try {
+      await redditApi.subscribe(name);
+      _isSubscriber = !isSubscriber;
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = e;
     }
-    _isSubscriber = !isSubscriber;
-    await redditApi.subscribe(name);
+
+    // _isLoading = false;
     notifyListeners();
   }
 
   Future<void> unsubscribe(String name) async {
-    if (!isSubscriber) {
-      return;
+    if (!isSubscriber) return;
+
+    // _isLoading = true;
+    // notifyListeners();
+
+    try {
+      await redditApi.unsubscribe(name);
+      _isSubscriber = !isSubscriber;
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = e;
     }
-    _isSubscriber = !isSubscriber;
-    await redditApi.unsubscribe(name);
+
+    // _isLoading = false;
     notifyListeners();
   }
 }

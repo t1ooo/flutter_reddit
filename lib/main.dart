@@ -11,13 +11,15 @@ Future<void> main() async {
   configureLogger(kDebugMode);
   
   // final _redditNotifierProvider = await redditNotifierProvider();
-  final _redditNotifierProvider = await fakeRedditNotifierProvider();
+  // final _redditNotifierProvider = await fakeRedditNotifierProvider();
   // final _redditNotifierFrontProvider = await redditNotifierFrontProvider();
   runApp(
     MultiProvider(
       providers: [
-        _redditNotifierProvider,
+        // _redditNotifierProvider,
         // _redditNotifierFrontProvider,
+        await fakeRedditApiProvider(),
+        redditNotifierProvider(),
         submissionTypeNotifierProvider(),
       ],
       child: MyApp(),

@@ -96,6 +96,7 @@ class UserProfile extends StatelessWidget {
                     ElevatedButton(onPressed: () {}, child: Text('CHAT')),
                     SizedBox(width: 10),
                     ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
+                    ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
                   ],
                 ),
                 // Center(child: Text(user.totalKarma.toString())),

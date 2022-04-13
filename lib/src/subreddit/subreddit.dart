@@ -3,10 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.v2.dart';
 import '../notifier/reddir_notifier.dart';
+import '../provider.dart';
+import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';
+import '../widget/future_elevated_button.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
 
@@ -53,19 +56,44 @@ class SubredditWidget extends StatelessWidget {
                   Spacer(),
                   ElevatedButton(onPressed: () {}, child: Icon(Icons.doorbell)),
                   SizedBox(width: 10),
-                  if (subreddit.userIsSubscriber)
-                    ElevatedButton(onPressed: () {}, child: Text('+JOIN'))
-                  else
-                    ElevatedButton(onPressed: () {}, child: Text('LEAVE'))
+                  // if (subreddit.userIsSubscriber)
+                  //   ElevatedButton(onPressed: () {}, child: Text('+JOIN'))
+                  // else
+                  //   ElevatedButton(onPressed: () {}, child: Text('LEAVE'))
 
-                  /* 
-                  Buildder(
-                    notifier: UserIsSubscriber(),
-                    builder() {
-                      
+                  Builder(builder: (c) {
+                    final sn = c.watch<SubscriptionNotifier>();
+                    final error = sn.error;
+                    if (error != null) {
+                      // TODO: handle error
                     }
-                  )
-                   */
+                    if (sn.isSubscriber)
+                      return FutureElevatedButton(
+                        onPressed: () => sn.unsubscribe(subreddit.name),
+                        child: Text('LEAVE'),
+                      );
+                    else
+                      return FutureElevatedButton(
+                        onPressed: () => sn.subscribe(subreddit.name),
+                        child: Text('+JOIN'),
+                      );
+                  }),
+
+                  // ValueListenableBuilder(),
+                  // ChangeNotifierProvider(
+                  //   create: (BuildContext context) => SubscriptionNotifier(
+                  //     context.read<RedditApi>(),
+                  //     subreddit.userIsSubscriber,
+                  //   ),
+                  //   child: Builder(builder: (_) {
+                  //     if (subreddit.userIsSubscriber)
+                  //       return ElevatedButton(
+                  //           onPressed: () {}, child: Text('+JOIN'));
+                  //     else
+                  //       return ElevatedButton(
+                  //           onPressed: () {}, child: Text('LEAVE'));
+                  //   }),
+                  // ),
                 ],
               ),
               SizedBox(height: 20),

@@ -11,7 +11,6 @@
 // TODO: comment awards
 // TODO: give award to submission
 // TODO: give award to comment
-// TODO: user subscribe to subreddit
 // TODO: user create comment
 // TODO: user create post
 // TODO: make padding consistent

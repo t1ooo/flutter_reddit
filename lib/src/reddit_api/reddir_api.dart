@@ -212,7 +212,7 @@ class RedditApiImpl implements RedditApi {
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
-  Duration _delay = Duration(seconds: 1 ~/ 1000);
+  Duration _delay = Duration(seconds: 1 ~/ 1);
 
   Stream<Submission> front({
     required int limit,
@@ -289,24 +289,31 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<List<Trophy>> userTrophies(String name) async {
+    await Future.delayed(_delay);
+
     final data = await File('data/user.trophies.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<dynamic, dynamic>)
         .map((v) => Trophy.fromMap(v));
 
+
     return items.toList();
   }
 
   Future<void> subscribe(String name) async {
+    await Future.delayed(_delay);
     return;
   }
 
   Future<void> unsubscribe(String name) async {
+    await Future.delayed(_delay);
     return;
   }
 
   Future<Submission> submission(String id) async {
+    await Future.delayed(_delay);
+
     final subData = await File('data/submission.json').readAsString();
     final comData = await File('data/submission.comments.json').readAsString();
 
@@ -315,6 +322,7 @@ class FakeRedditApi implements RedditApi {
         .map((v) => v as Map<dynamic, dynamic>)
         .map((v) => Comment.fromMap(v))
         .toList();
+
 
     // print(comments);
     return Submission.fromMap(
