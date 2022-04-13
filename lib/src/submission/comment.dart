@@ -4,6 +4,7 @@ import 'package:flutter_reddit_prototype/src/util/date_time.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
+import '../widget/awards.dart';
 import '../widget/sized_placeholder.dart';
 import 'style.dart';
 
@@ -59,6 +60,10 @@ class CommentWidget extends StatelessWidget {
               ),
               Text(' * '),
               Text(formatDateTime(comment.created)),
+              Awards(
+                awardIcons:comment.awardIcons,
+                numAwards: comment.numAwards,
+              ),
             ],
           ),
           Text(comment.body),

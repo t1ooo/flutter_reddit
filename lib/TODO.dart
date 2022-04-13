@@ -1,3 +1,4 @@
+// TODO: remove non-displayed fields from reddit_api models
 // TODO: subreddit notification
 // TODO: save post
 // TODO: hide post
@@ -8,16 +9,14 @@
 // TODO: user settings
 // TODO: user profile
 // TODO: comment user icon
-// TODO: comment awards
-// TODO: give award to submission
-// TODO: give award to comment
+// TODO: display comment awards *
+// TODO: give award to submission (not supported by DRAW lib)
+// TODO: give award to comment (not supported by DRAW lib)
 // TODO: user create comment
 // TODO: user create post
 // TODO: make padding consistent
-// TODO: subreddit screen
 // TODO: subreddit type
 // TODO: search
 // TODO: trendings
 // TODO: user chat (not supported by Reddit API)
-// TODO: follow to redditor (not supported by Reddit API)
 // TODO: filter subscriptions by location (not supported by Reddit API)

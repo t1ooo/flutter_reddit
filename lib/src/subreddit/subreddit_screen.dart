@@ -21,11 +21,11 @@ class SubredditScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      // body: SubredditWidget(subreddit: subreddit),
-      body: MultiProvider(
-        providers: [subscriptionNotifierProvider(subreddit.userIsSubscriber)],
-        child: SubredditWidget(subreddit: subreddit),
-      ),
+      body: SubredditWidget(subreddit: subreddit),
+      // body: MultiProvider(
+      //   providers: [subscriptionNotifierProvider(subreddit.userIsSubscriber)],
+      //   child: SubredditWidget(subreddit: subreddit),
+      // ),
     );
   }
 }
@@ -44,23 +44,23 @@ class SubredditScreenLoader extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      // body: CustomFutureBuilder(
-      //   future: context.read<RedditNotifier>().subreddit(name),
-      //   onData: (BuildContext context, Subreddit subreddit) {
-      //     return SubredditWidget(subreddit: subreddit);
-      //   },
-      // ),
       body: CustomFutureBuilder(
         future: context.read<RedditNotifier>().subreddit(name),
         onData: (BuildContext context, Subreddit subreddit) {
-          return MultiProvider(
-            providers: [
-              subscriptionNotifierProvider(subreddit.userIsSubscriber)
-            ],
-            child: SubredditWidget(subreddit: subreddit),
-          );
+          return SubredditWidget(subreddit: subreddit);
         },
       ),
+      // body: CustomFutureBuilder(
+      //   future: context.read<RedditNotifier>().subreddit(name),
+      //   onData: (BuildContext context, Subreddit subreddit) {
+      //     return MultiProvider(
+      //       providers: [
+      //         subscriptionNotifierProvider(subreddit.userIsSubscriber)
+      //       ],
+      //       child: SubredditWidget(subreddit: subreddit),
+      //     );
+      //   },
+      // ),
     );
   }
 }

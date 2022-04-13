@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
+import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 
 import '../reddit_api/submission.dart';
 import '../style/style.dart';
@@ -83,13 +84,17 @@ class SubmissionTile extends StatelessWidget {
             // Text('r/subreddit'),
             // Text('Submissioned by u/User * 3h * v.redd.it'),
             SizedBox(height: 10),
-            Row(children: [
-              for (final icon in (submission.awardIcons).take(4))
-                Image.network(icon, width: 16, height: 16),
-              SizedBox(width: 5),
-              if (submission.numAwards != 0)
-                Text('${submission.numAwards} Awards'),
-            ]),
+            // Row(children: [
+            //   for (final icon in (submission.awardIcons).take(4))
+            //     Image.network(icon, width: 16, height: 16),
+            //   SizedBox(width: 5),
+            //   if (submission.numAwards != 0)
+            //     Text('${submission.numAwards} Awards'),
+            // ]),
+            Awards(
+              awardIcons: submission.awardIcons,
+              numAwards: submission.numAwards,
+            ),
             SizedBox(height: 10),
             InkWell(
               onTap: activeLink

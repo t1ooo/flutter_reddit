@@ -52,6 +52,7 @@ class Comment extends Equatable {
     required this.quarantine,
     required this.linkUrl,
     required this.submissionId,
+    required this.awardIcons,
   });
 
   final String subredditId;
@@ -100,6 +101,7 @@ class Comment extends Equatable {
   final bool quarantine;
   final String linkUrl;
   final String submissionId;
+  final List<String> awardIcons;
 
   // static final _log = Logger('Comment');
 
@@ -156,6 +158,7 @@ class Comment extends Equatable {
       // linkUrl: mapGet(data, 'link_url', ''),
       linkUrl: parseUri(data['link_url']),
       submissionId: mapGet(data, 'link_id', '').split('_').last,
+      awardIcons: parseAwardIcons(data['all_awardings']),
     );
   }
 
@@ -208,6 +211,7 @@ class Comment extends Equatable {
       quarantine,
       linkUrl,
       submissionId,
+      awardIcons,
     ];
   }
 }

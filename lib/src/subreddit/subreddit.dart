@@ -12,6 +12,7 @@ import '../style/style.dart';
 import '../widget/future_elevated_button.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
+import '../widget/subscribe_button.dart';
 
 class SubredditWidget extends StatelessWidget {
   const SubredditWidget({
@@ -61,23 +62,24 @@ class SubredditWidget extends StatelessWidget {
                   // else
                   //   ElevatedButton(onPressed: () {}, child: Text('LEAVE'))
 
-                  Builder(builder: (c) {
-                    final sn = c.watch<SubscriptionNotifier>();
-                    final error = sn.error;
-                    if (error != null) {
-                      // TODO: handle error
-                    }
-                    if (sn.isSubscriber)
-                      return FutureElevatedButton(
-                        onPressed: () => sn.unsubscribe(subreddit.name),
-                        child: Text('LEAVE'),
-                      );
-                    else
-                      return FutureElevatedButton(
-                        onPressed: () => sn.subscribe(subreddit.name),
-                        child: Text('+JOIN'),
-                      );
-                  }),
+                  // Builder(builder: (c) {
+                  //   final sn = c.watch<SubscriptionNotifier>();
+                  //   final error = sn.error;
+                  //   if (error != null) {
+                  //     // TODO: handle error
+                  //   }
+                  //   if (sn.isSubscriber)
+                  //     return FutureElevatedButton(
+                  //       onPressed: () => sn.unsubscribe(subreddit.name),
+                  //       child: Text('LEAVE'),
+                  //     );
+                  //   else
+                  //     return FutureElevatedButton(
+                  //       onPressed: () => sn.subscribe(subreddit.name),
+                  //       child: Text('+JOIN'),
+                  //     );
+                  // }),
+                  SubscribeButton(subreddit: subreddit),
 
                   // ValueListenableBuilder(),
                   // ChangeNotifierProvider(

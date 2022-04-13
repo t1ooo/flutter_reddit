@@ -11,6 +11,7 @@ import '../submission/comments.dart';
 import '../util/date_time.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
+import '../widget/subscribe_button.dart';
 import 'user_about.dart';
 import 'user_comment.dart';
 
@@ -95,8 +96,10 @@ class UserProfile extends StatelessWidget {
                   children: [
                     ElevatedButton(onPressed: () {}, child: Text('CHAT')),
                     SizedBox(width: 10),
-                    ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
-                    ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
+                    // user.subreddit.userIsSubscriber;
+                    // ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
+                    // ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
+                    SubscribeButton(subreddit: user.subreddit, isUserPage: true),
                   ],
                 ),
                 // Center(child: Text(user.totalKarma.toString())),
