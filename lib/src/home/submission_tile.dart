@@ -121,36 +121,45 @@ class SubmissionTile extends StatelessWidget {
                 // Text(submission.upvotes > 0
                 //     ? submission.upvotes.toString()
                 //     : 'Vote'),
-                if (submission.upvotes > 0)
-                  Row(
-                    children: [
-                      Icon(Icons.thumb_up),
-                      Text(submission.upvotes.toString()),
-                    ],
-                  )
-                else
-                  Text('Vote'),
+                // if (submission.upvotes > 0)
+                //   Row(
+                //     children: [
+                //       // Icon(Icons.thumb_up),
+                //       Icon(Icons.expand_less),
+                //       Text(submission.upvotes.toString()),
+                //       Icon(Icons.expand_more),
+                //     ],
+                //   )
+                // else
+                //   Text('Vote'),
+                Row(
+                  children: [
+                    Icon(Icons.expand_less),
+                    Text(submission.upvotes.toString()),
+                    Icon(Icons.expand_more),
+                  ],
+                ),
                 // Spacer(),
                 // Text(submission.numComments > 0
                 //     ? submission.numComments.toString()
                 //     : 'Comment'),
                 // Spacer(),
-                if (submission.numComments > 0)
-                  Row(
-                    children: [
-                      Icon(Icons.comment),
-                      Text(submission.numComments.toString()),
-                    ],
-                  )
-                else
-                  Text('Vote'),
+                // if (submission.numComments > 0)
+                Row(
+                  children: [
+                    Icon(Icons.comment),
+                    Text(submission.numComments.toString()),
+                  ],
+                ),
+                // else
+                // Text('Comment'),
                 Row(
                   children: [
                     Icon(Icons.share),
                     Text('Share'),
                   ],
                 ),
-                Text('+'),
+                Icon(Icons.star_outline),
               ],
             ),
             // ),

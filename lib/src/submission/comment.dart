@@ -69,10 +69,16 @@ class CommentWidget extends StatelessWidget {
             children: [
               Spacer(),
               Text('...'),
-              SizedBox(width: 10),
+              SizedBox(width: 20),
+              Icon(Icons.star_outline),
+              SizedBox(width: 20),
+              Icon(Icons.reply),
               Text('Reply'),
-              SizedBox(width: 10),
+              SizedBox(width: 20),
+              // Icon(Icons.thumb_up),
+              Icon(Icons.expand_less),
               Text(comment.ups.toString()),
+              Icon(Icons.expand_more),
             ],
           ),
           if (showNested)

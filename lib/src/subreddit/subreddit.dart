@@ -53,7 +53,19 @@ class SubredditWidget extends StatelessWidget {
                   Spacer(),
                   ElevatedButton(onPressed: () {}, child: Icon(Icons.doorbell)),
                   SizedBox(width: 10),
-                  ElevatedButton(onPressed: () {}, child: Text('JOINED')),
+                  if (subreddit.userIsSubscriber)
+                    ElevatedButton(onPressed: () {}, child: Text('+JOIN'))
+                  else
+                    ElevatedButton(onPressed: () {}, child: Text('LEAVE'))
+
+                  /* 
+                  Buildder(
+                    notifier: UserIsSubscriber(),
+                    builder() {
+                      
+                    }
+                  )
+                   */
                 ],
               ),
               SizedBox(height: 20),

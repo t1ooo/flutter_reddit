@@ -83,7 +83,6 @@ class RedditNotifier extends ChangeNotifier {
 
   Future<Submission> submission(String id) async {
     return redditApi.submission(id);
-
   }
 
   Future<Subreddit> subreddit(String name) async {
@@ -105,6 +104,36 @@ class SubTypeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class SubscriptionNotifier extends ChangeNotifier {
+  SubscriptionNotifier(this.redditApi, bool isSubscriber)
+      : _isSubscriber = isSubscriber;
+
+  final RedditApi redditApi;
+
+  bool _isSubscriber;
+
+  bool get isSubscriber => _isSubscriber;
+
+  Future<void> subscribe(String name) async {
+    if (isSubscriber) {
+      return;
+    }
+    _isSubscriber = !isSubscriber;
+    await redditApi.subscribe(name);
+    notifyListeners();
+  }
+
+  Future<void> unsubscribe(String name) async {
+    if (!isSubscriber) {
+      return;
+    }
+    _isSubscriber = !isSubscriber;
+    await redditApi.unsubscribe(name);
+    notifyListeners();
+  }
+}
+
 
 // class RedditNotifierFront extends ChangeNotifier {
 //   RedditNotifierFront(this.redditApi);

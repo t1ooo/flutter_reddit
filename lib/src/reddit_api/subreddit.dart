@@ -25,6 +25,7 @@ class Subreddit extends Equatable {
     required this.url,
     required this.headerImg,
     required this.bannerBackgroundImage,
+    required this.userIsSubscriber,
   });
 
   final String communityIcon;
@@ -47,6 +48,7 @@ class Subreddit extends Equatable {
   final String url;
   final String headerImg;
   final String bannerBackgroundImage;
+  final bool userIsSubscriber;
 
   // static final _log = Logger('Subreddit');
 
@@ -74,6 +76,7 @@ class Subreddit extends Equatable {
       url: mapGet(data, 'url', ''),
       headerImg: parseUri(data['header_img']),
       bannerBackgroundImage: parseUri(data['banner_background_image']),
+      userIsSubscriber: mapGet(data, 'user_is_subscriber', false),      
     );
   }
 
@@ -139,6 +142,7 @@ class Subreddit extends Equatable {
       url,
       headerImg,
       bannerBackgroundImage,
+      userIsSubscriber,
     ];
   }
 }

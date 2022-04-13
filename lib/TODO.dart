@@ -1,7 +1,12 @@
+// TODO: subreddit notification
+// TODO: save post
+// TODO: hide post
+// TODO: report
+// TODO: block user
 // TODO: gestures
+// TODO: user login
 // TODO: user settings
 // TODO: user profile
-// TODO: save post
 // TODO: comment user icon
 // TODO: comment awards
 // TODO: give award to submission

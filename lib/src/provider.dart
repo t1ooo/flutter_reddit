@@ -53,6 +53,23 @@ Future<ChangeNotifierProvider<RedditNotifier>>
   return ChangeNotifierProvider.value(value: redditNotifier);
 }
 
+Future<ChangeNotifierProvider<RedditNotifier>>
+    fakeRedditNotifierProvider() async {
+  final redditApi = FakeRedditApi();
+  final redditNotifier = RedditNotifier(redditApi);
+  return ChangeNotifierProvider.value(value: redditNotifier);
+}
+
+ChangeNotifierProvider<SubscriptionNotifier> subscriptionNotifierProvider(
+    bool isSubscriber) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SubscriptionNotifier(
+      context.read<RedditApi>(),
+      isSubscriber,
+    ),
+  );
+}
+
 // Future<ChangeNotifierProvider<RedditNotifierFront>>
 //     redditNotifierFrontProvider() async {
 //   reddit = reddit ??
