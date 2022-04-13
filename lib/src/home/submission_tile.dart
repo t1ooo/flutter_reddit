@@ -37,7 +37,7 @@ class SubmissionTile extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text('r/subreddit'),
+                        // TODO: active subreddit link
                         Text(submission.subredditNamePrefixed),
                         Row(children: [
                           Text('Post by'),
@@ -79,14 +79,14 @@ class SubmissionTile extends StatelessWidget {
             ]),
             SizedBox(height: 10),
             InkWell(
-              onTap: () {
+              onTap: activeLink ? () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => SubmissionScreen(id:submission.id)), // TODO
                 );
-              },
+              } : null,
               child: Text(
-                '${enumToString(submission.type!)}: ${submission.title}',
+                '${enumNToString(submission.type)}: ${submission.title}',
                 textScaleFactor: 2,
               ),
             ),
@@ -101,15 +101,38 @@ class SubmissionTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               // runAlignment: WrapAlignment.spaceBetween,
               children: [
-                Text(submission.upvotes > 0
-                    ? submission.upvotes.toString()
-                    : 'Vote'),
+                // Text(submission.upvotes > 0
+                //     ? submission.upvotes.toString()
+                //     : 'Vote'),
+                if (submission.upvotes > 0)
+                  Row(
+                    children: [
+                      Icon(Icons.thumb_up),
+                      Text(submission.upvotes.toString()),
+                    ],
+                  )
+                else
+                  Text('Vote'),
                 // Spacer(),
-                Text(submission.numComments > 0
-                    ? submission.numComments.toString()
-                    : 'Comment'),
+                // Text(submission.numComments > 0
+                //     ? submission.numComments.toString()
+                //     : 'Comment'),
                 // Spacer(),
-                Text('Share'),
+                if (submission.numComments > 0)
+                  Row(
+                    children: [
+                      Icon(Icons.comment),
+                      Text(submission.numComments.toString()),
+                    ],
+                  )
+                else
+                  Text('Vote'),
+                Row(
+                  children: [
+                      Icon(Icons.share),
+                    Text('Share'),
+                  ],
+                ),
                 Text('+'),
               ],
             ),

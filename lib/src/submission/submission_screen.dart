@@ -5,6 +5,7 @@ import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
+import '../reddit_api/submission.dart';
 import 'comment_field.dart';
 import 'submission.dart';
 
@@ -26,8 +27,7 @@ class SubmissionScreen extends StatelessWidget {
       body: CustomFutureBuilder(
         future: context.read<RedditNotifier>().submission(id),
         onData: (BuildContext context, Submission submission) {
-          return Text('1');
-          // return Submission(submission:submission);
+          return SubmissionWidget(submission:submission);
         },
       ),
       bottomNavigationBar: CommentField(),

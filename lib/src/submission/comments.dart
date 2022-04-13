@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_reddit_prototype/src/style/style.dart';
-
-import '../home/submission_tile.dart';
+import '../reddit_api/comment.dart';
 import 'comment.dart';
+
 
 class Comments extends StatelessWidget {
   const Comments({
     Key? key,
+    required this.comments,
     this.showNested = true,
   }) : super(key: key);
 
   final bool showNested;
+  final List<Comment> comments;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,11 @@ class Comments extends StatelessWidget {
       // return Column(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Comment(showNested: showNested),
-        Comment(showNested: showNested),
-        Comment(showNested: showNested),
+        // Comment(showNested: showNested),
+        // Comment(showNested: showNested),
+        // Comment(showNested: showNested),
+        for (final comment in comments)
+          CommentWidget(comment:comment, showNested: showNested)
       ],
     );
   }

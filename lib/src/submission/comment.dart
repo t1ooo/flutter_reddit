@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/util/date_time.dart';
 
+import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
 import 'style.dart';
 
-class Comment extends StatelessWidget {
-  const Comment({
+class CommentWidget extends StatelessWidget {
+  const CommentWidget({
     Key? key,
+    required this.comment,
     this.depth = 0,
     this.showNested = true,
   }) : super(key: key);
 
+  final Comment comment;
   final int depth;
   final bool showNested;
 
@@ -46,16 +50,18 @@ class Comment extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => UserProfileScreen(name: 'TODO')), // TODO
+                    MaterialPageRoute(
+                      builder: (_) => UserProfileScreen(name: comment.author),
+                    ),
                   );
                 },
-                child: Text('u/User'),
+                child: Text(comment.author),
               ),
               Text(' * '),
-              Text('4h'),
+              Text(formatDateTime(comment.created)),
             ],
           ),
-          Text('user comment text'),
+          Text(comment.body),
           Row(
             // alignment: WrapAlignment.end,
             // crossAxisAlignment: WrapCrossAlignment.end,
@@ -66,16 +72,16 @@ class Comment extends StatelessWidget {
               SizedBox(width: 10),
               Text('Reply'),
               SizedBox(width: 10),
-              Text('388'),
+              Text(comment.ups.toString()),
             ],
           ),
-          if (depth < 2) ...[
-            for (int i = 0; i < 2; i++)
-              Comment(
-                depth: depth + 1,
+          if (showNested)
+            for (var reply in comment.replies)
+              CommentWidget(
+                comment: reply,
                 showNested: showNested,
-              ),
-          ],
+                depth: depth + 1,
+              )
         ],
       ),
     );

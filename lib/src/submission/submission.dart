@@ -5,18 +5,20 @@ import '../home/submission_tile.dart';
 import '../reddit_api/submission.dart';
 import 'comments.dart';
 
-class Submission extends StatelessWidget {
-  const Submission({Key? key}) : super(key: key);
+class SubmissionWidget extends StatelessWidget {
+  SubmissionWidget({Key? key, required this.submission}) : super(key: key);
+
+  final Submission submission;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
         SubmissionTile(
-          submission: placeholderSubmission(),
+          submission: submission,
           activeLink: false,
         ),
-        Comments(),
+        Comments(comments: submission.comments),
         // Positioned(
         //   left: 0,
         //   right: 0,
