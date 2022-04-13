@@ -9,7 +9,6 @@
 // TODO: user settings
 // TODO: user profile
 // TODO: comment user icon
-// TODO: display comment awards *
 // TODO: give award to submission (not supported by DRAW lib)
 // TODO: give award to comment (not supported by DRAW lib)
 // TODO: user create comment

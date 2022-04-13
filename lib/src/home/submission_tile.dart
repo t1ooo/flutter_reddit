@@ -93,7 +93,7 @@ class SubmissionTile extends StatelessWidget {
             // ]),
             Awards(
               awardIcons: submission.awardIcons,
-              numAwards: submission.numAwards,
+              totalAwardsReceived: submission.totalAwardsReceived,
             ),
             SizedBox(height: 10),
             InkWell(

@@ -29,7 +29,7 @@ class Submission extends Equatable {
     required this.upvotes,
     required this.url,
     required this.awardIcons,
-    required this.numAwards,
+    required this.totalAwardsReceived,
     required this.type,
     required this.comments,
   });
@@ -55,7 +55,7 @@ class Submission extends Equatable {
   final int upvotes;
   final String url;
   final List<String> awardIcons;
-  final int numAwards;
+  final int totalAwardsReceived;
   final SubType? type;
   // final CommentForest? comments;
   final List<Comment> comments;
@@ -88,7 +88,7 @@ class Submission extends Equatable {
       id: mapGet(data, 'id', ''),
       isVideo: mapGet(data, 'is_video', false),
       linkFlairText: mapGet(data, 'link_flair_text', ''),
-      numAwards: mapGet(data, 'total_awards_received', 0),
+      totalAwardsReceived: mapGet(data, 'total_awards_received', 0),
       numComments: mapGet(data, 'num_comments', 0),
       over18: mapGet(data, 'over_18', false),
       pinned: mapGet(data, 'pinned', false),
@@ -130,7 +130,7 @@ class Submission extends Equatable {
       upvotes,
       url,
       awardIcons,
-      numAwards,
+      totalAwardsReceived,
       type,
       comments,
     ];
@@ -161,7 +161,7 @@ Submission placeholderSubmission() {
     upvotes: 0,
     url: 'https://example.com',
     awardIcons: [],
-    numAwards: 0,
+    totalAwardsReceived: 0,
     type: SubType.best,
     comments: [],
   );

@@ -62,7 +62,7 @@ class CommentWidget extends StatelessWidget {
               Text(formatDateTime(comment.created)),
               Awards(
                 awardIcons:comment.awardIcons,
-                numAwards: comment.numAwards,
+                totalAwardsReceived: comment.totalAwardsReceived,
               ),
             ],
           ),
