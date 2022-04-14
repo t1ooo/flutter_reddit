@@ -108,6 +108,14 @@ class Comment extends Equatable {
 
   // String get submissionId => linkId.split('_').last;
 
+  // static String _genShortLink(String submissionId, String id) {
+  String get shortLink {
+    if (submissionId == '' || id == '') {
+      return '';
+    }
+    return 'https://www.reddit.com/comments/$submissionId/_/$id';
+  }
+
   factory Comment.fromMap(Map data) {
     return Comment(
       subredditId: mapGet(data, 'subreddit_id', ''),
@@ -148,7 +156,7 @@ class Comment extends Equatable {
       permalink: mapGet(data, 'permalink', ''),
       subredditType: mapGet(data, 'subreddit_type', ''),
       // linkPermalink: mapGet(data, 'link_permalink', ''),
-      linkPermalink: parseUri(data['link_permalink']),
+      linkPermalink: parseUrl(data['link_permalink']),
       name: mapGet(data, 'name', ''),
       subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
       treatmentTags: mapGetList(data, 'treatment_tags', []),
@@ -157,9 +165,10 @@ class Comment extends Equatable {
       locked: mapGet(data, 'locked', false),
       quarantine: mapGet(data, 'quarantine', false),
       // linkUrl: mapGet(data, 'link_url', ''),
-      linkUrl: parseUri(data['link_url']),
+      linkUrl: parseUrl(data['link_url']),
       submissionId: mapGet(data, 'link_id', '').split('_').last,
       awardIcons: parseAwardIcons(data['all_awardings']),
+      // shortLink: _genShortLink(mapGet(data, 'id', '')),
     );
   }
 

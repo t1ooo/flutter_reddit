@@ -171,7 +171,7 @@ class SubmissionTile extends StatelessWidget {
                 // ),
                 ShareButton(
                   title: submission.title,
-                  url: submission.url,
+                  url: submission.shortLink,
                 ),
                 Icon(Icons.star_outline),
               ],

@@ -9,9 +9,9 @@ deps=(
     clock
     intl
     share_plus
-    share_plus_linux
+    # share_plus_linux
     url_launcher
-    url_launcher_linux
+    # url_launcher_linux
 )
 
 dev_deps=(

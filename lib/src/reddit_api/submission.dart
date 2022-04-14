@@ -35,6 +35,7 @@ class Submission extends Equatable {
     required this.type,
     required this.comments,
     required this.saved,
+    // required this.shortLink,
   });
 
   final String author;
@@ -64,6 +65,7 @@ class Submission extends Equatable {
   final SubType? type;
   // final CommentForest? comments;
   final List<Comment> comments;
+  // final String shortLink;
 
   // static final _log = Logger('Submission');
 
@@ -72,6 +74,13 @@ class Submission extends Equatable {
     final text = selftext.replaceAll(RegExp(r'\s+'), ' ');
     // return selftext.length <= _descLen ? selftext : selftext.substring(0, _descLen);
     return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
+  }
+
+  String get shortLink {
+    if (id == '') {
+      return '';
+    }
+    return 'https://redd.it/$id';
   }
 
   // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
@@ -101,16 +110,24 @@ class Submission extends Equatable {
       selftext: mapGet(data, 'selftext', ''),
       subreddit: mapGet(data, 'subreddit', ''),
       subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
-      thumbnail: parseUri(data['thumbnail']),
+      thumbnail: parseUrl(data['thumbnail']),
       title: mapGet(data, 'title', ''),
       upvotes: mapGet(data, 'ups', 0),
-      url: parseUri(data['url']),
+      url: parseUrl(data['url']),
       likes: parseLikes(data['likes']),
       saved: mapGet(data, 'saved', false),
+      // shortLink: _genShortLink(mapGet(data, 'id', '')),
       type: type,
       comments: comments,
     );
   }
+
+  // static String _genShortLink(String id) {
+  //   if (id == '') {
+  //     return '';
+  //   }
+  //   return 'https://redd.it/$id';
+  // }
 
   @override
   List<Object?> get props {
@@ -142,6 +159,7 @@ class Submission extends Equatable {
       type,
       comments,
       saved,
+      shortLink,
     ];
   }
 }
@@ -174,6 +192,7 @@ Submission placeholderSubmission() {
     likes: Vote.none,
     type: SubType.best,
     comments: [],
-    saved:false,
+    saved: false,
+    // shortLink: '',
   );
 }

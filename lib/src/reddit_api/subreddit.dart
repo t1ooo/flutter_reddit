@@ -56,7 +56,7 @@ class Subreddit extends Equatable {
   factory Subreddit.fromMap(Map data) {
     // final data = sub.data!;
     return Subreddit(
-      communityIcon: parseUri(data['community_icon']),
+      communityIcon: parseUrl(data['community_icon']),
       created: parseTime(data['created']),
       createdUtc: parseTime(data['created_utc'], isUtc: true),
       description: mapGet(data, 'description', ''),
@@ -74,8 +74,8 @@ class Subreddit extends Equatable {
       subscribers: mapGet(data, 'subscribers', 0),
       title: mapGet(data, 'title', ''),
       url: mapGet(data, 'url', ''),
-      headerImg: parseUri(data['header_img']),
-      bannerBackgroundImage: parseUri(data['banner_background_image']),
+      headerImg: parseUrl(data['header_img']),
+      bannerBackgroundImage: parseUrl(data['banner_background_image']),
       userIsSubscriber: mapGet(data, 'user_is_subscriber', false),      
     );
   }

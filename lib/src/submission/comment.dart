@@ -62,7 +62,7 @@ class CommentWidget extends StatelessWidget {
               Text(' * '),
               Text(formatDateTime(comment.created)),
               Awards(
-                awardIcons:comment.awardIcons,
+                awardIcons: comment.awardIcons,
                 totalAwardsReceived: comment.totalAwardsReceived,
               ),
             ],
@@ -74,7 +74,7 @@ class CommentWidget extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Spacer(),
-              Text('...'),
+              Icon(Icons.more_vert),
               SizedBox(width: 20),
               Icon(Icons.star_outline),
               SizedBox(width: 20),
@@ -86,8 +86,7 @@ class CommentWidget extends StatelessWidget {
               // Icon(Icons.expand_less),
               // Text(comment.ups.toString()),
               // Icon(Icons.expand_more),
-              CommentVoteButton(comment:comment),
-
+              CommentVoteButton(comment: comment),
             ],
           ),
           if (showNested)

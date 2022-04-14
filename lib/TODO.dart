@@ -1,7 +1,9 @@
+// TODO: comment context menu *
+// TODO: share comment *
 // TODO: block user
 // TODO: report
-// TODO: hide submission
-// TODO: share submission *
+// TODO: hide hidden submission
+// TODO: hide/unhide submission
 // TODO: cache
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: subreddit notification

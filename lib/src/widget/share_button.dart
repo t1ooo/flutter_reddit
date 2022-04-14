@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 class ShareButton extends StatelessWidget {
   const ShareButton({
@@ -16,9 +16,8 @@ class ShareButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        print(url);
-        // Share.share('$title $url', subject:'mail@example.com');
-        shareDesktop('$url', subject:'mail@example.com');
+        Share.share('$title $url');
+        // shareDesktop('$url', subject:'mail@example.com');
       },
       child: Row(
         children: [
@@ -30,24 +29,24 @@ class ShareButton extends StatelessWidget {
   }
 }
 
-Future<void> shareDesktop(
-  String text, {
-  String? subject,
-  Rect? sharePositionOrigin,
-}) async {
-  final queryParameters = {
-    if (subject != null) 'subject': subject,
-    'body': text,
-  };
+// Future<void> shareDesktop(
+//   String text, {
+//   String? subject,
+//   Rect? sharePositionOrigin,
+// }) async {
+//   final queryParameters = {
+//     if (subject != null) 'subject': subject,
+//     'body': text,
+//   };
 
-  // see https://github.com/dart-lang/sdk/issues/43838#issuecomment-823551891
-  final uri = Uri(
-    scheme: 'mailto',
-    query: queryParameters.entries
-        .map((e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-        .join('&'),
-  );
+//   // see https://github.com/dart-lang/sdk/issues/43838#issuecomment-823551891
+//   final uri = Uri(
+//     scheme: 'mailto',
+//     query: queryParameters.entries
+//         .map((e) =>
+//             '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+//         .join('&'),
+//   );
 
-  await launch(uri.toString());
-}
+//   await launch(uri.toString());
+// }

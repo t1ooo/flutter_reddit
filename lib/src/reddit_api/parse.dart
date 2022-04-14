@@ -59,7 +59,7 @@ List<Comment> parseCommentReplies(dynamic data) {
   // return [];
 }
 
-String parseUri(dynamic data) {
+String parseUrl(dynamic data) {
   final s = cast<String>(data, '');
   if (s == '') {
     _log.warning('fail to parse uri: $data');
@@ -74,7 +74,7 @@ String parseUri(dynamic data) {
 }
 
 // String parseIcon(dynamic data) {
-//   final s = parseUri(data);
+//   final s = parseUrl(data);
 //   final uri = Uri.tryParse(s);
 //   if (uri == null) {
 //     _log.warning('fail to parse icon: $data');
@@ -127,7 +127,7 @@ List<String> parseAwardIcons(dynamic data) {
     //     .toList();
 
     return (data as List<dynamic>).map((v) {
-      return parseUri(v?['resized_icons']?[0]?['url']);
+      return parseUrl(v?['resized_icons']?[0]?['url']);
     }).where((v) {
       return v != '';
     }).toList();
