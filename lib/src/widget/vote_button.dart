@@ -19,12 +19,12 @@ class VoteButton extends StatelessWidget {
     Key? key,
     required this.submission,
     // required this.isVoter,
-    this.isUserPage = false,
+    // this.isUserPage = false,
   }) : super(key: key);
 
   final Submission submission;
   // final bool isVoter;
-  final bool isUserPage;
+  // final bool isUserPage;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class VoteButton extends StatelessWidget {
     ); */
 
     return MultiProvider(
-      providers: [submissionVoteNotifierProvider(submission.likes, submission.upvotes)],
+      providers: [submissionVoteNotifierProvider(submission)],
       child: Builder(
         builder: (c) {
           final notifier = c.watch<SubmissionVoteNotifier>();
@@ -61,7 +61,7 @@ class VoteButton extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.expand_less,
-                  color: submission.likes == Vote.up ? Colors.green : null,
+                  color: notifier.vote == Vote.up ? Colors.green : null,
                 ),
               ),
 
@@ -87,7 +87,7 @@ class VoteButton extends StatelessWidget {
               //   color: submission.likes == Vote.up ? Colors.red : null,
               // ),
 
-              Text(notifier.upvotes.toString()),
+              Text(notifier.score.toString()),
               IconButton(
                 onPressed: () async {
                   notifier.vote == Vote.down
@@ -96,7 +96,7 @@ class VoteButton extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.expand_more,
-                  color: submission.likes == Vote.down ? Colors.red : null,
+                  color: notifier.vote == Vote.down ? Colors.red : null,
                 ),
               ),
             ],

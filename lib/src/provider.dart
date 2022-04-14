@@ -1,21 +1,11 @@
-import 'dart:io';
 
 import 'package:draw/draw.dart' as draw;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/vote.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 import 'notifier/reddir_notifier.dart';
 import 'reddit_api/reddir_api.dart';
-
-const clientId = 'JmK31vyAOebqCsKrwUticg';
-const secret = 'l2b3p-Ldfm_6rs4qvX16bm9W_0XdPw';
-const username = 'graibn';
-const password = '5"u/#sAJh%=aGo^k(2Kh*&A8ft<l9=29';
-
-draw.Reddit? reddit;
+import 'reddit_api/submission.dart';
 
 // Future<ChangeNotifierProvider<RedditNotifier>> redditNotifierProvider() async {
 //   reddit = reddit ??
@@ -48,14 +38,18 @@ draw.Reddit? reddit;
 // }
 
 Future<Provider<RedditApi>> redditApiProvider() async {
-  reddit = reddit ??
-      await draw.Reddit.createScriptInstance(
-        clientId: clientId,
-        clientSecret: secret,
-        userAgent: 'Flutter Client',
-        username: username,
-        password: password, // Fake
-      );
+  const clientId = 'JmK31vyAOebqCsKrwUticg';
+  const secret = 'l2b3p-Ldfm_6rs4qvX16bm9W_0XdPw';
+  const username = 'graibn';
+  const password = '5"u/#sAJh%=aGo^k(2Kh*&A8ft<l9=29';
+
+  final reddit = await draw.Reddit.createScriptInstance(
+    clientId: clientId,
+    clientSecret: secret,
+    userAgent: 'Flutter Client',
+    username: username,
+    password: password, // Fake
+  );
 
   // final anonymousReddit = await draw.Reddit.createReadOnlyInstance(
   //   clientId: clientId,
@@ -64,7 +58,7 @@ Future<Provider<RedditApi>> redditApiProvider() async {
   // );
 
   // final redditApi = RedditApiImpl(reddit, anonymousReddit);
-  final redditApi = RedditApiImpl(reddit!);
+  final redditApi = RedditApiImpl(reddit);
   // final redditApi = FakeRedditApi(reddit, anonymousReddit);
   // final redditApi = FakeRedditApi(reddit!);
 
@@ -98,12 +92,11 @@ ChangeNotifierProvider<SubscriptionNotifier> subscriptionNotifierProvider(
 }
 
 ChangeNotifierProvider<SubmissionVoteNotifier> submissionVoteNotifierProvider(
-    Vote vote, int upvotes) {
+    Submission submission) {
   return ChangeNotifierProvider(
     create: (BuildContext context) => SubmissionVoteNotifier(
       context.read<RedditApi>(),
-      vote,
-      upvotes,
+      submission,
     ),
   );
 }

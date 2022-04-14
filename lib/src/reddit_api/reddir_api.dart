@@ -45,6 +45,7 @@ abstract class RedditApi {
   Future<Submission> submission(String id);
 
   Future<void> submissionVote(String id, Vote vote);
+  Future<void> commentVote(String id, Vote vote);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -69,6 +70,24 @@ class RedditApiImpl implements RedditApi {
       yield sub;
     }
   }
+
+  // Stream<Submission> _submissions(draw.BaseListingMixin s, {required int limit, required SubType type}) {
+  // switch (type) {
+  //     case SubType.best:
+  //       return _submissionsStream(s.best(limit: limit), SubType.best);
+  //     case SubType.hot:
+  //       return _submissionsStream(s.hot(limit: limit), SubType.hot);
+  //     case SubType.newest:
+  //       return _submissionsStream(s.newest(limit: limit), SubType.newest);
+  //     case SubType.top:
+  //       return _submissionsStream(s.top(limit: limit), SubType.top);
+  //     case SubType.rising:
+  //       return _submissionsStream(s.rising(limit: limit), SubType.rising);
+  //     case SubType.controversial:
+  //       return _submissionsStream(
+  //           s.controversial(limit: limit), SubType.controversial);
+  //   }
+  // }
 
   Stream<Submission> front({required int limit, required SubType type}) {
     final s = reddit.front;
@@ -214,6 +233,31 @@ class RedditApiImpl implements RedditApi {
   // TODO: use draw.Submission instead id for optimisation
   Future<void> submissionVote(String id, Vote vote) async {
     final s = await reddit.submission(id: id).populate();
+    return _vote(s, vote);
+    // switch (vote) {
+    //   case Vote.none:
+    //     return s.clearVote();
+    //   case Vote.up:
+    //     return s.upvote();
+    //   case Vote.down:
+    //     return s.downvote();
+    // }
+  }
+
+  Future<void> commentVote(String id, Vote vote) async {
+    final s = await reddit.comment(id: id).populate();
+    return _vote(s, vote);
+    // switch (vote) {
+    //   case Vote.none:
+    //     return s.clearVote();
+    //   case Vote.up:
+    //     return s.upvote();
+    //   case Vote.down:
+    //     return s.downvote();
+    // }
+  }
+
+  Future<void> _vote(draw.VoteableMixin s, Vote vote) async {
     switch (vote) {
       case Vote.none:
         return s.clearVote();
@@ -379,6 +423,12 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<void> submissionVote(String id, Vote vote) async {
+    await Future.delayed(_delay);
+    return;
+  }
+
+  @override
+  Future<void> commentVote(String id, Vote vote) async {
     await Future.delayed(_delay);
     return;
   }

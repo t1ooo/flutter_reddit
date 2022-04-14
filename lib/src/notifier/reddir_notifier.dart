@@ -171,12 +171,12 @@ class SubscriptionNotifier extends ChangeNotifier {
 // TODO: add LoadingMixin, disable/enable button
 // TODO: replace to ErrorMixin
 abstract class VoteNotifier extends ChangeNotifier {
-  VoteNotifier(this.redditApi, Vote vote, int upvotes) : 
+  VoteNotifier(this.redditApi, Vote vote, int score) : 
   _vote = vote,
-  _upvotes = upvotes;
+  _score = score;
 
-  int _upvotes;
-  int get upvotes => _upvotes;
+  int _score;
+  int get score => _score;
 
   final RedditApi redditApi;
   static final _log = Logger('VoteNotifier');
@@ -209,7 +209,7 @@ abstract class VoteNotifier extends ChangeNotifier {
     try {
       // await redditApi.submissionVote(id, vote);
       await _doVote(id, vote);
-      _updateUpvotes(vote);
+      _updateScore(vote);
       _vote = vote;
     } on Exception catch (e) {
       _log.error(e);
@@ -219,24 +219,24 @@ abstract class VoteNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _updateUpvotes(Vote newVote) {
+  void _updateScore(Vote newVote) {
     if (_vote == Vote.up) {
       if (newVote == Vote.down) {
-        _upvotes = _upvotes - 2;
+        _score = _score - 2;
       } else if (newVote == Vote.none) {
-        _upvotes = _upvotes - 1;
+        _score = _score - 1;
       }
     } else if (_vote == Vote.none) {
       if (newVote == Vote.down) {
-        _upvotes = _upvotes - 1;
+        _score = _score - 1;
       } else if (newVote == Vote.up) {
-        _upvotes = _upvotes + 1;
+        _score = _score + 1;
       }
     } else if (_vote == Vote.down) {
       if (newVote == Vote.up) {
-        _upvotes = _upvotes + 2;
+        _score = _score + 2;
       } else if (newVote == Vote.none) {
-        _upvotes = _upvotes + 1;
+        _score = _score + 1;
       }
     }
   }
@@ -245,8 +245,8 @@ abstract class VoteNotifier extends ChangeNotifier {
 }
 
 class SubmissionVoteNotifier extends VoteNotifier {
-  SubmissionVoteNotifier(RedditApi redditApi, Vote vote, int upvotes)
-      : super(redditApi, vote, upvotes);
+  SubmissionVoteNotifier(RedditApi redditApi, Submission submission)
+      : super(redditApi, submission.likes, submission.score);
 
   @override
   Future<void> _doVote(String id, Vote vote) {
@@ -254,9 +254,19 @@ class SubmissionVoteNotifier extends VoteNotifier {
   }
 }
 
+class CommentVoteNotifier extends VoteNotifier {
+  CommentVoteNotifier(RedditApi redditApi, Comment comment)
+      : super(redditApi, comment.likes, comment.score);
+
+  @override
+  Future<void> _doVote(String id, Vote vote) {
+    return redditApi.commentVote(id, vote);
+  }
+}
+
 // class CommentVoteNotifier extends VoteNotifier {
 //   CommentNotifier(RedditApi redditApi, Comment comment)
-//       : super(redditApi, comment.likes, comment.upvotes);
+//       : super(redditApi, comment.likes, comment.score);
 
 //   @override
 //   Future<void> _doVote(String id, Vote vote) {

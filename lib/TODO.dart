@@ -1,3 +1,4 @@
+// TODO: share submission
 // TODO: FIX: use score for likes *
 // TODO: comment vote *
 // TODO: cache

@@ -33,7 +33,7 @@ T mapGet<T>(Map m, String key, T defaultValue) {
     return val as T;
   } on TypeError catch (_) {
     // _log.warning(e);
-    _log.info('fail to cast: {$key: $val} to <$T>');
+    _log.warning('fail to cast: {$key: $val} to <$T>');
     return defaultValue;
   }
 }
@@ -44,7 +44,7 @@ List<T> mapGetList<T>(Map m, String key, List<T> defaultValue) {
     return val.cast<T>();
   } on TypeError catch (_) {
     // _log.warning(e);
-    _log.info('fail to cast: {$key: $val} to List<$T>');
+    _log.warning('fail to cast: {$key: $val} to List<$T>');
     return defaultValue;
   }
 }
