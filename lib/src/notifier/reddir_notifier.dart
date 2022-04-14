@@ -9,6 +9,7 @@ import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
+import '../reddit_api/vote.dart';
 
 // class RedditNotifier extends ChangeNotifier {
 //   RedditNotifier(this.redditApi);
@@ -89,6 +90,10 @@ class RedditNotifier extends ChangeNotifier {
   Future<Subreddit> subreddit(String name) async {
     return redditApi.subreddit(name);
   }
+
+  Future<void> submissionVote(String id, Vote vote) async {
+    return redditApi.submissionVote(id, vote);
+  }
 }
 
 class SubTypeNotifier extends ChangeNotifier {
@@ -162,6 +167,118 @@ class SubscriptionNotifier extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+// TODO: add LoadingMixin, disable/enable button
+// TODO: replace to ErrorMixin
+abstract class VoteNotifier extends ChangeNotifier {
+  VoteNotifier(this.redditApi, Vote vote, int upvotes) : 
+  _vote = vote,
+  _upvotes = upvotes;
+
+  int _upvotes;
+  int get upvotes => _upvotes;
+
+  final RedditApi redditApi;
+  static final _log = Logger('VoteNotifier');
+
+  Object? _error;
+  Object? get error {
+    final tmp = _error;
+    _error = null;
+    return tmp;
+  }
+
+  Vote _vote;
+  Vote get vote => _vote;
+
+  Future<void> upVote(String id) async {
+    await _updateVote(id, Vote.up);
+  }
+
+  Future<void> downVote(String id) async {
+    await _updateVote(id, Vote.down);
+  }
+
+  Future<void> clearVote(String id) async {
+    await _updateVote(id, Vote.none);
+  }
+
+  Future<void> _updateVote(String id, Vote vote) async {
+    if (_vote == vote) return;
+
+    try {
+      // await redditApi.submissionVote(id, vote);
+      await _doVote(id, vote);
+      _updateUpvotes(vote);
+      _vote = vote;
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = e;
+    }
+
+    notifyListeners();
+  }
+
+  void _updateUpvotes(Vote newVote) {
+    if (_vote == Vote.up) {
+      if (newVote == Vote.down) {
+        _upvotes = _upvotes - 2;
+      } else if (newVote == Vote.none) {
+        _upvotes = _upvotes - 1;
+      }
+    } else if (_vote == Vote.none) {
+      if (newVote == Vote.down) {
+        _upvotes = _upvotes - 1;
+      } else if (newVote == Vote.up) {
+        _upvotes = _upvotes + 1;
+      }
+    } else if (_vote == Vote.down) {
+      if (newVote == Vote.up) {
+        _upvotes = _upvotes + 2;
+      } else if (newVote == Vote.none) {
+        _upvotes = _upvotes + 1;
+      }
+    }
+  }
+
+  Future<void> _doVote(String id, Vote vote);
+}
+
+class SubmissionVoteNotifier extends VoteNotifier {
+  SubmissionVoteNotifier(RedditApi redditApi, Vote vote, int upvotes)
+      : super(redditApi, vote, upvotes);
+
+  @override
+  Future<void> _doVote(String id, Vote vote) {
+    return redditApi.submissionVote(id, vote);
+  }
+}
+
+// class CommentVoteNotifier extends VoteNotifier {
+//   CommentNotifier(RedditApi redditApi, Comment comment)
+//       : super(redditApi, comment.likes, comment.upvotes);
+
+//   @override
+//   Future<void> _doVote(String id, Vote vote) {
+//     return redditApi.submissionVote(id, vote);
+//   }
+// }
+
+// class CommentVoteNotifier extends VoteNotifier {
+//   CommentVoteNotifier(RedditApi redditApi, Vote vote) : super(redditApi, vote);
+
+//   @override
+//   Future<void> _doVote(String id, Vote vote) {
+//     return redditApi.commentVote(id, vote);
+//   }
+// }
+
+
+
+
+
+
+
 
 
 // class RedditNotifierFront extends ChangeNotifier {

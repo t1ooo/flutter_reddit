@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../util/map.dart';
 import 'comment.dart';
+import 'vote.dart';
 import 'parse.dart';
 import 'submission_type.dart';
 
@@ -30,6 +31,7 @@ class Submission extends Equatable {
     required this.url,
     required this.awardIcons,
     required this.totalAwardsReceived,
+    required this.likes,
     required this.type,
     required this.comments,
   });
@@ -56,6 +58,7 @@ class Submission extends Equatable {
   final String url;
   final List<String> awardIcons;
   final int totalAwardsReceived;
+  final Vote likes;
   final SubType? type;
   // final CommentForest? comments;
   final List<Comment> comments;
@@ -100,6 +103,7 @@ class Submission extends Equatable {
       title: mapGet(data, 'title', ''),
       upvotes: mapGet(data, 'ups', 0),
       url: mapGet(data, 'url', ''),
+      likes: parseLikes(data['likes']),
       type: type,
       comments: comments,
     );
@@ -131,6 +135,7 @@ class Submission extends Equatable {
       url,
       awardIcons,
       totalAwardsReceived,
+      likes,
       type,
       comments,
     ];
@@ -162,6 +167,7 @@ Submission placeholderSubmission() {
     url: 'https://example.com',
     awardIcons: [],
     totalAwardsReceived: 0,
+    likes: Vote.none,
     type: SubType.best,
     comments: [],
   );

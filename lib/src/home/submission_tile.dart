@@ -8,6 +8,7 @@ import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/enum.dart';
 import '../widget/sized_placeholder.dart';
+import '../widget/vote_button.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
@@ -137,13 +138,14 @@ class SubmissionTile extends StatelessWidget {
                 //   )
                 // else
                 //   Text('Vote'),
-                Row(
-                  children: [
-                    Icon(Icons.expand_less),
-                    Text(submission.upvotes.toString()),
-                    Icon(Icons.expand_more),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Icon(Icons.expand_less),
+                //     Text(submission.upvotes.toString()),
+                //     Icon(Icons.expand_more),
+                //   ],
+                // ),
+                VoteButton(submission:submission),
                 // Spacer(),
                 // Text(submission.numComments > 0
                 //     ? submission.numComments.toString()

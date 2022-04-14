@@ -5,8 +5,26 @@ import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
+import 'vote.dart';
 
 final _log = Logger('parserLog');
+
+
+
+Vote parseLikes(dynamic data) {
+  if(data == null) {
+    return Vote.none;
+  }
+  if(data == true) {
+    return Vote.up;
+  }
+  if(data == false) {
+    return Vote.up;
+  }
+
+  _log.warning('fail to parse likes: $data');
+  return Vote.none;
+}
 
 List<Comment> parseCommentReplies(dynamic data) {
   try {

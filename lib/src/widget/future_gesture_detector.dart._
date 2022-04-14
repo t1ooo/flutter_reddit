@@ -1,0 +1,46 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+typedef FutureVoidCallback = Future<void> Function();
+
+/// auto disabled during onPressed and onLongPress
+class FutureGestureDetector extends StatefulWidget {
+  const FutureGestureDetector({
+    Key? key,
+    this.onTap,
+    this.onLongPress,
+    this.child,
+  }) : super(key: key);
+
+  // final Key? key;
+  final FutureVoidCallback? onTap;
+  final FutureVoidCallback? onLongPress;
+  final Widget? child;
+
+  @override
+  State<FutureGestureDetector> createState() => _FutureGestureDetectorState();
+}
+
+class _FutureGestureDetectorState extends State<FutureGestureDetector> {
+  bool _disabled = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AbsorbPointer(
+      absorbing: !_disabled,
+      child: GestureDetector(
+        onTap: _disabled ? null : () => _call(widget.onTap),
+        onLongPress: _disabled ? null : () => _call(widget.onLongPress),
+        child: widget.child,
+      ),
+    );
+  }
+
+  Future<void> _call(FutureVoidCallback? fn) async {
+    if (fn == null) return;
+    setState(() => _disabled = true);
+    await fn();
+    setState(() => _disabled = false);
+  }
+}

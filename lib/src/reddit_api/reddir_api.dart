@@ -12,6 +12,7 @@ import 'comment.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
+import 'vote.dart';
 
 // abstract class RedditApi {
 //   Future<List<Submission>> front({required int limit});
@@ -42,6 +43,8 @@ abstract class RedditApi {
   Future<void> unsubscribe(String name);
 
   Future<Submission> submission(String id);
+
+  Future<void> submissionVote(String id, Vote vote);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -207,6 +210,35 @@ class RedditApiImpl implements RedditApi {
     final sub = await subRef.populate();
     return Subreddit.fromMap(sub.data!);
   }
+
+  // TODO: use draw.Submission instead id for optimisation
+  Future<void> submissionVote(String id, Vote vote) async {
+    final s = await reddit.submission(id: id).populate();
+    switch (vote) {
+      case Vote.none:
+        return s.clearVote();
+      case Vote.up:
+        return s.upvote();
+      case Vote.down:
+        return s.downvote();
+    }
+  }
+
+  // Future<void> submissionUpvote(String id) async {
+  //   return (await reddit.submission(id: id).populate()).upvote();
+  // }
+
+  // Future<void> submissionDownvote(String id) async {
+  //   return (await reddit.submission(id: id).populate()).downvote();
+  // }
+
+  // Future<void> commentUpvote(String id) async {
+  //   return (await reddit.comment(id: id).populate()).upvote();
+  // }
+
+  // Future<void> commentDownvote(String id) async {
+  //   return (await reddit.comment(id: id).populate()).downvote();
+  // }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -297,7 +329,6 @@ class FakeRedditApi implements RedditApi {
         .map((v) => v as Map<dynamic, dynamic>)
         .map((v) => Trophy.fromMap(v));
 
-
     return items.toList();
   }
 
@@ -323,7 +354,6 @@ class FakeRedditApi implements RedditApi {
         .map((v) => Comment.fromMap(v))
         .toList();
 
-
     // print(comments);
     return Submission.fromMap(
       jsonDecode(subData) as Map,
@@ -346,5 +376,10 @@ class FakeRedditApi implements RedditApi {
   Future<Subreddit> subreddit(String name) async {
     final data = await File('data/subreddit.json').readAsString();
     return Subreddit.fromMap(jsonDecode(data) as Map);
+  }
+
+  Future<void> submissionVote(String id, Vote vote) async {
+    await Future.delayed(_delay);
+    return;
   }
 }

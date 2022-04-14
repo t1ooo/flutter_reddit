@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/vote.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
@@ -92,6 +93,17 @@ ChangeNotifierProvider<SubscriptionNotifier> subscriptionNotifierProvider(
     create: (BuildContext context) => SubscriptionNotifier(
       context.read<RedditApi>(),
       isSubscriber,
+    ),
+  );
+}
+
+ChangeNotifierProvider<SubmissionVoteNotifier> submissionVoteNotifierProvider(
+    Vote vote, int upvotes) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SubmissionVoteNotifier(
+      context.read<RedditApi>(),
+      vote,
+      upvotes,
     ),
   );
 }

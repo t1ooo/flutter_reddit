@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
 import '../util/map.dart';
+import 'vote.dart';
 
 class Comment extends Equatable {
   Comment({
@@ -64,7 +65,7 @@ class Comment extends Equatable {
   final int totalAwardsReceived;
   final String subreddit;
   final String linkAuthor;
-  final int likes;
+  final Vote likes;
   final List<Comment> replies;
   final bool saved;
   final String id;
@@ -118,7 +119,7 @@ class Comment extends Equatable {
       totalAwardsReceived: mapGet(data, 'total_awards_received', 0),
       subreddit: mapGet(data, 'subreddit', ''),
       linkAuthor: mapGet(data, 'link_author', ''),
-      likes: mapGet(data, 'likes', 0),
+      likes: parseLikes(data['likes']),
       // replies: mapGet(data, 'replies', []),
       replies: parseCommentReplies(data['replies']),
       saved: mapGet(data, 'saved', false),
