@@ -1,4 +1,3 @@
-
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -106,6 +105,26 @@ ChangeNotifierProvider<CommentVoteNotifier> commentVoteNotifierProvider(
     Comment comment) {
   return ChangeNotifierProvider(
     create: (BuildContext context) => CommentVoteNotifier(
+      context.read<RedditApi>(),
+      comment,
+    ),
+  );
+}
+
+ChangeNotifierProvider<SubmissionSaveNotifier> submissionSaveNotifierProvider(
+    Submission submission) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SubmissionSaveNotifier(
+      context.read<RedditApi>(),
+      submission,
+    ),
+  );
+}
+
+ChangeNotifierProvider<CommentSaveNotifier> commentSaveNotifierProvider(
+    Comment comment) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => CommentSaveNotifier(
       context.read<RedditApi>(),
       comment,
     ),

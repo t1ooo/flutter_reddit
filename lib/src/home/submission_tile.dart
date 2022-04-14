@@ -7,6 +7,8 @@ import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/enum.dart';
+import '../widget/save_button.dart';
+import '../widget/share_button.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/vote_button.dart';
 
@@ -76,7 +78,8 @@ class SubmissionTile extends StatelessWidget {
                 ),
                 // Text('+'),
                 Row(children: [
-                  Text('+'),
+                  // Text('+'),
+                  SubmissionSaveButton(submission: submission),
                   SizedBox(width: 10),
                   Text('...'),
                 ]),
@@ -145,7 +148,7 @@ class SubmissionTile extends StatelessWidget {
                 //     Icon(Icons.expand_more),
                 //   ],
                 // ),
-                SubmissionVoteButton(submission:submission),
+                SubmissionVoteButton(submission: submission),
                 // Spacer(),
                 // Text(submission.numComments > 0
                 //     ? submission.numComments.toString()
@@ -160,11 +163,15 @@ class SubmissionTile extends StatelessWidget {
                 ),
                 // else
                 // Text('Comment'),
-                Row(
-                  children: [
-                    Icon(Icons.share),
-                    Text('Share'),
-                  ],
+                // Row(
+                //   children: [
+                //     Icon(Icons.share),
+                //     Text('Share'),
+                //   ],
+                // ),
+                ShareButton(
+                  title: submission.title,
+                  url: submission.url,
                 ),
                 Icon(Icons.star_outline),
               ],

@@ -46,6 +46,12 @@ abstract class RedditApi {
 
   Future<void> submissionVote(String id, Vote vote);
   Future<void> commentVote(String id, Vote vote);
+
+  Future<void> submissionSave(String id);
+  Future<void> submissionUnsave(String id);
+
+  Future<void> commentSave(String id);
+  Future<void> commentUnsave(String id);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -234,27 +240,11 @@ class RedditApiImpl implements RedditApi {
   Future<void> submissionVote(String id, Vote vote) async {
     final s = await reddit.submission(id: id).populate();
     return _vote(s, vote);
-    // switch (vote) {
-    //   case Vote.none:
-    //     return s.clearVote();
-    //   case Vote.up:
-    //     return s.upvote();
-    //   case Vote.down:
-    //     return s.downvote();
-    // }
   }
 
   Future<void> commentVote(String id, Vote vote) async {
     final s = await reddit.comment(id: id).populate();
     return _vote(s, vote);
-    // switch (vote) {
-    //   case Vote.none:
-    //     return s.clearVote();
-    //   case Vote.up:
-    //     return s.upvote();
-    //   case Vote.down:
-    //     return s.downvote();
-    // }
   }
 
   Future<void> _vote(draw.VoteableMixin s, Vote vote) async {
@@ -266,6 +256,26 @@ class RedditApiImpl implements RedditApi {
       case Vote.down:
         return s.downvote();
     }
+  }
+
+  Future<void> submissionSave(String id) async {
+    final s = await reddit.submission(id: id).populate();
+    return s.save();
+  }
+
+  Future<void> submissionUnsave(String id) async {
+    final s = await reddit.submission(id: id).populate();
+    return s.unsave();
+  }
+
+  Future<void> commentSave(String id) async {
+    final s = await reddit.comment(id: id).populate();
+    return s.save();
+  }
+
+  Future<void> commentUnsave(String id) async {
+    final s = await reddit.comment(id: id).populate();
+    return s.unsave();
   }
 
   // Future<void> submissionUpvote(String id) async {
@@ -429,6 +439,26 @@ class FakeRedditApi implements RedditApi {
 
   @override
   Future<void> commentVote(String id, Vote vote) async {
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> submissionSave(String id) async {
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> submissionUnsave(String id) async {
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> commentSave(String id) async {
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> commentUnsave(String id) async {
     await Future.delayed(_delay);
     return;
   }

@@ -94,6 +94,22 @@ class RedditNotifier extends ChangeNotifier {
   Future<void> submissionVote(String id, Vote vote) async {
     return redditApi.submissionVote(id, vote);
   }
+
+  Future<void> submissionSave(String id) async {
+    return redditApi.submissionSave(id);
+  }
+
+  Future<void> submissionUnsave(String id) async {
+    return redditApi.submissionUnsave(id);
+  }
+
+  Future<void> commentSave(String id) async {
+    return redditApi.commentSave(id);
+  }
+
+  Future<void> commentUnsave(String id) async {
+    return redditApi.commentUnsave(id);
+  }
 }
 
 class SubTypeNotifier extends ChangeNotifier {
@@ -171,9 +187,9 @@ class SubscriptionNotifier extends ChangeNotifier {
 // TODO: add LoadingMixin, disable/enable button
 // TODO: replace to ErrorMixin
 abstract class VoteNotifier extends ChangeNotifier {
-  VoteNotifier(this.redditApi, Vote vote, int score) : 
-  _vote = vote,
-  _score = score;
+  VoteNotifier(this.redditApi, Vote vote, int score)
+      : _vote = vote,
+        _score = score;
 
   int _score;
   int get score => _score;
@@ -264,30 +280,92 @@ class CommentVoteNotifier extends VoteNotifier {
   }
 }
 
-// class CommentVoteNotifier extends VoteNotifier {
-//   CommentNotifier(RedditApi redditApi, Comment comment)
-//       : super(redditApi, comment.likes, comment.score);
-
-//   @override
-//   Future<void> _doVote(String id, Vote vote) {
-//     return redditApi.submissionVote(id, vote);
-//   }
-// }
-
-// class CommentVoteNotifier extends VoteNotifier {
-//   CommentVoteNotifier(RedditApi redditApi, Vote vote) : super(redditApi, vote);
-
-//   @override
-//   Future<void> _doVote(String id, Vote vote) {
-//     return redditApi.commentVote(id, vote);
-//   }
-// }
 
 
 
 
+abstract class SaveNotifier extends ChangeNotifier {
+  SaveNotifier(this.redditApi, bool saved)
+      : _saved = saved;
+
+  bool _saved;
+  bool get saved => _saved;
+
+  final RedditApi redditApi;
+  static final _log = Logger('SaveNotifier');
+
+  Object? _error;
+  Object? get error {
+    final tmp = _error;
+    _error = null;
+    return tmp;
+  }
 
 
+  Future<void> save(String id) async {
+     if (_saved) return;
+
+    try {
+      await _doSave(id);
+      _saved = true;
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = e;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> unsave(String id) async {
+     if (!_saved) return;
+
+    try {
+      await _doUnsave(id);
+      _saved = false;
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = e;
+    }
+
+    notifyListeners();
+  }
+
+
+
+
+  Future<void> _doSave(String id);
+  Future<void> _doUnsave(String id);
+}
+
+class SubmissionSaveNotifier extends SaveNotifier {
+  SubmissionSaveNotifier(RedditApi redditApi, Submission submission)
+      : super(redditApi, submission.saved);
+
+  @override
+  Future<void> _doSave(String id) {
+    return redditApi.submissionSave(id);
+  }
+
+  @override
+  Future<void> _doUnsave(String id) {
+    return redditApi.submissionUnsave(id);
+  }
+}
+
+class CommentSaveNotifier extends SaveNotifier {
+  CommentSaveNotifier(RedditApi redditApi, Comment comment)
+      : super(redditApi, comment.saved);
+
+  @override
+  Future<void> _doSave(String id) {
+    return redditApi.commentSave(id);
+  }
+
+  @override
+  Future<void> _doUnsave(String id) {
+    return redditApi.commentUnsave(id);
+  }
+}
 
 
 

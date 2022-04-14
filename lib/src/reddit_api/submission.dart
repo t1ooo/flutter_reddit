@@ -34,6 +34,7 @@ class Submission extends Equatable {
     required this.likes,
     required this.type,
     required this.comments,
+    required this.saved,
   });
 
   final String author;
@@ -59,6 +60,7 @@ class Submission extends Equatable {
   final List<String> awardIcons;
   final int totalAwardsReceived;
   final Vote likes;
+  final bool saved;
   final SubType? type;
   // final CommentForest? comments;
   final List<Comment> comments;
@@ -102,8 +104,9 @@ class Submission extends Equatable {
       thumbnail: parseUri(data['thumbnail']),
       title: mapGet(data, 'title', ''),
       upvotes: mapGet(data, 'ups', 0),
-      url: mapGet(data, 'url', ''),
+      url: parseUri(data['url']),
       likes: parseLikes(data['likes']),
+      saved: mapGet(data, 'saved', false),
       type: type,
       comments: comments,
     );
@@ -138,6 +141,7 @@ class Submission extends Equatable {
       likes,
       type,
       comments,
+      saved,
     ];
   }
 }
@@ -170,5 +174,6 @@ Submission placeholderSubmission() {
     likes: Vote.none,
     type: SubType.best,
     comments: [],
+    saved:false,
   );
 }

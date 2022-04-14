@@ -1,11 +1,10 @@
-// TODO: share submission
+// TODO: block user
+// TODO: report
+// TODO: hide submission
+// TODO: share submission *
 // TODO: cache
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: subreddit notification
-// TODO: save post
-// TODO: hide post
-// TODO: report
-// TODO: block user
 // TODO: gestures
 // TODO: user login
 // TODO: user settings
@@ -23,9 +22,14 @@
 // TODO: user chat (not supported by Reddit API)
 // TODO: filter subscriptions by location (not supported by Reddit API)
 // TODO: design
+//  v1
 //  class SubmissionNotifier
 //  class SubmissionTileNotifier
 //  class CommentNotifier
 //  class CommentTileNotifier
 //  class CurrentUserNotifier
 //  class UserNotifier
+//  v2
+//  class SubmissionNotifier
+//  class SubmissionsNotifier
+//  class CommentsNotifier
