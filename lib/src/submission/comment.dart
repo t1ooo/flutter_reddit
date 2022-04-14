@@ -6,6 +6,7 @@ import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/awards.dart';
 import '../widget/sized_placeholder.dart';
+import '../widget/vote_button.dart';
 import 'style.dart';
 
 class CommentWidget extends StatelessWidget {
@@ -81,9 +82,12 @@ class CommentWidget extends StatelessWidget {
               Text('Reply'),
               SizedBox(width: 20),
               // Icon(Icons.thumb_up),
-              Icon(Icons.expand_less),
-              Text(comment.ups.toString()),
-              Icon(Icons.expand_more),
+
+              // Icon(Icons.expand_less),
+              // Text(comment.ups.toString()),
+              // Icon(Icons.expand_more),
+              CommentVoteButton(comment:comment),
+
             ],
           ),
           if (showNested)

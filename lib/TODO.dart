@@ -1,6 +1,4 @@
 // TODO: share submission
-// TODO: FIX: use score for likes *
-// TODO: comment vote *
 // TODO: cache
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: subreddit notification

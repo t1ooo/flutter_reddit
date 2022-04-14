@@ -145,7 +145,7 @@ class SubmissionTile extends StatelessWidget {
                 //     Icon(Icons.expand_more),
                 //   ],
                 // ),
-                VoteButton(submission:submission),
+                SubmissionVoteButton(submission:submission),
                 // Spacer(),
                 // Text(submission.numComments > 0
                 //     ? submission.numComments.toString()

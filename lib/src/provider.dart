@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'notifier/reddir_notifier.dart';
+import 'reddit_api/comment.dart';
 import 'reddit_api/reddir_api.dart';
 import 'reddit_api/submission.dart';
 
@@ -97,6 +98,16 @@ ChangeNotifierProvider<SubmissionVoteNotifier> submissionVoteNotifierProvider(
     create: (BuildContext context) => SubmissionVoteNotifier(
       context.read<RedditApi>(),
       submission,
+    ),
+  );
+}
+
+ChangeNotifierProvider<CommentVoteNotifier> commentVoteNotifierProvider(
+    Comment comment) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => CommentVoteNotifier(
+      context.read<RedditApi>(),
+      comment,
     ),
   );
 }
