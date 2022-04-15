@@ -5,6 +5,7 @@ import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/awards.dart';
+import '../widget/save_button.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/vote_button.dart';
 import 'style.dart';
@@ -74,7 +75,19 @@ class CommentWidget extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Spacer(),
-              Icon(Icons.more_vert),
+              // Icon(Icons.more_vert),
+              PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem(child: CommentSaveButton(comment: comment)),
+                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Save')),
+                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Share')),
+                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Copy text')),
+                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Collapse thread')),
+                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Report')),
+                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Block user')),
+                ],
+              ),
               SizedBox(width: 20),
               Icon(Icons.star_outline),
               SizedBox(width: 20),

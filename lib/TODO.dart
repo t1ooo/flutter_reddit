@@ -1,5 +1,5 @@
-// TODO: comment context menu *
-// TODO: share comment *
+// TODO: * comment context menu
+// TODO: * share comment
 // TODO: block user
 // TODO: report
 // TODO: hide hidden submission
@@ -35,3 +35,4 @@
 //  class SubmissionNotifier
 //  class SubmissionsNotifier
 //  class CommentsNotifier
+
