@@ -1,5 +1,7 @@
-// TODO: * comment context menu
-// TODO: * share comment
+// TODO: user menu
+// TODO: user login
+// TODO: user settings
+// TODO: user profile
 // TODO: block user
 // TODO: report
 // TODO: hide hidden submission
@@ -8,9 +10,6 @@
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: subreddit notification
 // TODO: gestures
-// TODO: user login
-// TODO: user settings
-// TODO: user profile
 // TODO: submission icon
 // TODO: comment user icon
 // TODO: give award to submission (not supported by DRAW lib)
