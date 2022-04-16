@@ -28,8 +28,8 @@ class HomeScreen extends StatelessWidget {
               child: TabBar(
                 labelColor: Colors.blue,
                 tabs: [
-                  Text('Home'),
-                  Text('Popular'),
+                  Tab(child: Text('Home')),
+                  Tab(child: Text('Popular')),
                 ],
               ),
             ),

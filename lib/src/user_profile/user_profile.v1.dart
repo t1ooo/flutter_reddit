@@ -130,9 +130,9 @@ class UserProfile extends StatelessWidget {
             child: TabBar(
               labelColor: Colors.blue,
               tabs: [
-                Text('Posts'),
-                Text('Comments'),
-                Text('About'),
+                Tab(child: Text('Posts')),
+                Tab(child: Text('Comments')),
+                Tab(child: Text('About')),
               ],
             ),
           ),
