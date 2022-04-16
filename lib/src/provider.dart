@@ -131,6 +131,14 @@ ChangeNotifierProvider<CommentSaveNotifier> commentSaveNotifierProvider(
   );
 }
 
+ChangeNotifierProvider<CurrentUserNotifier> currentUserNotifierProvider() {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => CurrentUserNotifier(
+      context.read<RedditApi>(),
+    ),
+  );
+}
+
 // Future<ChangeNotifierProvider<RedditNotifierFront>>
 //     redditNotifierFrontProvider() async {
 //   reddit = reddit ??

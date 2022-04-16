@@ -1,5 +1,7 @@
-// TODO: user menu
-// TODO: user login
+// TODO: edit current user settings
+// TODO: show current user settings
+// TODO: edit current user profile
+// TODO: show current user profile
 // TODO: user settings
 // TODO: user profile
 // TODO: block user

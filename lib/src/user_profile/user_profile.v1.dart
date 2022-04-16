@@ -19,9 +19,11 @@ class UserProfile extends StatelessWidget {
   const UserProfile({
     Key? key,
     required this.user,
+    required this.isCurrentUser,
   }) : super(key: key);
 
   final User user;
+  final bool isCurrentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +48,26 @@ class UserProfile extends StatelessWidget {
           // SizedPlaceholder(
           //   height: 200,
           // ),
+
           Padding(
             padding: pagePadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 25),
                 Row(
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedPlaceholder(
+                        // SizedPlaceholder(
+                        //   width: 50,
+                        //   height: 50,
+                        // ),
+                        SizedBox(
                           width: 50,
                           height: 50,
+                          child: Image.network(user.iconImg),
                         ),
                       ],
                     ),
@@ -91,24 +100,28 @@ class UserProfile extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                Row(
-                  // alignment: MainAxisAlignment.start,
-                  children: [
-                    ElevatedButton(onPressed: () {}, child: Text('CHAT')),
-                    SizedBox(width: 10),
-                    // user.subreddit.userIsSubscriber;
-                    // ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
-                    // ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
-                    SubscribeButton(subreddit: user.subreddit, isUserPage: true),
-                  ],
-                ),
+                if (isCurrentUser)
+                   ElevatedButton(onPressed: () {}, child: Text('EDIT'))
+                else
+                  Row(
+                    // alignment: MainAxisAlignment.start,
+                    children: [
+                      ElevatedButton(onPressed: () {}, child: Text('CHAT')),
+                      SizedBox(width: 10),
+                      // user.subreddit.userIsSubscriber;
+                      // ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
+                      // ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
+                      SubscribeButton(
+                          subreddit: user.subreddit, isUserPage: true),
+                    ],
+                  ),
                 // Center(child: Text(user.totalKarma.toString())),
                 // Center(child: Text(formatDateTime(user.created))),
                 SizedBox(height: 20),
                 Text(
-                    '${user.totalKarma} karma * ${formatDateTime(user.created)}'),
+                    '${user.totalKarma} karma * ${formatDateTime(user.created)} * ${'${user.subreddit.subscribers} followers'}'),
                 SizedBox(height: 10),
-                 Text(user.subreddit.publicDescription),
+                Text(user.subreddit.publicDescription),
                 SizedBox(height: 20),
               ],
             ),

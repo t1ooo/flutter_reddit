@@ -28,6 +28,7 @@ class UserTrophies extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           children: [
+            ListTile(title: Text('TROPHIES')),
             for (final trophy in trophies) UserTrophy(trophy: trophy)
           ],
         );

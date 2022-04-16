@@ -52,6 +52,13 @@ abstract class RedditApi {
 
   Future<void> commentSave(String id);
   Future<void> commentUnsave(String id);
+
+  Future<User?> currentUser();
+
+  /// return List<Submission|Comment>
+  // Stream<dynamic> currentUserSaved();
+  Stream<Submission> currentUserSavedSubmissions();
+  Stream<Comment> currentUserSavedComments();
 }
 
 class RedditApiImpl implements RedditApi {
@@ -190,8 +197,10 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Future<User> user(String name) {
-    throw UnimplementedError();
+  Future<User> user(String name) async {
+    final redditorRef = await reddit.redditor(name);
+    final redditor = await redditorRef.populate();
+    return User.fromMap(redditor.data!);
   }
 
   Stream<Submission> userSubmissions(String name, {required int limit}) {
@@ -293,6 +302,50 @@ class RedditApiImpl implements RedditApi {
   // Future<void> commentDownvote(String id) async {
   //   return (await reddit.comment(id: id).populate()).downvote();
   // }
+
+  Future<User?> currentUser() async {
+    final redditor = await reddit.user.me();
+    if (redditor == null) {
+      return null;
+    }
+    return User.fromMap(redditor.data!);
+  }
+
+  Stream<dynamic> _currentUserSaved() async* {
+    //  for(final v in await user!.saved().toList()) {
+    // if (v is Submission) print('Submission ${v.id}');
+    // if (v is CommentRef) print('CommentRef');
+    // if (v is Comment) print('Comment ${v.id}');
+    final redditor = await reddit.user.me();
+    if (redditor == null) {
+      return;
+    }
+
+    await for (final v in await redditor.saved()) {
+      try {
+        if (v is draw.Submission)
+          yield Submission.fromMap(v.data!);
+        else if (v is draw.Comment)
+          yield Comment.fromMap(v.data!);
+        else
+          _log.warning('undefined type');
+      } on Exception catch (e, st) {
+        _log.error('', e, st);
+      }
+    }
+  }
+
+  Stream<Submission> currentUserSavedSubmissions() {
+    return _currentUserSaved()
+        .where((v) => v is Submission)
+        .map((v) => v as Submission);
+  }
+
+  Stream<Comment> currentUserSavedComments(){
+    return _currentUserSaved()
+        .where((v) => v is Comment)
+        .map((v) => v as Comment);
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -461,5 +514,41 @@ class FakeRedditApi implements RedditApi {
   Future<void> commentUnsave(String id) async {
     await Future.delayed(_delay);
     return;
+  }
+
+  Future<User?> currentUser() async {
+    final data = await File('data/user.current.info.json').readAsString();
+    return User.fromMap(jsonDecode(data));
+  }
+
+  Stream<dynamic> _currentUserSaved() async* {
+    final data = await File('data/user.current.saved.json').readAsString();
+
+    final items = (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) {
+      // => Submission.fromMap(v, type: SubType.hot)
+      if (v['name']?.contains('t1_'))
+        return Comment.fromMap(v);
+      else
+        return Submission.fromMap(v);
+    });
+
+    for (final item in items) {
+      await Future.delayed(_delay);
+      yield item;
+    }
+  }
+
+  Stream<Submission> currentUserSavedSubmissions() {
+    return _currentUserSaved()
+        .where((v) => v is Submission)
+        .map((v) => v as Submission);
+  }
+
+  Stream<Comment> currentUserSavedComments(){
+    return _currentUserSaved()
+        .where((v) => v is Comment)
+        .map((v) => v as Comment);
   }
 }

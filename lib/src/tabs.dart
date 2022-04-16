@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subscriptions/subscriptions_screen.dart';
+import 'package:flutter_reddit_prototype/src/user_menu.dart';
 
 import 'home/home.dart';
 import 'home/home_screen.dart';
@@ -25,6 +26,9 @@ class _TabsState extends State<Tabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // drawer: UserMenu(user:null),
+      drawer: UserMenu(),
+      // TODO: add appbar, set title, remove Scaffold from tabs (HomeScreen, SubscriptionsScreen)
       // appBar: AppBar(
       //   title: Text('User Profile'),
       // ),

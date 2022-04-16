@@ -40,6 +40,22 @@ import '../reddit_api/vote.dart';
 //   }
 // }
 
+mixin Error {
+  Object? _error;
+
+  Object? get error {
+    final tmp = _error;
+    _error = null;
+    return tmp;
+  }
+}
+
+mixin Loading {
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+}
+
 class RedditNotifier extends ChangeNotifier {
   RedditNotifier(this.redditApi);
 
@@ -109,6 +125,48 @@ class RedditNotifier extends ChangeNotifier {
 
   Future<void> commentUnsave(String id) async {
     return redditApi.commentUnsave(id);
+  }
+
+  // Future<User?> currentUser() async {
+  //   return redditApi.currentUser();
+  // }
+
+  Stream<Submission> currentUserSavedSubmissions() {
+    return redditApi.currentUserSavedSubmissions();
+  }
+
+  Stream<Comment> currentUserSavedComments() {
+    return redditApi.currentUserSavedComments();
+  }
+}
+
+class CurrentUserNotifier extends ChangeNotifier with Error {
+  CurrentUserNotifier(this.redditApi);
+
+  final RedditApi redditApi;
+  static final _log = Logger('CurrentUserNotifier');
+
+  User? _user;
+  User? get user => _user;
+
+  Future<void> login(String name, String password) async {
+    // _user = await redditApi.currentUser();
+    try {
+      final user = await redditApi.currentUser();
+      if (user == null) {
+        throw Exception('fail to login');
+      }
+      _user = user;
+    } catch (e) {
+      _log.error(e);
+      _error = e;
+    }
+    notifyListeners();
+  }
+
+  Future<void> logout(String name, String password) async {
+    _user = null;
+    notifyListeners();
   }
 }
 
@@ -280,13 +338,8 @@ class CommentVoteNotifier extends VoteNotifier {
   }
 }
 
-
-
-
-
 abstract class SaveNotifier extends ChangeNotifier {
-  SaveNotifier(this.redditApi, bool saved)
-      : _saved = saved;
+  SaveNotifier(this.redditApi, bool saved) : _saved = saved;
 
   bool _saved;
   bool get saved => _saved;
@@ -301,9 +354,8 @@ abstract class SaveNotifier extends ChangeNotifier {
     return tmp;
   }
 
-
   Future<void> save(String id) async {
-     if (_saved) return;
+    if (_saved) return;
 
     try {
       await _doSave(id);
@@ -317,7 +369,7 @@ abstract class SaveNotifier extends ChangeNotifier {
   }
 
   Future<void> unsave(String id) async {
-     if (!_saved) return;
+    if (!_saved) return;
 
     try {
       await _doUnsave(id);
@@ -329,9 +381,6 @@ abstract class SaveNotifier extends ChangeNotifier {
 
     notifyListeners();
   }
-
-
-
 
   Future<void> _doSave(String id);
   Future<void> _doUnsave(String id);

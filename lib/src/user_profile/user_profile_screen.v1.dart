@@ -10,13 +10,17 @@ import '../widget/custom_future_builder.dart';
 import '../widget/sized_placeholder.dart';
 import 'user_profile.v1.dart';
 
+// TODO: rename to UserProfileScreen loader
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     Key? key,
     required this.name,
+    this.isCurrentUser=false,
   }) : super(key: key);
 
   final String name;
+  final bool isCurrentUser;
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +32,32 @@ class UserProfileScreen extends StatelessWidget {
       body: CustomFutureBuilder(
         future: context.read<RedditNotifier>().user(name),
         onData: (BuildContext context, User user) {
-          return UserProfile(user: user);
+          return UserProfile(user: user, isCurrentUser:isCurrentUser);
         },
       ),
+    );
+  }
+}
+
+// TODO: rename to UserProfileScreen
+class UserProfileScreenV2 extends StatelessWidget {
+  const UserProfileScreenV2({
+    Key? key,
+    required this.user,
+    this.isCurrentUser=false,
+  }) : super(key: key);
+
+  final User user;
+  final bool isCurrentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Profile'),
+      ),
+      // body: UserProfile(name: name),
+      body: UserProfile(user: user,isCurrentUser:isCurrentUser),
     );
   }
 }

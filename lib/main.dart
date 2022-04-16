@@ -21,6 +21,7 @@ Future<void> main() async {
         await fakeRedditApiProvider(),
         redditNotifierProvider(),
         submissionTypeNotifierProvider(),
+        currentUserNotifierProvider(),
       ],
       child: MyApp(),
     ),

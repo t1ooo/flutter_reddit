@@ -54,7 +54,7 @@ class UserAbout extends StatelessWidget {
     return ListView(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 25),
+        SizedBox(height: 50),
         Table(
           // defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
@@ -72,6 +72,8 @@ class UserAbout extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(height: 50),
+
         ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
         ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
         UserTrophies(user: user),
