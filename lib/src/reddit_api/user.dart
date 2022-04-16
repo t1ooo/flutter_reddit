@@ -68,7 +68,7 @@ class User extends Equatable {
       isMod: mapGet(data, 'is_mod', false),
       awarderKarma: mapGet(data, 'awarder_karma', 0),
       hasVerifiedEmail: mapGet(data, 'has_verified_email', false),
-      iconImg: mapGet(data, 'icon_img', ''),
+      iconImg: parseUrl(data['icon_img']),
       linkKarma: mapGet(data, 'link_karma', 0),
       isBlocked: mapGet(data, 'is_blocked', false),
       totalKarma: mapGet(data, 'total_karma', 0),

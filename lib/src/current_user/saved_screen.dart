@@ -24,7 +24,7 @@ class SavedScreen extends StatelessWidget {
             //   padding: pagePadding,
             //   child: SearchField(),
             // ),
-            SizedBox(height: 50),
+            SizedBox(height: topPadding),
             Container(
               child: TabBar(
                 // padding: EdgeInsets.symmetric(vertical :50),

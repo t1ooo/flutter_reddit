@@ -4,3 +4,4 @@ import 'package:flutter/widgets.dart';
 // const pagePadding = EdgeInsets.all(20);
 const pagePadding = EdgeInsets.symmetric(horizontal: 20);
 const cardPadding =  EdgeInsets.all(20);
+const topPadding = 20.0;

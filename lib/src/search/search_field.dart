@@ -9,7 +9,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20),
+        // SizedBox(height: 20),
         TextField(
           decoration: InputDecoration(
             fillColor: Colors.white,
