@@ -37,9 +37,9 @@ class UserComment extends StatelessWidget {
             Row(
               children: [
                 Text(comment.subredditNamePrefixed),
-                Text(' * '),
+                Text(' • '),
                 Text(comment.created.toString()),
-                Text(' * '),
+                Text(' • '),
                 Text(comment.ups.toString()),
               ],
             ),

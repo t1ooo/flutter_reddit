@@ -60,7 +60,7 @@ class CommentWidget extends StatelessWidget {
                 },
                 child: Text(comment.author),
               ),
-              Text(' * '),
+              Text(' • '),
               Text(formatDateTime(comment.created)),
               Awards(
                 awardIcons: comment.awardIcons,

@@ -10,6 +10,10 @@ import 'vote.dart';
 final _log = Logger('parserLog');
 
 
+String parseText(dynamic data) {
+  final text = cast<String>(data, '');
+  return text.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+}
 
 Vote parseLikes(dynamic data) {
   if(data == null) {

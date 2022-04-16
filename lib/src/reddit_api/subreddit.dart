@@ -114,7 +114,7 @@ class Subreddit extends Equatable {
   //   }
   //   // return DateTime(num.toInt());
   //   return DateTime.fromMillisecondsSinceEpoch(
-  //     num.round() * 1000,
+  //     num.round() • 1000,
   //     isUtc: isUtc,
   //   );
   // }

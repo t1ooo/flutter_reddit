@@ -143,7 +143,7 @@ class Comment extends Equatable {
       authorFullname: mapGet(data, 'author_fullname', ''),
       over18: mapGet(data, 'over_18', false),
       controversiality: mapGet(data, 'controversiality', 0),
-      body: mapGet(data, 'body', ''),
+      body: parseText(data['body']),
       // edited: mapGet(data, 'edited', 0),
       downs: mapGet(data, 'downs', 0),
       isSubmitter: mapGet(data, 'is_submitter', false),

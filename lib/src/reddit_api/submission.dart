@@ -10,6 +10,7 @@ import 'submission_type.dart';
 class Submission extends Equatable {
   const Submission({
     required this.author,
+    required this.created,
     required this.createdUtc,
     required this.domain,
     required this.downs,
@@ -39,6 +40,7 @@ class Submission extends Equatable {
   });
 
   final String author;
+  final DateTime created;
   final DateTime createdUtc;
   final String domain;
   final int downs;
@@ -94,6 +96,7 @@ class Submission extends Equatable {
       author: mapGet(data, 'author', ''),
       authorFlairText: mapGet(data, 'author_flair_text', ''),
       awardIcons: parseAwardIcons(data['all_awardings']),
+      created: parseTime(data['created']),
       createdUtc: parseTime(data['created_utc'], isUtc: true),
       domain: mapGet(data, 'domain', ''),
       downs: mapGet(data, 'downs', 0),
@@ -133,6 +136,7 @@ class Submission extends Equatable {
   List<Object?> get props {
     return [
       author,
+      created,
       createdUtc,
       domain,
       downs,
@@ -167,6 +171,7 @@ class Submission extends Equatable {
 Submission placeholderSubmission() {
   return Submission(
     author: 'author',
+    created: DateTime.now(),
     createdUtc: DateTime.now(),
     domain: 'domain',
     downs: 0,

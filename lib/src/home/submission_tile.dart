@@ -6,6 +6,7 @@ import '../reddit_api/submission.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
+import '../util/date_time.dart';
 import '../util/enum.dart';
 import '../widget/save_button.dart';
 import '../widget/share_button.dart';
@@ -69,8 +70,8 @@ class SubmissionTile extends StatelessWidget {
                             },
                             child: Text(submission.author),
                           ),
-                          // Text(' * '),
-                          // Text(submission.domain),
+                          Text(' • '),
+                          Text(formatDateTime(submission.created)),
                         ]),
                       ],
                     ),
@@ -86,7 +87,7 @@ class SubmissionTile extends StatelessWidget {
               ],
             ),
             // Text('r/subreddit'),
-            // Text('Submissioned by u/User * 3h * v.redd.it'),
+            // Text('Submissioned by u/User • 3h • v.redd.it'),
             SizedBox(height: 10),
             // Row(children: [
             //   for (final icon in (submission.awardIcons).take(4))

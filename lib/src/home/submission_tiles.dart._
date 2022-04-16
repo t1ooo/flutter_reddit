@@ -95,7 +95,7 @@ class SubmissionTiles extends StatelessWidget {
                   for (int i = 0; i < 10; i++)
                     Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: SizedPlaceholder(width: 200, height: 200 * 3 / 4),
+                      child: SizedPlaceholder(width: 200, height: 200 • 3 / 4),
                     ),
                 ],
               ),

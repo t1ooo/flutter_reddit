@@ -54,7 +54,8 @@ class UserProfile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 25),
+                SizedBox(height: topPadding),
+
                 Row(
                   children: [
                     Column(
@@ -101,7 +102,7 @@ class UserProfile extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 if (isCurrentUser)
-                   ElevatedButton(onPressed: () {}, child: Text('EDIT'))
+                  ElevatedButton(onPressed: () {}, child: Text('EDIT'))
                 else
                   Row(
                     // alignment: MainAxisAlignment.start,
@@ -119,7 +120,7 @@ class UserProfile extends StatelessWidget {
                 // Center(child: Text(formatDateTime(user.created))),
                 SizedBox(height: 20),
                 Text(
-                    '${user.totalKarma} karma * ${formatDateTime(user.created)} * ${'${user.subreddit.subscribers} followers'}'),
+                    '${user.totalKarma} karma • ${formatDateTime(user.created)} • ${'${user.subreddit.subscribers} followers'}'),
                 SizedBox(height: 10),
                 Text(user.subreddit.publicDescription),
                 SizedBox(height: 20),
@@ -221,7 +222,7 @@ class UserProfile extends StatelessWidget {
     //               ],
     //             ),
     //             SizedBox(height: 50),
-    //             Text('5674 karma * 1y'),
+    //             Text('5674 karma • 1y'),
     //             SizedBox(height: 10),
     //             Text('description'),
     //             SizedBox(height: 50),

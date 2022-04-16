@@ -134,7 +134,7 @@ class SubredditWidget extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20),
-              Text('5674 karma * 1y'),
+              Text('5674 karma • 1y'),
               SizedBox(height: 10),
               Text('description'),
               SizedBox(height: 20), */
