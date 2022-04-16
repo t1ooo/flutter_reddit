@@ -138,6 +138,10 @@ class RedditNotifier extends ChangeNotifier {
   Stream<Comment> currentUserSavedComments() {
     return redditApi.currentUserSavedComments();
   }
+
+  Future<String> subredditIcon(String name) {
+    return redditApi.subredditIcon(name);
+  }
 }
 
 class CurrentUserNotifier extends ChangeNotifier with Error {

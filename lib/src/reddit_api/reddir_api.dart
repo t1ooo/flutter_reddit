@@ -29,7 +29,9 @@ abstract class RedditApi {
     required int limit,
     required SubType type,
   });
+
   Future<Subreddit> subreddit(String name);
+  Future<String> subredditIcon(String name);
 
   Future<User> user(String name);
   Stream<Subreddit> userSubreddits({required int limit});
@@ -245,6 +247,12 @@ class RedditApiImpl implements RedditApi {
     return Subreddit.fromMap(sub.data!);
   }
 
+  Future<String> subredditIcon(String name) async {
+    final subRef = reddit.subreddit(name);
+    final sub = await subRef.populate();
+    return Subreddit.fromMap(sub.data!).communityIcon;
+  }
+
   // TODO: use draw.Submission instead id for optimisation
   Future<void> submissionVote(String id, Vote vote) async {
     final s = await reddit.submission(id: id).populate();
@@ -341,7 +349,7 @@ class RedditApiImpl implements RedditApi {
         .map((v) => v as Submission);
   }
 
-  Stream<Comment> currentUserSavedComments(){
+  Stream<Comment> currentUserSavedComments() {
     return _currentUserSaved()
         .where((v) => v is Comment)
         .map((v) => v as Comment);
@@ -546,9 +554,14 @@ class FakeRedditApi implements RedditApi {
         .map((v) => v as Submission);
   }
 
-  Stream<Comment> currentUserSavedComments(){
+  Stream<Comment> currentUserSavedComments() {
     return _currentUserSaved()
         .where((v) => v is Comment)
         .map((v) => v as Comment);
+  }
+
+  Future<String> subredditIcon(String name) async {
+    await Future.delayed(_delay);
+    return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   }
 }

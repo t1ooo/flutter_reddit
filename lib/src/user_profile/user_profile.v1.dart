@@ -66,10 +66,13 @@ class UserProfile extends StatelessWidget {
                         //   height: 50,
                         // ),
                         SizedBox(
-                          width: 50,
-                          height: 50,
+                          width: iconSize,
+                          height: iconSize,
                           child: Image.network(user.iconImg),
                         ),
+                        // CircleImage(                          
+                        //   image: user.iconImg,
+                        // ),
                       ],
                     ),
                     SizedBox(width: 10),
