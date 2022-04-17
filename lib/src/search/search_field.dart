@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../style/style.dart';
+import 'search_screen.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({Key? key}) : super(key: key);
@@ -11,6 +12,17 @@ class SearchField extends StatelessWidget {
       children: [
         // SizedBox(height: 20),
         TextField(
+          onSubmitted: (String? query) {
+            final q = (query ?? '').trim();
+            if (q != '') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SearchScreen(query: q),
+                ),
+              );
+            }
+          },
           decoration: InputDecoration(
             fillColor: Colors.white,
             filled: true,

@@ -20,7 +20,7 @@
 // TODO: user create post
 // TODO: make padding consistent
 // TODO: subreddit type
-// TODO: search
+// TODO: * search
 // TODO: trendings
 // TODO: user chat (not supported by Reddit API)
 // TODO: filter subscriptions by location (not supported by Reddit API)

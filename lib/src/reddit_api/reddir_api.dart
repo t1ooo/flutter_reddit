@@ -20,6 +20,8 @@ import 'vote.dart';
 //   Future<List<Subreddit>> userSubreddits({required int limit});
 // }
 
+typedef Sort = draw.Sort;
+
 abstract class RedditApi {
   Stream<Submission> front({required int limit, required SubType type});
   Stream<Submission> popular({required int limit, required SubType type});
@@ -59,8 +61,10 @@ abstract class RedditApi {
 
   /// return List<Submission|Comment>
   // Stream<dynamic> currentUserSaved();
-  Stream<Submission> currentUserSavedSubmissions();
-  Stream<Comment> currentUserSavedComments();
+  Stream<Submission> currentUserSavedSubmissions({required int limit});
+  Stream<Comment> currentUserSavedComments({required int limit});
+
+  Stream<Submission> search(String query, {required int limit});
 }
 
 class RedditApiImpl implements RedditApi {
@@ -319,7 +323,7 @@ class RedditApiImpl implements RedditApi {
     return User.fromMap(redditor.data!);
   }
 
-  Stream<dynamic> _currentUserSaved() async* {
+  Stream<dynamic> _currentUserSaved(int limit) async* {
     //  for(final v in await user!.saved().toList()) {
     // if (v is Submission) print('Submission ${v.id}');
     // if (v is CommentRef) print('CommentRef');
@@ -329,7 +333,7 @@ class RedditApiImpl implements RedditApi {
       return;
     }
 
-    await for (final v in await redditor.saved()) {
+    await for (final v in await redditor.saved(limit: limit)) {
       try {
         if (v is draw.Submission)
           yield Submission.fromMap(v.data!);
@@ -343,18 +347,28 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Stream<Submission> currentUserSavedSubmissions() {
-    return _currentUserSaved()
+  Stream<Submission> currentUserSavedSubmissions({required int limit}) {
+    return _currentUserSaved(limit)
         .where((v) => v is Submission)
         .map((v) => v as Submission);
   }
 
-  Stream<Comment> currentUserSavedComments() {
-    return _currentUserSaved()
+  Stream<Comment> currentUserSavedComments({required int limit}) {
+    return _currentUserSaved(limit)
         .where((v) => v is Comment)
         .map((v) => v as Comment);
   }
+
+  Stream<Submission> search(String query, {required int limit, Sort sort = Sort.relevance}) async* {
+    final params = {'limit': limit.toString()};
+    await for (final v
+        in reddit.subreddit('all').search(query, params: params)) {
+      yield Submission.fromMap((v as draw.Submission).data!);
+    }
+  }
 }
+
+
 
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
@@ -369,8 +383,9 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.front.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Submission.fromMap(v, type: type));
+        // .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Submission.fromMap(v, type: type))
+        .take(limit);
 
     for (final item in items) {
       await Future.delayed(_delay);
@@ -387,8 +402,9 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.subreddits.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Subreddit.fromMap(v));
+        // .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Subreddit.fromMap(v))
+        .take(limit);
 
     for (final item in items) {
       await Future.delayed(_delay);
@@ -414,7 +430,8 @@ class FakeRedditApi implements RedditApi {
 
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Comment.fromMap(v));
+        .map((v) => Comment.fromMap(v))
+        .take(limit);
 
     for (final item in items) {
       await Future.delayed(_delay);
@@ -426,8 +443,9 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Submission.fromMap(v, type: SubType.hot));
+        // .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Submission.fromMap(v, type: SubType.hot))
+        .take(limit);
 
     for (final item in items) {
       await Future.delayed(_delay);
@@ -529,18 +547,17 @@ class FakeRedditApi implements RedditApi {
     return User.fromMap(jsonDecode(data));
   }
 
-  Stream<dynamic> _currentUserSaved() async* {
+  Stream<dynamic> _currentUserSaved(int limit) async* {
     final data = await File('data/user.current.saved.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<dynamic, dynamic>)
         .map((v) {
-      // => Submission.fromMap(v, type: SubType.hot)
       if (v['name']?.contains('t1_'))
         return Comment.fromMap(v);
       else
         return Submission.fromMap(v);
-    });
+    }).take(limit);
 
     for (final item in items) {
       await Future.delayed(_delay);
@@ -548,20 +565,36 @@ class FakeRedditApi implements RedditApi {
     }
   }
 
-  Stream<Submission> currentUserSavedSubmissions() {
-    return _currentUserSaved()
+  Stream<Submission> currentUserSavedSubmissions({required int limit}) {
+    return _currentUserSaved(limit)
         .where((v) => v is Submission)
-        .map((v) => v as Submission);
+        .map((v) => v as Submission)
+        .take(limit);
   }
 
-  Stream<Comment> currentUserSavedComments() {
-    return _currentUserSaved()
+  Stream<Comment> currentUserSavedComments({required int limit}) {
+    return _currentUserSaved(limit)
         .where((v) => v is Comment)
-        .map((v) => v as Comment);
+        .map((v) => v as Comment)
+        .take(limit);
   }
 
   Future<String> subredditIcon(String name) async {
     await Future.delayed(_delay);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
+  }
+
+  Stream<Submission> search(String query, {required int limit}) async* {
+    final data = await File('data/search.json').readAsString();
+
+    final items = (jsonDecode(data) as List<dynamic>)
+        // .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => Submission.fromMap(v, type: SubType.hot))
+        .take(limit);
+
+    for (final item in items) {
+      await Future.delayed(_delay);
+      yield item;
+    }
   }
 }

@@ -131,16 +131,20 @@ class RedditNotifier extends ChangeNotifier {
   //   return redditApi.currentUser();
   // }
 
-  Stream<Submission> currentUserSavedSubmissions() {
-    return redditApi.currentUserSavedSubmissions();
+  Stream<Submission> currentUserSavedSubmissions({int limit = 10}) {
+    return redditApi.currentUserSavedSubmissions(limit:limit);
   }
 
-  Stream<Comment> currentUserSavedComments() {
-    return redditApi.currentUserSavedComments();
+  Stream<Comment> currentUserSavedComments({int limit = 10}) {
+    return redditApi.currentUserSavedComments(limit:limit);
   }
 
   Future<String> subredditIcon(String name) {
     return redditApi.subredditIcon(name);
+  }
+
+  Stream<Submission> search(String query, {int limit=10}) {
+    return redditApi.search(query, limit:limit);
   }
 }
 
