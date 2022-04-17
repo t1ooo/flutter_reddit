@@ -143,8 +143,8 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.subredditIcon(name);
   }
 
-  Stream<Submission> search(String query, {int limit=10}) {
-    return redditApi.search(query, limit:limit);
+  Stream<Submission> search(String query, {int limit=10, Sort sort = Sort.relevance}) {
+    return redditApi.search(query, limit:limit, sort:sort);
   }
 }
 
@@ -192,6 +192,36 @@ class SubTypeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class SortNotifier extends ChangeNotifier {
+  SortNotifier([Sort type = Sort.relevance]) : _type = type;
+
+  Sort _type = Sort.relevance;
+
+  Sort get type => _type;
+
+  set type(Sort type) {
+    if (_type == type) return;
+
+    _type = type;
+    notifyListeners();
+  }
+}
+
+// class FilterNotifier<T> extends ChangeNotifier {
+//   FilterNotifier(T type) : _type = type;
+
+//   T _type;
+
+//   T get type => _type;
+
+//   set type(T type) {
+//     if (_type == type) return;
+
+//     _type = type;
+//     notifyListeners();
+//   }
+// }
 
 class SubscriptionNotifier extends ChangeNotifier {
   SubscriptionNotifier(this.redditApi, bool isSubscriber)

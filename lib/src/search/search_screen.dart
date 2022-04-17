@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../style/style.dart';
 import 'search.dart';
+import 'search_field.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({
@@ -18,9 +20,18 @@ class SearchScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('SearchScreen'),
         ),
-        body: Search(query:query),
+        body: Column(
+          children: [
+            SizedBox(height: topPadding),
+            Padding(
+              // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+              padding: pagePadding,
+              child: SearchField(value:query),
+            ),
+            Expanded(child: Search(query: query)),
+          ],
+        ),
       ),
     );
   }
-
 }

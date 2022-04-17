@@ -64,7 +64,8 @@ abstract class RedditApi {
   Stream<Submission> currentUserSavedSubmissions({required int limit});
   Stream<Comment> currentUserSavedComments({required int limit});
 
-  Stream<Submission> search(String query, {required int limit});
+  Stream<Submission> search(String query,
+      {required int limit, required Sort sort});
 }
 
 class RedditApiImpl implements RedditApi {
@@ -359,7 +360,8 @@ class RedditApiImpl implements RedditApi {
         .map((v) => v as Comment);
   }
 
-  Stream<Submission> search(String query, {required int limit, Sort sort = Sort.relevance}) async* {
+  Stream<Submission> search(String query,
+      {required int limit, required Sort sort}) async* {
     final params = {'limit': limit.toString()};
     await for (final v
         in reddit.subreddit('all').search(query, params: params)) {
@@ -367,8 +369,6 @@ class RedditApiImpl implements RedditApi {
     }
   }
 }
-
-
 
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
@@ -584,7 +584,8 @@ class FakeRedditApi implements RedditApi {
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   }
 
-  Stream<Submission> search(String query, {required int limit}) async* {
+  Stream<Submission> search(String query,
+      {required int limit, required Sort sort}) async* {
     final data = await File('data/search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)

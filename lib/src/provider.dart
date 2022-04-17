@@ -167,6 +167,12 @@ ChangeNotifierProvider<SubTypeNotifier> submissionTypeNotifierProvider() {
   );
 }
 
+ChangeNotifierProvider<SortNotifier> sortNotifierProvider() {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SortNotifier(),
+  );
+}
+
 // ChangeNotifierProvider<UserNotifier> userProvider() {
 //   return ChangeNotifierProvider(
 //     create: (BuildContext context) => UserNotifier(

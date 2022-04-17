@@ -4,15 +4,21 @@ import '../style/style.dart';
 import 'search_screen.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({Key? key}) : super(key: key);
+  const SearchField({
+    Key? key,
+    this.value,
+  }) : super(key: key);
+
+  final String? value;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         // SizedBox(height: 20),
-        TextField(
-          onSubmitted: (String? query) {
+        TextFormField(
+          initialValue: value,
+          onFieldSubmitted: (String? query) {
             final q = (query ?? '').trim();
             if (q != '') {
               Navigator.push(
