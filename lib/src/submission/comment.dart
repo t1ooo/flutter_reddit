@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/util/date_time.dart';
+import 'package:provider/provider.dart';
 
+import '../notifier/reddir_notifier.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/awards.dart';
+import '../widget/custom_future_builder.dart';
 import '../widget/save_button.dart';
 import '../widget/sized_placeholder.dart';
 import '../widget/vote_button.dart';
@@ -47,8 +50,23 @@ class CommentWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              SizedPlaceholder(width: 20, height: 20),
-              SizedBox(width: 10),
+              // SizedPlaceholder(width: 20, height: 20),
+              // SizedBox(
+              //   width: iconSize / 2,
+              //   height: iconSize / 2,
+              //   child: CustomFutureBuilder(
+              //     future:
+              //         context.read<RedditNotifier>().userIcon(comment.author),
+              //     onData: (BuildContext context, String icon) {
+              //       return Image.network(icon);
+              //     },
+              //     onLoading: (_) => Container(decoration: BoxDecoration()),
+              //     onError: (_, __) => Container(),
+              //     // onError: voidError,
+              //   ),
+              // ),
+              // SizedBox(width: 10),
+              
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -66,6 +84,8 @@ class CommentWidget extends StatelessWidget {
                 awardIcons: comment.awardIcons,
                 totalAwardsReceived: comment.totalAwardsReceived,
               ),
+
+              IconButton(onPressed: () {}, icon: Icon(Icons.expand_less)),
             ],
           ),
           Text(comment.body),
@@ -80,12 +100,15 @@ class CommentWidget extends StatelessWidget {
                 icon: Icon(Icons.more_vert),
                 itemBuilder: (BuildContext context) => [
                   PopupMenuItem(child: CommentSaveButton(comment: comment)),
-                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Save')),
-                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Share')),
-                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Copy text')),
-                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Collapse thread')),
-                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Report')),
-                  PopupMenuItem(onTap: () {/* TODO */},child: Text('Block user')),
+                  PopupMenuItem(onTap: () {/* TODO */}, child: Text('Save')),
+                  PopupMenuItem(onTap: () {/* TODO */}, child: Text('Share')),
+                  PopupMenuItem(
+                      onTap: () {/* TODO */}, child: Text('Copy text')),
+                  PopupMenuItem(
+                      onTap: () {/* TODO */}, child: Text('Collapse thread')),
+                  PopupMenuItem(onTap: () {/* TODO */}, child: Text('Report')),
+                  PopupMenuItem(
+                      onTap: () {/* TODO */}, child: Text('Block user')),
                 ],
               ),
               SizedBox(width: 20),

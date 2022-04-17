@@ -66,6 +66,8 @@ abstract class RedditApi {
 
   Stream<Submission> search(String query,
       {required int limit, required Sort sort});
+
+  // Future<String> userIcon(String name);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -257,6 +259,12 @@ class RedditApiImpl implements RedditApi {
     final sub = await subRef.populate();
     return Subreddit.fromMap(sub.data!).communityIcon;
   }
+
+  // Future<String> userIcon(String name) async {
+  //   final redditorRef = await reddit.redditor(name);
+  //   final redditor = await redditorRef.populate();
+  //   return User.fromMap(redditor.data!).iconImg;
+  // }
 
   // TODO: use draw.Submission instead id for optimisation
   Future<void> submissionVote(String id, Vote vote) async {
@@ -583,6 +591,11 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   }
+
+  // Future<String> userIcon(String name) async {
+  //   await Future.delayed(_delay);
+  //   return 'https://styles.redditmedia.com/t5_27o1ou/styles/profileIcon_snoo1bb735c3-8e35-4cf7-86db-61a16e425270-headshot.png?width=256&height=256&crop=256:256,smart&s=b2b6b0dbdc33478836366f4b75a132c734d19126';
+  // }
 
   Stream<Submission> search(String query,
       {required int limit, required Sort sort}) async* {
