@@ -240,6 +240,7 @@ class CollapseNotifier extends ChangeNotifier {
 
   bool _collapsed;
 
+  bool get expanded => !_collapsed;
   bool get collapsed => _collapsed;
 
   void collapse() {

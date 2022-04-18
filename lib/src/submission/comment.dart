@@ -63,66 +63,70 @@ class CommentWidget extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    final collapseNotifier = context.read<CollapseNotifier>();
+    final collapseNotifier = context.watch<CollapseNotifier>();
 
     return Padding(
       padding: commentPadding(depth),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              // SizedPlaceholder(width: 20, height: 20),
-              // SizedBox(
-              //   width: iconSize / 2,
-              //   height: iconSize / 2,
-              //   child: CustomFutureBuilder(
-              //     future:
-              //         context.read<RedditNotifier>().userIcon(comment.author),
-              //     onData: (BuildContext context, String icon) {
-              //       return Image.network(icon);
-              //     },
-              //     onLoading: (_) => Container(decoration: BoxDecoration()),
-              //     onError: (_, __) => Container(),
-              //     // onError: voidError,
-              //   ),
-              // ),
-              // SizedBox(width: 10),
 
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => UserProfileScreen(name: comment.author),
-                    ),
-                  );
-                },
-                child: Text(comment.author),
-              ),
-              Text(' • '),
-              Text(formatDateTime(comment.created)),
-              Awards(
-                awardIcons: comment.awardIcons,
-                totalAwardsReceived: comment.totalAwardsReceived,
-              ),
+          InkWell(
+            onTap: collapseNotifier.expanded ? null : () {
+              collapseNotifier.expand();
+            },
+            child: Row(
+              children: [
+                // SizedPlaceholder(width: 20, height: 20),
+                // SizedBox(
+                //   width: iconSize / 2,
+                //   height: iconSize / 2,
+                //   child: CustomFutureBuilder(
+                //     future:
+                //         context.read<RedditNotifier>().userIcon(comment.author),
+                //     onData: (BuildContext context, String icon) {
+                //       return Image.network(icon);
+                //     },
+                //     onLoading: (_) => Container(decoration: BoxDecoration()),
+                //     onError: (_, __) => Container(),
+                //     // onError: voidError,
+                //   ),
+                // ),
+                // SizedBox(width: 10),
 
-              IconButton(onPressed: () {}, icon: Icon(Icons.expand_less)),
-            ],
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => UserProfileScreen(name: comment.author),
+                      ),
+                    );
+                  },
+                  child: Text(comment.author),
+                ),
+                Text(' • '),
+                Text(formatDateTime(comment.created)),
+                Awards(
+                  awardIcons: comment.awardIcons,
+                  totalAwardsReceived: comment.totalAwardsReceived,
+                ),
+
+                // IconButton(onPressed: () {}, icon: Icon(Icons.expand_less)),
+              ],
+            ),
           ),
-
-
-          // ExpansionPanel()
-          Text(comment.body),
-          Row(
-            // alignment: WrapAlignment.end,
-            // crossAxisAlignment: WrapCrossAlignment.end,
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Spacer(),
-              // CommentSaveButton(comment: comment),
-              // Icon(Icons.more_vert),
-              /* Menu(
+          if (collapseNotifier.expanded) ...[
+            Text(comment.body),
+            Row(
+              // alignment: WrapAlignment.end,
+              // crossAxisAlignment: WrapCrossAlignment.end,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Spacer(),
+                // CommentSaveButton(comment: comment),
+                // Icon(Icons.more_vert),
+                /* Menu(
                 items: [
                   // PopupMenuItem(child: CommentSaveButton(comment: comment)),
                   PopupMenuItem(
@@ -157,65 +161,65 @@ class CommentWidget extends StatelessWidget {
                 ],
               ),
                */
-              /* StatefulBuilder(
+                /* StatefulBuilder(
                 builder: (context, setState) {
                   return  */
-              PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                // onSelected: (v) {
-                //   print(123123);
-                //   setState(()=>{});
-                // },
-                // child: Text('123'),
-                // initialValue: 2,
-                itemBuilder: (_) => [
-                  // CustomPopupMenuItem(child: Text('457')),
-                  // PopupMenuItem(child: CommentSaveButton(comment: comment)),
-                  // PopupMenuItem(child: _commentSaveButton(context)),
-                  _commentSavePopupMenuItem(context),
-                  _commentSharePopupMenuItem(context, comment),
-                  _copyTextPopupMenuItem(context, comment),
-                  // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Save')),
-                  // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Share')),
-                  // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Copy text')),
-                  PopupMenuItem(
-                      onTap: () {/* TODO */}, child: Text('Collapse thread')),
-                  PopupMenuItem(onTap: () {/* TODO */}, child: Text('Report')),
-                  PopupMenuItem(
-                      onTap: () {/* TODO */}, child: Text('Block user')),
-                ],
-              ),
-              /* }
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  // onSelected: (v) {
+                  //   print(123123);
+                  //   setState(()=>{});
+                  // },
+                  // child: Text('123'),
+                  // initialValue: 2,
+                  itemBuilder: (_) => [
+                    // CustomPopupMenuItem(child: Text('457')),
+                    // PopupMenuItem(child: CommentSaveButton(comment: comment)),
+                    // PopupMenuItem(child: _commentSaveButton(context)),
+                    _savePopupMenuItem(context),
+                    _sharePopupMenuItem(context, comment),
+                    _copyTextPopupMenuItem(context, comment),
+                    _collapsePopupMenuItem(context),
+                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Save')),
+                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Share')),
+                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Copy text')),
+                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Collapse thread')),
+                    PopupMenuItem(
+                        onTap: () {/* TODO */}, child: Text('Report')),
+                    PopupMenuItem(
+                        onTap: () {/* TODO */}, child: Text('Block user')),
+                  ],
+                ),
+                /* }
               ), */
-              SizedBox(width: 20),
-              Icon(Icons.star_outline),
-              SizedBox(width: 20),
-              Icon(Icons.reply),
-              Text('Reply'),
-              SizedBox(width: 20),
-              // Icon(Icons.thumb_up),
+                SizedBox(width: 20),
+                Icon(Icons.star_outline),
+                SizedBox(width: 20),
+                Icon(Icons.reply),
+                Text('Reply'),
+                SizedBox(width: 20),
+                // Icon(Icons.thumb_up),
 
-              // Icon(Icons.expand_less),
-              // Text(comment.ups.toString()),
-              // Icon(Icons.expand_more),
-              CommentVoteButton(comment: comment),
-            ],
-          ),
-          if (showNested)
-            for (var reply in comment.replies)
-              CommentWidget(
-                comment: reply,
-                showNested: showNested,
-                depth: depth + 1,
-              )
-
-          
+                // Icon(Icons.expand_less),
+                // Text(comment.ups.toString()),
+                // Icon(Icons.expand_more),
+                CommentVoteButton(comment: comment),
+              ],
+            ),
+            if (showNested)
+              for (var reply in comment.replies)
+                CommentWidget(
+                  comment: reply,
+                  showNested: showNested,
+                  depth: depth + 1,
+                )
+          ],
         ],
       ),
     );
   }
 
-  PopupMenuItem _commentSavePopupMenuItem(BuildContext context) {
+  PopupMenuItem _savePopupMenuItem(BuildContext context) {
     // var update;
     return PopupMenuItem(
       // padding: EdgeInsets.zero,
@@ -302,7 +306,7 @@ class CommentWidget extends StatelessWidget {
     );
   }
 
-  PopupMenuItem _commentSharePopupMenuItem(
+  PopupMenuItem _sharePopupMenuItem(
       BuildContext context, Comment comment) {
     return PopupMenuItem(
       onTap: () async {
@@ -319,7 +323,7 @@ class CommentWidget extends StatelessWidget {
 
   PopupMenuItem _copyTextPopupMenuItem(BuildContext context, Comment comment) {
     return PopupMenuItem(
-      onTap: () async {
+      onTap: () {
         Clipboard.setData(ClipboardData(text: comment.body));
       },
       child: ListTile(
@@ -327,6 +331,21 @@ class CommentWidget extends StatelessWidget {
         minLeadingWidth: 0,
         leading: Icon(Icons.content_copy),
         title: Text('Copy text'),
+      ),
+    );
+  }
+
+  PopupMenuItem _collapsePopupMenuItem(BuildContext context) {
+    return PopupMenuItem(
+      onTap: ()  {
+          context.read<CollapseNotifier>().collapse();
+        // Clipboard.setData(ClipboardData(text: comment.body));
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        minLeadingWidth: 0,
+        leading: Icon(Icons.expand_less),
+        title: Text('Collapse thread'),
       ),
     );
   }

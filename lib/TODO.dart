@@ -1,4 +1,3 @@
-// TODO: use ExpansionPanel https://api.flutter.dev/flutter/material/ExpansionPanel-class.html
 // TODO: edit current user settings
 // TODO: show current user settings
 // TODO: edit current user profile
@@ -13,8 +12,6 @@
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: subreddit notification
 // TODO: gestures
-// TODO: submission icon
-// TODO: comment user icon
 // TODO: give award to submission (not supported by DRAW lib)
 // TODO: give award to comment (not supported by DRAW lib)
 // TODO: user create comment
