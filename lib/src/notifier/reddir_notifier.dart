@@ -1,5 +1,6 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
 import '../reddit_api/trophy.dart';
@@ -10,6 +11,7 @@ import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/vote.dart';
+import '../util/result.dart';
 
 // class RedditNotifier extends ChangeNotifier {
 //   RedditNotifier(this.redditApi);
@@ -40,10 +42,30 @@ import '../reddit_api/vote.dart';
 //   }
 // }
 
-mixin Error {
-  Object? _error;
+/* mixin Result<T> {
+  T? _result;
 
-  Object? get error {
+  T? get result {
+    final tmp = _result;
+    _result = null;
+    return tmp;
+  }
+} */
+
+// mixin Error {
+//   Object? _error;
+
+//   Object? get error {
+//     final tmp = _error;
+//     _error = null;
+//     return tmp;
+//   }
+// }
+
+mixin Error<T> {
+  T? _error;
+
+  T? get error {
     final tmp = _error;
     _error = null;
     return tmp;
@@ -153,7 +175,7 @@ class RedditNotifier extends ChangeNotifier {
   }
 }
 
-class CurrentUserNotifier extends ChangeNotifier with Error {
+class CurrentUserNotifier extends ChangeNotifier with Error<Object> {
   CurrentUserNotifier(this.redditApi);
 
   final RedditApi redditApi;
@@ -213,6 +235,28 @@ class SortNotifier extends ChangeNotifier {
   }
 }
 
+class CollapseNotifier extends ChangeNotifier {
+  CollapseNotifier([bool collapsed = false]) : _collapsed = collapsed;
+
+  bool _collapsed;
+
+  bool get collapsed => _collapsed;
+
+  void collapse() {
+    if (_collapsed) return;
+
+    _collapsed = true;
+    notifyListeners();
+  }
+
+  void expand() {
+    if (!_collapsed) return;
+
+    _collapsed = false;
+    notifyListeners();
+  }
+}
+
 // class FilterNotifier<T> extends ChangeNotifier {
 //   FilterNotifier(T type) : _type = type;
 
@@ -228,7 +272,7 @@ class SortNotifier extends ChangeNotifier {
 //   }
 // }
 
-class SubscriptionNotifier extends ChangeNotifier {
+class SubscriptionNotifier extends ChangeNotifier with Error<Object> {
   SubscriptionNotifier(this.redditApi, bool isSubscriber)
       : _isSubscriber = isSubscriber;
 
@@ -238,12 +282,12 @@ class SubscriptionNotifier extends ChangeNotifier {
   // bool _isLoading = false;
   // bool get isLoading => _isLoading;
 
-  Object? _error;
-  Object? get error {
-    final tmp = _error;
-    _error = null;
-    return tmp;
-  }
+  // Object? _error;
+  // Object? get error {
+  //   final tmp = _error;
+  //   _error = null;
+  //   return tmp;
+  // }
 
   bool _isSubscriber;
   bool get isSubscriber => _isSubscriber;
@@ -287,7 +331,7 @@ class SubscriptionNotifier extends ChangeNotifier {
 
 // TODO: add LoadingMixin, disable/enable button
 // TODO: replace to ErrorMixin
-abstract class VoteNotifier extends ChangeNotifier {
+abstract class VoteNotifier extends ChangeNotifier with Error<Object> {
   VoteNotifier(this.redditApi, Vote vote, int score)
       : _vote = vote,
         _score = score;
@@ -298,12 +342,12 @@ abstract class VoteNotifier extends ChangeNotifier {
   final RedditApi redditApi;
   static final _log = Logger('VoteNotifier');
 
-  Object? _error;
-  Object? get error {
-    final tmp = _error;
-    _error = null;
-    return tmp;
-  }
+  // Object? _error;
+  // Object? get error {
+  //   final tmp = _error;
+  //   _error = null;
+  //   return tmp;
+  // }
 
   Vote _vote;
   Vote get vote => _vote;
@@ -381,6 +425,61 @@ class CommentVoteNotifier extends VoteNotifier {
   }
 }
 
+/* abstract class SaveNotifier extends ChangeNotifier
+    with Error<String>, Result<String> {
+  SaveNotifier(this.redditApi, bool saved) : _saved = saved;
+
+  bool _saved;
+  bool get saved => _saved;
+
+  final RedditApi redditApi;
+  static final _log = Logger('SaveNotifier');
+
+  // Object? _error;
+  // Object? get error {
+  //   final tmp = _error;
+  //   _error = null;
+  //   return tmp;
+  // }
+
+  Future<void> save(String id) async {
+    print(_saved);
+    if (_saved) return;
+
+    try {
+      // throw Exception('some save error');
+      await _doSave(id);
+      _saved = true;
+      _result = 'Saved';
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = 'Fail to save';
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> unsave(String id) async {
+    print(_saved);
+    if (!_saved) return;
+
+    try {
+      // throw Exception('some unsave error');
+      await _doUnsave(id);
+      _saved = false;
+      _result = 'Unsaved';
+    } on Exception catch (e) {
+      _log.error(e);
+      _error = 'Fail to unsave';
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> _doSave(String id);
+  Future<void> _doUnsave(String id);
+} */
+
 abstract class SaveNotifier extends ChangeNotifier {
   SaveNotifier(this.redditApi, bool saved) : _saved = saved;
 
@@ -390,44 +489,89 @@ abstract class SaveNotifier extends ChangeNotifier {
   final RedditApi redditApi;
   static final _log = Logger('SaveNotifier');
 
-  Object? _error;
-  Object? get error {
-    final tmp = _error;
-    _error = null;
-    return tmp;
-  }
-
-  Future<void> save(String id) async {
-    if (_saved) return;
+  Future<Result<String, String>> save(String id) async {
+    if (_saved) return Result.empty();
 
     try {
+      // throw Exception('some save error');
       await _doSave(id);
       _saved = true;
+      notifyListeners();
+      return Result.value('Saved');
     } on Exception catch (e) {
       _log.error(e);
-      _error = e;
+      return Result.error('Fail to save');
     }
-
-    notifyListeners();
   }
 
-  Future<void> unsave(String id) async {
-    if (!_saved) return;
-
+  Future<Result<String, String>> unsave(String id) async {
+    if (!_saved) return Result.empty();
     try {
+      // throw Exception('some unsave error');
       await _doUnsave(id);
       _saved = false;
+      notifyListeners();
+      return Result.value('Unsaved');
     } on Exception catch (e) {
       _log.error(e);
-      _error = e;
+      return Result.error('Fail to unsave');
     }
-
-    notifyListeners();
   }
 
   Future<void> _doSave(String id);
   Future<void> _doUnsave(String id);
 }
+
+/* abstract class SaveNotifier extends ChangeNotifier {
+  SaveNotifier(this.redditApi, bool saved) : _saved = saved;
+
+  bool _saved;
+  bool get saved => _saved;
+
+  final RedditApi redditApi;
+  static final _log = Logger('SaveNotifier');
+
+  Future<String?> save(String id) async {
+    if (_saved) return null;
+
+    try {
+      // throw Exception('some save error');
+      await _doSave(id);
+      _saved = true;
+      notifyListeners();
+      return 'Saved';
+    } on Exception catch (e) {
+      _log.error(e);
+      throw UIException('Fail to save');
+    }
+  }
+
+  Future<String?> unsave(String id) async {
+    if (!_saved) return null;
+    try {
+      // throw Exception('some unsave error');
+      await _doUnsave(id);
+      _saved = false;
+      notifyListeners();
+      return 'Unsaved';
+    } on Exception catch (e) {
+      _log.error(e);
+      throw UIException('Fail to unsave');
+    }
+  }
+
+  Future<void> _doSave(String id);
+  Future<void> _doUnsave(String id);
+}
+
+class UIException implements Exception {
+  UIException(this.message);
+
+  String message;
+
+  @override
+  String toString() => message;
+} */
 
 class SubmissionSaveNotifier extends SaveNotifier {
   SubmissionSaveNotifier(RedditApi redditApi, Submission submission)

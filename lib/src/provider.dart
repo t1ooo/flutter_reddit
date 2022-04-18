@@ -139,6 +139,12 @@ ChangeNotifierProvider<CurrentUserNotifier> currentUserNotifierProvider() {
   );
 }
 
+ChangeNotifierProvider<CollapseNotifier> collapseNotifierProvider() {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => CollapseNotifier(),
+  );
+}
+
 // Future<ChangeNotifierProvider<RedditNotifierFront>>
 //     redditNotifierFrontProvider() async {
 //   reddit = reddit ??

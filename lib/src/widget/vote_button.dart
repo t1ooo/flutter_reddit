@@ -108,7 +108,6 @@ class SubmissionVoteButton extends StatelessWidget {
   }
 }
 
-
 class CommentVoteButton extends StatelessWidget {
   const CommentVoteButton({
     Key? key,
@@ -123,45 +122,47 @@ class CommentVoteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [commentVoteNotifierProvider(comment)],
-      child: Builder(
-        builder: (c) {
-          final notifier = c.watch<CommentVoteNotifier>();
-          final error = notifier.error;
-          if (error != null) {
-            // TODO: handle error
-          }
-          return Row(
-            children: [
-              IconButton(
-                onPressed: () async {
-                  notifier.vote == Vote.up
-                      ? notifier.clearVote(comment.id)
-                      : notifier.upVote(comment.id);
-                },
-                icon: Icon(
-                  Icons.expand_less,
-                  color: notifier.vote == Vote.up ? Colors.green : null,
-                ),
-              ),
+    // return MultiProvider(
+    //   providers: [commentVoteNotifierProvider(comment)],
+    //   child: Builder(
+    //     builder: builder,
+    //   ),
+    // );
+    return builder(context);
+  }
 
-              Text(notifier.score.toString()),
-              IconButton(
-                onPressed: () async {
-                  notifier.vote == Vote.down
-                      ? notifier.clearVote(comment.id)
-                      : notifier.downVote(comment.id);
-                },
-                icon: Icon(
-                  Icons.expand_more,
-                  color: notifier.vote == Vote.down ? Colors.red : null,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+  Widget builder(BuildContext context) {
+    final notifier = context.watch<CommentVoteNotifier>();
+    final error = notifier.error;
+    if (error != null) {
+      // TODO: handle error
+    }
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            notifier.vote == Vote.up
+                ? notifier.clearVote(comment.id)
+                : notifier.upVote(comment.id);
+          },
+          icon: Icon(
+            Icons.expand_less,
+            color: notifier.vote == Vote.up ? Colors.green : null,
+          ),
+        ),
+        Text(notifier.score.toString()),
+        IconButton(
+          onPressed: () async {
+            notifier.vote == Vote.down
+                ? notifier.clearVote(comment.id)
+                : notifier.downVote(comment.id);
+          },
+          icon: Icon(
+            Icons.expand_more,
+            color: notifier.vote == Vote.down ? Colors.red : null,
+          ),
+        ),
+      ],
     );
   }
 }

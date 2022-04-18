@@ -21,10 +21,10 @@ class SubmissionSaveButton extends StatelessWidget {
       child: Builder(
         builder: (c) {
           final notifier = c.watch<SubmissionSaveNotifier>();
-          final error = notifier.error;
-          if (error != null) {
-            // TODO: handle error
-          }
+          // final error = notifier.error;
+          // if (error != null) {
+          //   // TODO: handle error
+          // }
           return Row(
             children: [
               IconButton(
@@ -56,53 +56,56 @@ class CommentSaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [commentSaveNotifierProvider(comment)],
-      child: Builder(
-        builder: (c) {
-          final notifier = c.watch<CommentSaveNotifier>();
-          final error = notifier.error;
-          if (error != null) {
-            // TODO: handle error
-          }
-          return GestureDetector(
-            onTap: () {
-              notifier.saved
-                  ? notifier.unsave(comment.id)
-                  : notifier.save(comment.id);
-            },
-            child: Row(
-              children: [
-                Icon(
-                  notifier.saved ? Icons.bookmark : Icons.bookmark_border,
-                ),
-                Text(notifier.saved ? 'Unsave' : 'Save'),
-              ],
-            ),
-          );
+    // return MultiProvider(
+    //   providers: [commentSaveNotifierProvider(comment)],
+    //   child: Builder(
+    //     builder: builder,
+    //   ),
+    // );
+  //   return builder(context);
+  // }
 
-          // return ElevatedButton.icon(
-          //   onPressed: () {},
-          //   icon: Icon(Icons.abc),
-          //   label: Text('1'),
-          // );
-          // return Row(
-          //   children: [
-          //     IconButton(
-          //       onPressed: () async {
-          //         notifier.saved
-          //             ? notifier.unsave(comment.id)
-          //             : notifier.save(comment.id);
-          //       },
-          //       icon: Icon(
-          //         notifier.saved ? Icons.bookmark : Icons.bookmark_border,
-          //         // color: notifier.saved ? Colors.green : null,
-          //       ),
-          //     ),
-          //   ],
-          // );
-        },
+  // Widget builder(BuildContext context) {
+    final notifier = context.watch<CommentSaveNotifier>();
+    // final error = notifier.error;
+    // if (error != null) {
+    //   // TODO: handle error
+    // }
+    return GestureDetector(
+      onTap: () {
+        notifier.saved
+            ? notifier.unsave(comment.id)
+            : notifier.save(comment.id);
+      },
+      child: Row(
+        children: [
+          Icon(
+            notifier.saved ? Icons.bookmark : Icons.bookmark_border,
+          ),
+          Text(notifier.saved ? 'Unsave' : 'Save'),
+        ],
       ),
     );
+
+    // return ElevatedButton.icon(
+    //   onPressed: () {},
+    //   icon: Icon(Icons.abc),
+    //   label: Text('1'),
+    // );
+    // return Row(
+    //   children: [
+    //     IconButton(
+    //       onPressed: () async {
+    //         notifier.saved
+    //             ? notifier.unsave(comment.id)
+    //             : notifier.save(comment.id);
+    //       },
+    //       icon: Icon(
+    //         notifier.saved ? Icons.bookmark : Icons.bookmark_border,
+    //         // color: notifier.saved ? Colors.green : null,
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 }
