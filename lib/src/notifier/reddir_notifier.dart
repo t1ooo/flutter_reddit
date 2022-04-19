@@ -173,6 +173,14 @@ class RedditNotifier extends ChangeNotifier {
       {int limit = 10, Sort sort = Sort.relevance}) {
     return redditApi.search(query, limit: limit, sort: sort);
   }
+
+  Future<Comment> submissionReply(String id, String body) {
+    return redditApi.submissionReply(id, body);
+  }
+
+  Future<Comment> commentReply(String id, String body) {
+    return redditApi.commentReply(id, body);
+  }
 }
 
 class CurrentUserNotifier extends ChangeNotifier with Error<Object> {

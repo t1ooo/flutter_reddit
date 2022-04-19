@@ -68,6 +68,9 @@ abstract class RedditApi {
       {required int limit, required Sort sort});
 
   // Future<String> userIcon(String name);
+
+  Future<Comment> submissionReply(String id, String body);
+  Future<Comment> commentReply(String id, String body);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -376,6 +379,20 @@ class RedditApiImpl implements RedditApi {
       yield Submission.fromMap((v as draw.Submission).data!);
     }
   }
+
+  Future<Comment> submissionReply(String id, String body) async {
+    final subRef = reddit.submission(id: id);
+    final sub = await subRef.populate();
+    final comment = await sub.reply(body);
+    return Comment.fromMap(comment.data!);
+  }
+
+  Future<Comment> commentReply(String id, String body) async {
+    final commentRef = reddit.comment(id: id);
+    final comment = await commentRef.populate();
+    final commentReply = await comment.reply(body);
+    return Comment.fromMap(commentReply.data!);
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -610,5 +627,16 @@ class FakeRedditApi implements RedditApi {
       await Future.delayed(_delay);
       yield item;
     }
+  }
+
+  Future<Comment> submissionReply(String id, String body) async {
+    await Future.delayed(_delay);
+
+    return Comment.fromMap({'boby': body});
+  }
+
+  Future<Comment> commentReply(String id, String body) async {
+    await Future.delayed(_delay);
+    return Comment.fromMap({'boby': body});
   }
 }

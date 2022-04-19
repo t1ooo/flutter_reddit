@@ -6,7 +6,7 @@ import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
 import '../reddit_api/submission.dart';
-import 'comment_field.dart';
+import '../comment/comment_field.dart';
 import 'submission.dart';
 
 class SubmissionScreen extends StatelessWidget {
