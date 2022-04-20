@@ -731,7 +731,7 @@ class SubmissionNotifier extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<String?> submissionReply(String id, String body) async {
+  Future<String?> reply(String id, String body) async {
     try {
       await redditApi.submissionReply(id, body);
       notifyListeners();
@@ -742,16 +742,16 @@ class SubmissionNotifier extends ChangeNotifier {
     }
   }
 
-  Future<String?> commentReply(String id, String body) async {
-    try {
-      await redditApi.commentReply(id, body);
-      notifyListeners();
-      return null;
-    } on Exception catch (e) {
-      _log.error(e);
-      return 'Fail to post comment';
-    }
-  }
+  // Future<String?> commentReply(String id, String body) async {
+  //   try {
+  //     await redditApi.commentReply(id, body);
+  //     notifyListeners();
+  //     return null;
+  //   } on Exception catch (e) {
+  //     _log.error(e);
+  //     return 'Fail to post comment';
+  //   }
+  // }
 }
 
 // class RedditNotifierFront extends ChangeNotifier {

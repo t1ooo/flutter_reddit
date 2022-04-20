@@ -69,7 +69,7 @@ class _AddCommentState extends State<AddComment> {
               }
             } else {
               final notifer = context.read<SubmissionNotifier>();
-              final result = await notifer.submissionReply(widget.id, _message);
+              final result = await notifer.reply(widget.id, _message);
               if (result != null) {
                 showSnackBar(context, result);
               }
