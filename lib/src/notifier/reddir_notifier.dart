@@ -85,7 +85,6 @@ class RedditNotifier extends ChangeNotifier {
 
   static final _log = Logger('RedditNotifier');
 
-  // TODO: rename to front
   Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
     return redditApi.front(limit: limit, type: type);
   }
