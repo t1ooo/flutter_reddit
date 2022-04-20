@@ -204,7 +204,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      final sub = Comment.fromMap(dsub.data!);
+      final sub = Comment.fromJson(dsub.data!);
       yield sub;
     }
   }
@@ -245,7 +245,7 @@ class RedditApiImpl implements RedditApi {
     final sub = await subRef.populate();
     final comments = (sub.comments!.comments)
         .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Comment.fromMap(v))
+        .map((v) => Comment.fromJson(v))
         .toList();
     // return Submission.fromMap(sub.data!, comments: sub.comments!.comments);
     return Submission.fromMap(sub.data!, comments: comments);
@@ -350,7 +350,7 @@ class RedditApiImpl implements RedditApi {
         if (v is draw.Submission)
           yield Submission.fromMap(v.data!);
         else if (v is draw.Comment)
-          yield Comment.fromMap(v.data!);
+          yield Comment.fromJson(v.data!);
         else
           _log.warning('undefined type');
       } on Exception catch (e, st) {
@@ -384,14 +384,14 @@ class RedditApiImpl implements RedditApi {
     final subRef = reddit.submission(id: id);
     final sub = await subRef.populate();
     final comment = await sub.reply(body);
-    return Comment.fromMap(comment.data!);
+    return Comment.fromJson(comment.data!);
   }
 
   Future<Comment> commentReply(String id, String body) async {
     final commentRef = reddit.comment(id: id);
     final comment = await commentRef.populate();
     final commentReply = await comment.reply(body);
-    return Comment.fromMap(commentReply.data!);
+    return Comment.fromJson(commentReply.data!);
   }
 }
 
@@ -455,7 +455,7 @@ class FakeRedditApi implements RedditApi {
 
     final items = (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Comment.fromMap(v))
+        .map((v) => Comment.fromJson(v))
         .take(limit);
 
     for (final item in items) {
@@ -509,7 +509,7 @@ class FakeRedditApi implements RedditApi {
     // try {
     final comments = (jsonDecode(comData) as List<dynamic>)
         .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Comment.fromMap(v))
+        .map((v) => Comment.fromJson(v))
         .toList();
 
     // print(comments);
@@ -579,7 +579,7 @@ class FakeRedditApi implements RedditApi {
         .map((v) => v as Map<dynamic, dynamic>)
         .map((v) {
       if (v['name']?.contains('t1_'))
-        return Comment.fromMap(v);
+        return Comment.fromJson(v);
       else
         return Submission.fromMap(v);
     }).take(limit);
@@ -631,11 +631,11 @@ class FakeRedditApi implements RedditApi {
 
   Future<Comment> submissionReply(String id, String body) async {
     await Future.delayed(_delay);
-    return Comment.fromMap({'boby': body});
+    return Comment.fromJson({'boby': body});
   }
 
   Future<Comment> commentReply(String id, String body) async {
     await Future.delayed(_delay);
-    return Comment.fromMap({'boby': body});
+    return Comment.fromJson({'boby': body});
   }
 }

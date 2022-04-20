@@ -35,7 +35,7 @@ List<Comment> parseCommentReplies(dynamic data) {
     final comments = <Comment>[];
     for (final child in (data?['data']?['children'] as List<dynamic>)) {
       try {
-        comments.add(Comment.fromMap(child?['data'] as Map));
+        comments.add(Comment.fromJson(child?['data'] as Map));
       } on TypeError catch (e) {
         _log.warning(e);
       }
@@ -57,7 +57,7 @@ List<Comment> parseCommentReplies(dynamic data) {
   //   if (!(children is Map)) {
   //     _log.warning('fail to parse comment: $childData');
   //   }
-  //   comments.add(Comment.fromMap(childData as Map));
+  //   comments.add(Comment.fromJson(childData as Map));
   // }
 
   // return [];

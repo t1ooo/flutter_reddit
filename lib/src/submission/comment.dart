@@ -33,9 +33,10 @@ class CommentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        commentSaveNotifierProvider(comment),
-        commentVoteNotifierProvider(comment),
-        collapseNotifierProvider(),
+        // commentSaveNotifierProvider(comment),
+        // commentVoteNotifierProvider(comment),
+        // collapseNotifierProvider(),
+        commentProvider(comment),
       ],
       child: Builder(
         builder: (context) {
@@ -63,7 +64,7 @@ class CommentWidget extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    final collapseNotifier = context.watch<CollapseNotifier>();
+    final collapseNotifier = context.watch<CommentNotifier>();
 
     return Padding(
       padding: commentPadding(depth),
@@ -203,7 +204,8 @@ class CommentWidget extends StatelessWidget {
                 // Icon(Icons.expand_less),
                 // Text(comment.ups.toString()),
                 // Icon(Icons.expand_more),
-                CommentVoteButton(comment: comment),
+                // CommentVoteButton(comment: comment),
+                CommentVoteButton(),
               ],
             ),
             if (showNested)
@@ -226,7 +228,7 @@ class CommentWidget extends StatelessWidget {
       onTap: () async {
         // setState(()=>{});
         // update(()=>{});
-        final notifier = context.read<CommentSaveNotifier>();
+        final notifier = context.read<CommentNotifier>();
         /* await (notifier.saved
             ? notifier.unsave(comment.id)
             : notifier.save(comment.id));
@@ -261,9 +263,9 @@ class CommentWidget extends StatelessWidget {
         //     showSnackBar(context, value);
         //   });
 
-          final result = await (notifier.saved
-              ? notifier.unsave(comment.id)
-              : notifier.save(comment.id));
+          final result = await (notifier.comment.saved
+              ? notifier.unsave()
+              : notifier.save());
           if (result != null) {
             showSnackBar(context, result);
           }
@@ -280,7 +282,7 @@ class CommentWidget extends StatelessWidget {
       child: Builder(
         builder: (_) {
           // update = u;
-          final notifier = context.watch<CommentSaveNotifier>();
+          final notifier = context.watch<CommentNotifier>();
 
           // final error = notifier.error;
           // if (error != null) {
@@ -296,9 +298,9 @@ class CommentWidget extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             minLeadingWidth: 0,
             leading: Icon(
-              notifier.saved ? Icons.bookmark : Icons.bookmark_border,
+              notifier.comment.saved ? Icons.bookmark : Icons.bookmark_border,
             ),
-            title: Text(notifier.saved ? 'Unsave' : 'Save'),
+            title: Text(notifier.comment.saved ? 'Unsave' : 'Save'),
           );
           // return Row(
           //   children: [
@@ -346,7 +348,7 @@ class CommentWidget extends StatelessWidget {
   PopupMenuItem _collapsePopupMenuItem(BuildContext context) {
     return PopupMenuItem(
       onTap: ()  {
-          context.read<CollapseNotifier>().collapse();
+          context.read<CommentNotifier>().collapse();
         // Clipboard.setData(ClipboardData(text: comment.body));
       },
       child: ListTile(

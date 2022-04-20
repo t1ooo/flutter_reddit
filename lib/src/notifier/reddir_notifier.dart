@@ -782,14 +782,12 @@ mixin CollapseMixin {
 
   void collapse() {
     if (_collapsed) return;
-
     _collapsed = true;
     notifyListeners();
   }
 
   void expand() {
     if (!_collapsed) return;
-
     _collapsed = false;
     notifyListeners();
   }
@@ -899,7 +897,7 @@ mixin SaveMixin {
   void notifyListeners();
 }
 
-class CommentNotifier extends ChangeNotifier
+/* class CommentNotifier extends ChangeNotifier
     with CollapseMixin, VoteMixin, SaveMixin {
   CommentNotifier(this.redditApi, this.comment) {
     _saved = comment.saved;
@@ -926,4 +924,99 @@ class CommentNotifier extends ChangeNotifier
   Future<void> _doUnsave(String id) {
     return redditApi.commentUnsave(id);
   }
+} */
+
+class CommentNotifier extends ChangeNotifier with CollapseMixin {
+  CommentNotifier(this.redditApi, this.comment);
+
+  final RedditApi redditApi;
+  Comment comment;
+
+  static final _log = Logger('CommentNotifier');
+
+  Future<String?> reply() {
+    // TODO
+    throw UnimplementedError();
+  }
+
+  Future<String?> save() async {
+    if (comment.saved) return null;
+
+    try {
+      await redditApi.commentSave(comment.id);
+      comment = comment.copyWith(saved: true);
+      notifyListeners();
+      return 'Saved';
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to save';
+    }
+  }
+
+  Future<String?> unsave() async {
+    if (!comment.saved) return null;
+
+    try {
+      await redditApi.commentUnsave(comment.id);
+      comment = comment.copyWith(saved: false);
+      notifyListeners();
+      return 'Unsaved';
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to unsave';
+    }
+  }
+
+  Future<String?> upVote() async {
+    return await _updateVote(Vote.up);
+  }
+
+  Future<String?> downVote() async {
+    return await _updateVote(Vote.down);
+  }
+
+  Future<String?> clearVote() async {
+    return await _updateVote(Vote.none);
+  }
+
+  Future<String?> _updateVote(Vote vote) async {
+    if (comment.likes == vote) return null;
+
+    try {
+      await redditApi.submissionVote(comment.id, vote);
+      comment = comment.copyWith(
+        likes: vote,
+        score: calcScore(comment.score, comment.likes, vote),
+      );
+      notifyListeners();
+      return null;
+    } on Exception catch (e) {
+      _log.error(e);
+      // _error = e;
+      return 'Error: fail to vote';
+    }
+  }
+}
+
+int calcScore(int score, Vote oldVote, Vote newVote) {
+  if (oldVote == Vote.up) {
+    if (newVote == Vote.down) {
+      return score - 2;
+    } else if (newVote == Vote.none) {
+      return score - 1;
+    }
+  } else if (oldVote == Vote.none) {
+    if (newVote == Vote.down) {
+      return score - 1;
+    } else if (newVote == Vote.up) {
+      return score + 1;
+    }
+  } else if (oldVote == Vote.down) {
+    if (newVote == Vote.up) {
+      return score + 2;
+    } else if (newVote == Vote.none) {
+      return score + 1;
+    }
+  }
+  return score;
 }

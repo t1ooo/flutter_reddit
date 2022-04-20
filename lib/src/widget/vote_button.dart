@@ -114,12 +114,12 @@ class SubmissionVoteButton extends StatelessWidget {
 class CommentVoteButton extends StatelessWidget {
   const CommentVoteButton({
     Key? key,
-    required this.comment,
+    // required this.comment,
     // required this.isVoter,
     // this.isUserPage = false,
   }) : super(key: key);
 
-  final Comment comment;
+  // final Comment comment;
   // final bool isVoter;
   // final bool isUserPage;
 
@@ -135,37 +135,37 @@ class CommentVoteButton extends StatelessWidget {
   }
 
   Widget builder(BuildContext context) {
-    final notifier = context.watch<CommentVoteNotifier>();
+    final notifier = context.watch<CommentNotifier>();
 
     return Row(
       children: [
         IconButton(
           onPressed: () async {
-            final result = await (notifier.vote == Vote.up
-                ? notifier.clearVote(comment.id)
-                : notifier.upVote(comment.id));
+            final result = await (notifier.comment.likes == Vote.up
+                ? notifier.clearVote()
+                : notifier.upVote());
             if (result != null) {
               showSnackBar(context, result);
             }
           },
           icon: Icon(
             Icons.expand_less,
-            color: notifier.vote == Vote.up ? Colors.green : null,
+            color: notifier.comment.likes == Vote.up ? Colors.green : null,
           ),
         ),
-        Text(notifier.score.toString()),
+        Text(notifier.comment.score.toString()),
         IconButton(
           onPressed: () async {
-            final result = await (notifier.vote == Vote.down
-                ? notifier.clearVote(comment.id)
-                : notifier.downVote(comment.id));
+            final result = await (notifier.comment.likes == Vote.down
+                ? notifier.clearVote()
+                : notifier.downVote());
             if (result != null) {
               showSnackBar(context, result);
             }
           },
           icon: Icon(
             Icons.expand_more,
-            color: notifier.vote == Vote.down ? Colors.red : null,
+            color: notifier.comment.likes == Vote.down ? Colors.red : null,
           ),
         ),
       ],

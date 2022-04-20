@@ -187,6 +187,15 @@ ChangeNotifierProvider<SortNotifier> sortNotifierProvider() {
   );
 }
 
+ChangeNotifierProvider<CommentNotifier> commentProvider(Comment comment) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => CommentNotifier(
+      context.read<RedditApi>(),
+      comment,
+    ),
+  );
+}
+
 // ChangeNotifierProvider<UserNotifier> userProvider() {
 //   return ChangeNotifierProvider(
 //     create: (BuildContext context) => UserNotifier(
