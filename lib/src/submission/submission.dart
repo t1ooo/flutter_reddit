@@ -13,8 +13,8 @@ class SubmissionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
+    return /* Stack(
+      children: [ */
         ListView(
           children: [
             SubmissionTile(
@@ -34,14 +34,14 @@ class SubmissionWidget extends StatelessWidget {
             //   ),
             // ),
           ],
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: CommentField(id:submission.id),
-        ),
-      ],
-    );
+        );
+        // Positioned(
+        //   bottom: 0,
+        //   left: 0,
+        //   right: 0,
+        //   child: CommentField(id:submission.id),
+        // ),
+      /* ],
+    ); */
   }
 }

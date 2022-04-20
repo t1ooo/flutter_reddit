@@ -33,6 +33,7 @@ class SubmissionScreen extends StatelessWidget {
         },
       ),
       // bottomNavigationBar: CommentField(),
+      bottomNavigationBar: CommentField(id:id),
     );
   }
 }

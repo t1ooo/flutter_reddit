@@ -35,7 +35,7 @@ class CommentWidget extends StatelessWidget {
       providers: [
         // commentSaveNotifierProvider(comment),
         // commentVoteNotifierProvider(comment),
-        // collapseNotifierProvider(),
+        // notifierProvider(),
         commentProvider(comment),
       ],
       child: Builder(
@@ -64,19 +64,20 @@ class CommentWidget extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    final collapseNotifier = context.watch<CommentNotifier>();
-
-    return Padding(
-      padding: commentPadding(depth),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          InkWell(
-            onTap: collapseNotifier.expanded ? null : () {
-              collapseNotifier.expand();
+    final notifier = context.watch<CommentNotifier>();
+    print(notifier.comment.replies);
+    return InkWell(
+      onTap: notifier.expanded
+          ? null
+          : () {
+              notifier.expand();
             },
-            child: Row(
+      child: Padding(
+        padding: commentPadding(depth),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
                 // SizedPlaceholder(width: 20, height: 20),
                 // SizedBox(
@@ -116,107 +117,116 @@ class CommentWidget extends StatelessWidget {
                 // IconButton(onPressed: () {}, icon: Icon(Icons.expand_less)),
               ],
             ),
-          ),
-          if (collapseNotifier.expanded) ...[
-            Text(comment.body),
-            Row(
-              // alignment: WrapAlignment.end,
-              // crossAxisAlignment: WrapCrossAlignment.end,
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Spacer(),
-                // CommentSaveButton(comment: comment),
-                // Icon(Icons.more_vert),
-                /* Menu(
-                items: [
-                  // PopupMenuItem(child: CommentSaveButton(comment: comment)),
-                  PopupMenuItem(
-                    child: Builder(
-                      builder: (_) {
-                        final notifier = context.watch<CommentSaveNotifier>();
-                        print('rebuild ${notifier.saved}');
-                        final error = notifier.error;
-                        if (error != null) {
-                          // TODO: handle error
-                        }
-                        return GestureDetector(
-                          onTap: () {
-                            notifier.saved
-                                ? notifier.unsave(comment.id)
-                                : notifier.save(comment.id);
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                notifier.saved
-                                    ? Icons.bookmark
-                                    : Icons.bookmark_border,
-                              ),
-                              Text(notifier.saved ? 'Unsave' : 'Save'),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-               */
-                /* StatefulBuilder(
-                builder: (context, setState) {
-                  return  */
-                PopupMenuButton(
-                  icon: Icon(Icons.more_vert),
-                  // onSelected: (v) {
-                  //   print(123123);
-                  //   setState(()=>{});
-                  // },
-                  // child: Text('123'),
-                  // initialValue: 2,
-                  itemBuilder: (_) => [
-                    // CustomPopupMenuItem(child: Text('457')),
+            if (notifier.expanded) ...[
+              Text(comment.body),
+              Row(
+                // alignment: WrapAlignment.end,
+                // crossAxisAlignment: WrapCrossAlignment.end,
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Spacer(),
+                  // CommentSaveButton(comment: comment),
+                  // Icon(Icons.more_vert),
+                  /* Menu(
+                  items: [
                     // PopupMenuItem(child: CommentSaveButton(comment: comment)),
-                    // PopupMenuItem(child: _commentSaveButton(context)),
-                    _savePopupMenuItem(context),
-                    _sharePopupMenuItem(context, comment),
-                    _copyTextPopupMenuItem(context, comment),
-                    _collapsePopupMenuItem(context),
-                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Save')),
-                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Share')),
-                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Copy text')),
-                    // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Collapse thread')),
                     PopupMenuItem(
-                        onTap: () {/* TODO */}, child: Text('Report')),
-                    PopupMenuItem(
-                        onTap: () {/* TODO */}, child: Text('Block user')),
+                      child: Builder(
+                        builder: (_) {
+                          final notifier = context.watch<CommentSaveNotifier>();
+                          print('rebuild ${notifier.saved}');
+                          final error = notifier.error;
+                          if (error != null) {
+                            // TODO: handle error
+                          }
+                          return GestureDetector(
+                            onTap: () {
+                              notifier.saved
+                                  ? notifier.unsave(comment.id)
+                                  : notifier.save(comment.id);
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  notifier.saved
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                ),
+                                Text(notifier.saved ? 'Unsave' : 'Save'),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
-                /* }
-              ), */
-                SizedBox(width: 20),
-                Icon(Icons.star_outline),
-                SizedBox(width: 20),
-                Icon(Icons.reply),
-                Text('Reply'),
-                SizedBox(width: 20),
-                // Icon(Icons.thumb_up),
+                 */
+                  /* StatefulBuilder(
+                  builder: (context, setState) {
+                    return  */
+                  PopupMenuButton(
+                    icon: Icon(Icons.more_vert),
+                    // onSelected: (v) {
+                    //   print(123123);
+                    //   setState(()=>{});
+                    // },
+                    // child: Text('123'),
+                    // initialValue: 2,
+                    itemBuilder: (_) => [
+                      // CustomPopupMenuItem(child: Text('457')),
+                      // PopupMenuItem(child: CommentSaveButton(comment: comment)),
+                      // PopupMenuItem(child: _commentSaveButton(context)),
+                      _savePopupMenuItem(context),
+                      _sharePopupMenuItem(context, comment),
+                      _copyTextPopupMenuItem(context, comment),
+                      _collapsePopupMenuItem(context),
+                      // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Save')),
+                      // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Share')),
+                      // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Copy text')),
+                      // PopupMenuItem(onTap: () {/* TODO */}, child: Text('Collapse thread')),
+                      PopupMenuItem(
+                          onTap: () {/* TODO */}, child: Text('Report')),
+                      PopupMenuItem(
+                          onTap: () {/* TODO */}, child: Text('Block user')),
+                    ],
+                  ),
+                  /* }
+                ), */
+                  SizedBox(width: 20),
+                  Icon(Icons.star_outline),
+                  SizedBox(width: 20),
+                  Icon(Icons.reply),
+                  TextButton(
+                    onPressed: () async {
+                      // TODO
+                      final result = await notifier.reply('Some body');
+                      if (result != null) {
+                        showSnackBar(context, result);
+                      }
+                    },
+                    child: Text('Reply'),
+                  ),
+                  SizedBox(width: 20),
+                  // Icon(Icons.thumb_up),
 
-                // Icon(Icons.expand_less),
-                // Text(comment.ups.toString()),
-                // Icon(Icons.expand_more),
-                // CommentVoteButton(comment: comment),
-                CommentVoteButton(),
-              ],
-            ),
-            if (showNested)
-              for (var reply in comment.replies)
-                CommentWidget(
-                  comment: reply,
-                  showNested: showNested,
-                  depth: depth + 1,
-                )
+                  // Icon(Icons.expand_less),
+                  // Text(comment.ups.toString()),
+                  // Icon(Icons.expand_more),
+                  // CommentVoteButton(comment: comment),
+                  CommentVoteButton(),
+                ],
+              ),
+              if (showNested)
+                for (var reply in comment.replies)
+                  CommentWidget(
+                    comment: reply,
+                    showNested: showNested,
+                    depth: depth + 1,
+                  )
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -263,12 +273,12 @@ class CommentWidget extends StatelessWidget {
         //     showSnackBar(context, value);
         //   });
 
-          final result = await (notifier.comment.saved
-              ? notifier.unsave()
-              : notifier.save());
-          if (result != null) {
-            showSnackBar(context, result);
-          }
+        final result = await (notifier.comment.saved
+            ? notifier.unsave()
+            : notifier.save());
+        if (result != null) {
+          showSnackBar(context, result);
+        }
 
         // final error = result.error;
         // if (error != null) {
@@ -316,8 +326,7 @@ class CommentWidget extends StatelessWidget {
     );
   }
 
-  PopupMenuItem _sharePopupMenuItem(
-      BuildContext context, Comment comment) {
+  PopupMenuItem _sharePopupMenuItem(BuildContext context, Comment comment) {
     return PopupMenuItem(
       onTap: () async {
         Share.share('${comment.linkTitle} ${comment.shortLink}');
@@ -347,8 +356,8 @@ class CommentWidget extends StatelessWidget {
 
   PopupMenuItem _collapsePopupMenuItem(BuildContext context) {
     return PopupMenuItem(
-      onTap: ()  {
-          context.read<CommentNotifier>().collapse();
+      onTap: () {
+        context.read<CommentNotifier>().collapse();
         // Clipboard.setData(ClipboardData(text: comment.body));
       },
       child: ListTile(

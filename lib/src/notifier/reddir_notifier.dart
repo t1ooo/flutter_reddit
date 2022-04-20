@@ -934,9 +934,16 @@ class CommentNotifier extends ChangeNotifier with CollapseMixin {
 
   static final _log = Logger('CommentNotifier');
 
-  Future<String?> reply() {
-    // TODO
-    throw UnimplementedError();
+  Future<String?> reply(String body) async {
+    try {
+      final commentReply = await redditApi.commentReply(comment.id, body);
+      print(comment.replies);
+      comment = comment.copyWith(replies: comment.replies + [commentReply]);
+      notifyListeners();
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to reply';
+    }
   }
 
   Future<String?> save() async {
