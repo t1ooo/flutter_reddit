@@ -369,7 +369,6 @@ class SubscriptionNotifier extends ChangeNotifier /* with Error<Object> */ {
   //   notifyListeners();
   // }
 
-
   Future<String?> subscribe(String name) async {
     if (isSubscriber) return null;
 
@@ -456,7 +455,6 @@ abstract class VoteNotifier extends ChangeNotifier /* with Error<Object> */ {
       // _error = e;
       return 'Error: fail to vote';
     }
-
   }
 
   void _updateScore(Vote newVote) {
@@ -756,7 +754,6 @@ class SubmissionNotifier extends ChangeNotifier {
   }
 }
 
-
 // class RedditNotifierFront extends ChangeNotifier {
 //   RedditNotifierFront(this.redditApi);
 
@@ -775,3 +772,158 @@ class SubmissionNotifier extends ChangeNotifier {
 //     return redditApi.front(limit: limit, type: _type);
 //   }
 // }
+
+////////////////////////////////////////////////////////////////
+mixin CollapseMixin {
+  bool _collapsed = false;
+
+  bool get expanded => !_collapsed;
+  bool get collapsed => _collapsed;
+
+  void collapse() {
+    if (_collapsed) return;
+
+    _collapsed = true;
+    notifyListeners();
+  }
+
+  void expand() {
+    if (!_collapsed) return;
+
+    _collapsed = false;
+    notifyListeners();
+  }
+
+  void notifyListeners();
+}
+
+mixin VoteMixin {
+  static late final Logger _log;
+
+  late int _score;
+  int get score => _score;
+
+  late Vote _vote;
+  Vote get vote => _vote;
+
+  Future<String?> upVote(String id) async {
+    await _updateVote(id, Vote.up);
+  }
+
+  Future<String?> downVote(String id) async {
+    await _updateVote(id, Vote.down);
+  }
+
+  Future<String?> clearVote(String id) async {
+    await _updateVote(id, Vote.none);
+  }
+
+  Future<String?> _updateVote(String id, Vote vote) async {
+    if (_vote == vote) return null;
+
+    try {
+      // await redditApi.submissionVote(id, vote);
+      await _doVote(id, vote);
+      _updateScore(vote);
+      _vote = vote;
+      notifyListeners();
+    } on Exception catch (e) {
+      _log.error(e);
+      // _error = e;
+      return 'Error: fail to vote';
+    }
+  }
+
+  void _updateScore(Vote newVote) {
+    if (_vote == Vote.up) {
+      if (newVote == Vote.down) {
+        _score = _score - 2;
+      } else if (newVote == Vote.none) {
+        _score = _score - 1;
+      }
+    } else if (_vote == Vote.none) {
+      if (newVote == Vote.down) {
+        _score = _score - 1;
+      } else if (newVote == Vote.up) {
+        _score = _score + 1;
+      }
+    } else if (_vote == Vote.down) {
+      if (newVote == Vote.up) {
+        _score = _score + 2;
+      } else if (newVote == Vote.none) {
+        _score = _score + 1;
+      }
+    }
+  }
+
+  Future<void> _doVote(String id, Vote vote);
+  void notifyListeners();
+}
+
+mixin SaveMixin {
+  late bool _saved;
+  bool get saved => _saved;
+
+  static late final _log;
+
+  Future<String?> save(String id) async {
+    if (_saved) return null;
+
+    try {
+      await _doSave(id);
+      _saved = true;
+      notifyListeners();
+      return 'Saved';
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to save';
+    }
+  }
+
+  Future<String?> unsave(String id) async {
+    if (!_saved) return null;
+
+    try {
+      await _doUnsave(id);
+      _saved = false;
+      notifyListeners();
+      return 'Unsaved';
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to unsave';
+    }
+  }
+
+  Future<void> _doSave(String id);
+  Future<void> _doUnsave(String id);
+  void notifyListeners();
+}
+
+class CommentNotifier extends ChangeNotifier
+    with CollapseMixin, VoteMixin, SaveMixin {
+  CommentNotifier(this.redditApi, this.comment) {
+    _saved = comment.saved;
+    _score = comment.score;
+    _vote = comment.likes;
+  }
+
+  final RedditApi redditApi;
+  Comment comment;
+
+  static final _log = Logger('CommentNotifier');
+
+  @override
+  Future<void> _doVote(String id, Vote vote) {
+    return redditApi.commentVote(id, vote);
+  }
+
+  @override
+  Future<void> _doSave(String id) {
+    return redditApi.commentSave(id);
+  }
+
+  @override
+  Future<void> _doUnsave(String id) {
+    return redditApi.commentUnsave(id);
+  }
+}
