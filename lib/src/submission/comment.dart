@@ -39,7 +39,6 @@ class CommentWidget extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          print('rebuild');
           if (depth == 0) {
             return withCard(context);
           }
@@ -241,9 +240,10 @@ class CommentWidget extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () async {
-            final result = await (comment.likes == Vote.up
-                ? notifier.clearVote()
-                : notifier.upVote());
+            // final result = await (comment.likes == Vote.up
+            //     ? notifier.clearVote()
+            //     : notifier.upVote());
+            final result = await notifier.upVote();
             if (result != null) {
               showSnackBar(context, result);
             }
@@ -256,9 +256,10 @@ class CommentWidget extends StatelessWidget {
         Text(comment.score.toString()),
         IconButton(
           onPressed: () async {
-            final result = await (comment.likes == Vote.down
-                ? notifier.clearVote()
-                : notifier.downVote());
+            // final result = await (comment.likes == Vote.down
+            //     ? notifier.clearVote()
+            //     : notifier.downVote());
+            final result = await notifier.downVote();
             if (result != null) {
               showSnackBar(context, result);
             }

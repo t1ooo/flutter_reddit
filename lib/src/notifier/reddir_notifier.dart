@@ -979,17 +979,35 @@ class CommentNotifier with CollapseMixin, ChangeNotifier {
     }
   }
 
+  // Future<String?> upVote() async {
+  //   return await _updateVote(Vote.up);
+  // }
+
+  // Future<String?> downVote() async {
+  //   return await _updateVote(Vote.down);
+  // }
+
+  // Future<String?> clearVote() async {
+  //   return await _updateVote(Vote.none);
+  // }
+
   Future<String?> upVote() async {
+    if (comment.likes == Vote.up) {
+      return _updateVote(Vote.none);
+    }
     return await _updateVote(Vote.up);
   }
 
   Future<String?> downVote() async {
+    if (comment.likes == Vote.down) {
+      return _updateVote(Vote.none);
+    }
     return await _updateVote(Vote.down);
   }
 
-  Future<String?> clearVote() async {
-    return await _updateVote(Vote.none);
-  }
+  // Future<String?> clearVote() async {
+  //   return await _updateVote(Vote.none);
+  // }
 
   Future<String?> _updateVote(Vote vote) async {
     if (comment.likes == vote) return null;
