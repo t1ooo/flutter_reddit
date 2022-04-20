@@ -59,13 +59,29 @@ class _AddCommentState extends State<AddComment> {
             //       .submissionReply(widget.id, _message);
             // }
 
-            final notifer = context.read<SubmissionNotifier>();
-            final result = await (widget.isComment
-                ? notifer.commentReply(widget.id, _message)
-                : notifer.submissionReply(widget.id, _message));
-            if (result != null) {
-              showSnackBar(context, result);
+
+            // TODO
+            if (widget.isComment) {
+              final notifer = context.read<CommentNotifier>();
+              final result = await notifer.reply(_message);
+              if (result != null) {
+                showSnackBar(context, result);
+              }
+            } else {
+              final notifer = context.read<SubmissionNotifier>();
+              final result = await notifer.submissionReply(widget.id, _message);
+              if (result != null) {
+                showSnackBar(context, result);
+              }
             }
+
+            // final notifer = context.read<SubmissionNotifier>();
+            // final result = await (widget.isComment
+            //     ? notifer.commentReply(widget.id, _message)
+            //     : notifer.submissionReply(widget.id, _message));
+            // if (result != null) {
+            //   showSnackBar(context, result);
+            // }
             Navigator.pop(context);
           },
           child: Text('Post'),

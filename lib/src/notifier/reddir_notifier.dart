@@ -792,7 +792,9 @@ mixin CollapseMixin {
     notifyListeners();
   }
 
-  void notifyListeners();
+  void notifyListeners() {
+    throw UnimplementedError();
+  }
 }
 
 mixin VoteMixin {
@@ -926,7 +928,8 @@ mixin SaveMixin {
   }
 } */
 
-class CommentNotifier extends ChangeNotifier with CollapseMixin {
+// class CommentNotifier extends ChangeNotifier with CollapseMixin {
+class CommentNotifier with CollapseMixin, ChangeNotifier {
   CommentNotifier(this.redditApi, this.comment);
 
   final RedditApi redditApi;
@@ -936,10 +939,12 @@ class CommentNotifier extends ChangeNotifier with CollapseMixin {
 
   Future<String?> reply(String body) async {
     try {
+      // throw Exception('error');
       final commentReply = await redditApi.commentReply(comment.id, body);
-      print(comment.replies);
-      comment = comment.copyWith(replies: comment.replies + [commentReply]);
+      print(commentReply);
+      comment = comment.copyWith(replies: [commentReply] + comment.replies);
       notifyListeners();
+      return null;
     } on Exception catch (e) {
       _log.error(e);
       return 'Error: Fail to reply';

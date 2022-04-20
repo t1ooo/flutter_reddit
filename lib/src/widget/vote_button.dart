@@ -111,7 +111,7 @@ class SubmissionVoteButton extends StatelessWidget {
   }
 }
 
-class CommentVoteButton extends StatelessWidget {
+/* class CommentVoteButton extends StatelessWidget {
   const CommentVoteButton({
     Key? key,
     // required this.comment,
@@ -171,4 +171,4 @@ class CommentVoteButton extends StatelessWidget {
       ],
     );
   }
-}
+} */

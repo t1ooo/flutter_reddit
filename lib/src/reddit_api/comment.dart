@@ -4,7 +4,8 @@ import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 import '../util/map.dart';
 import 'vote.dart';
 
-class Comment extends Equatable {
+// class Comment extends Equatable {
+class Comment  {
   Comment({
     required this.subredditId,
     required this.authorIsBlocked,

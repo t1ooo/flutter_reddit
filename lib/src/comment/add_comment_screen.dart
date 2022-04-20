@@ -8,9 +8,11 @@ class AddCommentScreen extends StatelessWidget {
   const AddCommentScreen({
     Key? key,
     required this.id,
+    this.isComment = false,
   }) : super(key: key);
 
   final String id;
+  final bool isComment;
   // final Function(String) onSubmit;
 
   @override
@@ -29,7 +31,7 @@ class AddCommentScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: pagePadding,
-        child: AddComment(id:id),
+        child: AddComment(id: id, isComment: isComment),
       ),
       /* bottomNavigationBar: Padding(
         padding: pagePadding.copyWith(bottom: 20),

@@ -631,11 +631,11 @@ class FakeRedditApi implements RedditApi {
 
   Future<Comment> submissionReply(String id, String body) async {
     await Future.delayed(_delay);
-    return Comment.fromJson({'boby': body});
+    return Comment.fromJson({'body': body});
   }
 
   Future<Comment> commentReply(String id, String body) async {
     await Future.delayed(_delay);
-    return Comment.fromJson({'boby': body});
+    return Comment.fromJson({'body': body});
   }
 }

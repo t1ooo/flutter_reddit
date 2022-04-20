@@ -25,7 +25,7 @@ class Comments extends StatelessWidget {
         // Comment(showNested: showNested),
         // Comment(showNested: showNested),
         for (final comment in comments)
-          CommentWidget(comment:comment, showNested: showNested)
+          CommentWidget(initComment:comment, showNested: showNested)
       ],
     );
   }
