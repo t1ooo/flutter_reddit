@@ -135,7 +135,7 @@ List<String> parseAwardIcons(dynamic data) {
     }).where((v) {
       return v != '';
     }).toList();
-  } on Exception catch (e) {
+  } on TypeError catch (e) {
     _log.warning(e);
     return [];
   }

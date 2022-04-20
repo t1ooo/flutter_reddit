@@ -83,6 +83,8 @@ class RedditNotifier extends ChangeNotifier {
 
   final RedditApi redditApi;
 
+  static final _log = Logger('RedditNotifier');
+
   // TODO: rename to front
   Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
     return redditApi.front(limit: limit, type: type);
@@ -122,6 +124,7 @@ class RedditNotifier extends ChangeNotifier {
   }
 
   Future<Submission> submission(String id) async {
+    // _log.info('<<<<<<<<<<<<<<<<<<submission<<<<<<<<<<<<<<<<<<');
     return redditApi.submission(id);
   }
 
@@ -174,12 +177,14 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.search(query, limit: limit, sort: sort);
   }
 
-  Future<Comment> submissionReply(String id, String body) {
-    return redditApi.submissionReply(id, body);
+  Future<void> submissionReply(String id, String body) async {
+    await redditApi.submissionReply(id, body);
+    notifyListeners();
   }
 
-  Future<Comment> commentReply(String id, String body) {
-    return redditApi.commentReply(id, body);
+  Future<void> commentReply(String id, String body) async {
+    await redditApi.commentReply(id, body);
+    notifyListeners();
   }
 }
 

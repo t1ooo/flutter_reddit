@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../notifier/reddir_notifier.dart';
 import '../style/style.dart';
 
 class AddComment extends StatefulWidget {
   const AddComment({
     Key? key,
-    required this.onSubmit,
+    required this.id,
+    this.isComment = false,
   }) : super(key: key);
 
-  final Function(String) onSubmit;
+  final String id;
+  final bool isComment;
+  // final Function(String) onSubmit;
 
   @override
   State<AddComment> createState() => _AddCommentState();
@@ -34,7 +39,7 @@ class _AddCommentState extends State<AddComment> {
           },
           maxLines: 10,
           validator: (v) {
-            if ((v ?? '').trim() == '') {
+            if (v == null || v.trim() == '') {
               return 'Please, enter a message';
             }
             return null;
@@ -45,7 +50,14 @@ class _AddCommentState extends State<AddComment> {
         // Spacer(),
         ElevatedButton(
           onPressed: () {
-            widget.onSubmit(_message);
+            if (widget.isComment) {
+              context.read<RedditNotifier>().commentReply(widget.id, _message);
+            } else {
+              context
+                  .read<RedditNotifier>()
+                  .submissionReply(widget.id, _message);
+            }
+            Navigator.pop(context);
           },
           child: Text('Post'),
         ),

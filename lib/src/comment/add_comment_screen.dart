@@ -7,10 +7,11 @@ import 'add_comment.dart';
 class AddCommentScreen extends StatelessWidget {
   const AddCommentScreen({
     Key? key,
-    required this.onSubmit,
+    required this.id,
   }) : super(key: key);
 
-  final Function(String) onSubmit;
+  final String id;
+  // final Function(String) onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class AddCommentScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: pagePadding,
-        child: AddComment(onSubmit:onSubmit),
+        child: AddComment(id:id),
       ),
       /* bottomNavigationBar: Padding(
         padding: pagePadding.copyWith(bottom: 20),

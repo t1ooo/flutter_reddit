@@ -41,7 +41,7 @@ T mapGet<T>(Map m, String key, T defaultValue) {
 List<T> mapGetList<T>(Map m, String key, List<T> defaultValue) {
   final val = m[key];
   try {
-    return val.cast<T>();
+    return (val as List).cast<T>();
   } on TypeError catch (_) {
     // _log.warning(e);
     _log.warning('fail to cast: {$key: $val} to List<$T>');

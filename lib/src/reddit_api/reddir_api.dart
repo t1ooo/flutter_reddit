@@ -631,7 +631,6 @@ class FakeRedditApi implements RedditApi {
 
   Future<Comment> submissionReply(String id, String body) async {
     await Future.delayed(_delay);
-
     return Comment.fromMap({'boby': body});
   }
 
