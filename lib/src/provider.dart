@@ -81,6 +81,14 @@ ChangeNotifierProvider<RedditNotifier> redditNotifierProvider() {
   );
 }
 
+ChangeNotifierProvider<SubmissionNotifier> submissionNotifierProvider() {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SubmissionNotifier(
+      context.read<RedditApi>(),
+    ),
+  );
+}
+
 ChangeNotifierProvider<SubscriptionNotifier> subscriptionNotifierProvider(
     bool isSubscriber) {
   return ChangeNotifierProvider(

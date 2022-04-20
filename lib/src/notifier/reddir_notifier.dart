@@ -85,7 +85,7 @@ class RedditNotifier extends ChangeNotifier {
 
   static final _log = Logger('RedditNotifier');
 
-  Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
+/*   Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
     return redditApi.front(limit: limit, type: type);
   }
 
@@ -96,7 +96,7 @@ class RedditNotifier extends ChangeNotifier {
   Stream<Subreddit> userSubreddits({int limit = 10}) {
     return redditApi.userSubreddits(limit: limit);
     // ..sort((a, b) => a.displayName.compareTo(b.displayName));
-  }
+  } */
 
   Stream<Submission> subredditSubmissions(
     String name, {
@@ -122,10 +122,10 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.userTrophies(name);
   }
 
-  Future<Submission> submission(String id) async {
+  /* Future<Submission> submission(String id) async {
     // _log.info('<<<<<<<<<<<<<<<<<<submission<<<<<<<<<<<<<<<<<<');
     return redditApi.submission(id);
-  }
+  } */
 
   Future<Subreddit> subreddit(String name) async {
     return redditApi.subreddit(name);
@@ -176,7 +176,7 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.search(query, limit: limit, sort: sort);
   }
 
-  Future<void> submissionReply(String id, String body) async {
+  /* Future<void> submissionReply(String id, String body) async {
     await redditApi.submissionReply(id, body);
     notifyListeners();
   }
@@ -184,7 +184,7 @@ class RedditNotifier extends ChangeNotifier {
   Future<void> commentReply(String id, String body) async {
     await redditApi.commentReply(id, body);
     notifyListeners();
-  }
+  } */
 }
 
 class CurrentUserNotifier extends ChangeNotifier with Error<Object> {
@@ -195,6 +195,19 @@ class CurrentUserNotifier extends ChangeNotifier with Error<Object> {
 
   User? _user;
   User? get user => _user;
+
+  Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
+    return redditApi.front(limit: limit, type: type);
+  }
+
+  Stream<Submission> popular({int limit = 10, SubType type = SubType.best}) {
+    return redditApi.popular(limit: limit, type: type);
+  }
+
+  Stream<Subreddit> subreddits({int limit = 10}) {
+    return redditApi.userSubreddits(limit: limit);
+    // ..sort((a, b) => a.displayName.compareTo(b.displayName));
+  }
 
   Future<void> login(String name, String password) async {
     // _user = await redditApi.currentUser();
@@ -502,32 +515,61 @@ abstract class SaveNotifier extends ChangeNotifier {
   final RedditApi redditApi;
   static final _log = Logger('SaveNotifier');
 
-  Future<Result<String, String>> save(String id) async {
-    if (_saved) return Result.empty();
+  // Future<Result<String, String>> save(String id) async {
+  //   if (_saved) return Result.empty();
+
+  //   try {
+  //     // throw Exception('some save error');
+  //     await _doSave(id);
+  //     _saved = true;
+  //     notifyListeners();
+  //     return Result.value('Saved');
+  //   } on Exception catch (e) {
+  //     _log.error(e);
+  //     return Result.error('Fail to save');
+  //   }
+  // }
+
+  // Future<Result<String, String>> unsave(String id) async {
+  //   if (!_saved) return Result.empty();
+  //   try {
+  //     // throw Exception('some unsave error');
+  //     await _doUnsave(id);
+  //     _saved = false;
+  //     notifyListeners();
+  //     return Result.value('Unsaved');
+  //   } on Exception catch (e) {
+  //     _log.error(e);
+  //     return Result.error('Fail to unsave');
+  //   }
+  // }
+
+  Future<String?> save(String id) async {
+    if (_saved) return null;
 
     try {
       // throw Exception('some save error');
       await _doSave(id);
       _saved = true;
       notifyListeners();
-      return Result.value('Saved');
+      return 'Saved';
     } on Exception catch (e) {
       _log.error(e);
-      return Result.error('Fail to save');
+      return 'Error: Fail to save';
     }
   }
 
-  Future<Result<String, String>> unsave(String id) async {
-    if (!_saved) return Result.empty();
+  Future<String?> unsave(String id) async {
+    if (!_saved) return null;
+
     try {
-      // throw Exception('some unsave error');
       await _doUnsave(id);
       _saved = false;
       notifyListeners();
-      return Result.value('Unsaved');
+      return 'Unsaved';
     } on Exception catch (e) {
       _log.error(e);
-      return Result.error('Fail to unsave');
+      return 'Error: Fail to unsave';
     }
   }
 
@@ -616,6 +658,50 @@ class CommentSaveNotifier extends SaveNotifier {
   }
 }
 
+class SubmissionNotifier extends ChangeNotifier {
+  SubmissionNotifier(this.redditApi);
+
+  final RedditApi redditApi;
+
+  static final _log = Logger('Submission');
+
+  Future<Submission> submission(String id) async {
+    _log.info('load submission');
+    return redditApi.submission(id);
+  }
+
+  // Future<void> submissionReply(String id, String body) async {
+  //   await redditApi.submissionReply(id, body);
+  //   notifyListeners();
+  // }
+
+  // Future<void> commentReply(String id, String body) async {
+  //   await redditApi.commentReply(id, body);
+  //   notifyListeners();
+  // }
+
+  Future<String?> submissionReply(String id, String body) async {
+    try {
+      await redditApi.submissionReply(id, body);
+      notifyListeners();
+      return null;
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Fail to post comment';
+    }
+  }
+
+  Future<String?> commentReply(String id, String body) async {
+    try {
+      await redditApi.commentReply(id, body);
+      notifyListeners();
+      return null;
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Fail to post comment';
+    }
+  }
+}
 
 
 // class RedditNotifierFront extends ChangeNotifier {

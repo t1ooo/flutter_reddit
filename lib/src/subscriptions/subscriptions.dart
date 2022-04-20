@@ -70,7 +70,7 @@ class Subscriptions extends StatelessWidget {
     // );
 
     return StreamListBuilder(
-      stream: context.read<RedditNotifier>().userSubreddits(),
+      stream: context.read<CurrentUserNotifier>().subreddits(),
       onData: (context, List<Subreddit> subreddits) {
         subreddits.sort((a, b) => a.displayName.compareTo(b.displayName));
 

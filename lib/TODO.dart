@@ -1,4 +1,4 @@
-// TODO: split getSubmission and getSubmissionComments
+// TODO: login
 // TODO: edit current user settings
 // TODO: show current user settings
 // TODO: edit current user profile

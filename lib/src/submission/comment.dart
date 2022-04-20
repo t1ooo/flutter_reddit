@@ -251,15 +251,23 @@ class CommentWidget extends StatelessWidget {
           showErrorSnackBar(context, e.toString());
         } */
 
-        (await (notifier.saved
-            ? notifier.unsave(comment.id)
-            : notifier.save(comment.id)))
-          ..onError((error) {
-            showErrorSnackBar(context, error);
-          })
-          ..onValue((value) {
-            showSnackBar(context, value);
-          });
+        // (await (notifier.saved
+        //     ? notifier.unsave(comment.id)
+        //     : notifier.save(comment.id)))
+        //   ..onError((error) {
+        //     showErrorSnackBar(context, error);
+        //   })
+        //   ..onValue((value) {
+        //     showSnackBar(context, value);
+        //   });
+
+          final result = await (notifier.saved
+              ? notifier.unsave(comment.id)
+              : notifier.save(comment.id));
+          if (result != null) {
+            showSnackBar(context, result);
+          }
+
         // final error = result.error;
         // if (error != null) {
         //   showErrorSnackBar(context, error);

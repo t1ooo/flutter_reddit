@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
 import '../style/style.dart';
+import '../util/snackbar.dart';
 
 class AddComment extends StatefulWidget {
   const AddComment({
@@ -49,13 +50,21 @@ class _AddCommentState extends State<AddComment> {
         // SizedBox(height: 50),
         // Spacer(),
         ElevatedButton(
-          onPressed: () {
-            if (widget.isComment) {
-              context.read<RedditNotifier>().commentReply(widget.id, _message);
-            } else {
-              context
-                  .read<RedditNotifier>()
-                  .submissionReply(widget.id, _message);
+          onPressed: () async {
+            // if (widget.isComment) {
+            //   context.read<SubmissionNotifier>().commentReply(widget.id, _message);
+            // } else {
+            //   context
+            //       .read<SubmissionNotifier>()
+            //       .submissionReply(widget.id, _message);
+            // }
+
+            final notifer = context.read<SubmissionNotifier>();
+            final result = await (widget.isComment
+                ? notifer.commentReply(widget.id, _message)
+                : notifer.submissionReply(widget.id, _message));
+            if (result != null) {
+              showSnackBar(context, result);
             }
             Navigator.pop(context);
           },

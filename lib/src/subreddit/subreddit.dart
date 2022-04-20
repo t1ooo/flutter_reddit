@@ -163,7 +163,7 @@ class SubredditWidget extends StatelessWidget {
 
         SubmissionTiles(
           stream: (context, type) =>
-              context.read<RedditNotifier>().front(type: type),
+              context.read<CurrentUserNotifier>().front(type: type),
         ),
       ],
     );

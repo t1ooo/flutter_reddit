@@ -9,10 +9,7 @@ import 'src/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
-  
-  // final _redditNotifierProvider = await redditNotifierProvider();
-  // final _redditNotifierProvider = await fakeRedditNotifierProvider();
-  // final _redditNotifierFrontProvider = await redditNotifierFrontProvider();
+
   runApp(
     MultiProvider(
       providers: [
@@ -23,6 +20,7 @@ Future<void> main() async {
         submissionTypeNotifierProvider(),
         sortNotifierProvider(),
         currentUserNotifierProvider(),
+        submissionNotifierProvider(),
       ],
       child: MyApp(),
     ),

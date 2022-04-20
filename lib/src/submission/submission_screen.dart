@@ -19,15 +19,16 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifer = context.watch<SubmissionNotifier>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Submission'),
       ),
       // body: Submission(),
       body: CustomFutureBuilder(
-        future: context.read<RedditNotifier>().submission(id),
+        // future: context.read<SubmissionNotifier>().submission(id),
+        future: notifer.submission(id),
         onData: (BuildContext context, Submission submission) {
-          print('<<<<<<<<<<<<<<<<<<submission<<<<<<<<<<<<<<<<<<');
           return SubmissionWidget(submission: submission);
         },
       ),

@@ -398,7 +398,7 @@ class RedditApiImpl implements RedditApi {
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
-  Duration _delay = Duration(seconds: 1 ~/ 100);
+  Duration _delay = Duration(seconds: 1 ~/ 10);
 
   Stream<Submission> front({
     required int limit,

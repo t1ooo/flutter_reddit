@@ -46,7 +46,7 @@ class Popular extends StatelessWidget {
   Widget build(BuildContext context) {
     return SubmissionTiles(
       stream: (context, type) =>
-          context.read<RedditNotifier>().popular(type: type),
+          context.read<CurrentUserNotifier>().popular(type: type),
     );
   }
 }
