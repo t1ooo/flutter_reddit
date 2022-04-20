@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.v2.dart';
@@ -32,18 +33,28 @@ class SubscribeButton extends StatelessWidget {
       child: Builder(
         builder: (c) {
           final sn = c.watch<SubscriptionNotifier>();
-          final error = sn.error;
-          if (error != null) {
-            // TODO: handle error
-          }
+          // final error = sn.error;
+          // if (error != null) {
+          //   // TODO: handle error
+          // }
           if (sn.isSubscriber)
             return FutureElevatedButton(
-              onPressed: () => sn.unsubscribe(subreddit.name),
+              onPressed: () async {
+                final result = await sn.unsubscribe(subreddit.name);
+                if (result != null) {
+                  showSnackBar(context, result);
+                }
+              },
               child: Text(isUserPage ? 'FOLLOWING' : 'LEAVE'),
             );
           else
             return FutureElevatedButton(
-              onPressed: () => sn.subscribe(subreddit.name),
+              onPressed: () async {
+                final result = await sn.subscribe(subreddit.name);
+                if (result != null) {
+                  showSnackBar(context, result);
+                }
+              },
               child: Text(isUserPage ? 'FOLLOW' : '+JOIN'),
             );
         },

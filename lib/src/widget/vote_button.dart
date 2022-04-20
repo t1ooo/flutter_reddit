@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.v2.dart';
@@ -48,17 +49,16 @@ class SubmissionVoteButton extends StatelessWidget {
       child: Builder(
         builder: (c) {
           final notifier = c.watch<SubmissionVoteNotifier>();
-          final error = notifier.error;
-          if (error != null) {
-            // TODO: handle error
-          }
           return Row(
             children: [
               IconButton(
                 onPressed: () async {
-                  notifier.vote == Vote.up
+                  final result = await (notifier.vote == Vote.up
                       ? notifier.clearVote(submission.id)
-                      : notifier.upVote(submission.id);
+                      : notifier.upVote(submission.id));
+                  if (result != null) {
+                    showSnackBar(context, result);
+                  }
                 },
                 icon: Icon(
                   Icons.expand_less,
@@ -91,9 +91,12 @@ class SubmissionVoteButton extends StatelessWidget {
               Text(notifier.score.toString()),
               IconButton(
                 onPressed: () async {
-                  notifier.vote == Vote.down
+                  final result = await (notifier.vote == Vote.down
                       ? notifier.clearVote(submission.id)
-                      : notifier.downVote(submission.id);
+                      : notifier.downVote(submission.id));
+                  if (result != null) {
+                    showSnackBar(context, result);
+                  }
                 },
                 icon: Icon(
                   Icons.expand_more,
@@ -133,17 +136,17 @@ class CommentVoteButton extends StatelessWidget {
 
   Widget builder(BuildContext context) {
     final notifier = context.watch<CommentVoteNotifier>();
-    final error = notifier.error;
-    if (error != null) {
-      // TODO: handle error
-    }
+
     return Row(
       children: [
         IconButton(
           onPressed: () async {
-            notifier.vote == Vote.up
+            final result = await (notifier.vote == Vote.up
                 ? notifier.clearVote(comment.id)
-                : notifier.upVote(comment.id);
+                : notifier.upVote(comment.id));
+            if (result != null) {
+              showSnackBar(context, result);
+            }
           },
           icon: Icon(
             Icons.expand_less,
@@ -153,9 +156,12 @@ class CommentVoteButton extends StatelessWidget {
         Text(notifier.score.toString()),
         IconButton(
           onPressed: () async {
-            notifier.vote == Vote.down
+            final result = await (notifier.vote == Vote.down
                 ? notifier.clearVote(comment.id)
-                : notifier.downVote(comment.id);
+                : notifier.downVote(comment.id));
+            if (result != null) {
+              showSnackBar(context, result);
+            }
           },
           icon: Icon(
             Icons.expand_more,

@@ -187,7 +187,7 @@ class RedditNotifier extends ChangeNotifier {
   } */
 }
 
-class CurrentUserNotifier extends ChangeNotifier with Error<Object> {
+class CurrentUserNotifier extends ChangeNotifier /* with Error<Object> */ {
   CurrentUserNotifier(this.redditApi);
 
   final RedditApi redditApi;
@@ -209,19 +209,34 @@ class CurrentUserNotifier extends ChangeNotifier with Error<Object> {
     // ..sort((a, b) => a.displayName.compareTo(b.displayName));
   }
 
-  Future<void> login(String name, String password) async {
-    // _user = await redditApi.currentUser();
+  // Future<void> login(String name, String password) async {
+  //   // _user = await redditApi.currentUser();
+  //   try {
+  //     final user = await redditApi.currentUser();
+  //     if (user == null) {
+  //       throw Exception('fail to login');
+  //     }
+  //     _user = user;
+  //   } catch (e) {
+  //     _log.error(e);
+  //     _error = e;
+  //   }
+  //   notifyListeners();
+  // }
+
+  Future<String?> login(String name, String password) async {
     try {
       final user = await redditApi.currentUser();
       if (user == null) {
         throw Exception('fail to login');
       }
       _user = user;
+      notifyListeners();
+      return null;
     } catch (e) {
       _log.error(e);
-      _error = e;
+      return 'Error: Fail to login';
     }
-    notifyListeners();
   }
 
   Future<void> logout(String name, String password) async {
@@ -298,7 +313,7 @@ class CollapseNotifier extends ChangeNotifier {
 //   }
 // }
 
-class SubscriptionNotifier extends ChangeNotifier with Error<Object> {
+class SubscriptionNotifier extends ChangeNotifier /* with Error<Object> */ {
   SubscriptionNotifier(this.redditApi, bool isSubscriber)
       : _isSubscriber = isSubscriber;
 
@@ -318,8 +333,45 @@ class SubscriptionNotifier extends ChangeNotifier with Error<Object> {
   bool _isSubscriber;
   bool get isSubscriber => _isSubscriber;
 
-  Future<void> subscribe(String name) async {
-    if (isSubscriber) return;
+  // Future<void> subscribe(String name) async {
+  //   if (isSubscriber) return;
+
+  //   // _isLoading = true;
+  //   // notifyListeners();
+
+  //   try {
+  //     await redditApi.subscribe(name);
+  //     _isSubscriber = !isSubscriber;
+  //   } on Exception catch (e) {
+  //     _log.error(e);
+  //     _error = e;
+  //   }
+
+  //   // _isLoading = false;
+  //   notifyListeners();
+  // }
+
+  // Future<void> unsubscribe(String name) async {
+  //   if (!isSubscriber) return;
+
+  //   // _isLoading = true;
+  //   // notifyListeners();
+
+  //   try {
+  //     await redditApi.unsubscribe(name);
+  //     _isSubscriber = !isSubscriber;
+  //   } on Exception catch (e) {
+  //     _log.error(e);
+  //     _error = e;
+  //   }
+
+  //   // _isLoading = false;
+  //   notifyListeners();
+  // }
+
+
+  Future<String?> subscribe(String name) async {
+    if (isSubscriber) return null;
 
     // _isLoading = true;
     // notifyListeners();
@@ -327,17 +379,17 @@ class SubscriptionNotifier extends ChangeNotifier with Error<Object> {
     try {
       await redditApi.subscribe(name);
       _isSubscriber = !isSubscriber;
+      notifyListeners();
     } on Exception catch (e) {
       _log.error(e);
-      _error = e;
+      return 'Error: Fail to subscribe';
     }
 
     // _isLoading = false;
-    notifyListeners();
   }
 
-  Future<void> unsubscribe(String name) async {
-    if (!isSubscriber) return;
+  Future<String?> unsubscribe(String name) async {
+    if (!isSubscriber) return null;
 
     // _isLoading = true;
     // notifyListeners();
@@ -345,19 +397,19 @@ class SubscriptionNotifier extends ChangeNotifier with Error<Object> {
     try {
       await redditApi.unsubscribe(name);
       _isSubscriber = !isSubscriber;
+      notifyListeners();
     } on Exception catch (e) {
       _log.error(e);
-      _error = e;
+      return 'Error: Fail to unsubscribe';
     }
 
     // _isLoading = false;
-    notifyListeners();
   }
 }
 
 // TODO: add LoadingMixin, disable/enable button
 // TODO: replace to ErrorMixin
-abstract class VoteNotifier extends ChangeNotifier with Error<Object> {
+abstract class VoteNotifier extends ChangeNotifier /* with Error<Object> */ {
   VoteNotifier(this.redditApi, Vote vote, int score)
       : _vote = vote,
         _score = score;
@@ -378,32 +430,33 @@ abstract class VoteNotifier extends ChangeNotifier with Error<Object> {
   Vote _vote;
   Vote get vote => _vote;
 
-  Future<void> upVote(String id) async {
+  Future<String?> upVote(String id) async {
     await _updateVote(id, Vote.up);
   }
 
-  Future<void> downVote(String id) async {
+  Future<String?> downVote(String id) async {
     await _updateVote(id, Vote.down);
   }
 
-  Future<void> clearVote(String id) async {
+  Future<String?> clearVote(String id) async {
     await _updateVote(id, Vote.none);
   }
 
-  Future<void> _updateVote(String id, Vote vote) async {
-    if (_vote == vote) return;
+  Future<String?> _updateVote(String id, Vote vote) async {
+    if (_vote == vote) return null;
 
     try {
       // await redditApi.submissionVote(id, vote);
       await _doVote(id, vote);
       _updateScore(vote);
       _vote = vote;
+      notifyListeners();
     } on Exception catch (e) {
       _log.error(e);
-      _error = e;
+      // _error = e;
+      return 'Error: fail to vote';
     }
 
-    notifyListeners();
   }
 
   void _updateScore(Vote newVote) {

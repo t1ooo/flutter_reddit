@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_profile_screen.dart';
+import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
@@ -48,8 +49,11 @@ class UserMenu extends StatelessWidget {
             minLeadingWidth: 0,
             leading: Icon(Icons.login),
             title: Text('Sign up/ Log in'),
-            onTap: () {
-              notifier.login('name', 'password');
+            onTap: () async {
+              final result = await notifier.login('name', 'password');
+              if (result != null) {
+                showSnackBar(context, result);
+              }
               // Navigator.pop(context);
             },
           ),
