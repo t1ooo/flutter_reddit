@@ -3,6 +3,7 @@ import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../provider.dart';
 import '../reddit_api/submission.dart';
 import '../widget/stream_list_builder.dart';
 import 'submission_tile.dart';
@@ -32,8 +33,18 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SubmissionTiles(
+      pageStorageKey: PageStorageKey('home'),
       stream: (context, type) =>
           context.read<CurrentUserNotifier>().front(type: type),
     );
+    // return MultiProvider(
+    //   providers: [
+    //     submissionTypeNotifierProvider(),
+    //   ],
+    //   child: SubmissionTiles(
+    //     stream: (context, type) =>
+    //         context.read<CurrentUserNotifier>().front(type: type),
+    //   ),
+    // );
   }
 }

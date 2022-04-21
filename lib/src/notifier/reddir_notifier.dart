@@ -187,6 +187,68 @@ class RedditNotifier extends ChangeNotifier {
   } */
 }
 
+class FrontSubmission extends ChangeNotifier {
+  FrontSubmission(this.redditApi);
+
+  final RedditApi redditApi;
+  static final _log = Logger('FrontSubmission');
+  final List<Submission> _submissions = [];
+
+  SubType _type = SubType.best;
+
+  SubType get type => _type;
+
+  set type(SubType type) {
+    _type = type;
+    notifyListeners();
+  }
+
+  Stream<Submission> front({int limit = 10}) {
+    // return redditApi.front(limit: limit, type: _type);
+    if (_submissions.isNotEmpty) {
+      return Stream.fromIterable(_submissions);
+    }
+    return redditApi.front(limit: limit, type: _type)
+      ..forEach((v) => _submissions.add(v));
+  }
+
+  void reload() {
+    _submissions.clear();
+    notifyListeners();
+  }
+}
+
+class PopularSubmission extends ChangeNotifier {
+  PopularSubmission(this.redditApi);
+
+  final RedditApi redditApi;
+  static final _log = Logger('PopularSubmission');
+  final List<Submission> _submissions = [];
+
+  SubType _type = SubType.best;
+
+  SubType get type => _type;
+
+  set type(SubType type) {
+    _type = type;
+    notifyListeners();
+  }
+
+  Stream<Submission> popular({int limit = 10}) {
+    // return redditApi.front(limit: limit, type: _type);
+    if (_submissions.isNotEmpty) {
+      return Stream.fromIterable(_submissions);
+    }
+    return redditApi.popular(limit: limit, type: _type)
+      ..forEach((v) => _submissions.add(v));
+  }
+
+  void reload() {
+    _submissions.clear();
+    notifyListeners();
+  }
+}
+
 class CurrentUserNotifier extends ChangeNotifier /* with Error<Object> */ {
   CurrentUserNotifier(this.redditApi);
 

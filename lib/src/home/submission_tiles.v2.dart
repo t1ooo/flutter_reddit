@@ -25,6 +25,7 @@ class SubmissionTiles extends StatelessWidget {
     this.activeLink = true,
     this.showTrending = true,
     this.showTypeSelector = true,
+    this.pageStorageKey,
   }) : super(key: key);
 
   // final SubType type;
@@ -35,9 +36,11 @@ class SubmissionTiles extends StatelessWidget {
   final bool showTrending;
   final bool showTypeSelector;
   // final bool showLocationSelector;
+  PageStorageKey? pageStorageKey;
 
   @override
   Widget build(BuildContext context) {
+    print('build SubmissionTiles');
     final notifier = context.watch<SubTypeNotifier>();
     return Padding(
       padding: pagePadding,
@@ -62,6 +65,7 @@ class SubmissionTiles extends StatelessWidget {
     List<Submission> submissions,
   ) {
     return ListView(
+      key: pageStorageKey,
       shrinkWrap: true,
       children: [
         if (showTypeSelector) ...[

@@ -28,7 +28,7 @@ class SubmissionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild SubmissionTile');
+    print('build SubmissionTile');
     final notifier = context.watch<SubmissionNotifier>();
     // print(submission.thumbnail.toString());
     return Card(

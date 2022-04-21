@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../provider.dart';
 import '../reddit_api/submission.dart';
 import '../style/style.dart';
 import '../widget/stream_list_builder.dart';
@@ -45,8 +46,18 @@ class Popular extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SubmissionTiles(
+      pageStorageKey: PageStorageKey('popular'),
       stream: (context, type) =>
           context.read<CurrentUserNotifier>().popular(type: type),
     );
+    // return MultiProvider(
+    //   providers: [
+    //     submissionTypeNotifierProvider(),
+    //   ],
+    //   child: SubmissionTiles(
+    //     stream: (context, type) =>
+    //         context.read<CurrentUserNotifier>().popular(type: type),
+    //   ),
+    // );
   }
 }

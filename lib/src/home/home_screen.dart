@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:provider/provider.dart';
 
+import '../notifier/reddir_notifier.dart';
+import '../provider.dart';
 import '../search/search_field.dart';
 import '../widget/sized_placeholder.dart';
 import 'home.dart';
@@ -11,6 +14,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final subTypeHome = submissionTypeNotifierProvider();
+    // final subTypePopular = submissionTypeNotifierProvider();
+    final subTypeHome = SubTypeNotifier();
+    final subTypePopular = SubTypeNotifier();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -37,8 +45,18 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  Home(),
-                  Popular(),
+                  // Home(),
+                  // Popular(),
+                  ChangeNotifierProvider.value(value: subTypeHome, child: Home()),
+                  ChangeNotifierProvider.value(value: subTypePopular, child: Popular()),
+                  // MultiProvider(
+                  //   providers: [submissionTypeNotifierProvider()],
+                  //   child: Home(),
+                  // ),
+                  // MultiProvider(
+                  //   providers: [submissionTypeNotifierProvider()],
+                  //   child: Popular(),
+                  // ),
                 ],
               ),
             ),
