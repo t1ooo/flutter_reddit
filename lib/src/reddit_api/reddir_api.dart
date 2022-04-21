@@ -91,7 +91,8 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      final sub = Submission.fromMap(dsub.data!, type: type);
+      // final sub = Submission.fromMap(dsub.data!, type: type);
+      final sub = Submission.fromMap(dsub.data!);
       yield sub;
     }
   }
@@ -400,6 +401,11 @@ class FakeRedditApi implements RedditApi {
 
   Duration _delay = Duration(seconds: 1 ~/ 10);
 
+  Map _addType(Map v, Enum type) {
+    v['title'] = '$type: ${v['title']}';
+    return v;
+  }
+
   Stream<Submission> front({
     required int limit,
     required SubType type,
@@ -409,7 +415,8 @@ class FakeRedditApi implements RedditApi {
 
     final items = (jsonDecode(data) as List<dynamic>)
         // .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Submission.fromMap(v, type: type))
+        .map((v) => _addType(v, type))
+        .map((v) => Submission.fromMap(v))
         .take(limit);
 
     for (final item in items) {
@@ -469,7 +476,8 @@ class FakeRedditApi implements RedditApi {
 
     final items = (jsonDecode(data) as List<dynamic>)
         // .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Submission.fromMap(v, type: SubType.hot))
+        // .map((v) => Submission.fromMap(v, type: SubType.hot))
+        .map((v) => Submission.fromMap(v))
         .take(limit);
 
     for (final item in items) {
@@ -620,7 +628,9 @@ class FakeRedditApi implements RedditApi {
 
     final items = (jsonDecode(data) as List<dynamic>)
         // .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) => Submission.fromMap(v, type: SubType.hot))
+        .map((v) => _addType(v, sort))
+        // .map((v) => Submission.fromMap(v, type: SubType.hot))
+        .map((v) => Submission.fromMap(v))
         .take(limit);
 
     for (final item in items) {

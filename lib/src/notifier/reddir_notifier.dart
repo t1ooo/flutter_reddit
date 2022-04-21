@@ -247,6 +247,18 @@ class PopularSubmissionsNotifier extends SubmissionsNotifier {
   }
 }
 
+
+class SearchSubmissionsNotifier extends SubmissionsNotifier {
+  SearchSubmissionsNotifier(this.redditApi);
+
+  final RedditApi redditApi;
+
+  @override
+  Stream<Submission> _load(int limit, SubType type) {
+    return redditApi.search(limit: limit, type: type);
+  }
+}
+
 // class FrontSubmission extends ChangeNotifier {
 //   FrontSubmission(this.redditApi);
 

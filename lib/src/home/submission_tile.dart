@@ -148,7 +148,8 @@ class SubmissionTile extends StatelessWidget {
                     }
                   : null,
               child: Text(
-                '${enumNToString(submission.type)}: ${submission.title}',
+                // '${enumNToString(submission.type)}: ${submission.title}',
+                submission.title,
                 textScaleFactor: 2,
               ),
             ),

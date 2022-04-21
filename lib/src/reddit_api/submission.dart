@@ -33,7 +33,7 @@ class Submission extends Equatable {
     required this.awardIcons,
     required this.totalAwardsReceived,
     required this.likes,
-    required this.type,
+    // required this.type,
     required this.comments,
     required this.saved,
     // required this.shortLink,
@@ -64,7 +64,7 @@ class Submission extends Equatable {
   final int totalAwardsReceived;
   final Vote likes;
   final bool saved;
-  final SubType? type;
+  // final SubType? type;
   // final CommentForest? comments;
   final List<Comment> comments;
   // final String shortLink;
@@ -88,7 +88,7 @@ class Submission extends Equatable {
   // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
   factory Submission.fromMap(
     Map data, {
-    SubType? type,
+    // SubType? type,
     // CommentForest? comments,
     List<Comment> comments = const [],
   }) {
@@ -120,7 +120,7 @@ class Submission extends Equatable {
       likes: parseLikes(data['likes']),
       saved: mapGet(data, 'saved', false),
       // shortLink: _genShortLink(mapGet(data, 'id', '')),
-      type: type,
+      // type: type,
       comments: comments,
     );
   }
@@ -160,7 +160,7 @@ class Submission extends Equatable {
       awardIcons,
       totalAwardsReceived,
       likes,
-      type,
+      // type,
       comments,
       saved,
       shortLink,
@@ -223,7 +223,7 @@ class Submission extends Equatable {
       totalAwardsReceived: totalAwardsReceived ?? this.totalAwardsReceived,
       likes: likes ?? this.likes,
       saved: saved ?? this.saved,
-      type: type ?? this.type,
+      // type: type ?? this.type,
       comments: comments ?? this.comments,
     );
   }
