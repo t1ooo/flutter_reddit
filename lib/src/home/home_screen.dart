@@ -16,8 +16,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // final subTypeHome = submissionTypeNotifierProvider();
     // final subTypePopular = submissionTypeNotifierProvider();
-    final subTypeHome = SubTypeNotifier();
-    final subTypePopular = SubTypeNotifier();
+    // final subTypeHome = SubTypeNotifier();
+    // final subTypePopular = SubTypeNotifier();
 
     return DefaultTabController(
       length: 2,
@@ -35,6 +35,7 @@ class HomeScreen extends StatelessWidget {
             ),
             Container(
               child: TabBar(
+                // key: PageStorageKey('homeScreenTabs'),
                 labelColor: Colors.blue,
                 tabs: [
                   Tab(child: Text('Home')),
@@ -45,10 +46,10 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  // Home(),
-                  // Popular(),
-                  ChangeNotifierProvider.value(value: subTypeHome, child: Home()),
-                  ChangeNotifierProvider.value(value: subTypePopular, child: Popular()),
+                  Home(),
+                  Popular(),
+                  // ChangeNotifierProvider.value(value: subTypeHome, child: Home()),
+                  // ChangeNotifierProvider.value(value: subTypePopular, child: Popular()),
                   // MultiProvider(
                   //   providers: [submissionTypeNotifierProvider()],
                   //   child: Home(),
