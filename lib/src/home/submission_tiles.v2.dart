@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../provider.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
@@ -63,7 +64,7 @@ class SubmissionTiles extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       children: [
-        if (showTypeSelector)
+        if (showTypeSelector) ...[
           Row(
             children: [
               DropdownButton<SubType>(
@@ -83,7 +84,8 @@ class SubmissionTiles extends StatelessWidget {
               Text('...'),
             ],
           ),
-        SizedBox(height: 50),
+          SizedBox(height: 50),
+        ],
         if (showTrending) ...[
           Text('Trending today'),
           SizedBox(
@@ -103,8 +105,15 @@ class SubmissionTiles extends StatelessWidget {
           ),
           SizedBox(height: 10),
         ],
-        for (final sub in submissions)
-          SubmissionTile(submission: sub, activeLink: activeLink),
+        for (final submission in submissions)
+          // SubmissionTile(submission: sub, activeLink: activeLink),
+          MultiProvider(
+            providers: [
+              submissionNotifierProvider(submission),
+            ],
+            child:
+                SubmissionTile(submission: submission, activeLink: activeLink),
+          )
       ],
     );
   }

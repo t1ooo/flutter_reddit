@@ -15,8 +15,17 @@ class UserComment extends StatelessWidget {
 
   final Comment comment;
 
-  @override
   Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: cardPadding,
+        child: body(context),
+      ),
+    );
+  }
+
+  @override
+  Widget body(BuildContext context) {
     return InkWell(
       onTap: comment.submissionId == ''
           ? null
@@ -46,7 +55,7 @@ class UserComment extends StatelessWidget {
             SizedBox(height: 10),
             Text(comment.body),
             Text(comment.isSubmitter.toString()),
-            Divider(),
+            // Divider(),
           ],
         ),
       ),

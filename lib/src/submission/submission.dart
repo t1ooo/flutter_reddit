@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.dart';
+import 'package:provider/provider.dart';
 
 import '../comment/comment_field.dart';
 import '../home/submission_tile.dart';
+import '../provider.dart';
 import '../reddit_api/submission.dart';
 import 'comments.dart';
 
 class SubmissionWidget extends StatelessWidget {
-  SubmissionWidget({Key? key, required this.submission}) : super(key: key);
+  SubmissionWidget({Key? key, required this.initSubmission}) : super(key: key);
 
-  final Submission submission;
+  final Submission initSubmission;
 
   @override
   Widget build(BuildContext context) {
-    return /* Stack(
-      children: [ */
+    return MultiProvider(
+      providers: [
+        submissionNotifierProvider(initSubmission),
+      ],
+      child: Builder(builder: builder),
+    );
+  }
+
+  Widget builder(BuildContext context) {
+    // final notifier = context.watch<SubmissionNotifier>();
+    print('build SubmissionWidget');
+    return Stack(
+      children: [
         ListView(
           children: [
             SubmissionTile(
-              submission: submission,
+              submission: initSubmission,
               activeLink: false,
             ),
-            Comments(comments: submission.comments),
+            Builder(builder: (context) {
+              final notifier = context.watch<SubmissionNotifier>();
+              print(notifier.submission.comments.length);
+              return Comments(comments: notifier.submission.comments);
+            }),
+            // Comments(comments: notifier.submission.comments),
 
             // Positioned(
             //   left: 0,
@@ -33,15 +51,16 @@ class SubmissionWidget extends StatelessWidget {
             //     ),
             //   ),
             // ),
+            SizedBox(height: 100),
           ],
-        );
-        // Positioned(
-        //   bottom: 0,
-        //   left: 0,
-        //   right: 0,
-        //   child: CommentField(id:submission.id),
-        // ),
-      /* ],
-    ); */
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: CommentField(id: initSubmission.id),
+        ),
+      ],
+    );
   }
 }

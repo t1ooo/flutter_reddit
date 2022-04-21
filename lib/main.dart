@@ -8,7 +8,7 @@ import 'src/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureLogger(kDebugMode);
+  // configureLogger(kDebugMode);
 
   runApp(
     MultiProvider(
@@ -20,7 +20,7 @@ Future<void> main() async {
         submissionTypeNotifierProvider(),
         sortNotifierProvider(),
         currentUserNotifierProvider(),
-        submissionNotifierProvider(),
+        // submissionNotifierProvider(),
       ],
       child: MyApp(),
     ),

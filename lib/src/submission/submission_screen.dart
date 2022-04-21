@@ -17,23 +17,70 @@ class SubmissionScreen extends StatelessWidget {
 
   final String id;
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   // final notifer = context.watch<SubmissionNotifier>();
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text('Submission'),
+  //     ),
+  //     // body: Submission(),
+  //     body: CustomFutureBuilder(
+  //       future: context.read<RedditNotifier>().submission(id),
+  //       // future: notifer.load(id),
+  //       onData: (BuildContext context, Submission submission) {
+  //         return SubmissionWidget(submission: submission);
+  //       },
+  //     ),
+  //     // bottomNavigationBar: CommentField(),
+  //     bottomNavigationBar: CommentField(id:id),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final notifer = context.watch<SubmissionNotifier>();
+    // final notifer = context.watch<SubmissionNotifier>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Submission'),
       ),
       // body: Submission(),
-      body: CustomFutureBuilder(
-        // future: context.read<SubmissionNotifier>().submission(id),
-        future: notifer.submission(id),
-        onData: (BuildContext context, Submission submission) {
-          return SubmissionWidget(submission: submission);
-        },
+      body: Padding(
+        padding: pagePadding,
+        child: CustomFutureBuilder(
+          future: context.read<RedditNotifier>().submission(id),
+          // future: notifer.load(id),
+          onData: (BuildContext context, Submission submission) {
+            return SubmissionWidget(initSubmission: submission);
+          },
+        ),
       ),
       // bottomNavigationBar: CommentField(),
-      bottomNavigationBar: CommentField(id:id),
+      // bottomNavigationBar: CommentField(id:id),
+    );
+  }
+}
+
+
+class SubmissionScreenV2 extends StatelessWidget {
+  const SubmissionScreenV2({
+    Key? key,
+    required this.submission,
+  }) : super(key: key);
+
+  final Submission submission;
+
+  @override
+  Widget build(BuildContext context) {
+    // final notifer = context.watch<SubmissionNotifier>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Submission'),
+      ),
+      // body: Submission(),
+      body: SubmissionWidget(initSubmission: submission),
+      // bottomNavigationBar: CommentField(),
+      // bottomNavigationBar: CommentField(id:id),
     );
   }
 }

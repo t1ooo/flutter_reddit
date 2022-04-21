@@ -51,33 +51,38 @@ class UserAbout extends StatelessWidget {
     //   ],
     // );
 
-    return ListView(
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 50),
-        Table(
-          // defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+    return Padding(
+      padding: pagePadding,
+      child: Card(
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TableRow(
+            SizedBox(height: 50),
+            Table(
+              // defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: [
-                Center(child: Text(user.totalKarma.toString())),
-                Center(child: Text(formatDateTime(user.created))),
+                TableRow(
+                  children: [
+                    Center(child: Text(user.totalKarma.toString())),
+                    Center(child: Text(formatDateTime(user.created))),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Center(child: Text('Karma')),
+                    Center(child: Text('Reddit age')),
+                  ],
+                ),
               ],
             ),
-            TableRow(
-              children: [
-                Center(child: Text('Karma')),
-                Center(child: Text('Reddit age')),
-              ],
-            ),
+            SizedBox(height: 50),
+
+            ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
+            ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
+            UserTrophies(user: user),
           ],
         ),
-        SizedBox(height: 50),
-
-        ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
-        ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
-        UserTrophies(user: user),
-      ],
+      ),
     );
   }
 }

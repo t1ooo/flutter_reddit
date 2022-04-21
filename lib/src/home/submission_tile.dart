@@ -6,15 +6,15 @@ import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
 import '../reddit_api/submission.dart';
+import '../reddit_api/vote.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../util/enum.dart';
+import '../util/snackbar.dart';
 import '../widget/save_button.dart';
-import '../widget/share_button.dart';
-import '../widget/sized_placeholder.dart';
-import '../widget/vote_button.dart';
+// import '../widget/vote_button.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
@@ -28,6 +28,8 @@ class SubmissionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('rebuild SubmissionTile');
+    final notifier = context.watch<SubmissionNotifier>();
     // print(submission.thumbnail.toString());
     return Card(
       child: Padding(
@@ -52,7 +54,8 @@ class SubmissionTile extends StatelessWidget {
                         onData: (BuildContext context, String icon) {
                           return Image.network(icon);
                         },
-                        onLoading: (_) => Container(decoration: BoxDecoration()),
+                        onLoading: (_) =>
+                            Container(decoration: BoxDecoration()),
                         onError: (_, __) => Container(),
                         // onError: voidError,
                       ),
@@ -97,12 +100,24 @@ class SubmissionTile extends StatelessWidget {
                   ],
                 ),
                 // Text('+'),
-                Row(children: [
-                  // Text('+'),
-                  SubmissionSaveButton(submission: submission),
-                  SizedBox(width: 10),
-                  Text('...'),
-                ]),
+                // Row(children: [
+                //   // Text('+'),
+                //   SubmissionSaveButton(submission: submission),
+                //   SizedBox(width: 10),
+                //   Text('...'),
+                // ]),
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  itemBuilder: (_) => [
+                    _savePopupMenuItem(context),
+                    _sharePopupMenuItem(context, submission),
+                    // _copyTextPopupMenuItem(context, comment),
+                    // _collapsePopupMenuItem(context),
+                    // TODO
+                    PopupMenuItem(child: Text('Report')),
+                    PopupMenuItem(child: Text('Block user')),
+                  ],
+                ),
               ],
             ),
             // Text('r/subreddit'),
@@ -128,6 +143,7 @@ class SubmissionTile extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (_) =>
                                 SubmissionScreen(id: submission.id)), // TODO
+                                // SubmissionScreenV2(submission: submission)), // TODO
                       );
                     }
                   : null,
@@ -168,7 +184,8 @@ class SubmissionTile extends StatelessWidget {
                 //     Icon(Icons.expand_more),
                 //   ],
                 // ),
-                SubmissionVoteButton(submission: submission),
+                // SubmissionVoteButton(submission: submission),
+                _voteButton(context, notifier.submission),
                 // Spacer(),
                 // Text(submission.numComments > 0
                 //     ? submission.numComments.toString()
@@ -189,9 +206,21 @@ class SubmissionTile extends StatelessWidget {
                 //     Text('Share'),
                 //   ],
                 // ),
-                ShareButton(
-                  title: submission.title,
-                  url: submission.shortLink,
+                // ShareButton(
+                //   title: submission.title,
+                //   url: submission.shortLink,
+                // ),
+                TextButton(
+                  onPressed: () {
+                    context.read<SubmissionNotifier>().share();
+                    // shareDesktop('$url', subject:'mail@example.com');
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.share),
+                      Text('Share'),
+                    ],
+                  ),
                 ),
                 Icon(Icons.star_outline),
               ],
@@ -202,4 +231,125 @@ class SubmissionTile extends StatelessWidget {
       ),
     );
   }
+
+  PopupMenuItem _savePopupMenuItem(BuildContext context) {
+    return PopupMenuItem(
+      onTap: () async {
+        final notifier = context.read<SubmissionNotifier>();
+        // final submission = notifier.submission;
+
+        final result = await (notifier.submission.saved
+            ? notifier.unsave()
+            : notifier.save());
+        if (result != null) {
+          showSnackBar(context, result);
+        }
+      },
+      child: Builder(
+        builder: (_) {
+          final notifier = context.read<SubmissionNotifier>();
+
+          return ListTile(
+            contentPadding: EdgeInsets.zero,
+            minLeadingWidth: 0,
+            leading: Icon(
+              notifier.submission.saved ? Icons.bookmark : Icons.bookmark_border,
+            ),
+            title: Text(notifier.submission.saved ? 'Unsave' : 'Save'),
+          );
+        },
+      ),
+    );
+  }
+
+  PopupMenuItem _sharePopupMenuItem(BuildContext context, Submission submission) {
+    return PopupMenuItem(
+      onTap: () async {
+        // Share.share('${comment.linkTitle} ${comment.shortLink}');
+        context.read<SubmissionNotifier>().share();
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        minLeadingWidth: 0,
+        leading: Icon(Icons.share),
+        title: Text('Share'),
+      ),
+    );
+  }
+
+  Widget _voteButton(BuildContext context, Submission submission) {
+    final notifier = context.read<SubmissionNotifier>();
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            final result = await notifier.upVote();
+            if (result != null) {
+              showSnackBar(context, result);
+            }
+          },
+          icon: Icon(
+            Icons.expand_less,
+            color: submission.likes == Vote.up ? Colors.green : null,
+          ),
+        ),
+        Text(submission.score.toString()),
+        IconButton(
+          onPressed: () async {
+            final result = await notifier.downVote();
+
+            if (result != null) {
+              showSnackBar(context, result);
+            }
+          },
+          icon: Icon(
+            Icons.expand_more,
+            color: submission.likes == Vote.down ? Colors.red : null,
+          ),
+        ),
+      ],
+    );
+  }
 }
+
+// TODO: move to separate file
+/* class SubmissionVoteButton extends StatelessWidget {
+  const SubmissionVoteButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.watch<SubmissionNotifier>();
+    final submission = notifier.submission;
+
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () async {
+            final result = await notifier.upVote();
+            if (result != null) {
+              showSnackBar(context, result);
+            }
+          },
+          icon: Icon(
+            Icons.expand_less,
+            color: submission.likes == Vote.up ? Colors.green : null,
+          ),
+        ),
+        Text(submission.score.toString()),
+        IconButton(
+          onPressed: () async {
+            final result = await notifier.downVote();
+
+            if (result != null) {
+              showSnackBar(context, result);
+            }
+          },
+          icon: Icon(
+            Icons.expand_more,
+            color: submission.likes == Vote.down ? Colors.red : null,
+          ),
+        ),
+      ],
+    );
+  }
+} */

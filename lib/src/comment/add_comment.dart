@@ -28,8 +28,8 @@ class _AddCommentState extends State<AddComment> {
     return ListView(
       children: [
         SizedBox(height: topPadding),
-        Text('Making food on the street'),
-        SizedBox(height: 10),
+        // Text('Making food on the street'),
+        // SizedBox(height: 10),
         Divider(),
         TextFormField(
           onChanged: (v) {
@@ -69,7 +69,7 @@ class _AddCommentState extends State<AddComment> {
               }
             } else {
               final notifer = context.read<SubmissionNotifier>();
-              final result = await notifer.reply(widget.id, _message);
+              final result = await notifer.reply(_message);
               if (result != null) {
                 showSnackBar(context, result);
               }

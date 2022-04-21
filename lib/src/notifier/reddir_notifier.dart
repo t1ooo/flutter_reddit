@@ -1,6 +1,7 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter/foundation.dart';
 import 'package:equatable/equatable.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../logging/logging.dart';
 import '../reddit_api/trophy.dart';
@@ -122,10 +123,9 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.userTrophies(name);
   }
 
-  /* Future<Submission> submission(String id) async {
-    // _log.info('<<<<<<<<<<<<<<<<<<submission<<<<<<<<<<<<<<<<<<');
+  Future<Submission> submission(String id) async {
     return redditApi.submission(id);
-  } */
+  }
 
   Future<Subreddit> subreddit(String name) async {
     return redditApi.subreddit(name);
@@ -710,16 +710,17 @@ class CommentSaveNotifier extends SaveNotifier {
 }
 
 class SubmissionNotifier extends ChangeNotifier {
-  SubmissionNotifier(this.redditApi);
+  SubmissionNotifier(this.redditApi, this.submission);
 
+  Submission submission;
   final RedditApi redditApi;
 
   static final _log = Logger('Submission');
 
-  Future<Submission> submission(String id) async {
-    _log.info('load submission');
-    return redditApi.submission(id);
-  }
+  // Future<Submission> load(String id) async {
+  //   _log.info('load submission');
+  //   return redditApi.submission(id);
+  // }
 
   // Future<void> submissionReply(String id, String body) async {
   //   await redditApi.submissionReply(id, body);
@@ -731,14 +732,88 @@ class SubmissionNotifier extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<String?> reply(String id, String body) async {
+  Future<String?> save() async {
+    if (submission.saved) return null;
+
     try {
-      await redditApi.submissionReply(id, body);
+      await redditApi.submissionSave(submission.id);
+      submission = submission.copyWith(saved: true);
+      notifyListeners();
+      return 'Saved';
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to save';
+    }
+  }
+
+  Future<String?> unsave() async {
+    if (!submission.saved) return null;
+
+    try {
+      await redditApi.commentUnsave(submission.id);
+      submission = submission.copyWith(saved: false);
+      notifyListeners();
+      return 'Unsaved';
+    } on Exception catch (e) {
+      _log.error(e);
+      return 'Error: Fail to unsave';
+    }
+  }
+
+  Future<void> share() {
+    return Share.share('${submission.title} ${submission.shortLink}');
+  }
+
+  Future<String?> reply(String body) async {
+    print('reply');
+    try {
+      final commentReply = await redditApi.submissionReply(submission.id, body);
+      submission = submission.copyWith(
+        numComments: submission.numComments + 1,
+        comments: submission.comments + [commentReply],
+        // comments: [commentReply] + submission.comments,
+      );
       notifyListeners();
       return null;
     } on Exception catch (e) {
       _log.error(e);
       return 'Fail to post comment';
+    }
+  }
+
+  Future<String?> upVote() async {
+    if (submission.likes == Vote.up) {
+      return _updateVote(Vote.none);
+    }
+    return await _updateVote(Vote.up);
+  }
+
+  Future<String?> downVote() async {
+    if (submission.likes == Vote.down) {
+      return _updateVote(Vote.none);
+    }
+    return await _updateVote(Vote.down);
+  }
+
+  // Future<String?> clearVote() async {
+  //   return await _updateVote(Vote.none);
+  // }
+
+  Future<String?> _updateVote(Vote vote) async {
+    if (submission.likes == vote) return null;
+
+    try {
+      await redditApi.submissionVote(submission.id, vote);
+      submission = submission.copyWith(
+        likes: vote,
+        score: calcScore(submission.score, submission.likes, vote),
+      );
+      notifyListeners();
+      return null;
+    } on Exception catch (e) {
+      _log.error(e);
+      // _error = e;
+      return 'Error: fail to vote';
     }
   }
 
@@ -936,6 +1011,10 @@ class CommentNotifier with CollapseMixin, ChangeNotifier {
   Comment comment;
 
   static final _log = Logger('CommentNotifier');
+
+  Future<void> share() {
+    return Share.share('${comment.linkTitle} ${comment.shortLink}');
+  }
 
   Future<String?> reply(String body) async {
     try {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
+import '../submission/comments.dart';
 import '../submission/style.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/sized_placeholder.dart';
@@ -26,6 +27,7 @@ class UserComments extends StatelessWidget {
       child: StreamListBuilder(
         stream: context.read<RedditNotifier>().userComments(name),
         onData: (context, List<Comment> comments) {
+          // return Comments(comments:comments);
           return ListView(
             children: [
               for (final comment in comments) UserComment(comment: comment),

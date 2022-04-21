@@ -81,13 +81,13 @@ ChangeNotifierProvider<RedditNotifier> redditNotifierProvider() {
   );
 }
 
-ChangeNotifierProvider<SubmissionNotifier> submissionNotifierProvider() {
-  return ChangeNotifierProvider(
-    create: (BuildContext context) => SubmissionNotifier(
-      context.read<RedditApi>(),
-    ),
-  );
-}
+// ChangeNotifierProvider<SubmissionNotifier> submissionNotifierProvider() {
+//   return ChangeNotifierProvider(
+//     create: (BuildContext context) => SubmissionNotifier(
+//       context.read<RedditApi>(),
+//     ),
+//   );
+// }
 
 ChangeNotifierProvider<SubscriptionNotifier> subscriptionNotifierProvider(
     bool isSubscriber) {
@@ -187,11 +187,21 @@ ChangeNotifierProvider<SortNotifier> sortNotifierProvider() {
   );
 }
 
-ChangeNotifierProvider<CommentNotifier> commentProvider(Comment comment) {
+ChangeNotifierProvider<CommentNotifier> commentNotifierProvider(Comment comment) {
   return ChangeNotifierProvider(
     create: (BuildContext context) => CommentNotifier(
       context.read<RedditApi>(),
       comment,
+    ),
+  );
+}
+
+ChangeNotifierProvider<SubmissionNotifier> submissionNotifierProvider(
+    Submission submission) {
+  return ChangeNotifierProvider(
+    create: (BuildContext context) => SubmissionNotifier(
+      context.read<RedditApi>(),
+      submission,
     ),
   );
 }

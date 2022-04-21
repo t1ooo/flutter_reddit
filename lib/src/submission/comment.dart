@@ -35,7 +35,7 @@ class CommentWidget extends StatelessWidget {
         // commentSaveNotifierProvider(comment),
         // commentVoteNotifierProvider(comment),
         // notifierProvider(),
-        commentProvider(initComment),
+        commentNotifierProvider(initComment),
       ],
       child: Builder(
         builder: (context) {
@@ -113,19 +113,21 @@ class CommentWidget extends StatelessWidget {
           onPressed: () async {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) {
-                return MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider.value(
-                      value: context.read<CommentNotifier>(),
+              MaterialPageRoute(
+                builder: (_) {
+                  return MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider.value(
+                        value: context.read<CommentNotifier>(),
+                      ),
+                    ],
+                    child: AddCommentScreen(
+                      id: comment.id,
+                      isComment: true,
                     ),
-                  ],
-                  child: AddCommentScreen(
-                    id: comment.id,
-                    isComment: true,
-                  ),
-                );
-              }),
+                  );
+                },
+              ),
             );
           },
           icon: Icon(Icons.reply),
@@ -194,7 +196,8 @@ class CommentWidget extends StatelessWidget {
   PopupMenuItem _sharePopupMenuItem(BuildContext context, Comment comment) {
     return PopupMenuItem(
       onTap: () async {
-        Share.share('${comment.linkTitle} ${comment.shortLink}');
+        // Share.share('${comment.linkTitle} ${comment.shortLink}');
+        context.read<CommentNotifier>().share();
       },
       child: ListTile(
         contentPadding: EdgeInsets.zero,

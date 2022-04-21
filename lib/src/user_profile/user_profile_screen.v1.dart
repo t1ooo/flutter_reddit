@@ -15,12 +15,11 @@ class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     Key? key,
     required this.name,
-    this.isCurrentUser=false,
+    this.isCurrentUser = false,
   }) : super(key: key);
 
   final String name;
   final bool isCurrentUser;
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class UserProfileScreen extends StatelessWidget {
       body: CustomFutureBuilder(
         future: context.read<RedditNotifier>().user(name),
         onData: (BuildContext context, User user) {
-          return UserProfile(user: user, isCurrentUser:isCurrentUser);
+          return UserProfile(user: user, isCurrentUser: isCurrentUser);
         },
       ),
     );
@@ -44,7 +43,7 @@ class UserProfileScreenV2 extends StatelessWidget {
   const UserProfileScreenV2({
     Key? key,
     required this.user,
-    this.isCurrentUser=false,
+    this.isCurrentUser = false,
   }) : super(key: key);
 
   final User user;
@@ -57,7 +56,7 @@ class UserProfileScreenV2 extends StatelessWidget {
         title: Text('User Profile'),
       ),
       // body: UserProfile(name: name),
-      body: UserProfile(user: user,isCurrentUser:isCurrentUser),
+      body: UserProfile(user: user, isCurrentUser: isCurrentUser),
     );
   }
 }

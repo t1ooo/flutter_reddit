@@ -16,6 +16,7 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build Comments');
     return ListView(
       shrinkWrap: true,
       // return Column(
