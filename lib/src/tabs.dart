@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subscriptions/subscriptions_screen.dart';
 import 'package:flutter_reddit_prototype/src/user_menu.dart';
@@ -66,5 +67,45 @@ class _TabsState extends State<Tabs> {
         },
       ),
     );
+
+    /* return CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '1',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '2',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '3',
+            ),
+          ],
+        ),
+        tabBuilder: (BuildContext context, int index) {
+          return CupertinoTabView(
+            builder: (BuildContext context) {
+              return SafeArea(
+                top: false,
+                bottom: false,
+                child: CupertinoApp(
+                  home: CupertinoPageScaffold(
+                    resizeToAvoidBottomInset: false,
+                    child: _screens[_selectedIndex],
+                  ),
+                ),
+              );
+            },
+          );
+        }); */
   }
 }

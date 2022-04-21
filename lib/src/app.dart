@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/home/home_screen.dart';
 
-import 'tabs.dart';
+// import 'tabs.dart';
+import 'tabs.v2.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

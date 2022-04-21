@@ -12,6 +12,7 @@ deps=(
     # share_plus_linux
     url_launcher
     # url_launcher_linux
+    persistent_bottom_nav_bar
 )
 
 dev_deps=(
