@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../notifier/reddir_notifier.dart';
 import '../style/style.dart';
 import 'search_screen.dart';
 
@@ -11,6 +13,8 @@ class SearchField extends StatelessWidget {
 
   final String? query;
   static final _controller = TextEditingController();
+
+  static final name = 'SearchField';
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +37,18 @@ class SearchField extends StatelessWidget {
               if (q != '') {
                 // _controller.clear();
                 // print(ModalRoute.of(context)?.settings.name);
-                final route = MaterialPageRoute(
-                  settings: RouteSettings(name: 'SearchScreen'),
-                  builder: (_) => SearchScreen(query: q),
-                );
+                context.read<SearchSubmissionsNotifier>().query = q;
 
-                /* if (ModalRoute.of(context)?.settings.name ==
-                    route.settings.name) {
-                  // if (ModalRoute.of(context)?.settings.name == 'SearchScreen') {
-                  // if (ModalRoute.of(context) == route) {
-                  Navigator.pushReplacement(context, route);
-                } else {
-                  // Navigator.replaceRouteBelow();
-                  Navigator.push(context, route);
-                } */
-                navigatorPushOrReplace(context, route);
+                if (ModalRoute.of(context)?.settings.name != name) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      settings: RouteSettings(name: name),
+                      builder: (_) => SearchScreen(query: q),
+                    ),
+                  );
+                }
+                // navigatorPushOrReplace(context, route);
               }
             },
             decoration: InputDecoration(

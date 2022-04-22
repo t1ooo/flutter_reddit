@@ -187,6 +187,27 @@ class RedditNotifier extends ChangeNotifier {
   } */
 }
 
+/* class CachedStream<T> {
+  CachedStream(this.stream);
+
+  final Stream<T> stream;
+  final List<T> _cache = [];
+
+  Stream<T> cached() {
+    if (_cache.isNotEmpty) {
+      return Stream.fromIterable(_cache);
+    }
+    return stream.map((v) {
+      _cache.add(v);
+      return v;
+    });
+  }
+
+  void reload() {
+    _cache.clear();
+  }
+} */
+
 abstract class SubmissionsNotifier<Type> extends ChangeNotifier {
   SubmissionsNotifier(this.types, [Type? type]) : _type = type ?? types.first;
 

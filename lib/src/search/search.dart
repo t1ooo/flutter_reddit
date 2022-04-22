@@ -34,5 +34,14 @@ class Search extends StatelessWidget {
       pageStorageKey: PageStorageKey('search'),
       controller: context.read<SearchSubmissionsNotifier>(),
     );
+
+    // return Builder(builder: (context) {
+    //   final notifier = context.read<SearchSubmissionsNotifier>();
+    //   notifier.query = query;
+    //   return SubmissionTiles(
+    //     pageStorageKey: PageStorageKey('search'),
+    //     controller: notifier,
+    //   );
+    // });
   }
 }

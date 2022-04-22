@@ -162,8 +162,9 @@ class SubredditWidget extends StatelessWidget {
         // ),
 
         SubmissionTiles(
-          stream: (context, type) =>
-              context.read<CurrentUserNotifier>().front(type: type),
+          stream: (context, type) => context
+              .read<RedditNotifier>()
+              .subredditSubmissions(subreddit.displayName, type: type),
         ),
       ],
     );
