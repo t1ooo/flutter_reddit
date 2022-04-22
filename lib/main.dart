@@ -31,6 +31,10 @@ Future<void> main() async {
           create: (BuildContext context) =>
               PopularSubmissionsNotifier(context.read<RedditApi>()),
         ),
+        ChangeNotifierProvider<SearchSubmissionsNotifier>(
+          create: (BuildContext context) =>
+              SearchSubmissionsNotifier(context.read<RedditApi>()),
+        ),
       ],
       child: MyApp(),
     ),

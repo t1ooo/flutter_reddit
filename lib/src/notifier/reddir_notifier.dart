@@ -187,18 +187,18 @@ class RedditNotifier extends ChangeNotifier {
   } */
 }
 
-abstract class SubmissionsNotifier extends ChangeNotifier {
+abstract class SubmissionsNotifier<FilterType> extends ChangeNotifier {
   // SubmissionNotifier(this.redditApi);
 
   // final RedditApi redditApi;
   static final _log = Logger('SubmissionNotifier');
   final List<Submission> _submissions = [];
 
-  SubType _type = SubType.best;
+  late FilterType _type;
 
-  SubType get type => _type;
+  FilterType get type => _type;
 
-  set type(SubType type) {
+  set type(FilterType type) {
     _type = type;
     notifyListeners();
   }
@@ -222,11 +222,13 @@ abstract class SubmissionsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<Submission> _load(int limit, SubType type);
+  Stream<Submission> _load(int limit, FilterType type);
 }
 
-class FrontSubmissionsNotifier extends SubmissionsNotifier {
-  FrontSubmissionsNotifier(this.redditApi);
+class FrontSubmissionsNotifier extends SubmissionsNotifier<SubType> {
+  FrontSubmissionsNotifier(this.redditApi) {
+    type = SubType.best;
+  }
 
   final RedditApi redditApi;
 
@@ -236,8 +238,10 @@ class FrontSubmissionsNotifier extends SubmissionsNotifier {
   }
 }
 
-class PopularSubmissionsNotifier extends SubmissionsNotifier {
-  PopularSubmissionsNotifier(this.redditApi);
+class PopularSubmissionsNotifier extends SubmissionsNotifier<SubType> {
+  PopularSubmissionsNotifier(this.redditApi) {
+    type = SubType.best;
+  }
 
   final RedditApi redditApi;
 
@@ -247,15 +251,19 @@ class PopularSubmissionsNotifier extends SubmissionsNotifier {
   }
 }
 
-
-class SearchSubmissionsNotifier extends SubmissionsNotifier {
-  SearchSubmissionsNotifier(this.redditApi);
+class SearchSubmissionsNotifier extends SubmissionsNotifier<Sort> {
+  SearchSubmissionsNotifier(this.redditApi) {
+    type = Sort.relevance;
+  }
 
   final RedditApi redditApi;
+  final String query = '';
+
+  // TODO: set query
 
   @override
-  Stream<Submission> _load(int limit, SubType type) {
-    return redditApi.search(limit: limit, type: type);
+  Stream<Submission> _load(int limit, Sort type) {
+    return redditApi.search(query, limit: limit, sort: type);
   }
 }
 
