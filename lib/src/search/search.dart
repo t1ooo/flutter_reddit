@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.v4.dart';
+import '../home/submission_tiles.v5.dart';
 import '../notifier/reddir_notifier.dart';
-import '../reddit_api/reddir_api.dart';
 
 class Search extends StatelessWidget {
   const Search({
@@ -31,8 +30,9 @@ class Search extends StatelessWidget {
     //       context.read<RedditNotifier>().search(query),
     // );
 
-     return SubmissionTiles<Sort,SearchSubmissionsNotifier>(
-      pageStorageKey: PageStorageKey('home'),
+    return SubmissionTiles(
+      pageStorageKey: PageStorageKey('search'),
+      controller: context.read<SearchSubmissionsNotifier>(),
     );
   }
 }

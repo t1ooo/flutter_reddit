@@ -187,32 +187,40 @@ class RedditNotifier extends ChangeNotifier {
   } */
 }
 
-abstract class SubmissionsNotifier<FilterType> extends ChangeNotifier {
-  // SubmissionNotifier(this.redditApi);
+abstract class SubmissionsNotifier<Type> extends ChangeNotifier {
+  SubmissionsNotifier(this.types, [Type? type]) : _type = type ?? types.first;
 
   // final RedditApi redditApi;
   static final _log = Logger('SubmissionNotifier');
   final List<Submission> _submissions = [];
+  final List<Type> types;
 
-  late FilterType _type;
-
-  FilterType get type => _type;
-
-  set type(FilterType type) {
+  Type _type;
+  Type get type => _type;
+  set type(Type type) {
+    if (_type == type) {
+      return;
+    }
     _type = type;
     reload();
-    // notifyListeners();
   }
 
-  Stream<Submission> submissions({int limit = 10}) {
-    // return redditApi.front(limit: limit, type: _type);
+  int _limit = 10;
+  int get limit => _limit;
+  set limit(int limit) {
+    if (_limit == limit) {
+      return;
+    }
+    _limit = limit;
+    reload();
+  }
+
+  Stream<Submission> submissions() {
     if (_submissions.isNotEmpty) {
       print('cached');
       return Stream.fromIterable(_submissions);
     }
-    return _load(limit, _type)
-        // ..forEach((v) => _submissions.add(v));
-        .map((v) {
+    return _loadSubmissions().map((v) {
       _submissions.add(v);
       return v;
     });
@@ -223,55 +231,66 @@ abstract class SubmissionsNotifier<FilterType> extends ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<Submission> _load(int limit, FilterType type);
-  List<FilterType> get types;
+  Stream<Submission> _loadSubmissions();
 }
 
 class FrontSubmissionsNotifier extends SubmissionsNotifier<SubType> {
-  FrontSubmissionsNotifier(this.redditApi) {
-    type = SubType.best;
-  }
+  FrontSubmissionsNotifier(this.redditApi) : super(SubType.values);
 
   final RedditApi redditApi;
 
-  List<SubType> get types => SubType.values;
+  // List<SubType> types => SubType.values;
 
   @override
-  Stream<Submission> _load(int limit, SubType type) {
+  Stream<Submission> _loadSubmissions() {
     return redditApi.front(limit: limit, type: type);
   }
 }
 
+// abstract class E {
+//   List<E> values();
+// }
+
+// foo<T extends E> (T t) {
+//   print(t.values);
+// }
+
+// boo() {
+//   foo<SubType>(SubType.best);
+// }
+
 class PopularSubmissionsNotifier extends SubmissionsNotifier<SubType> {
-  PopularSubmissionsNotifier(this.redditApi) {
-    type = SubType.best;
-  }
+  PopularSubmissionsNotifier(this.redditApi) : super(SubType.values);
 
   final RedditApi redditApi;
 
   List<SubType> get types => SubType.values;
 
-
   @override
-  Stream<Submission> _load(int limit, SubType type) {
+  Stream<Submission> _loadSubmissions() {
     return redditApi.popular(limit: limit, type: type);
   }
 }
 
 class SearchSubmissionsNotifier extends SubmissionsNotifier<Sort> {
-  SearchSubmissionsNotifier(this.redditApi) {
-    type = Sort.relevance;
-  }
+  SearchSubmissionsNotifier(this.redditApi) : super(Sort.values);
 
   final RedditApi redditApi;
-  final String query = '';
+
+  String _query = '';
+  String get query => _query;
+  set query(String query) {
+    if (_query == query) {
+      return;
+    }
+    _query = query;
+    reload();
+  }
 
   List<Sort> get types => Sort.values;
 
-  // TODO: set query
-
   @override
-  Stream<Submission> _load(int limit, Sort type) {
+  Stream<Submission> _loadSubmissions() {
     return redditApi.search(query, limit: limit, sort: type);
   }
 }

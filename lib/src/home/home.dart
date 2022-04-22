@@ -11,7 +11,7 @@ import '../widget/sized_placeholder.dart';
 import '../widget/stream_list_builder.dart';
 import 'custom_scroll.dart';
 import 'submission_tile.dart';
-import 'submission_tiles.v4.dart';
+import 'submission_tiles.v5.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -44,8 +44,13 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // context.watch<FrontSubmissionsNotifier>();
-    return SubmissionTiles<SubType,FrontSubmissionsNotifier>(
+    // return SubmissionTiles<SubType,FrontSubmissionsNotifier>(
+    //   pageStorageKey: PageStorageKey('home'),
+    // );
+
+    return SubmissionTiles(
       pageStorageKey: PageStorageKey('home'),
+      controller: context.read<FrontSubmissionsNotifier>(),
     );
 
     // return SubmissionTiles(

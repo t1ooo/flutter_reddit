@@ -26,7 +26,7 @@ class SearchScreen extends StatelessWidget {
             Padding(
               // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
               padding: pagePadding,
-              child: SearchField(value:query),
+              child: SearchField(query:query),
             ),
             Expanded(child: Search(query: query)),
           ],

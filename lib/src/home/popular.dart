@@ -8,7 +8,7 @@ import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
 import '../widget/stream_list_builder.dart';
 import 'submission_tile.dart';
-import 'submission_tiles.v4.dart';
+import 'submission_tiles.v5.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);
@@ -46,8 +46,13 @@ class Popular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SubmissionTiles<SubType,PopularSubmissionsNotifier>(
-      pageStorageKey: PageStorageKey('popular'),
+    // return SubmissionTiles<SubType,PopularSubmissionsNotifier>(
+    //   pageStorageKey: PageStorageKey('popular'),
+    // );
+
+    return SubmissionTiles(
+      pageStorageKey: PageStorageKey('home'),
+      controller: context.read<PopularSubmissionsNotifier>(),
     );
     
     // return SubmissionTiles(
