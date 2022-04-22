@@ -1,6 +1,7 @@
 import 'dart:io';
 
-String enumToString(Enum e) {
+// String enumToString(Enum e) {
+String enumToString(dynamic e) {
   return e.toString().split('.').last;
 }
 

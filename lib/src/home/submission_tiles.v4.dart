@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.dart';
 import '../provider.dart';
 import '../reddit_api/submission.dart';
-import '../reddit_api/submission_type.dart';
+// import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
 import '../util/enum.dart';
 import '../widget/sized_placeholder.dart';
@@ -12,7 +12,8 @@ import '../widget/stream_list_builder.dart';
 import 'custom_scroll.dart';
 import 'submission_tile.dart';
 
-class SubmissionTiles<Notifier extends SubmissionsNotifier> extends StatelessWidget {
+class SubmissionTiles<FilterType,
+    Notifier extends SubmissionsNotifier<FilterType>> extends StatelessWidget {
   SubmissionTiles({
     Key? key,
     // this.type = SubType.best, // TODO: make required
@@ -68,14 +69,14 @@ class SubmissionTiles<Notifier extends SubmissionsNotifier> extends StatelessWid
         if (showTypeSelector) ...[
           Row(
             children: [
-              DropdownButton<SubType>(
+              DropdownButton<FilterType>(
                 value: notifier.type,
                 onChanged: (type) {
                   if (type != null) notifier.type = type;
                 },
                 items: [
-                  for (final st in SubType.values)
-                    DropdownMenuItem<SubType>(
+                  for (final st in notifier.types)
+                    DropdownMenuItem<FilterType>(
                       value: st,
                       child: Text(_formatSubType(st)),
                     )
@@ -119,7 +120,7 @@ class SubmissionTiles<Notifier extends SubmissionsNotifier> extends StatelessWid
     );
   }
 
-  String _formatSubType(SubType type) {
+  String _formatSubType(FilterType type) {
     return enumToString(type).toUpperCase();
   }
 }

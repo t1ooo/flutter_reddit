@@ -31,7 +31,7 @@ class Search extends StatelessWidget {
     //       context.read<RedditNotifier>().search(query),
     // );
 
-     return SubmissionTiles<SearchSubmissionsNotifier>(
+     return SubmissionTiles<Sort,SearchSubmissionsNotifier>(
       pageStorageKey: PageStorageKey('home'),
     );
   }

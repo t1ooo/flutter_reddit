@@ -34,10 +34,17 @@ class Home extends StatelessWidget {
   //   );
   // }
 
+  /* return SubmissionTiles<SubType,FrontSubmissionsNotifier>(
+      pageStorageKey: PageStorageKey('home'),
+      stream: () => {}
+      value:
+      values:
+  ); */
+
   @override
   Widget build(BuildContext context) {
     // context.watch<FrontSubmissionsNotifier>();
-    return SubmissionTiles<FrontSubmissionsNotifier>(
+    return SubmissionTiles<SubType,FrontSubmissionsNotifier>(
       pageStorageKey: PageStorageKey('home'),
     );
 

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.dart';
 import '../provider.dart';
 import '../reddit_api/submission.dart';
+import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
 import '../widget/stream_list_builder.dart';
 import 'submission_tile.dart';
@@ -45,7 +46,7 @@ class Popular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SubmissionTiles<PopularSubmissionsNotifier>(
+    return SubmissionTiles<SubType,PopularSubmissionsNotifier>(
       pageStorageKey: PageStorageKey('popular'),
     );
     

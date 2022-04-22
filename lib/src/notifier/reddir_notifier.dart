@@ -200,7 +200,8 @@ abstract class SubmissionsNotifier<FilterType> extends ChangeNotifier {
 
   set type(FilterType type) {
     _type = type;
-    notifyListeners();
+    reload();
+    // notifyListeners();
   }
 
   Stream<Submission> submissions({int limit = 10}) {
@@ -223,6 +224,7 @@ abstract class SubmissionsNotifier<FilterType> extends ChangeNotifier {
   }
 
   Stream<Submission> _load(int limit, FilterType type);
+  List<FilterType> get types;
 }
 
 class FrontSubmissionsNotifier extends SubmissionsNotifier<SubType> {
@@ -231,6 +233,8 @@ class FrontSubmissionsNotifier extends SubmissionsNotifier<SubType> {
   }
 
   final RedditApi redditApi;
+
+  List<SubType> get types => SubType.values;
 
   @override
   Stream<Submission> _load(int limit, SubType type) {
@@ -245,6 +249,9 @@ class PopularSubmissionsNotifier extends SubmissionsNotifier<SubType> {
 
   final RedditApi redditApi;
 
+  List<SubType> get types => SubType.values;
+
+
   @override
   Stream<Submission> _load(int limit, SubType type) {
     return redditApi.popular(limit: limit, type: type);
@@ -258,6 +265,8 @@ class SearchSubmissionsNotifier extends SubmissionsNotifier<Sort> {
 
   final RedditApi redditApi;
   final String query = '';
+
+  List<Sort> get types => Sort.values;
 
   // TODO: set query
 
