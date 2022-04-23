@@ -119,9 +119,9 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.userSubmissions(name, limit: limit);
   }
 
-  Future<List<Trophy>> userTrophies(String name) {
-    return redditApi.userTrophies(name);
-  }
+  // Future<List<Trophy>> userTrophies(String name) {
+  //   return redditApi.userTrophies(name);
+  // }
 
   Future<Submission> submission(String id) async {
     return redditApi.submission(id);
@@ -131,37 +131,37 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.subreddit(name);
   }
 
-  Future<void> submissionVote(String id, Vote vote) async {
-    return redditApi.submissionVote(id, vote);
-  }
+  // Future<void> submissionVote(String id, Vote vote) async {
+  //   return redditApi.submissionVote(id, vote);
+  // }
 
-  Future<void> submissionSave(String id) async {
-    return redditApi.submissionSave(id);
-  }
+  // Future<void> submissionSave(String id) async {
+  //   return redditApi.submissionSave(id);
+  // }
 
-  Future<void> submissionUnsave(String id) async {
-    return redditApi.submissionUnsave(id);
-  }
+  // Future<void> submissionUnsave(String id) async {
+  //   return redditApi.submissionUnsave(id);
+  // }
 
-  Future<void> commentSave(String id) async {
-    return redditApi.commentSave(id);
-  }
+  // Future<void> commentSave(String id) async {
+  //   return redditApi.commentSave(id);
+  // }
 
-  Future<void> commentUnsave(String id) async {
-    return redditApi.commentUnsave(id);
-  }
+  // Future<void> commentUnsave(String id) async {
+  //   return redditApi.commentUnsave(id);
+  // }
 
   // Future<User?> currentUser() async {
   //   return redditApi.currentUser();
   // }
 
-  Stream<Submission> currentUserSavedSubmissions({int limit = 10}) {
-    return redditApi.currentUserSavedSubmissions(limit: limit);
-  }
+  // Stream<Submission> currentUserSavedSubmissions({int limit = 10}) {
+  //   return redditApi.currentUserSavedSubmissions(limit: limit);
+  // }
 
-  Stream<Comment> currentUserSavedComments({int limit = 10}) {
-    return redditApi.currentUserSavedComments(limit: limit);
-  }
+  // Stream<Comment> currentUserSavedComments({int limit = 10}) {
+  //   return redditApi.currentUserSavedComments(limit: limit);
+  // }
 
   Future<String> subredditIcon(String name) {
     return redditApi.subredditIcon(name);
@@ -395,6 +395,19 @@ class UserNotifier extends ChangeNotifier {
     }
     return _user!;
   }
+
+  Stream<Comment> comments({int limit = 10}) {
+    return redditApi.userComments(name, limit: limit);
+  }
+
+  Stream<Submission> submissions({int limit = 10}) {
+    return redditApi.userSubmissions(name, limit: limit);
+  }
+
+  Future<List<Trophy>> trophies() {
+    return redditApi.userTrophies(name);
+  }
+
 }
 
 // class FrontSubmission extends ChangeNotifier {
@@ -476,6 +489,14 @@ class CurrentUserNotifier extends ChangeNotifier /* with Error<Object> */ {
 
   User? _user;
   User? get user => _user;
+
+  Stream<Comment> savedComments({int limit = 10}) {
+    return redditApi.currentUserSavedComments(limit: limit);
+  }
+
+  Stream<Submission> savedSubmissions({int limit = 10}) {
+    return redditApi.currentUserSavedSubmissions(limit: limit);
+  }
 
   Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
     return redditApi.front(limit: limit, type: type);

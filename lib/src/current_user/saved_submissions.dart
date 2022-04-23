@@ -16,7 +16,7 @@ class SavedSubmissions extends StatelessWidget {
       showTrending: false,
       showTypeSelector: false,
       stream: (context, type) =>
-          context.read<RedditNotifier>().currentUserSavedSubmissions(),
+          context.read<CurrentUserNotifier>().savedSubmissions(),
     );
   }
 }

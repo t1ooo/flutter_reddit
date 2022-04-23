@@ -23,7 +23,7 @@ class UserTrophies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomFutureBuilder(
-      future: context.read<RedditNotifier>().userTrophies(user.name),
+      future: context.read<UserNotifier>().trophies(),
       onData: (BuildContext context, List<Trophy> trophies) {
         return ListView(
           shrinkWrap: true,
