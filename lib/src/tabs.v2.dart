@@ -18,6 +18,13 @@ class Tabs extends StatelessWidget {
   //   // Home(),
   // ];
 
+  Widget withScaffold(Widget body) {
+    return Scaffold(
+      drawer: UserMenu(),
+      body: body,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
@@ -26,7 +33,7 @@ class Tabs extends StatelessWidget {
       screens: [
         HomeScreen(),
         SubscriptionsScreen(),
-      ],
+      ].map(withScaffold).toList(),
       items: [
         PersistentBottomNavBarItem(
           icon: Icon(Icons.home),
