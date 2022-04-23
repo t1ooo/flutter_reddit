@@ -7,10 +7,10 @@ import '../notifier/reddir_notifier.dart';
 class Search extends StatelessWidget {
   const Search({
     Key? key,
-    required this.query,
+    // required this.query,
   }) : super(key: key);
 
-  final String query;
+  // final String query;
 
   @override
   Widget build(BuildContext context) {

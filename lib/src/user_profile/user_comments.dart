@@ -25,7 +25,8 @@ class UserComments extends StatelessWidget {
     return Padding(
       padding: pagePadding,
       child: StreamListBuilder(
-        stream: context.read<RedditNotifier>().userComments(name),
+        // stream: context.read<RedditNotifier>().userComments(name),
+        stream: context.read<UserCommentsNotifier>().comments(),
         onData: (context, List<Comment> comments) {
           // return Comments(comments:comments);
           return ListView(

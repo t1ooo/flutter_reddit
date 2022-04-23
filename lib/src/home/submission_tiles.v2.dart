@@ -40,7 +40,7 @@ class SubmissionTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build SubmissionTiles');
+    // print('build SubmissionTiles');
     final notifier = context.watch<SubTypeNotifier>();
     return Padding(
       padding: pagePadding,

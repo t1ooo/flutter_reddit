@@ -49,7 +49,7 @@ class Home extends StatelessWidget {
     // );
 
     return SubmissionTiles(
-      pageStorageKey: PageStorageKey('home'),
+      pageStorageKey: PageStorageKey('FrontSubmissions'),
       controller: context.read<FrontSubmissionsNotifier>(),
     );
 

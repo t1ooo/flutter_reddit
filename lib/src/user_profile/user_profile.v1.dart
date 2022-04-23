@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.v2.dart';
+import '../home/submission_tiles.v5.dart';
 import '../notifier/reddir_notifier.dart';
 import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
@@ -70,7 +70,7 @@ class UserProfile extends StatelessWidget {
                           height: iconSize,
                           child: Image.network(user.iconImg),
                         ),
-                        // CircleImage(                          
+                        // CircleImage(
                         //   image: user.iconImg,
                         // ),
                       ],
@@ -151,11 +151,19 @@ class UserProfile extends StatelessWidget {
                 //   showTrending: false,
                 //   showTypeSelector: false,
                 // ),
+
+                // SubmissionTiles(
+                //   showTrending: false,
+                //   showTypeSelector: false,
+                //   stream: (context, type) =>
+                //       context.read<RedditNotifier>().userSubmissions(user.name),
+                // ),
+                
                 SubmissionTiles(
-                  showTrending: false,
+                  pageStorageKey: PageStorageKey('UserSubmissions'),
+                  // showTrending: false,
                   showTypeSelector: false,
-                  stream: (context, type) =>
-                      context.read<RedditNotifier>().userSubmissions(user.name),
+                  controller: context.read<UserSubmissionsNotifier>(),
                 ),
                 UserComments(name: user.name),
                 UserAbout(user: user),

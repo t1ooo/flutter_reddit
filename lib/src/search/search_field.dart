@@ -39,16 +39,23 @@ class SearchField extends StatelessWidget {
                 // print(ModalRoute.of(context)?.settings.name);
                 context.read<SearchSubmissionsNotifier>().query = q;
 
-                if (ModalRoute.of(context)?.settings.name != name) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      settings: RouteSettings(name: name),
-                      builder: (_) => SearchScreen(query: q),
-                    ),
-                  );
-                }
-                // navigatorPushOrReplace(context, route);
+                // if (ModalRoute.of(context)?.settings.name != name) {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       settings: RouteSettings(name: name),
+                //       builder: (_) => SearchScreen(query: q),
+                //     ),
+                //   );
+                // }
+
+                navigatorPushOrReplace(
+                  context,
+                  MaterialPageRoute(
+                    settings: RouteSettings(name: name),
+                    builder: (_) => SearchScreen(query: q),
+                  ),
+                );
               }
             },
             decoration: InputDecoration(

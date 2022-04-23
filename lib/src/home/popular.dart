@@ -51,7 +51,7 @@ class Popular extends StatelessWidget {
     // );
 
     return SubmissionTiles(
-      pageStorageKey: PageStorageKey('home'),
+      pageStorageKey: PageStorageKey('PopularSubmissions'),
       controller: context.read<PopularSubmissionsNotifier>(),
     );
     

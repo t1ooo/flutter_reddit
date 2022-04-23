@@ -187,41 +187,41 @@ class RedditNotifier extends ChangeNotifier {
   } */
 }
 
-/* class CachedStream<T> {
-  CachedStream(this.stream);
+class CachedStream<T> {
+  CachedStream(this.getStream);
 
-  final Stream<T> stream;
+  final Stream<T> Function() getStream;
   final List<T> _cache = [];
 
   Stream<T> cached() {
     if (_cache.isNotEmpty) {
+      print('cached');
       return Stream.fromIterable(_cache);
     }
-    return stream.map((v) {
+    return getStream().map((v) {
       _cache.add(v);
       return v;
     });
   }
 
-  void reload() {
+  void clear() {
     _cache.clear();
   }
-} */
+}
 
 abstract class SubmissionsNotifier<Type> extends ChangeNotifier {
   SubmissionsNotifier(this.types, [Type? type]) : _type = type ?? types.first;
 
   // final RedditApi redditApi;
   static final _log = Logger('SubmissionNotifier');
-  final List<Submission> _submissions = [];
+  // final List<Submission> _submissions = [];
+  late final _submissions = CachedStream(_loadSubmissions);
   final List<Type> types;
 
   Type _type;
   Type get type => _type;
   set type(Type type) {
-    if (_type == type) {
-      return;
-    }
+    if (_type == type) return;
     _type = type;
     reload();
   }
@@ -229,22 +229,20 @@ abstract class SubmissionsNotifier<Type> extends ChangeNotifier {
   int _limit = 10;
   int get limit => _limit;
   set limit(int limit) {
-    if (_limit == limit) {
-      return;
-    }
+    if (_limit == limit) return;
     _limit = limit;
     reload();
   }
 
   Stream<Submission> submissions() {
-    if (_submissions.isNotEmpty) {
-      print('cached');
-      return Stream.fromIterable(_submissions);
-    }
-    return _loadSubmissions().map((v) {
-      _submissions.add(v);
-      return v;
-    });
+    return _submissions.cached();
+    // if (_submissions.isNotEmpty) {
+    //   return Stream.fromIterable(_submissions);
+    // }
+    // return _loadSubmissions().map((v) {
+    //   _submissions.add(v);
+    //   return v;
+    // });
   }
 
   void reload() {
@@ -285,7 +283,7 @@ class PopularSubmissionsNotifier extends SubmissionsNotifier<SubType> {
 
   final RedditApi redditApi;
 
-  List<SubType> get types => SubType.values;
+  // List<SubType> get types => SubType.values;
 
   @override
   Stream<Submission> _loadSubmissions() {
@@ -301,18 +299,101 @@ class SearchSubmissionsNotifier extends SubmissionsNotifier<Sort> {
   String _query = '';
   String get query => _query;
   set query(String query) {
-    if (_query == query) {
-      return;
-    }
+    if (_query == query) return;
     _query = query;
     reload();
   }
 
-  List<Sort> get types => Sort.values;
+  // List<Sort> get types => Sort.values;
 
   @override
   Stream<Submission> _loadSubmissions() {
     return redditApi.search(query, limit: limit, sort: type);
+  }
+}
+
+class UserSubmissionsNotifier extends SubmissionsNotifier<String> {
+  UserSubmissionsNotifier(this.redditApi) : super([], '');
+
+  final RedditApi redditApi;
+
+  String _name = '';
+  String get name => _name;
+  set name(String name) {
+    if (_name == name) return;
+    _name = name;
+    reload();
+  }
+
+  // List<Sort> get types => Sort.values;
+
+  @override
+  Stream<Submission> _loadSubmissions() {
+    return redditApi.userSubmissions(name, limit: limit);
+  }
+}
+
+class UserCommentsNotifier extends ChangeNotifier {
+  UserCommentsNotifier(this.redditApi);
+
+  final RedditApi redditApi;
+  late final _comments = CachedStream(_loadComments);
+
+  String _name = '';
+  String get name => _name;
+  set name(String name) {
+    if (_name == name) return;
+    _name = name;
+    reload();
+  }
+
+  int _limit = 10;
+  int get limit => _limit;
+  set limit(int limit) {
+    if (_limit == limit) return;
+    _limit = limit;
+    reload();
+  }
+
+  Stream<Comment> comments() {
+    return _comments.cached();
+  }
+
+  void reload() {
+    _comments.clear();
+    notifyListeners();
+  }
+
+  Stream<Comment> _loadComments() {
+    return redditApi.userComments(name, limit: limit);
+  }
+}
+
+class UserNotifier extends ChangeNotifier {
+  UserNotifier(this.redditApi);
+
+  final RedditApi redditApi;
+
+  String _name = '';
+  String get name => _name;
+  set name(String name) {
+    if (_name == name) return;
+    _name = name;
+    reload();
+  }
+
+  User? _user;
+
+  void reload() {
+    _user = null;
+    notifyListeners();
+  }
+
+  Future<User> user() async {
+    if (_user == null) {
+      _user = await redditApi.user(name);
+    }
+    return _user!;
   }
 }
 

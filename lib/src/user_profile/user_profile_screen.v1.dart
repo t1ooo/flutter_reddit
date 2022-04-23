@@ -23,14 +23,25 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('User Profile');
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      context.read<UserNotifier>().name = name;
+      context.read<UserSubmissionsNotifier>().name = name;
+      context.read<UserCommentsNotifier>().name = name;
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
       ),
       // body: UserProfile(name: name),
       body: CustomFutureBuilder(
-        future: context.read<RedditNotifier>().user(name),
+        // future: context.read<RedditNotifier>().user(name),
+        future: context.read<UserNotifier>().user(),
         onData: (BuildContext context, User user) {
+          // WidgetsBinding.instance?.addPostFrameCallback((_) {
+          //   context.read<UserSubmissionsNotifier>().name = name;
+          //   context.read<UserCommentsNotifier>().name = name;
+          // });
           return UserProfile(user: user, isCurrentUser: isCurrentUser);
         },
       ),
