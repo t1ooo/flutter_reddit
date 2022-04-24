@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
-import '../reddit_api/trophy.dart';
-import '../reddit_api/user.dart';
-import '../reddit_api/comment.dart';
-import '../reddit_api/submission.dart';
-import '../reddit_api/subreddit.dart';
+import '../../reddit_api/trophy.dart';
+import '../../reddit_api/user.dart';
+import '../../reddit_api/comment.dart';
+import '../../reddit_api/submission.dart';
+import '../../reddit_api/subreddit.dart';
 
 /* 
 return SubmissionTiles(

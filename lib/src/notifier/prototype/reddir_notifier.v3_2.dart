@@ -1,68 +1,67 @@
 import 'package:flutter/foundation.dart';
 
-import '../reddit_api/trophy.dart';
-import '../reddit_api/user.dart';
-import '../reddit_api/comment.dart';
-import '../reddit_api/submission.dart';
-import '../reddit_api/subreddit.dart';
+import '../../reddit_api/trophy.dart';
+import '../../reddit_api/user.dart';
+import '../../reddit_api/comment.dart';
+import '../../reddit_api/submission.dart';
+import '../../reddit_api/subreddit.dart';
 
 /* 
 return SubmissionTiles(
   pageStorageKey: PageStorageKey('home'),
   stream: (context, type) =>
-      context.read<CurrentUserNotifier>().front(type: type),
+      context.read<CurrentUserNotifierX>().front(type: type),
 ); 
 
 return SubmissionTiles(
   pageStorageKey: PageStorageKey('FrontSubmissions'),
-      controller: context.read<FrontSubmissionsNotifier>(),
+      controller: context.read<FrontSubmissionsNotifierX>(),
 );
 
-final notifier = context.watch<Notifier>();
+final NotifierX = context.watch<NotifierX>();
 return SubmissionTiles(
   pageStorageKey: PageStorageKey('home'),
   stream: (context, type) {
-    notifier.type = type;
-    return notifier.front();
+    NotifierX.type = type;
+    return NotifierX.front();
   }
-  types: notifier.types,
-  type: notifier.type,
+  types: NotifierX.types,
+  type: NotifierX.type,
 );
 
 
-final notifier = context.watch<Notifier>();
+final NotifierX = context.watch<NotifierX>();
 return SubmissionTiles(
   pageStorageKey: PageStorageKey('someName'),
-  stream: (context) => notifier.front(),
-  types: notifier.types,
-  type: notifier.type,
-  onChange: (type) => notifier.type = type;
+  stream: (context) => NotifierX.front(),
+  types: NotifierX.types,
+  type: NotifierX.type,
+  onChange: (type) => NotifierX.type = type;
 );
 
 
-final notifier = context.watch<Notifier>();
+final NotifierX = context.watch<NotifierX>();
 return SubmissionTiles(
   pageStorageKey: PageStorageKey('someName'),
-  submissions: notifier.submissions,
-  types: notifier.types,
-  type: notifier.type,
-  onChange: (type) => notifier.loadSubmissions(type);
+  submissions: NotifierX.submissions,
+  types: NotifierX.types,
+  type: NotifierX.type,
+  onChange: (type) => NotifierX.loadSubmissions(type);
 );
 */
 
-abstract class SearchNotifier with SubmissionsMixin, ChangeNotifier {
+abstract class SearchNotifierX with SubmissionsMixinX, ChangeNotifier {
   get subredditName;
   get query;
 
   get sort;
   get sorts;
 
-  Future<String?> searchAll(query, sort);
-  Future<String?> search(subredditName, query, sort);
+  Future<String?> search(query, sort, [subredditName]);
   List<Submission>? get submission;
 }
 
-abstract class SubredditNotifier with SubmissionsMixin, ChangeNotifier {
+abstract class SubredditNotifierX with SubmissionsMixinX, ChangeNotifier {
   set name(name);
   Future<String?> subscribe();
   Future<String?> unsubscribe();
@@ -82,27 +81,39 @@ abstract class SubredditNotifier with SubmissionsMixin, ChangeNotifier {
   Future<String?> unstar();
 }
 
-abstract class HomeFrontNotifier with SubmissionsMixin, ChangeNotifier {
-  get subType;
+// abstract class HomeFrontNotifierX with SubmissionsMixinX, ChangeNotifier {
+//   get subType;
+//   get subTypes;
+
+//   Future<String?> loadSubmissions(subType);
+//   List<Submission>? get submission;
+// }
+
+// abstract class HomePopularNotifierX with SubmissionsMixinX, ChangeNotifier {
+//   get subType;
+//   get subTypes;
+//   Future<String?> loadSubmissions(subType);
+//   List<Submission>? get submission;
+// }
+
+abstract class HomeNotifierX with SubmissionsMixinX, ChangeNotifier {
+  get frontSubType;
   get subTypes;
 
-  Future<String?> loadSubmissions(subType);
-  List<Submission>? get submission;
+  Future<String?> loadFrontSubmissions(subType);
+  List<Submission>? get frontSubmission;
+
+  get popularSubType;
+  Future<String?> loadPopularSubmissions(subType);
+  List<Submission>? get popularSubmission;
 }
 
-abstract class HomePopularNotifier with SubmissionsMixin, ChangeNotifier {
-  get subType;
-  get subTypes;
-  Future<String?> loadSubmissions(subType);
-  List<Submission>? get submission;
-}
-
-abstract class SubmissionNotifier with CommentsMixin, SubmissionsMixin {
+abstract class SubmissionNotifierX with CommentsMixin, SubmissionsMixinX {
   Future<String?> loadSubmission(id);
   Submission? get submission;
 }
 
-abstract class UserNotifier with CommentsMixin, SubmissionsMixin {
+abstract class UserNotifierX with CommentsMixin, SubmissionsMixinX {
   Future<void> loadUser(name);
   User get user;
 
@@ -119,7 +130,7 @@ abstract class UserNotifier with CommentsMixin, SubmissionsMixin {
   List<Trophy>? get trophies;
 }
 
-abstract class CurrentUserNotifier with CommentsMixin, SubmissionsMixin {
+abstract class CurrentUserNotifierX with CommentsMixin, SubmissionsMixinX {
   Future<String?> login();
   Future<String?> logout();
 
@@ -133,7 +144,7 @@ abstract class CurrentUserNotifier with CommentsMixin, SubmissionsMixin {
   List<Submission>? get savedSubmissions;
 }
 
-mixin SubmissionsMixin {
+mixin SubmissionsMixinX {
   Future<String?> saveSubmissions(String submissionId);
   Future<String?> unsaveSubmissions(String submissionId);
   Future<String?> voteUpSubmissions(String submissionId);
