@@ -191,6 +191,12 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
+  Future<User> user(String name) async {
+    final redditorRef = await reddit.redditor(name);
+    final redditor = await redditorRef.populate();
+    return User.fromMap(redditor.data!);
+  }
+
   // TODO: MAYBE: add type support
   Stream<Comment> userComments(
     String name, {
@@ -211,14 +217,22 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Future<User> user(String name) async {
-    final redditorRef = await reddit.redditor(name);
-    final redditor = await redditorRef.populate();
-    return User.fromMap(redditor.data!);
-  }
-
-  Stream<Submission> userSubmissions(String name, {required int limit}) {
-    throw UnimplementedError();
+// TODO: MAYBE: add type support
+  Stream<Submission> userSubmissions(String name, {required int limit}) async* {
+    await for (final v
+        in reddit.redditor(name).submissions.newest(limit: limit)) {
+      final dsub = cast<draw.Comment?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      if (dsub.data == null) {
+        _log.warning('draw.Submission.data is empty: $v');
+        continue;
+      }
+      final sub = Submission.fromMap(dsub.data!);
+      yield sub;
+    }
   }
 
   Future<List<Trophy>> userTrophies(String name) async {

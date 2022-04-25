@@ -108,6 +108,11 @@ class SubredditNotifierQ extends ChangeNotifier {
     _wiki = null;
   }
 
+  void _setName(String name) {
+    if (_name != name) _reset();
+    _name = name;
+  }
+
   // Future<String?> loadSubreddit(String name) {
   //   return _try(() async {
   //     if (_subreddit != null && _name == name) return null;
@@ -118,8 +123,7 @@ class SubredditNotifierQ extends ChangeNotifier {
   // }
   Future<String?> loadSubreddit(String name) {
     return _try(() async {
-      if (_name != name) _reset();
-      _name = name;
+      _setName(name);
       if (_subreddit != null) return null;
       _subreddit = await _redditApi.subreddit(_name!);
       notifyListeners();
@@ -533,15 +537,6 @@ class CommentNotifierQ extends ChangeNotifier {
     }, 'Error: Fail to reply');
   }
 
-  Future<String?> _try(Future<String?> Function() fn, String error) async {
-    try {
-      return await fn();
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return error;
-    }
-  }
-
   bool _collapsed = false;
 
   bool get expanded => !_collapsed;
@@ -558,25 +553,98 @@ class CommentNotifierQ extends ChangeNotifier {
     _collapsed = false;
     notifyListeners();
   }
+
+  Future<String?> _try(Future<String?> Function() fn, String error) async {
+    try {
+      return await fn();
+    } on Exception catch (e, st) {
+      _log.error('', e, st);
+      return error;
+    }
+  }
 }
 
 abstract class UserNotifierQ extends ChangeNotifier {
-  set name(_);
+  UserNotifierQ(this._redditApi);
 
-  Future<void> loadUser();
-  User get user;
+  final RedditApi _redditApi;
+  int _limit = 10;
+  static final _log = Logger('UserNotifierQ');
 
-  Future<String?> subscribe();
-  Future<String?> unsubscribe();
+  void _reset() {
+    _user = null;
+    _submissions = null;
+    _comments = null;
+    _trophies = null;
+  }
 
-  Future<String?> loadSubmissions();
-  List<SubmissionNotifierQ>? get submissions;
+  String? _name;
 
+  void _setName(String name) {
+    if (_name != name) _reset();
+    _name = name;
+  }
+
+  User? _user;
+  User? get user => _user;
+  Future<void> loadUser(String name) {
+    return _try(() async {
+      _setName(name);
+      if (_user != null) return null;
+      _user = await _redditApi.user(_name!);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load user');
+  }
+
+  Future<String?> subscribe() {
+    return _try(() async {
+      if (user!.subreddit.userIsSubscriber) return null;
+      await _redditApi.subscribe(user!.subreddit.displayName);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to subscribe');
+  }
+
+  Future<String?> unsubscribe() {
+    return _try(() async {
+      if (!(user!.subreddit.userIsSubscriber)) return null;
+      await _redditApi.subscribe(user!.subreddit.displayName);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to unsubscribe');
+  }
+
+  List<SubmissionNotifierQ>? _submissions;
+  List<SubmissionNotifierQ>? get submissions => _submissions;
+  Future<String?> loadSubmissions() {
+    return _try(() async {
+      if (_submissions != null) return null;
+      _submissions =
+          (await _redditApi.userSubmissions(_name!, limit: _limit).toList())
+              .map((v) => SubmissionNotifierQ(_redditApi, v))
+              .toList();
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load user');
+  }
+
+  List<CommentNotifierQ>? _comments;
+  List<CommentNotifierQ>? get comments => _comments;
   Future<String?> loadComments();
-  List<CommentNotifierQ>? get comments;
 
+  List<Trophy>? _trophies;
+  List<Trophy>? get trophies => _trophies;
   Future<String?> loadTrophies();
-  List<Trophy>? get trophies;
+
+  Future<String?> _try(Future<String?> Function() fn, String error) async {
+    try {
+      return await fn();
+    } on Exception catch (e, st) {
+      _log.error('', e, st);
+      return error;
+    }
+  }
 }
 
 abstract class CurrentUserNotifierQ extends ChangeNotifier {
