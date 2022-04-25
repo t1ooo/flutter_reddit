@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.v5.dart';
+import '../home/submission_tiles.dart';
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
+import '../reddit_api/reddir_api.dart';
 
 class Search extends StatelessWidget {
   const Search({
     Key? key,
-    // required this.query,
+    required this.query,
   }) : super(key: key);
 
-  // final String query;
+  final String query;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,24 @@ class Search extends StatelessWidget {
     //       context.read<RedditNotifier>().search(query),
     // );
 
-    return SubmissionTiles(
-      pageStorageKey: PageStorageKey('search'),
-      controller: context.read<SearchSubmissionsNotifier>(),
+    // return SubmissionTiles(
+    // pageStorageKey: PageStorageKey('search'),
+    // controller: context.read<SearchSubmissionsNotifier>(),
+    // );
+
+    final notifier = context.watch<SearchNotifierQ>();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      notifier.search(query);
+    });
+    final submissions = notifier.submissions;
+    if (submissions == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+    return SearchSubmissionTiles(
+      submissions: submissions,
+      onTypeChanged: (type) {
+        if (type != null) notifier.search(query, type);
+      },
     );
 
     // return Builder(builder: (context) {

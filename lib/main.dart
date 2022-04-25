@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'logger.dart';
 import 'src/app.dart';
 import 'src/notifier/reddir_notifier.dart';
+import 'src/notifier/reddir_notifier.v4.dart';
 import 'src/provider.dart';
 import 'src/reddit_api/reddir_api.dart';
 
@@ -47,6 +48,15 @@ Future<void> main() async {
           create: (BuildContext context) =>
               UserNotifier(context.read<RedditApi>()),
         ),
+        ChangeNotifierProvider<SubmissionNotifierQ>(
+          create: (BuildContext context) =>
+              SubmissionNotifierQ(context.read<RedditApi>()),
+        ),
+        ChangeNotifierProvider<SearchNotifierQ>(
+          create: (BuildContext context) =>
+              SearchNotifierQ(context.read<RedditApi>()),
+        ),
+        
       ],
       child: MyApp(),
     ),

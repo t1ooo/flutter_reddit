@@ -34,7 +34,7 @@ class SearchScreen extends StatelessWidget {
               child: SearchField(query: query),
             ),
             // Expanded(child: Search(query: query)),
-            Expanded(child: Search()),
+            Expanded(child: Search(query: query)),
           ],
         ),
       ),

@@ -1,0 +1,24 @@
+
+class Subreddit  {
+  final String communityIcon;
+  final DateTime created;
+  final DateTime createdUtc;
+  final String description;
+  final String descriptionHtml;
+  final String displayName;
+  final String displayNamePrefixed;
+  final String id;
+  final String lang;
+  final String name;
+  final String publicDescription;
+  final String publicDescriptionHtml;
+  final String submitTextHtml;
+  final String submitText;
+  final String subredditType;
+  final int subscribers;
+  final String title;
+  final String url;
+  final String headerImg;
+  final String bannerBackgroundImage;
+  final bool userIsSubscriber;
+}

@@ -76,7 +76,7 @@ class Subreddit extends Equatable {
       url: mapGet(data, 'url', ''),
       headerImg: parseUrl(data['header_img']),
       bannerBackgroundImage: parseUrl(data['banner_background_image']),
-      userIsSubscriber: mapGet(data, 'user_is_subscriber', false),      
+      userIsSubscriber: mapGet(data, 'user_is_subscriber', false),
     );
   }
 
@@ -118,6 +118,56 @@ class Subreddit extends Equatable {
   //     isUtc: isUtc,
   //   );
   // }
+
+  Subreddit copyWith({
+    String? communityIcon,
+    DateTime? created,
+    DateTime? createdUtc,
+    String? description,
+    String? descriptionHtml,
+    String? displayName,
+    String? displayNamePrefixed,
+    String? id,
+    String? lang,
+    String? name,
+    String? publicDescription,
+    String? publicDescriptionHtml,
+    String? submitTextHtml,
+    String? submitText,
+    String? subredditType,
+    int? subscribers,
+    String? title,
+    String? url,
+    String? headerImg,
+    String? bannerBackgroundImage,
+    bool? userIsSubscriber,
+  }) {
+    return Subreddit(
+      communityIcon: communityIcon ?? this.communityIcon,
+      created: created ?? this.created,
+      createdUtc: createdUtc ?? this.createdUtc,
+      description: description ?? this.description,
+      descriptionHtml: descriptionHtml ?? this.descriptionHtml,
+      displayName: displayName ?? this.displayName,
+      displayNamePrefixed: displayNamePrefixed ?? this.displayNamePrefixed,
+      id: id ?? this.id,
+      lang: lang ?? this.lang,
+      name: name ?? this.name,
+      publicDescription: publicDescription ?? this.publicDescription,
+      publicDescriptionHtml:
+          publicDescriptionHtml ?? this.publicDescriptionHtml,
+      submitTextHtml: submitTextHtml ?? this.submitTextHtml,
+      submitText: submitText ?? this.submitText,
+      subredditType: subredditType ?? this.subredditType,
+      subscribers: subscribers ?? this.subscribers,
+      title: title ?? this.title,
+      url: url ?? this.url,
+      headerImg: headerImg ?? this.headerImg,
+      bannerBackgroundImage:
+          bannerBackgroundImage ?? this.bannerBackgroundImage,
+      userIsSubscriber: userIsSubscriber ?? this.userIsSubscriber,
+    );
+  }
 
   @override
   List<Object> get props {

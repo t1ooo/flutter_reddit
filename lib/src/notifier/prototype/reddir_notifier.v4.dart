@@ -120,12 +120,12 @@ abstract class SubmissionNotifier extends ChangeNotifier {
 }
 
 abstract class CommentNotifier extends ChangeNotifier {
-  Future<String?> saveComment(String commentId);
-  Future<String?> unsaveComment(String commentId);
-  Future<String?> voteUpComment(String commentId);
-  Future<String?> voteDownComment(String commentId);
-  Future<String?> shareComment(String commentId);
-  Future<String?> replyToComment(String commentId);
+  Future<String?> save(String commentId);
+  Future<String?> unsave();
+  Future<String?> voteUp();
+  Future<String?> voteDown();
+  Future<String?> share();
+  Future<String?> replyTo();
 }
 
 abstract class UserNotifier extends ChangeNotifier {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../style/style.dart';
 import '../util/snackbar.dart';
 
@@ -62,13 +63,13 @@ class _AddCommentState extends State<AddComment> {
 
             // TODO
             if (widget.isComment) {
-              final notifer = context.read<CommentNotifier>();
+              final notifer = context.read<CommentNotifierQ>();
               final result = await notifer.reply(_message);
               if (result != null) {
                 showSnackBar(context, result);
               }
             } else {
-              final notifer = context.read<SubmissionNotifier>();
+              final notifer = context.read<SubmissionNotifierQ>();
               final result = await notifer.reply(_message);
               if (result != null) {
                 showSnackBar(context, result);

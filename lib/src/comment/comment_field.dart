@@ -4,6 +4,7 @@ import 'package:flutter_reddit_prototype/src/comment/add_comment_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../style/style.dart';
 
 class CommentField extends StatelessWidget {
@@ -38,18 +39,7 @@ class CommentField extends StatelessWidget {
               // builder: (_) => AddCommentScreen(id:id),
               // ),
               MaterialPageRoute(
-                builder: (_) {
-                  return MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider.value(
-                        value: context.read<SubmissionNotifier>(),
-                      ),
-                    ],
-                    child: AddCommentScreen(
-                      id: id,
-                    ),
-                  );
-                },
+                builder: (_) => AddCommentScreen(id: id),
               ),
             );
           },

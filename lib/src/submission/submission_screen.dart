@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.dart';
 
 import 'package:flutter_reddit_prototype/src/style/style.dart';
-import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../reddit_api/submission.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../comment/comment_field.dart';
-import 'submission.dart';
+import '../util/snackbar.dart';
+import 'submission.v2.dart';
 
 class SubmissionScreen extends StatelessWidget {
   const SubmissionScreen({
@@ -47,22 +46,28 @@ class SubmissionScreen extends StatelessWidget {
       // body: Submission(),
       body: Padding(
         padding: pagePadding,
-        child: CustomFutureBuilder(
-          future: context.read<RedditNotifier>().submission(id),
-          // future: notifer.load(id),
-          onData: (BuildContext context, Submission submission) {
-            return SubmissionWidget(initSubmission: submission);
-          },
-        ),
+        child: Builder(builder: (context) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            context.read<SubmissionNotifierQ>().loadSubmission(id);
+            // final result = context.read<SubmissionNotifierQ>().loadSubmission(id);
+            // if (result is Reload) {
+              
+            // }
+            // if (result is Error) {
+            //   showSnackBar(context, result.toString());
+            // }
+          });
+          return SubmissionWidget();
+        }),
       ),
-      // bottomNavigationBar: CommentField(),
-      // bottomNavigationBar: CommentField(id:id),
+      bottomNavigationBar: CommentField(id: id),
+      // floatingActionButton: FloatingActionButton(child:Icon(Icons.update), onPressed: () {},),
     );
   }
 }
 
 
-class SubmissionScreenV2 extends StatelessWidget {
+/* class SubmissionScreenV2 extends StatelessWidget {
   const SubmissionScreenV2({
     Key? key,
     required this.submission,
@@ -83,4 +88,4 @@ class SubmissionScreenV2 extends StatelessWidget {
       // bottomNavigationBar: CommentField(id:id),
     );
   }
-}
+} */

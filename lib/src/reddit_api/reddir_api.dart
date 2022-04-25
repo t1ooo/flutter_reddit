@@ -22,6 +22,7 @@ import 'vote.dart';
 
 typedef Sort = draw.Sort;
 
+// TODO: rename commentSave -> saveComment
 abstract class RedditApi {
   Stream<Submission> front({required int limit, required SubType type});
   Stream<Submission> popular({required int limit, required SubType type});
@@ -65,7 +66,7 @@ abstract class RedditApi {
   Stream<Comment> currentUserSavedComments({required int limit});
 
   Stream<Submission> search(String query,
-      {required int limit, required Sort sort});
+      {required int limit, required Sort sort, subreddit = 'all'});
 
   // Future<String> userIcon(String name);
 
@@ -373,10 +374,10 @@ class RedditApiImpl implements RedditApi {
   }
 
   Stream<Submission> search(String query,
-      {required int limit, required Sort sort}) async* {
+      {required int limit, required Sort sort, subreddit = 'all'}) async* {
     final params = {'limit': limit.toString()};
     await for (final v
-        in reddit.subreddit('all').search(query, params: params)) {
+        in reddit.subreddit('subreddit').search(query, params: params)) {
       yield Submission.fromMap((v as draw.Submission).data!);
     }
   }
@@ -623,7 +624,7 @@ class FakeRedditApi implements RedditApi {
   // }
 
   Stream<Submission> search(String query,
-      {required int limit, required Sort sort}) async* {
+      {required int limit, required Sort sort, subreddit = 'all'}) async* {
     final data = await File('data/search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)

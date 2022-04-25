@@ -1,0 +1,127 @@
+import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../logging/logging.dart';
+import '../../reddit_api/trophy.dart';
+import '../../reddit_api/user.dart';
+import '../../reddit_api/comment.dart';
+import '../../reddit_api/reddir_api.dart';
+import '../../reddit_api/submission.dart';
+import '../../reddit_api/submission_type.dart';
+import '../../reddit_api/subreddit.dart';
+import '../../reddit_api/vote.dart';
+import '../../util/result.dart';
+
+abstract class RedditNotifier extends ChangeNotifier {
+  RedditNotifier(this.redditApi);
+
+  final RedditApi redditApi;
+
+  static final _log = Logger('RedditNotifier');
+
+  SubType? _frontType;
+  SubType get frontType;
+  List<SubmissionNotifier> get front;
+  Future<String?> loadFront(SubType type);
+  Future<String?> reloadFront(SubType type);
+
+  
+  SubType? _popularType;
+  SubType get popularType;
+  List<SubmissionNotifier> get popular;
+  Future<String?> loadPopular(SubType type);
+  Future<String?> reloadPopular(SubType type);
+
+  List<SubredditNotifier> get userSubreddits;
+  Stream<Subreddit> userSubreddits() {
+    return redditApi.userSubreddits(limit: limit);
+  }
+
+  Stream<Submission> subredditSubmissions(
+    String name, {
+    int limit = 10,
+    SubType type = SubType.best,
+  }) {
+    return redditApi.subredditSubmissions(name, limit: limit, type: type);
+  }
+
+  Future<User> user(String name) {
+    return redditApi.user(name);
+  }
+
+  Stream<Comment> userComments(String name, {int limit = 10}) {
+    return redditApi.userComments(name, limit: limit);
+  }
+
+  Stream<Submission> userSubmissions(String name, {int limit = 10}) {
+    return redditApi.userSubmissions(name, limit: limit);
+  }
+
+  Future<List<Trophy>> userTrophies(String name) {
+    return redditApi.userTrophies(name);
+  }
+
+  Future<Submission> submission(String id) async {
+    return redditApi.submission(id);
+  }
+
+  Future<Subreddit> subreddit(String name) async {
+    return redditApi.subreddit(name);
+  }
+
+  Future<void> submissionVote(String id, Vote vote) async {
+    return redditApi.submissionVote(id, vote);
+  }
+
+  Future<void> submissionSave(String id) async {
+    return redditApi.submissionSave(id);
+  }
+
+  Future<void> submissionUnsave(String id) async {
+    return redditApi.submissionUnsave(id);
+  }
+
+  Future<void> commentSave(String id) async {
+    return redditApi.commentSave(id);
+  }
+
+  Future<void> commentUnsave(String id) async {
+    return redditApi.commentUnsave(id);
+  }
+
+  Future<User?> currentUser() async {
+    return redditApi.currentUser();
+  }
+
+  Stream<Submission> currentUserSavedSubmissions({int limit = 10}) {
+    return redditApi.currentUserSavedSubmissions(limit: limit);
+  }
+
+  Stream<Comment> currentUserSavedComments({int limit = 10}) {
+    return redditApi.currentUserSavedComments(limit: limit);
+  }
+
+  Future<String> subredditIcon(String name) {
+    return redditApi.subredditIcon(name);
+  }
+
+  // Future<String> userIcon(String name) {
+  //   return redditApi.userIcon(name);
+  // }
+
+  Stream<Submission> search(String query,
+      {int limit = 10, Sort sort = Sort.relevance}) {
+    return redditApi.search(query, limit: limit, sort: sort);
+  }
+
+  Future<void> submissionReply(String id, String body) async {
+    await redditApi.submissionReply(id, body);
+    notifyListeners();
+  }
+
+  Future<void> commentReply(String id, String body) async {
+    await redditApi.commentReply(id, body);
+    notifyListeners();
+  }
+}
