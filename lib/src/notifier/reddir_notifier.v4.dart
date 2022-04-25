@@ -564,7 +564,7 @@ class CommentNotifierQ extends ChangeNotifier {
   }
 }
 
-abstract class UserNotifierQ extends ChangeNotifier {
+class UserNotifierQ extends ChangeNotifier {
   UserNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
@@ -626,16 +626,33 @@ abstract class UserNotifierQ extends ChangeNotifier {
               .toList();
       notifyListeners();
       return null;
-    }, 'Error: fail to load user');
+    }, 'Error: fail to load user submissions');
   }
 
   List<CommentNotifierQ>? _comments;
   List<CommentNotifierQ>? get comments => _comments;
-  Future<String?> loadComments();
+  Future<String?> loadComments() {
+    return _try(() async {
+      if (_comments != null) return null;
+      _comments =
+          (await _redditApi.userComments(_name!, limit: _limit).toList())
+              .map((v) => CommentNotifierQ(_redditApi, v))
+              .toList();
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load user comments');
+  }
 
   List<Trophy>? _trophies;
   List<Trophy>? get trophies => _trophies;
-  Future<String?> loadTrophies();
+  Future<String?> loadTrophies() {
+    return _try(() async {
+      if (_trophies != null) return null;
+      _trophies = await _redditApi.userTrophies(_name!);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load user comments');
+  }
 
   Future<String?> _try(Future<String?> Function() fn, String error) async {
     try {

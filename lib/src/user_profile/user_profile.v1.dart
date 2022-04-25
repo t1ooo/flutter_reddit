@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.v5.dart';
+import '../home/submission_tiles.dart';
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
@@ -158,13 +159,27 @@ class UserProfile extends StatelessWidget {
                 //   stream: (context, type) =>
                 //       context.read<RedditNotifier>().userSubmissions(user.name),
                 // ),
-                
-                SubmissionTiles(
-                  pageStorageKey: PageStorageKey('UserSubmissions'),
-                  // showTrending: false,
-                  showTypeSelector: false,
-                  controller: context.read<UserSubmissionsNotifier>(),
-                ),
+
+                // SubmissionTiles(
+                //   pageStorageKey: PageStorageKey('UserSubmissions'),
+                //   // showTrending: false,
+                //   showTypeSelector: false,
+                //   controller: context.read<UserSubmissionsNotifier>(),
+                // ),
+                Builder(builder: (context) {
+                  final notifier = context.watch<UserNotifierQ>();
+                  WidgetsBinding.instance?.addPostFrameCallback((_) {
+                    notifier.loadSubmissions();
+                  });
+                  final submissions = notifier.submissions;
+                  if (submissions == null) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return SubmissionTiles(
+                      submissions: submissions,
+                      showTypeSelector: false,
+                      onTypeChanged: (v) {});
+                }),
                 UserComments(name: user.name),
                 UserAbout(user: user),
               ],

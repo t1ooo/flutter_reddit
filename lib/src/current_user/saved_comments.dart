@@ -21,7 +21,7 @@ class SavedComments extends StatelessWidget {
         onData: (context, List<Comment> comments) {
           return ListView(
             children: [
-              for (final comment in comments) UserComment(comment: comment),
+              // for (final comment in comments) UserComment(comment: comment),
             ],
           );
         },

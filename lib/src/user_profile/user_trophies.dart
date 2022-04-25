@@ -3,6 +3,7 @@ import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
@@ -22,9 +23,28 @@ class UserTrophies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomFutureBuilder(
-      future: context.read<UserNotifier>().trophies(),
-      onData: (BuildContext context, List<Trophy> trophies) {
+    // return CustomFutureBuilder(
+    //   future: context.read<UserNotifier>().trophies(),
+    //   onData: (BuildContext context, List<Trophy> trophies) {
+    //     return ListView(
+    //       shrinkWrap: true,
+    //       children: [
+    //         ListTile(title: Text('TROPHIES')),
+    //         for (final trophy in trophies) UserTrophy(trophy: trophy)
+    //       ],
+    //     );
+    //   },
+    // );
+    return Builder(
+      builder: (context) {
+        final notifier = context.watch<UserNotifierQ>();
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          notifier.loadTrophies();
+        });
+        final trophies = notifier.trophies;
+        if (trophies == null) {
+          return Center(child: CircularProgressIndicator());
+        }
         return ListView(
           shrinkWrap: true,
           children: [

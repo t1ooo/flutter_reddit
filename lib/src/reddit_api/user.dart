@@ -57,7 +57,7 @@ class User extends Equatable {
   final bool hasSubscribed;
   final Subreddit subreddit;
 
-  factory User.fromMap(Map data) {
+  factory User.fromJson(Map data) {
     return User(
       isEmployee: mapGet(data, 'is_employee', false),
       isFriend: mapGet(data, 'is_friend', false),
@@ -81,7 +81,7 @@ class User extends Equatable {
       commentKarma: mapGet(data, 'comment_karma', 0),
       acceptFollowers: mapGet(data, 'accept_followers', false),
       hasSubscribed: mapGet(data, 'has_subscribed', false),
-      subreddit: Subreddit.fromMap(cast(data['subreddit'], {})),
+      subreddit: Subreddit.fromJson(cast(data['subreddit'], {})),
     );
   }
 

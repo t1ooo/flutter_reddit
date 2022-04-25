@@ -24,7 +24,7 @@ class Trophy extends Equatable {
   final String id;
   final String description;
 
-  factory Trophy.fromMap(Map data) {
+  factory Trophy.fromJson(Map data) {
     return Trophy(
       icon70: mapGet(data, 'icon_70', ''),
       grantedAt: parseTime(data['granted_at']),

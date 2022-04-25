@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tile.dart';
-import '../notifier/reddir_notifier.dart';
+// import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../reddit_api/user.dart';
 import '../style/style.dart';
 import '../widget/custom_future_builder.dart';
@@ -24,24 +25,38 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('User Profile');
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      context.read<UserNotifier>().name = name;
-      context.read<UserSubmissionsNotifier>().name = name;
-      context.read<UserCommentsNotifier>().name = name;
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   // context.read<UserNotifier>().name = name;
+    //   // context.read<UserSubmissionsNotifier>().name = name;
+    //   // context.read<UserCommentsNotifier>().name = name;
+    //   context.read<UserNotifierQ>().loadUser(name);
+    // });
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
       ),
       // body: UserProfile(name: name),
-      body: CustomFutureBuilder(
-        // future: context.read<RedditNotifier>().user(name),
-        future: context.read<UserNotifier>().user(),
-        onData: (BuildContext context, User user) {
-          // WidgetsBinding.instance?.addPostFrameCallback((_) {
-          //   context.read<UserSubmissionsNotifier>().name = name;
-          //   context.read<UserCommentsNotifier>().name = name;
-          // });
+      // body: CustomFutureBuilder(
+      //   // future: context.read<RedditNotifier>().user(name),
+      //   future: context.read<UserNotifier>().user(),
+      //   onData: (BuildContext context, User user) {
+      //     // WidgetsBinding.instance?.addPostFrameCallback((_) {
+      //     //   context.read<UserSubmissionsNotifier>().name = name;
+      //     //   context.read<UserCommentsNotifier>().name = name;
+      //     // });
+      //     return UserProfile(user: user, isCurrentUser: isCurrentUser);
+      //   },
+      // ),
+      body: Builder(
+        builder: (BuildContext context) {
+          final notifier = context.watch<UserNotifierQ>();
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            notifier.loadUser(name);
+          });
+          final user = notifier.user;
+          if (user == null) {
+            return Center(child: CircularProgressIndicator());
+          }
           return UserProfile(user: user, isCurrentUser: isCurrentUser);
         },
       ),

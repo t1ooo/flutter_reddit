@@ -53,7 +53,7 @@ class Subreddit extends Equatable {
   // static final _log = Logger('Subreddit');
 
   // factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
-  factory Subreddit.fromMap(Map data) {
+  factory Subreddit.fromJson(Map data) {
     // final data = sub.data!;
     return Subreddit(
       communityIcon: parseUrl(data['community_icon']),

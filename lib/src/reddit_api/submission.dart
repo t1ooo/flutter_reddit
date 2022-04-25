@@ -86,7 +86,7 @@ class Submission extends Equatable {
   }
 
   // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
-  factory Submission.fromMap(
+  factory Submission.fromJson(
     Map data, {
     // SubType? type,
     // CommentForest? comments,
