@@ -56,7 +56,10 @@ Future<void> main() async {
           create: (BuildContext context) =>
               SearchNotifierQ(context.read<RedditApi>()),
         ),
-        
+        ChangeNotifierProvider<SubredditNotifierQ>(
+          create: (BuildContext context) =>
+              SubredditNotifierQ(context.read<RedditApi>()),
+        ),
       ],
       child: MyApp(),
     ),
