@@ -11,6 +11,7 @@ import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/vote.dart';
 
+// TODO: _try
 class SearchNotifierQ extends ChangeNotifier {
   SearchNotifierQ(this._redditApi);
 
@@ -36,48 +37,164 @@ class SearchNotifierQ extends ChangeNotifier {
     String query, [
     Sort sort = Sort.relevance,
     String subredditName = 'all',
-  ]) async {
-    if (_query == query && _sort == sort && _subredditName == subredditName)
+  ]) {
+    // _query = query;
+    // _sort = sort;
+    // _subredditName = subredditName;
+    // _submissions = null;
+    // notifyListeners();
+
+    // try {
+    //   _submissions =
+    //       (await _redditApi.search(_query, limit: _limit, sort: _sort).toList())
+    //           .map((v) => SubmissionNotifierQ(_redditApi, v))
+    //           .toList();
+    //   notifyListeners();
+    //   return null;
+    // } on Exception catch (e, st) {
+    //   _log.error('', e, st);
+    //   return 'Error: fail to search';
+    // }
+
+    return _try(() async {
+      if (_submissions != null &&
+          _query == query &&
+          _sort == sort &&
+          _subredditName == subredditName) return null;
+
+      _query = query;
+      _sort = sort;
+      _subredditName = subredditName;
+
+      _submissions = (await _redditApi
+              .search(query,
+                  limit: _limit, sort: _sort, subreddit: _subredditName)
+              .toList())
+          .map((v) => SubmissionNotifierQ(_redditApi, v))
+          .toList();
+
       return null;
+    }, 'Error: fail to search');
+  }
 
-    _query = query;
-    _sort = sort;
-    _subredditName = subredditName;
-    _submissions = null;
-    notifyListeners();
-
+  Future<String?> _try(Future<String?> Function() fn, String error) async {
     try {
-      _submissions =
-          (await _redditApi.search(_query, limit: _limit, sort: _sort).toList())
-              .map((v) => SubmissionNotifierQ(_redditApi, v))
-              .toList();
-      notifyListeners();
-      return null;
+      return await fn();
     } on Exception catch (e, st) {
       _log.error('', e, st);
-      return 'Error: fail to search';
+      return error;
     }
   }
 }
 
-abstract class SubredditNotifierQ extends ChangeNotifier {
-  set name(name);
-  Future<String?> subscribe();
-  Future<String?> unsubscribe();
+class SubredditNotifierQ extends ChangeNotifier {
+  SubredditNotifierQ(this._redditApi);
 
-  set subType(subType);
-  get subType;
-  Future<String?> loadSubmissions();
-  List<SubmissionNotifierQ>? get submission;
+  final RedditApi _redditApi;
+  int _limit = 10;
+  static final _log = Logger('SubredditNotifierQ');
 
-  Future<String?> loadAbout();
-  get about;
+  // set name(name);
 
-  Future<String?> loadMenu();
-  get menu;
+  String? _name;
+  Subreddit? _subreddit;
+  Subreddit? get subreddit => _subreddit;
 
-  Future<String?> star();
-  Future<String?> unstar();
+  void _reset() {
+    _subreddit = null;
+    _submissions = null;
+    _about = null;
+    _menu = null;
+    _wiki = null;
+  }
+
+  // Future<String?> loadSubreddit(String name) {
+  //   return _try(() async {
+  //     if (_subreddit != null && _name == name) return null;
+  //     _name = name;
+  //     _subreddit = await _redditApi.subreddit(_name!);
+  //     return null;
+  //   }, 'Error: fail to load subreddit');
+  // }
+  Future<String?> loadSubreddit(String name) {
+    return _try(() async {
+      if (_name != name) _reset();
+      _name = name;
+      if (_subreddit != null) return null;
+      _subreddit = await _redditApi.subreddit(_name!);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load subreddit');
+  }
+
+  Future<String?> subscribe() {
+    return _try(() async {
+      if (_subreddit!.userIsSubscriber) return;
+      await _redditApi.subscribe(_name!);
+      _subreddit = _subreddit!.copyWith(userIsSubscriber: true);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to subscribe');
+  }
+
+  Future<String?> unsubscribe() {
+    return _try(() async {
+      if (!(_subreddit!.userIsSubscriber)) return;
+      await _redditApi.subscribe(_name!);
+      _subreddit = _subreddit!.copyWith(userIsSubscriber: false);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to unsubscribe');
+  }
+
+  SubType _subType = SubType.best;
+  SubType get subType => _subType;
+
+  List<SubmissionNotifierQ>? _submissions;
+  List<SubmissionNotifierQ>? get submissions => _submissions;
+
+  Future<String?> loadSubmissions(SubType subType) {
+    print('loadSubmissions');
+    return _try(() async {
+      if (_submissions != null && _subType == subType) return null;
+      _subType = subType;
+      _submissions = await _redditApi
+          .subredditSubmissions(_name!, limit: _limit, type: _subType)
+          .map((v) => SubmissionNotifierQ(_redditApi, v))
+          .toList();
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load subreddit submissions');
+  }
+
+  // TODO
+  Future<String?> loadAbout() => throw UnimplementedError();
+  Object? _about;
+  get about => _about;
+
+  // TODO
+  Future<String?> loadMenu() => throw UnimplementedError();
+  Object? _menu;
+  get menu => _menu;
+
+  // TODO
+  Future<String?> loadWiki() => throw UnimplementedError();
+  Object? _wiki;
+  get wiki => _wiki;
+
+  // TODO
+  Future<String?> star() => throw UnimplementedError();
+  // TODO
+  Future<String?> unstar() => throw UnimplementedError();
+
+  Future<String?> _try(Future<String?> Function() fn, String error) async {
+    try {
+      return await fn();
+    } on Exception catch (e, st) {
+      _log.error('', e, st);
+      return error;
+    }
+  }
 }
 
 class HomeFrontNotifierQ extends ChangeNotifier {
@@ -178,7 +295,7 @@ class SubmissionNotifierQ extends ChangeNotifier {
   }
 
   Future<String?> loadSubmission(String id) async {
-    if ((_id ?? '') == id) return null;
+    if (_id == id) return null;
     _id = id;
     print('loadSubmission');
     return reloadSubmission();
@@ -197,7 +314,7 @@ class SubmissionNotifierQ extends ChangeNotifier {
   }
 
   /* Future<Result?> loadSubmission(String id) async {
-    if ((_id ?? '') == id) return Reload();
+    if (_id  == id) return Reload();
     _id = id;
     print('loadSubmission');
     return reloadSubmission();
@@ -392,7 +509,20 @@ class CommentNotifierQ extends ChangeNotifier {
   }
 
   Future<String?> reply(String body) async {
-    try {
+    // try {
+    //   // throw Exception('error');
+    //   final commentReply = await _redditApi.commentReply(comment.id, body);
+    //   // comment = comment.copyWith(replies: [commentReply] + comment.replies);
+    //   // _replies.add(CommentNotifierQ(_redditApi, commentReply));
+    //   _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
+    //   notifyListeners();
+    //   return null;
+    // } on Exception catch (e) {
+    //   _log.error(e);
+    //   return 'Error: Fail to reply';
+    // }
+
+    return _try(() async {
       // throw Exception('error');
       final commentReply = await _redditApi.commentReply(comment.id, body);
       // comment = comment.copyWith(replies: [commentReply] + comment.replies);
@@ -400,9 +530,15 @@ class CommentNotifierQ extends ChangeNotifier {
       _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
       return null;
-    } on Exception catch (e) {
-      _log.error(e);
-      return 'Error: Fail to reply';
+    }, 'Error: Fail to reply');
+  }
+
+  Future<String?> _try(Future<String?> Function() fn, String error) async {
+    try {
+      return await fn();
+    } on Exception catch (e, st) {
+      _log.error('', e, st);
+      return error;
     }
   }
 
@@ -413,14 +549,12 @@ class CommentNotifierQ extends ChangeNotifier {
 
   void collapse() {
     if (_collapsed) return;
-
     _collapsed = true;
     notifyListeners();
   }
 
   void expand() {
     if (!_collapsed) return;
-
     _collapsed = false;
     notifyListeners();
   }
@@ -486,7 +620,7 @@ int calcScore(int score, Vote oldVote, Vote newVote) {
   return score;
 }
 
-class Result {}
+/* class Result {}
 
 class Ok extends Result {
   Ok(this.message);
@@ -500,4 +634,4 @@ class Error extends Result {
   String toString() => 'Error: $message';
 }
 
-class Reload extends Result {}
+class Reload extends Result {} */

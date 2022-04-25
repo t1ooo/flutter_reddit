@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tiles.v2.dart';
-import '../notifier/reddir_notifier.dart';
-import '../provider.dart';
-import '../reddit_api/reddir_api.dart';
-import '../reddit_api/submission.dart';
+import '../home/submission_tiles.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../reddit_api/subreddit.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';
-import '../widget/future_elevated_button.dart';
-import '../widget/sized_placeholder.dart';
-import '../widget/stream_list_builder.dart';
+import '../submission/submission.v2.dart';
 import '../widget/subscribe_button.dart';
 
 class SubredditWidget extends StatelessWidget {
@@ -161,11 +156,39 @@ class SubredditWidget extends StatelessWidget {
         //   ),
         // ),
 
-        SubmissionTiles(
-          stream: (context, type) => context
-              .read<RedditNotifier>()
-              .subredditSubmissions(subreddit.displayName, type: type),
-        ),
+        // SubmissionTiles(
+        //   stream: (context, type) => context
+        //       .read<RedditNotifier>()
+        //       .subredditSubmissions(subreddit.displayName, type: type),
+        // ),
+
+        // Builder(builder: (context) {
+        //   final notifier = context.watch<SubredditNotifierQ>();
+        //   WidgetsBinding.instance?.addPostFrameCallback((_) {
+        //     context.read<SubredditNotifierQ>().loadSubmissions();
+        //     // final result = context.read<SubmissionNotifierQ>().loadSubmission(id);
+        //     // if (result is Reload) {
+
+        //     // }
+        //     // if (result is Error) {
+        //     //   showSnackBar(context, result.toString());
+        //     // }
+        //   });
+        //   // return SubmissionWidget();
+        // }),
+
+        Builder(builder: (context) {
+          final notifier = context.watch<SubredditNotifierQ>();
+          final submissions = notifier.submissions;
+          return SubmissionTiles(
+            type: notifier.subType,
+            submissions: submissions,
+            onTypeChanged: (subType) {
+              print(subType);
+              notifier.loadSubmissions(subType);
+            }
+          );
+        }),
       ],
     );
   }

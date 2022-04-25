@@ -22,8 +22,8 @@ class SubmissionTiles extends StatelessWidget {
   }) : super(key: key);
 
   final SubType type;
-  final List<SubmissionNotifierQ> submissions;
-  final Function(SubType?) onTypeChanged;
+  final List<SubmissionNotifierQ>? submissions;
+  final Function(SubType) onTypeChanged;
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
@@ -31,6 +31,13 @@ class SubmissionTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      onTypeChanged(type);
+    });
+    if (submissions == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return ListView(
       shrinkWrap: true,
       children: [
@@ -39,7 +46,9 @@ class SubmissionTiles extends StatelessWidget {
             if (showTypeSelector)
               DropdownButton<SubType>(
                 value: type,
-                onChanged: onTypeChanged,
+                onChanged: (v) {
+                  if (v != null) onTypeChanged(v);
+                },
                 items: SubType.values
                     .map<DropdownMenuItem<SubType>>((SubType type) {
                   return DropdownMenuItem<SubType>(
@@ -73,7 +82,7 @@ class SubmissionTiles extends StatelessWidget {
           ),
           SizedBox(height: 10),
         ],
-        for (final sub in submissions)
+        for (final sub in submissions ?? [])
           ChangeNotifierProvider<SubmissionNotifierQ>.value(
             value: sub,
             child: SubmissionTile(activeLink: activeLink),
@@ -82,7 +91,6 @@ class SubmissionTiles extends StatelessWidget {
     );
   }
 }
-
 
 class SearchSubmissionTiles extends StatelessWidget {
   SearchSubmissionTiles({
@@ -98,7 +106,7 @@ class SearchSubmissionTiles extends StatelessWidget {
 
   final Sort sort;
   final List<SubmissionNotifierQ> submissions;
-  final Function(Sort?) onTypeChanged;
+  final Function(Sort) onTypeChanged;
   final bool activeLink;
   final bool showTrending;
   final bool showTypeSelector;
@@ -114,9 +122,10 @@ class SearchSubmissionTiles extends StatelessWidget {
             if (showTypeSelector)
               DropdownButton<Sort>(
                 value: sort,
-                onChanged: onTypeChanged,
-                items: Sort.values
-                    .map<DropdownMenuItem<Sort>>((Sort sort) {
+                onChanged: (v) {
+                  if (v != null) onTypeChanged(v);
+                },
+                items: Sort.values.map<DropdownMenuItem<Sort>>((Sort sort) {
                   return DropdownMenuItem<Sort>(
                     value: sort,
                     child: Text(sort.toString()),

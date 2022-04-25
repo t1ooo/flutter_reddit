@@ -4,6 +4,7 @@ import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4.dart';
 import '../reddit_api/subreddit.dart';
 import 'subreddit.dart';
 
@@ -44,23 +45,17 @@ class SubredditScreenLoader extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      body: CustomFutureBuilder(
-        future: context.read<RedditNotifier>().subreddit(name),
-        onData: (BuildContext context, Subreddit subreddit) {
-          return SubredditWidget(subreddit: subreddit);
-        },
-      ),
-      // body: CustomFutureBuilder(
-      //   future: context.read<RedditNotifier>().subreddit(name),
-      //   onData: (BuildContext context, Subreddit subreddit) {
-      //     return MultiProvider(
-      //       providers: [
-      //         subscriptionNotifierProvider(subreddit.userIsSubscriber)
-      //       ],
-      //       child: SubredditWidget(subreddit: subreddit),
-      //     );
-      //   },
-      // ),
+      body: Builder(builder: (context) {
+        final notifier = context.watch<SubredditNotifierQ>();
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          notifier.loadSubreddit(name);
+        });
+        final subreddit = notifier.subreddit;
+        if (subreddit == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return SubredditWidget(subreddit: subreddit);
+      }),
     );
   }
 }
