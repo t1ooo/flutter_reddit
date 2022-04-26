@@ -64,6 +64,29 @@ class UserComments extends StatelessWidget {
         },
       ),
 
+      // child: FutureBuilder(
+      //   future: context.read<UserNotifierQ>().loadComments(),
+      //   builder: (context, snap) {
+      //     if (snap.error != null) {
+      //       showErrorSnackBar(context, snap.error!);
+      //       return Container();
+      //     }
+      //     final comments = context.read<UserNotifierQ>().comments;
+      //     if (comments == null) {
+      //       return Center(child: CircularProgressIndicator());
+      //     }
+      //     return ListView(
+      //       children: [
+      //         for (final comment in comments)
+      //           ChangeNotifierProvider<CommentNotifierQ>.value(
+      //             value: comment,
+      //             child: UserComment(),
+      //           ),
+      //       ],
+      //     );
+      //   },
+      // ),
+
       // StreamListBuilder(
       //   // stream: context.read<RedditNotifier>().userComments(name),
       //   stream: context.read<UserCommentsNotifier>().comments(),
