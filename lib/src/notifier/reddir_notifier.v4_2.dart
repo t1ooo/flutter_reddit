@@ -243,7 +243,7 @@ class HomeFrontNotifierQ extends ChangeNotifier {
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
   Future<String?> loadSubmissions(SubType subType) async {
-    if (_subType == subType) return null;
+    if (_submissions != null && _subType == subType) return null;
     _subType = subType;
 
     try {
@@ -274,7 +274,7 @@ class HomePopularNotifierQ extends ChangeNotifier {
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
   Future<String?> loadSubmissions(SubType subType) async {
-    if (_subType == subType) return null;
+    if (_submissions != null && _subType == subType) return null;
     _subType = subType;
 
     try {
@@ -303,7 +303,7 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
   SubmissionNotifierQ? get submission => _submission;
 
   Future<String?> loadSubmission(String id) async {
-    if (_id == id) return null;
+    if (_submission != null && _id == id) return null;
     _id = id;
     print('loadSubmission');
     return reloadSubmission();
@@ -586,6 +586,43 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
       return null;
     }, 'Error: Fail to reply');
   }
+}
+
+class UserNotifierQ extends ChangeNotifier {
+  UserNotifierQ(this._redditApi, [this._user]) {
+    _name = _user?.name;
+  }
+
+  final RedditApi _redditApi;
+  int _limit = 10;
+  static final _log = Logger('UserNotifierQ');
+
+  void _reset() {
+    _user = null;
+    _submissions = null;
+    _comments = null;
+    _trophies = null;
+  }
+
+  String? _name;
+
+  void _setName(String name) {
+    if (_name != name) _reset();
+    _name = name;
+  }
+
+  User? _user;
+  User? get user => _user;
+  Future<void> loadUser(String name) {
+    return _try(() async {
+      _setName(name);
+      if (_user != null) return null;
+      _user = await _redditApi.user(_name!);
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load user');
+  }
+
 }
 
 class UserNotifierQ extends ChangeNotifier {

@@ -50,35 +50,68 @@ Future<void> main() async {
         //   create: (BuildContext context) =>
         //       UserNotifier(context.read<RedditApi>()),
         // ),
-        Provider.value(value: redditApi),
+        
+        
+        // Provider.value(value: redditApi),
+        // ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       SubmissionLoaderNotifierQ(context.read<RedditApi>()),
+        // ),
+        // ChangeNotifierProvider<SearchNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       SearchNotifierQ(context.read<RedditApi>()),
+        // ),
+        // ChangeNotifierProvider<SubredditLoaderNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       SubredditLoaderNotifierQ(context.read<RedditApi>()),
+        // ),
+        // ChangeNotifierProvider<UserNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       UserNotifierQ(context.read<RedditApi>()),
+        // ),
+        // ChangeNotifierProvider<CurrentUserNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       CurrentUserNotifierQ(context.read<RedditApi>()),
+        // ),
+        // ChangeNotifierProvider<HomeFrontNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       HomeFrontNotifierQ(context.read<RedditApi>()),
+        // ),
+        // ChangeNotifierProvider<HomePopularNotifierQ>(
+        //   create: (BuildContext context) =>
+        //       HomePopularNotifierQ(context.read<RedditApi>()),
+        // ),
+
+ 
         ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
           create: (BuildContext context) =>
-              SubmissionLoaderNotifierQ(context.read<RedditApi>()),
+              SubmissionLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<SearchNotifierQ>(
           create: (BuildContext context) =>
-              SearchNotifierQ(context.read<RedditApi>()),
+              SearchNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<SubredditLoaderNotifierQ>(
           create: (BuildContext context) =>
-              SubredditLoaderNotifierQ(context.read<RedditApi>()),
+              SubredditLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<UserNotifierQ>(
           create: (BuildContext context) =>
-              UserNotifierQ(context.read<RedditApi>()),
+              UserNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<CurrentUserNotifierQ>(
           create: (BuildContext context) =>
-              CurrentUserNotifierQ(context.read<RedditApi>()),
+              CurrentUserNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<HomeFrontNotifierQ>(
           create: (BuildContext context) =>
-              HomeFrontNotifierQ(context.read<RedditApi>()),
+              HomeFrontNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<HomePopularNotifierQ>(
           create: (BuildContext context) =>
-              HomePopularNotifierQ(context.read<RedditApi>()),
+              HomePopularNotifierQ(redditApi),
         ),
+
       ],
       child: MyApp(),
     ),
