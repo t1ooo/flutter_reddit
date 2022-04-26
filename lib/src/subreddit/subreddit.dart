@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
-import '../notifier/reddir_notifier.v4.dart';
+import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/subreddit.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';

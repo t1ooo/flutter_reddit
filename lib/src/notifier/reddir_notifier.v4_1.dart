@@ -664,18 +664,66 @@ class UserNotifierQ extends ChangeNotifier {
   }
 }
 
-abstract class CurrentUserNotifierQ extends ChangeNotifier {
-  Future<String?> login();
-  Future<String?> logout();
+abstract class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
+  CurrentUserNotifierQ(this._redditApi);
 
-  Future<String?> loadSubreddits();
-  List<SubredditNotifierQ>? get subreddits;
+  final RedditApi _redditApi;
+  int _limit = 10;
+  static final _log = Logger('CurrentUserNotifierQ');
+
+  User? _user;
+  User? get user => _user;
+
+  Future<String?> login(String name, String password) async {
+    return _try(() async {
+      final user = await _redditApi.currentUser();
+      if (user == null) {
+        throw Exception('user is null');
+      }
+      _user = user;
+      notifyListeners();
+      return null;
+    }, 'Error: fail to login');
+  }
+
+  Future<String?> logout(String name, String password) async {
+    _user = null;
+    notifyListeners();
+    return null;
+  }
+
+  List<SubredditNotifierQ>? _subreddits;
+  List<SubredditNotifierQ>? get subreddits => _subreddits;
+  Future<String?> loadSubreddits() {
+    return _try(() async {
+      final user = await _redditApi.currentUser();
+      if (user == null) {
+        throw Exception('user is null');
+      }
+      _user = user;
+      notifyListeners();
+      return null;
+    }, 'Error: fail to login');
+  }
 
   Future<String?> loadSavedComment();
   List<CommentNotifierQ>? get savedComment;
 
   Future<String?> loadSavedSubmissions();
   List<SubmissionNotifierQ>? get savedSubmissions;
+}
+
+mixin TryMixin {
+  static late final Logger _log;
+
+  Future<String?> _try(Future<String?> Function() fn, String error) async {
+    try {
+      return await fn();
+    } on Exception catch (e, st) {
+      _log.error('', e, st);
+      return error;
+    }
+  }
 }
 
 String _formatError(String op) {

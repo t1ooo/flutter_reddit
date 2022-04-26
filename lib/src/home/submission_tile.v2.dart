@@ -5,7 +5,7 @@ import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.v4.dart';
+import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/vote.dart';
 import '../style/style.dart';

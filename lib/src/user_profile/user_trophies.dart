@@ -3,7 +3,7 @@ import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
-import '../notifier/reddir_notifier.v4.dart';
+import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
