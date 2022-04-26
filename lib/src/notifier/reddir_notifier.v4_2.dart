@@ -191,7 +191,7 @@ class SubredditNotifierQ extends ChangeNotifier {
       if (_submissions != null && _subType == subType) return null;
       _subType = subType;
       _submissions = await _redditApi
-          .subredditSubmissions(_name!, limit: _limit, type: _subType)
+          .subredditSubmissions(_name, limit: _limit, type: _subType)
           .map((v) => SubmissionNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
@@ -396,10 +396,9 @@ class SubmissionNotifierQ extends ChangeNotifier {
   } */
 
   Future<String?> reply(String body) async {
-    final s = submission!;
-
     try {
-      final commentReply = await _redditApi.submissionReply(s.id, body);
+      final commentReply =
+          await _redditApi.submissionReply(submission.id, body);
       // _comments!.add(CommentNotifierQ(_redditApi, commentReply));
       if (_comments == null) {
         _comments = [];
@@ -415,13 +414,11 @@ class SubmissionNotifierQ extends ChangeNotifier {
 
   // TODO: save unsave
   Future<String?> save() async {
-    final s = submission!;
-
-    if (s.saved) return null;
+    if (submission.saved) return null;
 
     try {
-      await _redditApi.submissionSave(s.id);
-      _submission = s.copyWith(saved: true);
+      await _redditApi.submissionSave(submission.id);
+      _submission = submission.copyWith(saved: true);
       notifyListeners();
       return 'Saved';
     } on Exception catch (e) {
@@ -431,13 +428,11 @@ class SubmissionNotifierQ extends ChangeNotifier {
   }
 
   Future<String?> unsave() async {
-    final s = submission!;
-
-    if (s.saved) return null;
+    if (submission.saved) return null;
 
     try {
-      await _redditApi.submissionSave(s.id);
-      _submission = s.copyWith(saved: true);
+      await _redditApi.submissionSave(submission.id);
+      _submission = submission.copyWith(saved: true);
       notifyListeners();
       return 'Unsaved';
     } on Exception catch (e) {
@@ -455,17 +450,15 @@ class SubmissionNotifierQ extends ChangeNotifier {
   }
 
   Future<String?> _updateSubmissionsVote(Vote vote) async {
-    final s = submission!;
-
-    if (s.likes == vote) {
+    if (submission.likes == vote) {
       vote = Vote.none;
     }
 
     try {
-      await _redditApi.submissionVote(s.id, vote);
-      _submission = s.copyWith(
+      await _redditApi.submissionVote(submission.id, vote);
+      _submission = submission.copyWith(
         likes: vote,
-        score: calcScore(s.score, s.likes, vote),
+        score: calcScore(submission.score, submission.likes, vote),
       );
       notifyListeners();
       return null;
@@ -476,10 +469,8 @@ class SubmissionNotifierQ extends ChangeNotifier {
   }
 
   Future<String?> share() async {
-    final s = submission!;
-
     try {
-      await Share.share('${s.title} ${s.shortLink}');
+      await Share.share('${submission.title} ${submission.shortLink}');
       return null;
     } on Exception catch (e, st) {
       _log.error('', e, st);
@@ -488,7 +479,7 @@ class SubmissionNotifierQ extends ChangeNotifier {
   }
 }
 
-class CommentNotifierQ extends ChangeNotifier {
+class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
   CommentNotifierQ(this._redditApi, this.comment) {
     _replies =
         comment.replies.map((v) => CommentNotifierQ(_redditApi, v)).toList();
@@ -594,32 +585,6 @@ class CommentNotifierQ extends ChangeNotifier {
       notifyListeners();
       return null;
     }, 'Error: Fail to reply');
-  }
-
-  bool _collapsed = false;
-
-  bool get expanded => !_collapsed;
-  bool get collapsed => _collapsed;
-
-  void collapse() {
-    if (_collapsed) return;
-    _collapsed = true;
-    notifyListeners();
-  }
-
-  void expand() {
-    if (!_collapsed) return;
-    _collapsed = false;
-    notifyListeners();
-  }
-
-  Future<String?> _try(Future<String?> Function() fn, String error) async {
-    try {
-      return await fn();
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return error;
-    }
   }
 }
 
@@ -810,6 +775,30 @@ mixin TryMixin {
       _log.error('', e, st);
       return error;
     }
+  }
+}
+
+mixin CollapseMixin {
+  bool _collapsed = false;
+
+  bool get expanded => !_collapsed;
+  bool get collapsed => _collapsed;
+
+  void collapse() {
+    if (_collapsed) return;
+    _collapsed = true;
+    notifyListeners();
+  }
+
+  void expand() {
+    if (!_collapsed) return;
+    _collapsed = false;
+    notifyListeners();
+  }
+
+  // must override
+  void notifyListeners() {
+    throw UnimplementedError();
   }
 }
 

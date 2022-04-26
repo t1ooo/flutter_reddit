@@ -65,17 +65,20 @@ class Home extends StatelessWidget {
     //     },
     //   );
 
-    return Builder(builder: (context) {
-      final notifier = context.watch<HomeFrontNotifierQ>();
-      final submissions = notifier.submissions;
-      return SubmissionTiles(
+    return Builder(
+      builder: (context) {
+        final notifier = context.watch<HomeFrontNotifierQ>();
+        final submissions = notifier.submissions;
+        return SubmissionTiles(
           type: notifier.subType,
           submissions: submissions,
           onTypeChanged: (subType) {
             print(subType);
             notifier.loadSubmissions(subType);
-          });
-    });
+          },
+        );
+      },
+    );
 
     // return SubmissionTiles(
     //   pageStorageKey: PageStorageKey('home'),

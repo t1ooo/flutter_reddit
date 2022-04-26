@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/subreddit.dart';
 import '../subreddit/subreddit_screen.dart';
-import '../widget/stream_list_builder.dart';
 
 class Subscriptions extends StatelessWidget {
   const Subscriptions({
@@ -89,11 +86,11 @@ class Subscriptions extends StatelessWidget {
             leading: SizedBox(
               width: 16,
               height: 16,
-              child: (subreddit.subreddit!.communityIcon != '')
-                  ? Image.network(subreddit.subreddit!.communityIcon)
+              child: (subreddit.subreddit.communityIcon != '')
+                  ? Image.network(subreddit.subreddit.communityIcon)
                   : Image.asset('communityIcon.png'),
             ),
-            title: Text(subreddit.subreddit!.displayNamePrefixed),
+            title: Text(subreddit.subreddit.displayNamePrefixed),
             trailing: Icon(Icons.star),
             onTap: () {
               Navigator.push(

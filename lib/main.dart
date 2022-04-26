@@ -51,17 +51,17 @@ Future<void> main() async {
         //       UserNotifier(context.read<RedditApi>()),
         // ),
         Provider.value(value: redditApi),
-        ChangeNotifierProvider<SubmissionNotifierQ>(
+        ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
           create: (BuildContext context) =>
-              SubmissionNotifierQ(context.read<RedditApi>()),
+              SubmissionLoaderNotifierQ(context.read<RedditApi>()),
         ),
         ChangeNotifierProvider<SearchNotifierQ>(
           create: (BuildContext context) =>
               SearchNotifierQ(context.read<RedditApi>()),
         ),
-        ChangeNotifierProvider<SubredditNotifierQ>(
+        ChangeNotifierProvider<SubredditLoaderNotifierQ>(
           create: (BuildContext context) =>
-              SubredditNotifierQ(context.read<RedditApi>()),
+              SubredditLoaderNotifierQ(context.read<RedditApi>()),
         ),
         ChangeNotifierProvider<UserNotifierQ>(
           create: (BuildContext context) =>
@@ -70,6 +70,14 @@ Future<void> main() async {
         ChangeNotifierProvider<CurrentUserNotifierQ>(
           create: (BuildContext context) =>
               CurrentUserNotifierQ(context.read<RedditApi>()),
+        ),
+        ChangeNotifierProvider<HomeFrontNotifierQ>(
+          create: (BuildContext context) =>
+              HomeFrontNotifierQ(context.read<RedditApi>()),
+        ),
+        ChangeNotifierProvider<HomePopularNotifierQ>(
+          create: (BuildContext context) =>
+              HomePopularNotifierQ(context.read<RedditApi>()),
         ),
       ],
       child: MyApp(),

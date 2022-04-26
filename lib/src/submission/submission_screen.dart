@@ -47,17 +47,26 @@ class SubmissionScreen extends StatelessWidget {
       body: Padding(
         padding: pagePadding,
         child: Builder(builder: (context) {
+          final notifier = context.read<SubmissionLoaderNotifierQ>();
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            context.read<SubmissionNotifierQ>().loadSubmission(id);
+            notifier.loadSubmission(id);
             // final result = context.read<SubmissionNotifierQ>().loadSubmission(id);
             // if (result is Reload) {
-              
+
             // }
             // if (result is Error) {
             //   showSnackBar(context, result.toString());
             // }
           });
-          return SubmissionWidget();
+          final submission = notifier.submission;
+          if (submission == null) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+            value: submission,
+            child: SubmissionWidget(),
+          );
+          // return SubmissionWidget();
         }),
       ),
       bottomNavigationBar: CommentField(id: id),
