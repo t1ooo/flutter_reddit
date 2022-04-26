@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tile.v2.dart';

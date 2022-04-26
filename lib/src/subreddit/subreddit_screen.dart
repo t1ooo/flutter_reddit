@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/provider.dart';
+// import 'package:flutter_reddit_prototype/src/provider.dart';
 import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.dart';
 import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/subreddit.dart';
 import 'subreddit.dart';

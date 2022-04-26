@@ -4,7 +4,7 @@ import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
-import 'notifier/reddir_notifier.dart';
+// import 'notifier/reddir_notifier.dart';
 import 'notifier/reddir_notifier.v4_1.dart';
 import 'reddit_api/user.dart';
 import 'util/date_time.dart';

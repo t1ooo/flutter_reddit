@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.dart';
-import '../provider.dart';
+import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
 import '../widget/stream_list_builder.dart';
-import 'submission_tile.dart';
-import 'submission_tiles.v5.dart';
+// import 'submission_tile.dart';
+import 'submission_tiles.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);
@@ -50,11 +49,24 @@ class Popular extends StatelessWidget {
     //   pageStorageKey: PageStorageKey('popular'),
     // );
 
-    return SubmissionTiles(
-      pageStorageKey: PageStorageKey('PopularSubmissions'),
-      controller: context.read<PopularSubmissionsNotifier>(),
-    );
-    
+    // return SubmissionTiles(
+    //   pageStorageKey: PageStorageKey('PopularSubmissions'),
+    //   controller: context.read<PopularSubmissionsNotifier>(),
+    // );
+
+    return Builder(builder: (context) {
+      final notifier = context.watch<HomePopularNotifierQ>();
+      final submissions = notifier.submissions;
+      return SubmissionTiles(
+        type: notifier.subType,
+        submissions: submissions,
+        onTypeChanged: (subType) {
+          print(subType);
+          notifier.loadSubmissions(subType);
+        },
+      );
+    });
+
     // return SubmissionTiles(
     //   pageStorageKey: PageStorageKey('popular'),
     //   stream: (context, type) =>

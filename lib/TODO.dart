@@ -1,3 +1,5 @@
+// TODO: subredditIcon
+// TODO: subscribe button
 // TODO: retry, undo, reload
 // TODO: user inbox
 // TODO: login

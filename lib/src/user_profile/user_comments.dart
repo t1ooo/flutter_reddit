@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/submission/submission_screen.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.dart';
 import '../notifier/reddir_notifier.v4_1.dart';
-import '../reddit_api/comment.dart';
 import '../style/style.dart';
-import '../submission/comments.dart';
-import '../submission/style.dart';
-import '../user_profile/user_profile_screen.dart';
-import '../widget/sized_placeholder.dart';
-import '../widget/stream_list_builder.dart';
+import '../widget/loader.dart';
 
 class UserComments extends StatelessWidget {
   const UserComments({
@@ -25,13 +18,32 @@ class UserComments extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: pagePadding,
-      child: Builder(
-        builder: (context) {
-          final notifier = context.watch<UserNotifierQ>();
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
-            notifier.loadComments();
-          });
-          final comments = notifier.comments;
+      // child: Builder(
+      //   builder: (context) {
+      //     final notifier = context.watch<UserNotifierQ>();
+      //     WidgetsBinding.instance?.addPostFrameCallback((_) {
+      //       notifier.loadComments();
+      //     });
+      //     final comments = notifier.comments;
+      //     if (comments == null) {
+      //       return Center(child: CircularProgressIndicator());
+      //     }
+      //     return ListView(
+      //       children: [
+      //         for (final comment in comments)
+      //           ChangeNotifierProvider<CommentNotifierQ>.value(
+      //             value: comment,
+      //             child: UserComment(),
+      //           ),
+      //       ],
+      //     );
+      //   },
+      // ),
+      
+      child: Loader<List<CommentNotifierQ>?, String?>(
+        load: () => context.read<UserNotifierQ>().loadComments(),
+        data: () => context.read<UserNotifierQ>().comments,
+        builder: (context, comments, load) {
           if (comments == null) {
             return Center(child: CircularProgressIndicator());
           }

@@ -4,7 +4,6 @@ import 'package:flutter_reddit_prototype/src/util/date_time.dart';
 import 'package:provider/provider.dart';
 
 import '../comment/add_comment_screen.dart';
-import '../notifier/reddir_notifier.dart';
 import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/vote.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.dart';
+// import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
@@ -14,7 +14,7 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../util/enum.dart';
 import '../util/snackbar.dart';
-import '../widget/save_button.dart';
+// import '../widget/save_button.dart';
 // import '../widget/vote_button.dart';
 
 class SubmissionTile extends StatelessWidget {
@@ -49,22 +49,22 @@ class SubmissionTile extends StatelessWidget {
                 Row(
                   children: [
                     // SizedPlaceholder(width: 20, height: 20),
-                    SizedBox(
-                      width: iconSize,
-                      height: iconSize,
-                      child: CustomFutureBuilder(
-                        future: context
-                            .read<RedditNotifier>()
-                            .subredditIcon(submission.subreddit),
-                        onData: (BuildContext context, String icon) {
-                          return Image.network(icon);
-                        },
-                        onLoading: (_) =>
-                            Container(decoration: BoxDecoration()),
-                        onError: (_, __) => Container(),
-                        // onError: voidError,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: iconSize,
+                    //   height: iconSize,
+                    //   child: CustomFutureBuilder(
+                    //     future: context
+                    //         .read<RedditNotifier>()
+                    //         .subredditIcon(submission.subreddit),
+                    //     onData: (BuildContext context, String icon) {
+                    //       return Image.network(icon);
+                    //     },
+                    //     onLoading: (_) =>
+                    //         Container(decoration: BoxDecoration()),
+                    //     onError: (_, __) => Container(),
+                    //     // onError: voidError,
+                    //   ),
+                    // ),
 
                     SizedBox(width: 10),
                     Column(
@@ -218,7 +218,7 @@ class SubmissionTile extends StatelessWidget {
                 // ),
                 TextButton(
                   onPressed: () {
-                    context.read<SubmissionNotifier>().share();
+                    context.read<SubmissionNotifierQ>().share();
                     // shareDesktop('$url', subject:'mail@example.com');
                   },
                   child: Row(
@@ -275,7 +275,7 @@ class SubmissionTile extends StatelessWidget {
     return PopupMenuItem(
       onTap: () async {
         // Share.share('${comment.linkTitle} ${comment.shortLink}');
-        context.read<SubmissionNotifier>().share();
+        context.read<SubmissionNotifierQ>().share();
       },
       child: ListTile(
         contentPadding: EdgeInsets.zero,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.dart';
-import '../provider.dart';
+// import '../notifier/reddir_notifier.dart';
+// import '../provider.dart';
 import '../search/search_field.dart';
 import '../widget/sized_placeholder.dart';
 import 'home.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../home/submission_tile.dart';
+// import '../home/submission_tile.dart';
 // import '../notifier/reddir_notifier.dart';
 import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/user.dart';

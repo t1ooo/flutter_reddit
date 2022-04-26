@@ -7,7 +7,7 @@ import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/user.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
-import '../widget/subscribe_button.dart';
+// import '../widget/subscribe_button.dart';
 import 'user_about.dart';
 
 class UserProfile extends StatelessWidget {
@@ -110,8 +110,8 @@ class UserProfile extends StatelessWidget {
                       // user.subreddit.userIsSubscriber;
                       // ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
                       // ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
-                      SubscribeButton(
-                          subreddit: user.subreddit, isUserPage: true),
+                      // SubscribeButton(subreddit: user.subreddit, isUserPage: true),
+                      // TODO: subscribe
                     ],
                   ),
                 // Center(child: Text(user.totalKarma.toString())),

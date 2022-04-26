@@ -7,7 +7,7 @@ import '../reddit_api/subreddit.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';
 import '../submission/submission.v2.dart';
-import '../widget/subscribe_button.dart';
+// import '../widget/subscribe_button.dart';
 
 class SubredditWidget extends StatelessWidget {
   const SubredditWidget({
@@ -74,7 +74,9 @@ class SubredditWidget extends StatelessWidget {
                   //       child: Text('+JOIN'),
                   //     );
                   // }),
-                  SubscribeButton(subreddit: subreddit),
+                  // SubscribeButton(subreddit: subreddit),
+
+                  // TODO: subscribe
 
                   // ValueListenableBuilder(),
                   // ChangeNotifierProvider(

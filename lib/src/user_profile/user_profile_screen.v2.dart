@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../home/submission_tile.dart';
+// import '../home/submission_tile.dart';
 import '../style/style.dart';
 import '../widget/sized_placeholder.dart';
 import 'user_profile.v2.dart';

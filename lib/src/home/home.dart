@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.dart';
-import '../provider.dart';
-import '../reddit_api/submission.dart';
-import '../reddit_api/submission_type.dart';
-import '../util/enum.dart';
-import '../widget/sized_placeholder.dart';
-import '../widget/stream_list_builder.dart';
-import 'custom_scroll.dart';
-import 'submission_tile.dart';
-import 'submission_tiles.v5.dart';
+// import '../notifier/reddir_notifier.dart';
+// import '../provider.dart';
+import '../notifier/reddir_notifier.v4_1.dart';
+import 'submission_tiles.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -48,10 +41,41 @@ class Home extends StatelessWidget {
     //   pageStorageKey: PageStorageKey('home'),
     // );
 
-    return SubmissionTiles(
-      pageStorageKey: PageStorageKey('FrontSubmissions'),
-      controller: context.read<FrontSubmissionsNotifier>(),
-    );
+    // return SubmissionTiles(
+    //   pageStorageKey: PageStorageKey('FrontSubmissions'),
+    //   controller: context.read<FrontSubmissionsNotifier>(),
+    // );
+
+    // return Loader<List<CommentNotifierQ>?, String?>(
+    //     load: () => context.read<HomeFrontNotifierQ>().loadSubmissions(),
+    //     data: () => context.read<HomeFrontNotifierQ>().comments,
+    //     builder: (context, comments, load) {
+    //       if (comments == null) {
+    //         return Center(child: CircularProgressIndicator());
+    //       }
+    //       return ListView(
+    //         children: [
+    //           for (final comment in comments)
+    //             ChangeNotifierProvider<CommentNotifierQ>.value(
+    //               value: comment,
+    //               child: UserComment(),
+    //             ),
+    //         ],
+    //       );
+    //     },
+    //   );
+
+    return Builder(builder: (context) {
+      final notifier = context.watch<HomeFrontNotifierQ>();
+      final submissions = notifier.submissions;
+      return SubmissionTiles(
+          type: notifier.subType,
+          submissions: submissions,
+          onTypeChanged: (subType) {
+            print(subType);
+            notifier.loadSubmissions(subType);
+          });
+    });
 
     // return SubmissionTiles(
     //   pageStorageKey: PageStorageKey('home'),
