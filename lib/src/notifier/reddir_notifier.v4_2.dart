@@ -303,14 +303,9 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
   SubmissionNotifierQ? get submission => _submission;
 
   Future<String?> loadSubmission(String id) async {
-    if (_submission != null && _id == id) return null;
-    _id = id;
-    print('loadSubmission');
-    return reloadSubmission();
-  }
-
-  Future<String?> reloadSubmission() async {
     try {
+      if (_submission != null && _id == id) return null;
+      _id = id;
       _submission =
           SubmissionNotifierQ(_redditApi, await _redditApi.submission(_id!));
       // _setComments(_submission?.comments);
@@ -692,10 +687,9 @@ class UserNotifierQ extends ChangeNotifier {
   Future<String?> loadComments() {
     return _try(() async {
       if (_comments != null) return null;
-      _comments =
-          (await _redditApi.userComments(_name, limit: _limit).toList())
-              .map((v) => CommentNotifierQ(_redditApi, v))
-              .toList();
+      _comments = (await _redditApi.userComments(_name, limit: _limit).toList())
+          .map((v) => CommentNotifierQ(_redditApi, v))
+          .toList();
       notifyListeners();
       return null;
     }, 'Error: fail to load user comments');

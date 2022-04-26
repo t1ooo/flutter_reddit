@@ -9,7 +9,17 @@ import 'src/notifier/reddir_notifier.v4_2.dart';
 // import 'src/provider.dart';
 import 'src/reddit_api/reddir_api.dart';
 
+Future<int> foo(int a) async {
+  if (a % 2 == 0) {
+    return a;
+  }
+  throw Exception('error');
+}
+
 Future<void> main() async {
+  // foo(1).then((r) => print(r), onError: (e, st) => print('$e + $st'));
+  // foo(1).then((r) => print(r)).catchError((e, st) => print('$e + $st'));
+
   WidgetsFlutterBinding.ensureInitialized();
   // configureLogger(kDebugMode);
 
@@ -50,8 +60,7 @@ Future<void> main() async {
         //   create: (BuildContext context) =>
         //       UserNotifier(context.read<RedditApi>()),
         // ),
-        
-        
+
         // Provider.value(value: redditApi),
         // ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
         //   create: (BuildContext context) =>
@@ -82,36 +91,28 @@ Future<void> main() async {
         //       HomePopularNotifierQ(context.read<RedditApi>()),
         // ),
 
- 
         ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
           create: (BuildContext context) =>
               SubmissionLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<SearchNotifierQ>(
-          create: (BuildContext context) =>
-              SearchNotifierQ(redditApi),
+          create: (BuildContext context) => SearchNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<SubredditLoaderNotifierQ>(
-          create: (BuildContext context) =>
-              SubredditLoaderNotifierQ(redditApi),
+          create: (BuildContext context) => SubredditLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<UserLoaderNotifierQ>(
-          create: (BuildContext context) =>
-              UserLoaderNotifierQ(redditApi),
+          create: (BuildContext context) => UserLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<UserAuth>(
-          create: (BuildContext context) =>
-              UserAuth(redditApi),
+          create: (BuildContext context) => UserAuth(redditApi),
         ),
         ChangeNotifierProvider<HomeFrontNotifierQ>(
-          create: (BuildContext context) =>
-              HomeFrontNotifierQ(redditApi),
+          create: (BuildContext context) => HomeFrontNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<HomePopularNotifierQ>(
-          create: (BuildContext context) =>
-              HomePopularNotifierQ(redditApi),
+          create: (BuildContext context) => HomePopularNotifierQ(redditApi),
         ),
-
       ],
       child: MyApp(),
     ),
