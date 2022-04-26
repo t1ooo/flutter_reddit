@@ -1,3 +1,5 @@
+// TODO: use controller
+// TODO: Future return Result/exception
 // TODO: subredditIcon
 // TODO: subscribe button
 // TODO: retry, undo, reload

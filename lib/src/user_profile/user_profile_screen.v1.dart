@@ -49,7 +49,7 @@ class UserProfileScreen extends StatelessWidget {
       // ),
       body: Builder(
         builder: (BuildContext context) {
-          final notifier = context.watch<UserNotifierQ>();
+          final notifier = context.watch<UserLoaderNotifierQ>();
           WidgetsBinding.instance?.addPostFrameCallback((_) {
             notifier.loadUser(name);
           });
@@ -57,7 +57,7 @@ class UserProfileScreen extends StatelessWidget {
           if (user == null) {
             return Center(child: CircularProgressIndicator());
           }
-          return UserProfile(user: user, isCurrentUser: isCurrentUser);
+          return UserProfile(user: user.user, isCurrentUser: isCurrentUser);
         },
       ),
     );

@@ -588,82 +588,77 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
   }
 }
 
-class UserNotifierQ extends ChangeNotifier {
-  UserNotifierQ(this._redditApi, [this._user]) {
-    _name = _user?.name;
-  }
+class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
+  UserLoaderNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('UserNotifierQ');
+  static final _log = Logger('UserLoaderNotifierQ');
 
-  void _reset() {
-    _user = null;
-    _submissions = null;
-    _comments = null;
-    _trophies = null;
-  }
+  // void _reset() {
+  //   _user = null;
+  // }
 
   String? _name;
 
-  void _setName(String name) {
-    if (_name != name) _reset();
-    _name = name;
-  }
+  // void _setName(String name) {
+  //   if (_name != name) _reset();
+  //   _name = name;
+  // }
 
-  User? _user;
-  User? get user => _user;
+  UserNotifierQ? _user;
+  UserNotifierQ? get user => _user;
+
   Future<void> loadUser(String name) {
     return _try(() async {
-      _setName(name);
-      if (_user != null) return null;
-      _user = await _redditApi.user(_name!);
+      if (_user != null && _name == name) return;
+      _name = name;
+      // _setName(name);
+      // if (_user != null) return null;
+      _user = UserNotifierQ(_redditApi, await _redditApi.user(_name!));
       notifyListeners();
       return null;
     }, 'Error: fail to load user');
   }
-
 }
 
 class UserNotifierQ extends ChangeNotifier {
-  UserNotifierQ(this._redditApi, [this._user]) {
-    _name = _user?.name;
-  }
+  UserNotifierQ(this._redditApi, this._user) : _name = _user.name;
 
   final RedditApi _redditApi;
   int _limit = 10;
   static final _log = Logger('UserNotifierQ');
 
-  void _reset() {
-    _user = null;
-    _submissions = null;
-    _comments = null;
-    _trophies = null;
-  }
+  // void _reset() {
+  //   _user = null;
+  //   _submissions = null;
+  //   _comments = null;
+  //   _trophies = null;
+  // }
 
-  String? _name;
+  final String _name;
 
-  void _setName(String name) {
-    if (_name != name) _reset();
-    _name = name;
-  }
+  // void _setName(String name) {
+  //   if (_name != name) _reset();
+  //   _name = name;
+  // }
 
-  User? _user;
-  User? get user => _user;
-  Future<void> loadUser(String name) {
-    return _try(() async {
-      _setName(name);
-      if (_user != null) return null;
-      _user = await _redditApi.user(_name!);
-      notifyListeners();
-      return null;
-    }, 'Error: fail to load user');
-  }
+  User _user;
+  User get user => _user;
+  // Future<void> loadUser(String name) {
+  //   return _try(() async {
+  //     _setName(name);
+  //     if (_user != null) return null;
+  //     _user = await _redditApi.user(_name!);
+  //     notifyListeners();
+  //     return null;
+  //   }, 'Error: fail to load user');
+  // }
 
   Future<String?> subscribe() {
     return _try(() async {
       if (user!.subreddit.userIsSubscriber) return null;
-      await _redditApi.subscribe(user!.subreddit.displayName);
+      await _redditApi.subscribe(user.subreddit.displayName);
       notifyListeners();
       return null;
     }, 'Error: fail to subscribe');
@@ -671,8 +666,8 @@ class UserNotifierQ extends ChangeNotifier {
 
   Future<String?> unsubscribe() {
     return _try(() async {
-      if (!(user!.subreddit.userIsSubscriber)) return null;
-      await _redditApi.subscribe(user!.subreddit.displayName);
+      if (!(user.subreddit.userIsSubscriber)) return null;
+      await _redditApi.subscribe(user.subreddit.displayName);
       notifyListeners();
       return null;
     }, 'Error: fail to unsubscribe');
@@ -684,7 +679,7 @@ class UserNotifierQ extends ChangeNotifier {
     return _try(() async {
       if (_submissions != null) return null;
       _submissions =
-          (await _redditApi.userSubmissions(_name!, limit: _limit).toList())
+          (await _redditApi.userSubmissions(_name, limit: _limit).toList())
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();
@@ -711,7 +706,7 @@ class UserNotifierQ extends ChangeNotifier {
   Future<String?> loadTrophies() {
     return _try(() async {
       if (_trophies != null) return null;
-      _trophies = await _redditApi.userTrophies(_name!);
+      _trophies = await _redditApi.userTrophies(_name);
       notifyListeners();
       return null;
     }, 'Error: fail to load user comments');
