@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 // import '../home/submission_tile.dart';
 // import '../notifier/reddir_notifier.dart';
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/user.dart';
 import '../style/style.dart';
 import '../widget/custom_future_builder.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 
 class SavedSubmissions extends StatelessWidget {
   const SavedSubmissions({Key? key}) : super(key: key);

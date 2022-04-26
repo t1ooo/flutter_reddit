@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/subreddit.dart';
 import '../subreddit/subreddit_screen.dart';
 import '../widget/stream_list_builder.dart';
@@ -100,7 +100,9 @@ class Subscriptions extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) =>
-                      SubredditScreen(subreddit: subreddit.subreddit!),
+                      // SubredditScreen(subreddit: subreddit.subreddit!),
+                      ChangeNotifierProvider<SubredditNotifierQ>.value(
+                          value: subreddit, child: SubredditScreen()),
                 ),
               );
             },

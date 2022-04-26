@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 import '../widget/loader.dart';
 

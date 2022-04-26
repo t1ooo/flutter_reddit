@@ -3,7 +3,7 @@ import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/user.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';

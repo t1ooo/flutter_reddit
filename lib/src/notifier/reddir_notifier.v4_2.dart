@@ -87,10 +87,36 @@ class SearchNotifierQ extends ChangeNotifier {
   }
 }
 
-class SubredditNotifierQ extends ChangeNotifier {
-  SubredditNotifierQ(this._redditApi, [this._subreddit]) {
-    _name = _subreddit?.displayName;
+class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
+  SubredditLoaderNotifierQ(this._redditApi);
+
+  final RedditApi _redditApi;
+
+  static final _log = Logger('SubredditNotifierQ');
+
+  String? _name;
+  SubredditNotifierQ? _subreddit;
+  SubredditNotifierQ? get subreddit => _subreddit;
+
+  Future<String?> loadSubreddit(String name) {
+    return _try(() async {
+      if (subreddit != null && _name == name) return;
+      _name = name;
+
+      // if (_name != name) _subreddit = null;
+      // _name = name;
+      // if (_subreddit != null) return null;
+      _subreddit =
+          SubredditNotifierQ(_redditApi, await _redditApi.subreddit(_name!));
+      notifyListeners();
+      return null;
+    }, 'Error: fail to load subreddit');
   }
+}
+
+class SubredditNotifierQ extends ChangeNotifier {
+  SubredditNotifierQ(this._redditApi, this._subreddit)
+      : _name = _subreddit.displayName;
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -98,22 +124,22 @@ class SubredditNotifierQ extends ChangeNotifier {
 
   // set name(name);
 
-  String? _name;
-  Subreddit? _subreddit;
-  Subreddit? get subreddit => _subreddit;
+  final String _name;
+  Subreddit _subreddit;
+  Subreddit get subreddit => _subreddit;
 
-  void _reset() {
-    _subreddit = null;
-    _submissions = null;
-    _about = null;
-    _menu = null;
-    _wiki = null;
-  }
+  // void _reset() {
+  //   _subreddit = null;
+  //   _submissions = null;
+  //   _about = null;
+  //   _menu = null;
+  //   _wiki = null;
+  // }
 
-  void _setName(String name) {
-    if (_name != name) _reset();
-    _name = name;
-  }
+  // void _setName(String name) {
+  //   if (_name != name) _reset();
+  //   _name = name;
+  // }
 
   // Future<String?> loadSubreddit(String name) {
   //   return _try(() async {
@@ -123,21 +149,21 @@ class SubredditNotifierQ extends ChangeNotifier {
   //     return null;
   //   }, 'Error: fail to load subreddit');
   // }
-  Future<String?> loadSubreddit(String name) {
-    return _try(() async {
-      _setName(name);
-      if (_subreddit != null) return null;
-      _subreddit = await _redditApi.subreddit(_name!);
-      notifyListeners();
-      return null;
-    }, 'Error: fail to load subreddit');
-  }
+  // Future<String?> loadSubreddit(String name) {
+  //   return _try(() async {
+  //     _setName(name);
+  //     if (_subreddit != null) return null;
+  //     _subreddit = await _redditApi.subreddit(_name!);
+  //     notifyListeners();
+  //     return null;
+  //   }, 'Error: fail to load subreddit');
+  // }
 
   Future<String?> subscribe() {
     return _try(() async {
-      if (_subreddit!.userIsSubscriber) return;
-      await _redditApi.subscribe(_name!);
-      _subreddit = _subreddit!.copyWith(userIsSubscriber: true);
+      if (_subreddit.userIsSubscriber) return;
+      await _redditApi.subscribe(_name);
+      _subreddit = _subreddit.copyWith(userIsSubscriber: true);
       notifyListeners();
       return null;
     }, 'Error: fail to subscribe');
@@ -145,9 +171,9 @@ class SubredditNotifierQ extends ChangeNotifier {
 
   Future<String?> unsubscribe() {
     return _try(() async {
-      if (!(_subreddit!.userIsSubscriber)) return;
-      await _redditApi.subscribe(_name!);
-      _subreddit = _subreddit!.copyWith(userIsSubscriber: false);
+      if (!(_subreddit.userIsSubscriber)) return;
+      await _redditApi.subscribe(_name);
+      _subreddit = _subreddit.copyWith(userIsSubscriber: false);
       notifyListeners();
       return null;
     }, 'Error: fail to unsubscribe');
@@ -265,13 +291,44 @@ class HomePopularNotifierQ extends ChangeNotifier {
   }
 }
 
-class SubmissionNotifierQ extends ChangeNotifier {
-  SubmissionNotifierQ(this._redditApi, [this._submission]) {
-    _id = _submission?.id;
-    _setComments(_submission?.comments);
-  }
+class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
+  SubmissionLoaderNotifierQ(this._redditApi);
 
   String? _id;
+
+  final RedditApi _redditApi;
+  static final _log = Logger('SubmissionNotifierQ');
+
+  SubmissionNotifierQ? _submission;
+  SubmissionNotifierQ? get submission => _submission;
+
+  Future<String?> loadSubmission(String id) async {
+    if (_id == id) return null;
+    _id = id;
+    print('loadSubmission');
+    return reloadSubmission();
+  }
+
+  Future<String?> reloadSubmission() async {
+    try {
+      _submission =
+          SubmissionNotifierQ(_redditApi, await _redditApi.submission(_id!));
+      // _setComments(_submission?.comments);
+      notifyListeners();
+      return null;
+    } on Exception catch (e, st) {
+      _log.error('', e, st);
+      return _formatError('load');
+    }
+  }
+}
+
+class SubmissionNotifierQ extends ChangeNotifier {
+  SubmissionNotifierQ(this._redditApi, this._submission) {
+    _setComments(_submission.comments);
+  }
+
+  // final String _id;
 
   final RedditApi _redditApi;
   static final _log = Logger('SubmissionNotifierQ');
@@ -279,8 +336,8 @@ class SubmissionNotifierQ extends ChangeNotifier {
   List<CommentNotifierQ>? _comments;
   List<CommentNotifierQ>? get comments => _comments;
 
-  Submission? _submission;
-  Submission? get submission => _submission;
+  Submission _submission;
+  Submission get submission => _submission;
 
   // set submission(Submission? s) {
   //   if (_submission == s) return null;
@@ -300,24 +357,24 @@ class SubmissionNotifierQ extends ChangeNotifier {
     }).toList();
   }
 
-  Future<String?> loadSubmission(String id) async {
-    if (_id == id) return null;
-    _id = id;
-    print('loadSubmission');
-    return reloadSubmission();
-  }
+  // Future<String?> loadSubmission(String id) async {
+  //   if (_id == id) return null;
+  //   _id = id;
+  //   print('loadSubmission');
+  //   return reloadSubmission();
+  // }
 
-  Future<String?> reloadSubmission() async {
-    try {
-      _submission = await _redditApi.submission(_id!);
-      _setComments(_submission?.comments);
-      notifyListeners();
-      return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return _formatError('load');
-    }
-  }
+  // Future<String?> reloadSubmission() async {
+  //   try {
+  //     _submission = await _redditApi.submission(_id!);
+  //     _setComments(_submission?.comments);
+  //     notifyListeners();
+  //     return null;
+  //   } on Exception catch (e, st) {
+  //     _log.error('', e, st);
+  //     return _formatError('load');
+  //   }
+  // }
 
   /* Future<Result?> loadSubmission(String id) async {
     if (_id  == id) return Reload();

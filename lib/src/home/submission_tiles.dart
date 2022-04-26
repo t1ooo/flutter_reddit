@@ -2,7 +2,7 @@ import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../widget/sized_placeholder.dart';

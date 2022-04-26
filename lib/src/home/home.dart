@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 // import '../notifier/reddir_notifier.dart';
 // import '../provider.dart';
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import 'submission_tiles.dart';
 
 class Home extends StatelessWidget {

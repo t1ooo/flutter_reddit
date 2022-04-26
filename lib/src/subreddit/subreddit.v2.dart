@@ -12,13 +12,15 @@ import '../submission/submission.v2.dart';
 class SubredditWidget extends StatelessWidget {
   const SubredditWidget({
     Key? key,
-    required this.subreddit,
+    // required this.subreddit,
   }) : super(key: key);
 
-  final Subreddit subreddit;
+  // final Subreddit subreddit;
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.watch<SubredditNotifierQ>();
+    final subreddit = notifier.subreddit;
     return ListView(
       children: [
         // if (subreddit.headerImg != '')

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'logger.dart';
 import 'src/app.dart';
 // import 'src/notifier/reddir_notifier.dart';
-import 'src/notifier/reddir_notifier.v4_1.dart';
+import 'src/notifier/reddir_notifier.v4_2.dart';
 // import 'src/provider.dart';
 import 'src/reddit_api/reddir_api.dart';
 

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/subreddit.dart';
-import 'subreddit.dart';
+import 'subreddit.v2.dart';
 
 class SubredditScreen extends StatelessWidget {
   const SubredditScreen({
     Key? key,
-    required this.subreddit,
+    // required this.subreddit,
   }) : super(key: key);
 
-  final Subreddit subreddit;
+  // final SubredditNotifierQ subreddit;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,10 @@ class SubredditScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      body: SubredditWidget(subreddit: subreddit),
+      // body: SubredditWidget(subreddit: subreddit),
+      body: SubredditWidget(),
+      // body: ChangeNotifierProvider<SubredditNotifierQ>.value(
+          // value: subreddit, child: SubredditWidget()),
       // body: MultiProvider(
       //   providers: [subscriptionNotifierProvider(subreddit.userIsSubscriber)],
       //   child: SubredditWidget(subreddit: subreddit),
@@ -45,7 +48,7 @@ class SubredditScreenLoader extends StatelessWidget {
         title: Text('User Profile'),
       ),
       body: Builder(builder: (context) {
-        final notifier = context.watch<SubredditNotifierQ>();
+        final notifier = context.watch<SubredditLoaderNotifierQ>();
         WidgetsBinding.instance?.addPostFrameCallback((_) {
           notifier.loadSubreddit(name);
         });
@@ -53,7 +56,9 @@ class SubredditScreenLoader extends StatelessWidget {
         if (subreddit == null) {
           return Center(child: CircularProgressIndicator());
         }
-        return SubredditWidget(subreddit: subreddit);
+
+        return ChangeNotifierProvider<SubredditNotifierQ>.value(
+            value: subreddit, child: SubredditWidget());
       }),
     );
   }

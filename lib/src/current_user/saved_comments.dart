@@ -3,7 +3,7 @@ import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
 // import '../notifier/reddir_notifier.dart';
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/comment.dart';
 import '../search/search_field.dart';
 import '../user_profile/user_comment.dart';

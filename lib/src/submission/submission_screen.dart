@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.v4_1.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../comment/comment_field.dart';
 import '../util/snackbar.dart';
 import 'submission.v2.dart';
