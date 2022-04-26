@@ -657,7 +657,7 @@ class UserNotifierQ extends ChangeNotifier {
 
   Future<String?> subscribe() {
     return _try(() async {
-      if (user!.subreddit.userIsSubscriber) return null;
+      if (user.subreddit.userIsSubscriber) return null;
       await _redditApi.subscribe(user.subreddit.displayName);
       notifyListeners();
       return null;
@@ -693,7 +693,7 @@ class UserNotifierQ extends ChangeNotifier {
     return _try(() async {
       if (_comments != null) return null;
       _comments =
-          (await _redditApi.userComments(_name!, limit: _limit).toList())
+          (await _redditApi.userComments(_name, limit: _limit).toList())
               .map((v) => CommentNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();

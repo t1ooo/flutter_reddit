@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 
 // import '../notifier/reddir_notifier.dart';
 // import '../provider.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../search/search_field.dart';
 import '../widget/sized_placeholder.dart';
 import 'home.dart';
+import 'home_anonymous.dart';
 import 'popular.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -46,7 +48,13 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  Home(),
+                  Builder(builder: (context) {
+                    final notifier = context.watch<UserAuth>();
+                    if (notifier.user == null) {
+                      return HomeAnonymous();
+                    }
+                    return Home();
+                  }),
                   Popular(),
                   // ChangeNotifierProvider.value(value: subTypeHome, child: Home()),
                   // ChangeNotifierProvider.value(value: subTypePopular, child: Popular()),
