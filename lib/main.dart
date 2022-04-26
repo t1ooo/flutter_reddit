@@ -99,9 +99,9 @@ Future<void> main() async {
           create: (BuildContext context) =>
               UserLoaderNotifierQ(redditApi),
         ),
-        ChangeNotifierProvider<CurrentUserNotifierQ>(
+        ChangeNotifierProvider<UserAuth>(
           create: (BuildContext context) =>
-              CurrentUserNotifierQ(redditApi),
+              UserAuth(redditApi),
         ),
         ChangeNotifierProvider<HomeFrontNotifierQ>(
           create: (BuildContext context) =>

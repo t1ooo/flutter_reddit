@@ -722,15 +722,15 @@ class UserNotifierQ extends ChangeNotifier {
   }
 }
 
-class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
-  CurrentUserNotifierQ(this._redditApi);
+class UserAuth extends ChangeNotifier with TryMixin {
+  UserAuth(this._redditApi);
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('CurrentUserNotifierQ');
+  static final _log = Logger('UserAuth');
 
-  User? _user;
-  User? get user => _user;
+  CurrentUserNotifierQ? _user;
+  CurrentUserNotifierQ? get user => _user;
 
   Future<String?> login(String name, String password) async {
     return _try(() async {
@@ -738,7 +738,7 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
       if (user == null) {
         throw Exception('user is null');
       }
-      _user = user;
+      _user = CurrentUserNotifierQ(_redditApi, user);
       notifyListeners();
       return null;
     }, 'Error: fail to login');
@@ -749,6 +749,35 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
     notifyListeners();
     return null;
   }
+}
+
+class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
+  CurrentUserNotifierQ(this._redditApi, this._user);
+
+  final RedditApi _redditApi;
+  int _limit = 10;
+  static final _log = Logger('CurrentUserNotifierQ');
+
+  User _user;
+  User get user => _user;
+
+  // Future<String?> login(String name, String password) async {
+  //   return _try(() async {
+  //     final user = await _redditApi.currentUser();
+  //     if (user == null) {
+  //       throw Exception('user is null');
+  //     }
+  //     _user = user;
+  //     notifyListeners();
+  //     return null;
+  //   }, 'Error: fail to login');
+  // }
+
+  // Future<String?> logout(String name, String password) async {
+  //   _user = null;
+  //   notifyListeners();
+  //   return null;
+  // }
 
   List<SubredditNotifierQ>? _subreddits;
   List<SubredditNotifierQ>? get subreddits => _subreddits;
@@ -771,7 +800,7 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
     {
       return _try(() async {
         _savedComments = await _redditApi
-            .userComments(_user!.name, limit: _limit)
+            .userComments(_user.name, limit: _limit)
             .map((v) => CommentNotifierQ(_redditApi, v))
             .toList();
         notifyListeners();
@@ -787,7 +816,7 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
     {
       return _try(() async {
         _savedSubmissions = await _redditApi
-            .userSubmissions(_user!.name, limit: _limit)
+            .userSubmissions(_user.name, limit: _limit)
             .map((v) => SubmissionNotifierQ(_redditApi, v))
             .toList();
         notifyListeners();

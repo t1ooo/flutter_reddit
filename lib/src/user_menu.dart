@@ -21,7 +21,7 @@ class UserMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<CurrentUserNotifierQ>();
+    final notifier = context.watch<UserAuth>();
 
     final user = notifier.user;
     if (user == null) {
@@ -30,7 +30,7 @@ class UserMenu extends StatelessWidget {
     return userMenu(context, user);
   }
 
-  Widget anonymousUserMenu(BuildContext context, CurrentUserNotifierQ notifier) {
+  Widget anonymousUserMenu(BuildContext context, UserAuth notifier) {
     return Drawer(
       child: Column(
         children: [
@@ -73,7 +73,7 @@ class UserMenu extends StatelessWidget {
     );
   }
 
-  Widget userMenu(BuildContext context, User user) {
+  Widget userMenu(BuildContext context, CurrentUserNotifierQ user) {
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -104,9 +104,9 @@ class UserMenu extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(user.iconImg),
+                  backgroundImage: NetworkImage(user.user.iconImg),
                 ),
-                Text(user.subreddit.displayNamePrefixed),
+                Text(user.user.subreddit.displayNamePrefixed),
               ],
             ),
           ),
@@ -117,8 +117,8 @@ class UserMenu extends StatelessWidget {
             children: [
               TableRow(
                 children: [
-                  Center(child: Text(user.totalKarma.toString())),
-                  Center(child: Text(formatDateTime(user.created))),
+                  Center(child: Text(user.user.totalKarma.toString())),
+                  Center(child: Text(formatDateTime(user.user.created))),
                 ],
               ),
               TableRow(
@@ -140,7 +140,7 @@ class UserMenu extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => UserProfileScreenV2(
-                    user: user,
+                    user: user.user,
                     isCurrentUser: true,
                   ),
                 ),
