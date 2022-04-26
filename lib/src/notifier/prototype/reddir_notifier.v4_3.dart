@@ -63,13 +63,13 @@ abstract class SearchNotifier extends ChangeNotifier {
   // get sort;
   // set sort(sort);
 
-  Future<String?> searchAll();
-  Future<String?> search();
-  List<SubmissionNotifier>? get submission;
+  Future<SubmissionNotifier> search();
+  Future<String?> resetSearch();
 }
 
 abstract class SubredditNotifier extends ChangeNotifier {
-  Future<String?> loadSubreddit();
+  Future<Subreddit> subreddit();
+  Future<String?> resetSubreddit();
 
   set name(name);
   Future<String?> subscribe();
@@ -77,14 +77,11 @@ abstract class SubredditNotifier extends ChangeNotifier {
 
   set subType(subType);
   get subType;
-  Future<String?> loadSubmissions();
-  List<SubmissionNotifier>? get submission;
-
-  Future<String?> loadAbout();
-  get about;
-
-  Future<String?> loadMenu();
-  get menu;
+  Future<List<SubmissionNotifier>> submissions();
+  Future<String?> resetSubmissions();
+  
+  Future<Object> about();
+  Future<Object> menu();
 
   Future<String?> star();
   Future<String?> unstar();
@@ -94,22 +91,22 @@ abstract class HomeFrontNotifier extends ChangeNotifier {
   set subType(subType);
   get subType;
 
-  Future<String?> loadSubmissions();
-  List<SubmissionNotifier>? get submission;
+  Future<List<SubmissionNotifier>> submissions();
+  Future<String?> resetSubmissions();
 }
 
 abstract class HomePopularNotifier extends ChangeNotifier {
   set subType(subType);
   get subType;
-  Future<String?> loadSubmissions();
-  List<SubmissionNotifier>? get submission;
+  Future<List<SubmissionNotifier>> submissions();
+  Future<String?> resetSubmissions();
 }
 
 abstract class SubmissionNotifier extends ChangeNotifier {
   set id(String id);
 
-  Future<String?> loadSubmission();
-  Submission? get submission;
+  Future<Submission> submission();
+  Future<String?> resetSubmission();
 
   List<CommentNotifier>? get comments;
 
@@ -133,32 +130,36 @@ abstract class CommentNotifier extends ChangeNotifier {
 abstract class UserNotifier extends ChangeNotifier {
   set name(_);
 
-  Future<void> loadUser();
-  User get user;
+  Future<User> user();
+  Future<String?> resetSearch();
+  
 
   Future<String?> subscribe();
   Future<String?> unsubscribe();
 
-  Future<String?> loadSubmissions();
-  List<SubmissionNotifier>? get submissions;
+  Future<List<SubmissionNotifier>> submissions();
+  Future<String?> resetSubmissions();
 
-  Future<String?> loadComments();
-  List<CommentNotifier>? get comments;
 
-  Future<String?> loadTrophies();
-  List<Trophy>? get trophies;
+  Future<List<CommentNotifier>> comments();
+  Future<String?> resetComments();
+
+
+  Future<List<Trophy>> trophies();
+  Future<String?> resetTrophies();
+
 }
 
 abstract class CurrentUserNotifier extends ChangeNotifier {
   Future<String?> login();
   Future<String?> logout();
 
-  Future<String?> loadSubreddits();
-  List<SubredditNotifier>? get subreddits;
+  Future<List<SubredditNotifier>> subreddits();
+  Future<String?> resetSearch();
 
-  Future<String?> loadSavedComment();
-  List<CommentNotifier>? get savedComment;
+  Future<List<CommentNotifier>> savedComment();
+  Future<String?> resetSavedComment();
 
-  Future<String?> loadSavedSubmissions();
-  List<SubmissionNotifier>? get savedSubmissions;
+  Future<List<SubmissionNotifier>> savedSubmissions();
+  Future<String?> resetSavedSubmissions();
 }

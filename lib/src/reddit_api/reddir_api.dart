@@ -22,6 +22,12 @@ import 'vote.dart';
 
 typedef Sort = draw.Sort;
 
+void mustNameWithoutPrefix(String subredditName) {
+  if (subredditName.startsWith('r/')) {
+    throw Exception('subreddit name start with prefix: $subredditName');
+  }
+}
+
 // TODO: rename commentSave -> saveComment
 abstract class RedditApi {
   Stream<Submission> front({required int limit, required SubType type});
@@ -172,6 +178,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) {
+    mustNameWithoutPrefix(name);
     final s = reddit.subreddit(name);
     switch (type) {
       case SubType.best:
@@ -249,10 +256,12 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<void> subscribe(String name) {
+    mustNameWithoutPrefix(name);
     return reddit.subreddit(name).subscribe();
   }
 
   Future<void> unsubscribe(String name) {
+    mustNameWithoutPrefix(name);
     return reddit.subreddit(name).unsubscribe();
   }
 
@@ -268,12 +277,14 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<Subreddit> subreddit(String name) async {
+    mustNameWithoutPrefix(name);
     final subRef = reddit.subreddit(name);
     final sub = await subRef.populate();
     return Subreddit.fromJson(sub.data!);
   }
 
   Future<String> subredditIcon(String name) async {
+    mustNameWithoutPrefix(name);
     final subRef = reddit.subreddit(name);
     final sub = await subRef.populate();
     return Subreddit.fromJson(sub.data!).communityIcon;
@@ -389,9 +400,10 @@ class RedditApiImpl implements RedditApi {
 
   Stream<Submission> search(String query,
       {required int limit, required Sort sort, subreddit = 'all'}) async* {
+    mustNameWithoutPrefix(subreddit);
     final params = {'limit': limit.toString()};
     await for (final v
-        in reddit.subreddit('subreddit').search(query, params: params)) {
+        in reddit.subreddit(subreddit).search(query, params: params)) {
       yield Submission.fromJson((v as draw.Submission).data!);
     }
   }
@@ -464,6 +476,7 @@ class FakeRedditApi implements RedditApi {
     required int limit,
     required SubType type,
   }) {
+    mustNameWithoutPrefix(name);
     return front(limit: limit, type: type);
   }
 
@@ -514,11 +527,13 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<void> subscribe(String name) async {
+    mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> unsubscribe(String name) async {
+    mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return;
   }
@@ -555,6 +570,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<Subreddit> subreddit(String name) async {
+    mustNameWithoutPrefix(name);
     final data = await File('data/subreddit.json').readAsString();
     return Subreddit.fromJson(jsonDecode(data) as Map);
   }
@@ -628,6 +644,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<String> subredditIcon(String name) async {
+    mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   }
@@ -639,6 +656,7 @@ class FakeRedditApi implements RedditApi {
 
   Stream<Submission> search(String query,
       {required int limit, required Sort sort, subreddit = 'all'}) async* {
+    mustNameWithoutPrefix(subreddit);
     final data = await File('data/search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)

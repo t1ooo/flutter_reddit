@@ -3,18 +3,12 @@ import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
-import '../notifier/reddir_notifier.dart';
 import '../notifier/reddir_notifier.v4_1.dart';
 import '../reddit_api/user.dart';
-import '../reddit_api/comment.dart';
 import '../style/style.dart';
-import '../submission/comments.dart';
 import '../util/date_time.dart';
-import '../widget/sized_placeholder.dart';
-import '../widget/stream_list_builder.dart';
 import '../widget/subscribe_button.dart';
 import 'user_about.dart';
-import 'user_comment.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({

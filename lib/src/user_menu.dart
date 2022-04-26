@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
 import 'notifier/reddir_notifier.dart';
+import 'notifier/reddir_notifier.v4_1.dart';
 import 'reddit_api/user.dart';
 import 'util/date_time.dart';
 
@@ -20,7 +21,7 @@ class UserMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<CurrentUserNotifier>();
+    final notifier = context.watch<CurrentUserNotifierQ>();
 
     final user = notifier.user;
     if (user == null) {
@@ -29,7 +30,7 @@ class UserMenu extends StatelessWidget {
     return userMenu(context, user);
   }
 
-  Widget anonymousUserMenu(BuildContext context, CurrentUserNotifier notifier) {
+  Widget anonymousUserMenu(BuildContext context, CurrentUserNotifierQ notifier) {
     return Drawer(
       child: Column(
         children: [

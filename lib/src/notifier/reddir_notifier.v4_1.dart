@@ -88,7 +88,9 @@ class SearchNotifierQ extends ChangeNotifier {
 }
 
 class SubredditNotifierQ extends ChangeNotifier {
-  SubredditNotifierQ(this._redditApi);
+  SubredditNotifierQ(this._redditApi, [this._subreddit]) {
+    _name = _subreddit?.displayName;
+  }
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -565,7 +567,9 @@ class CommentNotifierQ extends ChangeNotifier {
 }
 
 class UserNotifierQ extends ChangeNotifier {
-  UserNotifierQ(this._redditApi);
+  UserNotifierQ(this._redditApi, [this._user]) {
+    _name = _user?.name;
+  }
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -664,7 +668,7 @@ class UserNotifierQ extends ChangeNotifier {
   }
 }
 
-abstract class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
+class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
   CurrentUserNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
@@ -694,23 +698,49 @@ abstract class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
 
   List<SubredditNotifierQ>? _subreddits;
   List<SubredditNotifierQ>? get subreddits => _subreddits;
+
   Future<String?> loadSubreddits() {
     return _try(() async {
-      final user = await _redditApi.currentUser();
-      if (user == null) {
-        throw Exception('user is null');
-      }
-      _user = user;
+      _subreddits = await _redditApi
+          .userSubreddits(limit: _limit)
+          .map((v) => SubredditNotifierQ(_redditApi, v))
+          .toList();
       notifyListeners();
       return null;
-    }, 'Error: fail to login');
+    }, 'Error: fail to load subreddits');
   }
 
-  Future<String?> loadSavedComment();
-  List<CommentNotifierQ>? get savedComment;
+  List<CommentNotifierQ>? _savedComments;
+  List<CommentNotifierQ>? get savedComments => _savedComments;
 
-  Future<String?> loadSavedSubmissions();
-  List<SubmissionNotifierQ>? get savedSubmissions;
+  Future<String?> loadSavedComments() {
+    {
+      return _try(() async {
+        _savedComments = await _redditApi
+            .userComments(_user!.name, limit: _limit)
+            .map((v) => CommentNotifierQ(_redditApi, v))
+            .toList();
+        notifyListeners();
+        return null;
+      }, 'Error: fail to login');
+    }
+  }
+
+  List<SubmissionNotifierQ>? _savedSubmissions;
+  List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
+
+  Future<String?> loadSavedSubmissions() {
+    {
+      return _try(() async {
+        _savedSubmissions = await _redditApi
+            .userSubmissions(_user!.name, limit: _limit)
+            .map((v) => SubmissionNotifierQ(_redditApi, v))
+            .toList();
+        notifyListeners();
+        return null;
+      }, 'Error: fail to load saved submissions');
+    }
+  }
 }
 
 mixin TryMixin {
@@ -759,12 +789,14 @@ class Ok extends Result {
   Ok(this.message);
   String message;
   String toString() => message;
+  Future<Result?> undo();
 }
 
 class Error extends Result {
   Error(this.message);
   String message;
   String toString() => 'Error: $message';
+  Future<Result?> retry();
 }
 
 class Reload extends Result {} */
