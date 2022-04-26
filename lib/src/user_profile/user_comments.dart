@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
+import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
@@ -44,6 +45,10 @@ class UserComments extends StatelessWidget {
         load: (context) => context.read<UserNotifierQ>().loadComments(),
         data: (context) => context.read<UserNotifierQ>().comments,
         builder: (context, comments, error) {
+          if (error != null) {
+            showErrorSnackBar(context, error);
+            return Container();
+          }
           if (comments == null) {
             return Center(child: CircularProgressIndicator());
           }
