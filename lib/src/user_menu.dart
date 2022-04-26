@@ -50,11 +50,14 @@ class UserMenu extends StatelessWidget {
             minLeadingWidth: 0,
             leading: Icon(Icons.login),
             title: Text('Sign up/ Log in'),
-            onTap: () async {
-              final result = await notifier.login('name', 'password');
-              if (result != null) {
-                showSnackBar(context, result);
-              }
+            onTap: () {
+              // final result = await notifier.login('name', 'password');
+              // if (result != null) {
+              //   showSnackBar(context, result);
+              // }
+              notifier
+                  .login('name', 'password')
+                  .catchError((e) => showErrorSnackBar(context, e));
               // Navigator.pop(context);
             },
           ),
