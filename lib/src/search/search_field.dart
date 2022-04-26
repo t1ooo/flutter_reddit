@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../notifier/reddir_notifier.dart';
 import '../style/style.dart';
 import 'search_screen.dart';
 
@@ -37,7 +36,7 @@ class SearchField extends StatelessWidget {
               if (q != '') {
                 // _controller.clear();
                 // print(ModalRoute.of(context)?.settings.name);
-                context.read<SearchSubmissionsNotifier>().query = q;
+                // context.read<SearchSubmissionsNotifier>().query = q;
 
                 // if (ModalRoute.of(context)?.settings.name != name) {
                 //   Navigator.push(

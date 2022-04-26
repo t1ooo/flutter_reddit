@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.dart';
+import '../notifier/reddir_notifier.v4_1.dart';
 import '../style/style.dart';
 import 'search.dart';
 import 'search_field.dart';
@@ -17,7 +18,8 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      context.read<SearchSubmissionsNotifier>().query = query;
+      // context.read<SearchSubmissionsNotifier>().query = query;
+      context.read<SearchNotifierQ>().search(query);
     });
     return DefaultTabController(
       length: 2,
