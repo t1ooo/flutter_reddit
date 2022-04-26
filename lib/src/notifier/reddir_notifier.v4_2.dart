@@ -12,7 +12,7 @@ import '../reddit_api/subreddit.dart';
 import '../reddit_api/vote.dart';
 
 // TODO: _try
-class SearchNotifierQ extends ChangeNotifier {
+class SearchNotifierQ extends ChangeNotifier with TryMixin {
   SearchNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
@@ -33,7 +33,7 @@ class SearchNotifierQ extends ChangeNotifier {
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
-  Future<String?> search(
+  Future<void> search(
     String query, [
     Sort sort = Sort.relevance,
     String subredditName = 'all',
@@ -53,7 +53,7 @@ class SearchNotifierQ extends ChangeNotifier {
     //   return null;
     // } on Exception catch (e, st) {
     //   _log.error('', e, st);
-    //   return 'Error: fail to search';
+    //   return 'fail to search';
     // }
 
     return _try(() async {
@@ -74,16 +74,7 @@ class SearchNotifierQ extends ChangeNotifier {
           .toList();
       notifyListeners();
       return null;
-    }, 'Error: fail to search');
-  }
-
-  Future<String?> _try(Future<String?> Function() fn, String error) async {
-    try {
-      return await fn();
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return error;
-    }
+    }, 'fail to search');
   }
 }
 
@@ -98,7 +89,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
   SubredditNotifierQ? _subreddit;
   SubredditNotifierQ? get subreddit => _subreddit;
 
-  Future<String?> loadSubreddit(String name) {
+  Future<void> loadSubreddit(String name) {
     return _try(() async {
       if (subreddit != null && _name == name) return;
       _name = name;
@@ -110,11 +101,11 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
           SubredditNotifierQ(_redditApi, await _redditApi.subreddit(_name!));
       notifyListeners();
       return null;
-    }, 'Error: fail to load subreddit');
+    }, 'fail to load subreddit');
   }
 }
 
-class SubredditNotifierQ extends ChangeNotifier {
+class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   SubredditNotifierQ(this._redditApi, this._subreddit)
       : _name = _subreddit.displayName;
 
@@ -141,42 +132,42 @@ class SubredditNotifierQ extends ChangeNotifier {
   //   _name = name;
   // }
 
-  // Future<String?> loadSubreddit(String name) {
+  // Future<void> loadSubreddit(String name) {
   //   return _try(() async {
   //     if (_subreddit != null && _name == name) return null;
   //     _name = name;
   //     _subreddit = await _redditApi.subreddit(_name!);
   //     return null;
-  //   }, 'Error: fail to load subreddit');
+  //   }, 'fail to load subreddit');
   // }
-  // Future<String?> loadSubreddit(String name) {
+  // Future<void> loadSubreddit(String name) {
   //   return _try(() async {
   //     _setName(name);
   //     if (_subreddit != null) return null;
   //     _subreddit = await _redditApi.subreddit(_name!);
   //     notifyListeners();
   //     return null;
-  //   }, 'Error: fail to load subreddit');
+  //   }, 'fail to load subreddit');
   // }
 
-  Future<String?> subscribe() {
+  Future<void> subscribe() {
     return _try(() async {
       if (_subreddit.userIsSubscriber) return;
       await _redditApi.subscribe(_name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: true);
       notifyListeners();
       return null;
-    }, 'Error: fail to subscribe');
+    }, 'fail to subscribe');
   }
 
-  Future<String?> unsubscribe() {
+  Future<void> unsubscribe() {
     return _try(() async {
       if (!(_subreddit.userIsSubscriber)) return;
       await _redditApi.subscribe(_name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: false);
       notifyListeners();
       return null;
-    }, 'Error: fail to unsubscribe');
+    }, 'fail to unsubscribe');
   }
 
   SubType _subType = SubType.best;
@@ -185,8 +176,7 @@ class SubredditNotifierQ extends ChangeNotifier {
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
-  Future<String?> loadSubmissions(SubType subType) {
-    print('loadSubmissions');
+  Future<void> loadSubmissions(SubType subType) {
     return _try(() async {
       if (_submissions != null && _subType == subType) return null;
       _subType = subType;
@@ -196,40 +186,31 @@ class SubredditNotifierQ extends ChangeNotifier {
           .toList();
       notifyListeners();
       return null;
-    }, 'Error: fail to load subreddit submissions');
+    }, 'fail to load subreddit submissions');
   }
 
   // TODO
-  Future<String?> loadAbout() => throw UnimplementedError();
+  Future<void> loadAbout() => throw UnimplementedError();
   Object? _about;
   get about => _about;
 
   // TODO
-  Future<String?> loadMenu() => throw UnimplementedError();
+  Future<void> loadMenu() => throw UnimplementedError();
   Object? _menu;
   get menu => _menu;
 
   // TODO
-  Future<String?> loadWiki() => throw UnimplementedError();
+  Future<void> loadWiki() => throw UnimplementedError();
   Object? _wiki;
   get wiki => _wiki;
 
   // TODO
-  Future<String?> star() => throw UnimplementedError();
+  Future<void> star() => throw UnimplementedError();
   // TODO
-  Future<String?> unstar() => throw UnimplementedError();
-
-  Future<String?> _try(Future<String?> Function() fn, String error) async {
-    try {
-      return await fn();
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return error;
-    }
-  }
+  Future<void> unstar() => throw UnimplementedError();
 }
 
-class HomeFrontNotifierQ extends ChangeNotifier {
+class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   HomeFrontNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
@@ -242,25 +223,22 @@ class HomeFrontNotifierQ extends ChangeNotifier {
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
-  Future<String?> loadSubmissions(SubType subType) async {
-    if (_submissions != null && _subType == subType) return null;
-    _subType = subType;
+  Future<void> loadSubmissions(SubType subType) {
+    return _try(() async {
+      if (_submissions != null && _subType == subType) return null;
+      _subType = subType;
 
-    try {
       _submissions =
           (await _redditApi.front(limit: _limit, type: _subType).toList())
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();
       return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return 'Error: fail to search';
-    }
+    }, 'fail to search');
   }
 }
 
-class HomePopularNotifierQ extends ChangeNotifier {
+class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
   HomePopularNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
@@ -273,21 +251,18 @@ class HomePopularNotifierQ extends ChangeNotifier {
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
-  Future<String?> loadSubmissions(SubType subType) async {
-    if (_submissions != null && _subType == subType) return null;
-    _subType = subType;
+  Future<void> loadSubmissions(SubType subType) {
+    return _try(() async {
+      if (_submissions != null && _subType == subType) return null;
+      _subType = subType;
 
-    try {
       _submissions =
           (await _redditApi.popular(limit: _limit, type: _subType).toList())
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();
       return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return 'Error: fail to search';
-    }
+    }, 'fail to search');
   }
 }
 
@@ -302,8 +277,8 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
   SubmissionNotifierQ? _submission;
   SubmissionNotifierQ? get submission => _submission;
 
-  Future<String?> loadSubmission(String id) async {
-    try {
+  Future<void> loadSubmission(String id) async {
+    return _try(() async {
       if (_submission != null && _id == id) return null;
       _id = id;
       _submission =
@@ -311,14 +286,11 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
       // _setComments(_submission?.comments);
       notifyListeners();
       return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return _formatError('load');
-    }
+    }, 'fail to load submission');
   }
 }
 
-class SubmissionNotifierQ extends ChangeNotifier {
+class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -352,14 +324,14 @@ class SubmissionNotifierQ extends ChangeNotifier {
     }).toList();
   }
 
-  // Future<String?> loadSubmission(String id) async {
+  // Future<void> loadSubmission(String id) async {
   //   if (_id == id) return null;
   //   _id = id;
   //   print('loadSubmission');
   //   return reloadSubmission();
   // }
 
-  // Future<String?> reloadSubmission() async {
+  // Future<void> reloadSubmission() async {
   //   try {
   //     _submission = await _redditApi.submission(_id!);
   //     _setComments(_submission?.comments);
@@ -390,8 +362,8 @@ class SubmissionNotifierQ extends ChangeNotifier {
     }
   } */
 
-  Future<String?> reply(String body) async {
-    try {
+  Future<void> reply(String body) async {
+    return _try(() async {
       final commentReply =
           await _redditApi.submissionReply(submission.id, body);
       // _comments!.add(CommentNotifierQ(_redditApi, commentReply));
@@ -401,55 +373,44 @@ class SubmissionNotifierQ extends ChangeNotifier {
       _comments!.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
       return null;
-    } on Exception catch (e) {
-      _log.error(e);
-      return _formatError('reply');
-    }
+    }, 'fail to reply');
   }
 
   // TODO: save unsave
-  Future<String?> save() async {
-    if (submission.saved) return null;
+  Future<void> save() async {
+    return _try(() async {
+      if (submission.saved) return null;
 
-    try {
       await _redditApi.submissionSave(submission.id);
       _submission = submission.copyWith(saved: true);
       notifyListeners();
-      return 'Saved';
-    } on Exception catch (e) {
-      _log.error(e);
-      return _formatError('save');
-    }
+    }, 'fail to save');
   }
 
-  Future<String?> unsave() async {
-    if (submission.saved) return null;
+  Future<void> unsave() {
+    return _try(() async {
+      if (submission.saved) return null;
 
-    try {
       await _redditApi.submissionSave(submission.id);
       _submission = submission.copyWith(saved: true);
       notifyListeners();
-      return 'Unsaved';
-    } on Exception catch (e) {
-      _log.error(e);
-      return _formatError('unsave');
-    }
+    }, 'fail to unsave');
   }
 
-  Future<String?> voteUp() {
+  Future<void> voteUp() {
     return _updateSubmissionsVote(Vote.up);
   }
 
-  Future<String?> voteDown() {
+  Future<void> voteDown() {
     return _updateSubmissionsVote(Vote.down);
   }
 
-  Future<String?> _updateSubmissionsVote(Vote vote) async {
-    if (submission.likes == vote) {
-      vote = Vote.none;
-    }
+  Future<void> _updateSubmissionsVote(Vote vote) async {
+    return _try(() async {
+      if (submission.likes == vote) {
+        vote = Vote.none;
+      }
 
-    try {
       await _redditApi.submissionVote(submission.id, vote);
       _submission = submission.copyWith(
         likes: vote,
@@ -457,20 +418,13 @@ class SubmissionNotifierQ extends ChangeNotifier {
       );
       notifyListeners();
       return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return _formatError('vote');
-    }
+    }, 'fail to vote');
   }
 
-  Future<String?> share() async {
-    try {
+  Future<void> share() async {
+    return _try(() async {
       await Share.share('${submission.title} ${submission.shortLink}');
-      return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return _formatError('share');
-    }
+    }, 'fail to share');
   }
 }
 
@@ -487,77 +441,60 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
 
   List<CommentNotifierQ> get replies => _replies;
 
-  Future<String?> save() async {
-    if (comment.saved) return null;
+  Future<void> save() async {
+    return _try(() async {
+      if (comment.saved) return null;
 
-    try {
       await _redditApi.commentSave(comment.id);
       comment = comment.copyWith(saved: true);
       notifyListeners();
-      return 'Saved';
-    } on Exception catch (e) {
-      _log.error(e);
-      return 'Error: Fail to save';
-    }
+    }, 'fail to save');
   }
 
-  Future<String?> unsave() async {
-    if (!comment.saved) return null;
+  Future<void> unsave() async {
+    return _try(() async {
+      if (!comment.saved) return null;
 
-    try {
       await _redditApi.commentUnsave(comment.id);
       comment = comment.copyWith(saved: false);
       notifyListeners();
-      return 'Unsaved';
-    } on Exception catch (e) {
-      _log.error(e);
-      return 'Error: Fail to unsave';
-    }
+    }, 'fail to unsave');
   }
 
-  Future<String?> upVote() async {
+  Future<void> upVote() async {
     if (comment.likes == Vote.up) {
       return _updateVote(Vote.none);
     }
     return await _updateVote(Vote.up);
   }
 
-  Future<String?> downVote() async {
+  Future<void> downVote() async {
     if (comment.likes == Vote.down) {
       return _updateVote(Vote.none);
     }
     return await _updateVote(Vote.down);
   }
 
-  Future<String?> _updateVote(Vote vote) async {
-    if (comment.likes == vote) return null;
+  Future<void> _updateVote(Vote vote) async {
+    return _try(() async {
+      if (comment.likes == vote) return null;
 
-    try {
       await _redditApi.submissionVote(comment.id, vote);
       comment = comment.copyWith(
         likes: vote,
         score: calcScore(comment.score, comment.likes, vote),
       );
       notifyListeners();
-      return null;
-    } on Exception catch (e) {
-      _log.error(e);
-      // _error = e;
-      return 'Error: fail to vote';
-    }
+    }, 'fail to vote');
   }
 
-  Future<String?> share() async {
-    try {
+  Future<void> share() async {
+    return _try(() async {
       await Share.share('${comment.linkTitle} ${comment.shortLink}');
-      return null;
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return _formatError('share');
-    }
+    }, 'fail to share');
   }
 
-  Future<String?> reply(String body) async {
+  Future<void> reply(String body) async {
     // try {
     //   // throw Exception('error');
     //   final commentReply = await _redditApi.commentReply(comment.id, body);
@@ -568,7 +505,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
     //   return null;
     // } on Exception catch (e) {
     //   _log.error(e);
-    //   return 'Error: Fail to reply';
+    //   return 'fail to reply';
     // }
 
     return _try(() async {
@@ -578,8 +515,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
       // _replies.add(CommentNotifierQ(_redditApi, commentReply));
       _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
-      return null;
-    }, 'Error: Fail to reply');
+    }, 'fail to reply');
   }
 }
 
@@ -612,12 +548,11 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
       // if (_user != null) return null;
       _user = UserNotifierQ(_redditApi, await _redditApi.user(_name!));
       notifyListeners();
-      return null;
-    }, 'Error: fail to load user');
+    }, 'fail to load user');
   }
 }
 
-class UserNotifierQ extends ChangeNotifier {
+class UserNotifierQ extends ChangeNotifier with TryMixin {
   UserNotifierQ(this._redditApi, this._user) : _name = _user.name;
 
   final RedditApi _redditApi;
@@ -647,30 +582,28 @@ class UserNotifierQ extends ChangeNotifier {
   //     _user = await _redditApi.user(_name!);
   //     notifyListeners();
   //     return null;
-  //   }, 'Error: fail to load user');
+  //   }, 'fail to load user');
   // }
 
-  Future<String?> subscribe() {
+  Future<void> subscribe() {
     return _try(() async {
       if (user.subreddit.userIsSubscriber) return null;
       await _redditApi.subscribe(user.subreddit.displayName);
       notifyListeners();
-      return null;
-    }, 'Error: fail to subscribe');
+    }, 'fail to subscribe');
   }
 
-  Future<String?> unsubscribe() {
+  Future<void> unsubscribe() {
     return _try(() async {
       if (!(user.subreddit.userIsSubscriber)) return null;
       await _redditApi.subscribe(user.subreddit.displayName);
       notifyListeners();
-      return null;
-    }, 'Error: fail to unsubscribe');
+    }, 'fail to unsubscribe');
   }
 
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
-  Future<String?> loadSubmissions() {
+  Future<void> loadSubmissions() {
     return _try(() async {
       if (_submissions != null) return null;
       _submissions =
@@ -678,41 +611,29 @@ class UserNotifierQ extends ChangeNotifier {
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();
-      return null;
-    }, 'Error: fail to load user submissions');
+    }, 'fail to load user submissions');
   }
 
   List<CommentNotifierQ>? _comments;
   List<CommentNotifierQ>? get comments => _comments;
-  Future<String?> loadComments() {
+  Future<void> loadComments() {
     return _try(() async {
       if (_comments != null) return null;
       _comments = (await _redditApi.userComments(_name, limit: _limit).toList())
           .map((v) => CommentNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
-      return null;
-    }, 'Error: fail to load user comments');
+    }, 'fail to load user comments');
   }
 
   List<Trophy>? _trophies;
   List<Trophy>? get trophies => _trophies;
-  Future<String?> loadTrophies() {
+  Future<void> loadTrophies() {
     return _try(() async {
       if (_trophies != null) return null;
       _trophies = await _redditApi.userTrophies(_name);
       notifyListeners();
-      return null;
-    }, 'Error: fail to load user comments');
-  }
-
-  Future<String?> _try(Future<String?> Function() fn, String error) async {
-    try {
-      return await fn();
-    } on Exception catch (e, st) {
-      _log.error('', e, st);
-      return error;
-    }
+    }, 'fail to load user comments');
   }
 }
 
@@ -726,7 +647,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   CurrentUserNotifierQ? _user;
   CurrentUserNotifierQ? get user => _user;
 
-  Future<String?> login(String name, String password) async {
+  Future<void> login(String name, String password) async {
     return _try(() async {
       final user = await _redditApi.currentUser();
       if (user == null) {
@@ -734,11 +655,10 @@ class UserAuth extends ChangeNotifier with TryMixin {
       }
       _user = CurrentUserNotifierQ(_redditApi, user);
       notifyListeners();
-      return null;
-    }, 'Error: fail to login');
+    }, 'fail to login');
   }
 
-  Future<String?> logout(String name, String password) async {
+  Future<void> logout(String name, String password) async {
     _user = null;
     notifyListeners();
     return null;
@@ -755,7 +675,7 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
   User _user;
   User get user => _user;
 
-  // Future<String?> login(String name, String password) async {
+  // Future<void> login(String name, String password) async {
   //   return _try(() async {
   //     final user = await _redditApi.currentUser();
   //     if (user == null) {
@@ -764,10 +684,10 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
   //     _user = user;
   //     notifyListeners();
   //     return null;
-  //   }, 'Error: fail to login');
+  //   }, 'fail to login');
   // }
 
-  // Future<String?> logout(String name, String password) async {
+  // Future<void> logout(String name, String password) async {
   //   _user = null;
   //   notifyListeners();
   //   return null;
@@ -776,21 +696,20 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
   List<SubredditNotifierQ>? _subreddits;
   List<SubredditNotifierQ>? get subreddits => _subreddits;
 
-  Future<String?> loadSubreddits() {
+  Future<void> loadSubreddits() {
     return _try(() async {
       _subreddits = await _redditApi
           .userSubreddits(limit: _limit)
           .map((v) => SubredditNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
-      return null;
-    }, 'Error: fail to load subreddits');
+    }, 'fail to load subreddits');
   }
 
   List<CommentNotifierQ>? _savedComments;
   List<CommentNotifierQ>? get savedComments => _savedComments;
 
-  Future<String?> loadSavedComments() {
+  Future<void> loadSavedComments() {
     {
       return _try(() async {
         _savedComments = await _redditApi
@@ -798,15 +717,14 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
             .map((v) => CommentNotifierQ(_redditApi, v))
             .toList();
         notifyListeners();
-        return null;
-      }, 'Error: fail to login');
+      }, 'fail to login');
     }
   }
 
   List<SubmissionNotifierQ>? _savedSubmissions;
   List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
 
-  Future<String?> loadSavedSubmissions() {
+  Future<void> loadSavedSubmissions() {
     {
       return _try(() async {
         _savedSubmissions = await _redditApi
@@ -814,21 +732,35 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
             .map((v) => SubmissionNotifierQ(_redditApi, v))
             .toList();
         notifyListeners();
-        return null;
-      }, 'Error: fail to load saved submissions');
+      }, 'fail to load saved submissions');
     }
   }
+}
+
+class UIException implements Exception {
+  UIException(this._message);
+  String _message;
+  String toString() => 'Error: $_message';
 }
 
 mixin TryMixin {
   static late final Logger _log;
 
-  Future<String?> _try(Future<String?> Function() fn, String error) async {
+  // Future<void> _try(Future<void> Function() fn, String error) async {
+  //   try {
+  //     return await fn();
+  //   } on Exception catch (e, st) {
+  //     _log.error('', e, st);
+  //     return error;
+  //   }
+  // }
+
+  Future<void> _try(Future<void> Function() fn, String error) async {
     try {
       return await fn();
     } on Exception catch (e, st) {
       _log.error('', e, st);
-      return error;
+      throw Exception(error);
     }
   }
 }
@@ -857,9 +789,9 @@ mixin CollapseMixin {
   }
 }
 
-String _formatError(String op) {
-  return 'Error: fail to $op';
-}
+// String _formatError(String op) {
+//   return 'fail to $op';
+// }
 
 int calcScore(int score, Vote oldVote, Vote newVote) {
   if (oldVote == Vote.up) {
@@ -896,7 +828,7 @@ class Ok extends Result {
 class Error extends Result {
   Error(this.message);
   String message;
-  String toString() => 'Error: $message';
+  String toString() => '$message';
   Future<Result?> retry();
 }
 

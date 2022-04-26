@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
-import '../widget/loader.dart';
+import '../widget/loader.v2.dart';
 
 class UserComments extends StatelessWidget {
   const UserComments({
@@ -40,10 +40,10 @@ class UserComments extends StatelessWidget {
       //   },
       // ),
       
-      child: Loader<List<CommentNotifierQ>?, String?>(
-        load: () => context.read<UserNotifierQ>().loadComments(),
-        data: () => context.read<UserNotifierQ>().comments,
-        builder: (context, comments, load) {
+      child: Loader<List<CommentNotifierQ>?>(
+        load: (context) => context.read<UserNotifierQ>().loadComments(),
+        data: (context) => context.read<UserNotifierQ>().comments,
+        builder: (context, comments, error) {
           if (comments == null) {
             return Center(child: CircularProgressIndicator());
           }

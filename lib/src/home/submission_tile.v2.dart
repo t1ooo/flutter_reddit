@@ -238,18 +238,22 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  PopupMenuItem _savePopupMenuItem(BuildContext context, Submission submission) {
+  PopupMenuItem _savePopupMenuItem(
+      BuildContext context, Submission submission) {
     return PopupMenuItem(
-      onTap: () async {
+      onTap: () {
         final notifier = context.read<SubmissionNotifierQ>();
         // final submission = notifier.submission;
 
-        final result = await (submission.saved
-            ? notifier.unsave()
-            : notifier.save());
-        if (result != null) {
-          showSnackBar(context, result);
-        }
+        // final result = await (submission.saved
+        //     ? notifier.unsave()
+        //     : notifier.save());
+        // if (result != null) {
+        //   showSnackBar(context, result);
+        // }
+
+        (submission.saved ? notifier.unsave() : notifier.save())
+            .catchError((e) => showErrorSnackBar(context, e));
       },
       child: Builder(
         builder: (_) {
@@ -259,9 +263,7 @@ class SubmissionTile extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             minLeadingWidth: 0,
             leading: Icon(
-              submission.saved
-                  ? Icons.bookmark
-                  : Icons.bookmark_border,
+              submission.saved ? Icons.bookmark : Icons.bookmark_border,
             ),
             title: Text(submission.saved ? 'Unsave' : 'Save'),
           );
@@ -291,11 +293,12 @@ class SubmissionTile extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () async {
-            final result = await notifier.voteUp();
-            if (result != null) {
-              showSnackBar(context, result);
-            }
+          onPressed: () {
+            // final result = await notifier.voteUp();
+            // if (result != null) {
+            //   showSnackBar(context, result);
+            // }
+            notifier.voteUp().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -304,12 +307,16 @@ class SubmissionTile extends StatelessWidget {
         ),
         Text(submission.score.toString()),
         IconButton(
-          onPressed: () async {
-            final result = await notifier.voteDown();
+          onPressed: () {
+            // final result = await notifier.voteDown();
 
-            if (result != null) {
-              showSnackBar(context, result);
-            }
+            // if (result != null) {
+            //   showSnackBar(context, result);
+            // }
+
+            notifier
+                .voteDown()
+                .catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_more,

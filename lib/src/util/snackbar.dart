@@ -8,10 +8,10 @@ void showSnackBar(BuildContext context, String text) {
   });
 }
 
-void showErrorSnackBar(BuildContext context, String text) {
+void showErrorSnackBar(BuildContext context, Object error) {
   WidgetsBinding.instance?.addPostFrameCallback((_) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Error: $text'),
+      content: Text(error.toString()),
     ));
   });
 }

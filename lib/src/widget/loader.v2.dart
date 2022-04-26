@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class Loader<D> extends StatelessWidget {
+class Loader<T> extends StatelessWidget {
   Loader({
     Key? key,
     required this.load,
@@ -11,8 +11,8 @@ class Loader<D> extends StatelessWidget {
   }) : super(key: key);
 
   final Future Function(BuildContext) load;
-  final D Function(BuildContext) data;
-  final Widget Function(BuildContext, D,  Object?) builder;
+  final T Function(BuildContext) data;
+  final Widget Function(BuildContext, T,  Object?) builder;
 
   @override
   Widget build(BuildContext context) {

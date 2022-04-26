@@ -151,15 +151,17 @@ class CommentWidget extends StatelessWidget {
 
   PopupMenuItem _savePopupMenuItem(BuildContext context) {
     return PopupMenuItem(
-      onTap: () async {
+      onTap: () {
         final notifier = context.read<CommentNotifierQ>();
 
-        final result = await (notifier.comment.saved
-            ? notifier.unsave()
-            : notifier.save());
-        if (result != null) {
-          showSnackBar(context, result);
-        }
+        // final result = await (notifier.comment.saved
+        //     ? notifier.unsave()
+        //     : notifier.save());
+        // if (result != null) {
+        //   showSnackBar(context, result);
+        // }
+        (notifier.comment.saved ? notifier.unsave() : notifier.save())
+            .catchError((e) => showErrorSnackBar(context, e));
       },
       child: Builder(
         builder: (_) {
@@ -227,14 +229,15 @@ class CommentWidget extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () async {
+          onPressed: () {
             // final result = await (comment.likes == Vote.up
             //     ? notifier.clearVote()
             //     : notifier.upVote());
-            final result = await notifier.upVote();
-            if (result != null) {
-              showSnackBar(context, result);
-            }
+            // final result = await notifier.upVote();
+            // if (result != null) {
+            //   showSnackBar(context, result);
+            // }
+            notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -243,14 +246,17 @@ class CommentWidget extends StatelessWidget {
         ),
         Text(comment.score.toString()),
         IconButton(
-          onPressed: () async {
+          onPressed: () {
             // final result = await (comment.likes == Vote.down
             //     ? notifier.clearVote()
             //     : notifier.downVote());
-            final result = await notifier.downVote();
-            if (result != null) {
-              showSnackBar(context, result);
-            }
+            // final result = await notifier.downVote();
+            // if (result != null) {
+            //   showSnackBar(context, result);
+            // }
+            notifier
+                .downVote()
+                .catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_more,

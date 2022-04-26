@@ -60,20 +60,25 @@ class _AddCommentState extends State<AddComment> {
             //       .submissionReply(widget.id, _message);
             // }
 
-
             // TODO
             if (widget.isComment) {
               final notifer = context.read<CommentNotifierQ>();
-              final result = await notifer.reply(_message);
-              if (result != null) {
-                showSnackBar(context, result);
-              }
+              // final result = await notifer.reply(_message);
+              // if (result != null) {
+              // showSnackBar(context, result);
+              // }
+              notifer
+                  .reply(_message)
+                  .catchError((e) => showErrorSnackBar(context, e));
             } else {
               final notifer = context.read<SubmissionNotifierQ>();
-              final result = await notifer.reply(_message);
-              if (result != null) {
-                showSnackBar(context, result);
-              }
+              // final result = await notifer.reply(_message);
+              // if (result != null) {
+              //   showSnackBar(context, result);
+              // }
+              notifer
+                  .reply(_message)
+                  .catchError((e) => showErrorSnackBar(context, e));
             }
 
             // final notifer = context.read<SubmissionNotifier>();
