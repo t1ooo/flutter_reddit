@@ -72,7 +72,7 @@ class SearchNotifierQ extends ChangeNotifier {
               .toList())
           .map((v) => SubmissionNotifierQ(_redditApi, v))
           .toList();
-
+      notifyListeners();
       return null;
     }, 'Error: fail to search');
   }
