@@ -4,22 +4,10 @@ import 'package:provider/provider.dart';
 
 import 'logger.dart';
 import 'src/app.dart';
-// import 'src/notifier/reddir_notifier.dart';
 import 'src/notifier/reddir_notifier.v4_2.dart';
-// import 'src/provider.dart';
 import 'src/reddit_api/reddir_api.dart';
 
-Future<int> foo(int a) async {
-  if (a % 2 == 0) {
-    return a;
-  }
-  throw Exception('error');
-}
-
 Future<void> main() async {
-  // foo(1).then((r) => print(r), onError: (e, st) => print('$e + $st'));
-  // foo(1).then((r) => print(r)).catchError((e, st) => print('$e + $st'));
-
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
 
@@ -28,69 +16,6 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        // _redditNotifierProvider,
-        // _redditNotifierFrontProvider,
-        // await fakeRedditApiProvider(),
-        // redditNotifierProvider(),
-        // submissionTypeNotifierProvider(),
-        // sortNotifierProvider(),
-        // currentUserNotifierProvider(),
-        // submissionNotifierProvider(),
-        // ChangeNotifierProvider<FrontSubmissionsNotifier>(
-        //   create: (BuildContext context) =>
-        //       FrontSubmissionsNotifier(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<PopularSubmissionsNotifier>(
-        //   create: (BuildContext context) =>
-        //       PopularSubmissionsNotifier(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<SearchSubmissionsNotifier>(
-        //   create: (BuildContext context) =>
-        //       SearchSubmissionsNotifier(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<UserSubmissionsNotifier>(
-        //   create: (BuildContext context) =>
-        //       UserSubmissionsNotifier(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<UserCommentsNotifier>(
-        //   create: (BuildContext context) =>
-        //       UserCommentsNotifier(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<UserNotifier>(
-        //   create: (BuildContext context) =>
-        //       UserNotifier(context.read<RedditApi>()),
-        // ),
-
-        // Provider.value(value: redditApi),
-        // ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       SubmissionLoaderNotifierQ(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<SearchNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       SearchNotifierQ(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<SubredditLoaderNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       SubredditLoaderNotifierQ(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<UserNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       UserNotifierQ(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<CurrentUserNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       CurrentUserNotifierQ(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<HomeFrontNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       HomeFrontNotifierQ(context.read<RedditApi>()),
-        // ),
-        // ChangeNotifierProvider<HomePopularNotifierQ>(
-        //   create: (BuildContext context) =>
-        //       HomePopularNotifierQ(context.read<RedditApi>()),
-        // ),
-
         ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
           create: (BuildContext context) =>
               SubmissionLoaderNotifierQ(redditApi),
