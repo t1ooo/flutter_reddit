@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tile.v2.dart';
+import '../home/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 // import '../widget/stream_list_builder.dart';
-import '../widget/loader.v2.dart';
+import '../widget/loader.dart';
 
 class UserSubmissions extends StatelessWidget {
   const UserSubmissions({

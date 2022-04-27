@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/widget/loader.v2.dart';
+import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import 'user_profile.v1.dart';
+import 'user_profile.dart';
 
 // TODO: rename to UserProfileScreen loader
 class UserProfileScreen extends StatelessWidget {

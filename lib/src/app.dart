@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'tabs.v2.dart';
+import 'tabs.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

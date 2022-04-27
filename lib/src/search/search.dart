@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tile.v2.dart';
+import '../home/submission_tile.dart';
 import '../home/submission_tiles.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/reddir_api.dart';
-import '../widget/loader.v2.dart';
+import '../widget/loader.dart';
 
 class Search extends StatelessWidget {
   const Search({

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tile.v2.dart';
+import '../home/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
-import 'comment.v2.dart';
+import 'comment.dart';
 
 class SubmissionWidget extends StatelessWidget {
   SubmissionWidget({Key? key}) : super(key: key);

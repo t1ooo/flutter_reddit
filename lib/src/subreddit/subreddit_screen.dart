@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/subreddit.dart';
-import 'subreddit.v2.dart';
+import 'subreddit.dart';
 
 class SubredditScreen extends StatelessWidget {
   const SubredditScreen({

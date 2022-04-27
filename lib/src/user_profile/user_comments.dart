@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
-import '../widget/loader.v2.dart';
+import '../widget/loader.dart';
 
 class UserComments extends StatelessWidget {
   const UserComments({

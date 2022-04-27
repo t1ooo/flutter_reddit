@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/trophy.dart';
-import '../widget/loader.v2.dart';
+import '../widget/loader.dart';
 import 'user_trophy.dart';
 
 class UserTrophies extends StatelessWidget {

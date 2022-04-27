@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission_type.dart';
-import 'submission_tile.v2.dart';
+import 'submission_tile.dart';
 
 class GSubmissionTiles<T> extends StatelessWidget {
   GSubmissionTiles({
