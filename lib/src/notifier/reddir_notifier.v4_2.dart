@@ -187,7 +187,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to unsubscribe');
   }
 
-  SubType _subType = SubType.best;
+  SubType _subType = SubType.values.first;
   SubType get subType => _subType;
 
   List<SubmissionNotifierQ>? _submissions;
@@ -235,13 +235,13 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   int _limit = 10;
   static final _log = Logger('HomeFrontNotifierQ');
 
-  SubType _subType = SubType.best;
-  SubType get subType => _subType;
+  FrontSubType _subType = FrontSubType.values.first;
+  FrontSubType get subType => _subType;
 
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
-  Future<void> loadSubmissions(SubType subType) {
+  Future<void> loadSubmissions(FrontSubType subType) {
     return _try(() async {
       if (_submissions != null && _subType == subType) return null;
       _subType = subType;
@@ -263,7 +263,7 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
   int _limit = 10;
   static final _log = Logger('HomePopularNotifierQ');
 
-  SubType _subType = SubType.best;
+  SubType _subType = SubType.values.first;
   SubType get subType => _subType;
 
   List<SubmissionNotifierQ>? _submissions;

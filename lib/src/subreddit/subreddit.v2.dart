@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
+import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';
@@ -191,17 +192,29 @@ class SubredditWidget extends StatelessWidget {
         //   // return SubmissionWidget();
         // }),
 
-        Builder(builder: (context) {
-          final notifier = context.watch<SubredditNotifierQ>();
-          final submissions = notifier.submissions;
-          return SubmissionTiles(
+        // Builder(builder: (context) {
+        //   final notifier = context.watch<SubredditNotifierQ>();
+        //   final submissions = notifier.submissions;
+        //   return SubmissionTiles(
+        //       type: notifier.subType,
+        //       submissions: submissions,
+        //       onTypeChanged: (subType) {
+        //         print(subType);
+        //         notifier.loadSubmissions(subType);
+        //       });
+        // }),
+
+        Builder(
+          builder: (context) {
+            final notifier = context.watch<SubredditNotifierQ>();
+            return GSubmissionTiles<SubType>(
               type: notifier.subType,
-              submissions: submissions,
-              onTypeChanged: (subType) {
-                print(subType);
-                notifier.loadSubmissions(subType);
-              });
-        }),
+              types: SubType.values,
+              submissions: notifier.submissions,
+              onTypeChanged: notifier.loadSubmissions,
+            );
+          },
+        ),
       ],
     );
   }

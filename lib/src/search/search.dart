@@ -53,21 +53,46 @@ class Search extends StatelessWidget {
     //   },
     // );
 
+    // return Builder(
+    //   builder: (context) {
+    //     // print('builder');
+    //     final notifier = context.watch<SearchNotifierQ>();
+    //     final submissions = notifier.submissions;
+    //     return SearchSubmissionTiles(
+    //       sort: notifier.sort,
+    //       submissions: submissions,
+    //       onTypeChanged: (subType) {
+    //         print(subType);
+    //         notifier.search(query, subType);
+    //       },
+    //     );
+    //   },
+    // );
+
     return Builder(
       builder: (context) {
-        // print('builder');
         final notifier = context.watch<SearchNotifierQ>();
-        final submissions = notifier.submissions;
-        return SearchSubmissionTiles(
-          sort: notifier.sort,
-          submissions: submissions,
+         return GSubmissionTiles<Sort>(
+          type: notifier.sort,
+          types: Sort.values,
+          submissions: notifier.submissions,
           onTypeChanged: (subType) {
-            print(subType);
             notifier.search(query, subType);
           },
         );
       },
     );
+
+    /* 
+    SearchSubmissionTiles(
+      submissions: submissions,
+      dropdown: CustomDropdownButton(
+        value: type,
+        values: SubType.values,
+        onChanged: onTypeChanged,
+      ),
+    );
+     */
 
     // return Loader<List<SubmissionNotifierQ>>(
     //   load: (context) => context.watch<SearchNotifierQ>().search(query),

@@ -54,18 +54,30 @@ class Popular extends StatelessWidget {
     //   controller: context.read<PopularSubmissionsNotifier>(),
     // );
 
-    return Builder(builder: (context) {
-      final notifier = context.watch<HomePopularNotifierQ>();
-      final submissions = notifier.submissions;
-      return SubmissionTiles(
-        type: notifier.subType,
-        submissions: submissions,
-        onTypeChanged: (subType) {
-          // print(subType);
-          notifier.loadSubmissions(subType);
-        },
-      );
-    });
+    // return Builder(builder: (context) {
+    //   final notifier = context.watch<HomePopularNotifierQ>();
+    //   final submissions = notifier.submissions;
+    //   return SubmissionTiles(
+    //     type: notifier.subType,
+    //     submissions: submissions,
+    //     onTypeChanged: (subType) {
+    //       // print(subType);
+    //       notifier.loadSubmissions(subType);
+    //     },
+    //   );
+    // });
+
+    return Builder(
+      builder: (context) {
+        final notifier = context.watch<HomePopularNotifierQ>();
+         return GSubmissionTiles<SubType>(
+          type: notifier.subType,
+          types: SubType.values,
+          submissions: notifier.submissions,
+          onTypeChanged: notifier.loadSubmissions,
+        );
+      },
+    );
 
     // return SubmissionTiles(
     //   pageStorageKey: PageStorageKey('popular'),

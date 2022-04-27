@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/submission_type.dart';
 import 'package:provider/provider.dart';
 
 // import '../notifier/reddir_notifier.dart';
@@ -65,17 +66,29 @@ class Home extends StatelessWidget {
     //     },
     //   );
 
-    return Builder(
+    // return Builder(
+    //   builder: (context) {
+    //     final notifier = context.watch<HomeFrontNotifierQ>();
+    //     final submissions = notifier.submissions;
+    //     return SubmissionTiles(
+    //       type: notifier.subType,
+    //       submissions: submissions,
+    //       onTypeChanged: (subType) {
+    //         // print(subType);
+    //         notifier.loadSubmissions(subType);
+    //       },
+    //     );
+    //   },
+    // );
+
+     return Builder(
       builder: (context) {
         final notifier = context.watch<HomeFrontNotifierQ>();
-        final submissions = notifier.submissions;
-        return SubmissionTiles(
+         return GSubmissionTiles<FrontSubType>(
           type: notifier.subType,
-          submissions: submissions,
-          onTypeChanged: (subType) {
-            // print(subType);
-            notifier.loadSubmissions(subType);
-          },
+          types: FrontSubType.values,
+          submissions: notifier.submissions,
+          onTypeChanged: notifier.loadSubmissions,
         );
       },
     );

@@ -13,6 +13,7 @@ deps=(
     url_launcher
     # url_launcher_linux
     persistent_bottom_nav_bar
+    # meta
 )
 
 dev_deps=(

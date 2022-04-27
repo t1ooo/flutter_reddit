@@ -1,6 +1,19 @@
+import 'package:meta/meta_meta.dart';
+
+
+// TODO: gilded
+
 /// submission type
 enum SubType {
-  // TODO: gilded
+  // best,
+  hot,
+  newest,
+  top,
+  rising,
+  controversial,
+}
+
+enum FrontSubType {
   best,
   hot,
   newest,
@@ -9,3 +22,8 @@ enum SubType {
   controversial,
 }
 
+
+@TargetKind.enumType
+class A {
+  static const int a = 1;
+}
