@@ -34,6 +34,7 @@ class Loader<T> extends StatelessWidget {
     required this.data,
     required this.onData,
     this.onError,
+    this.onLoading,
   }) : super(key: key);
 
   final Future Function(BuildContext) load;
@@ -41,6 +42,7 @@ class Loader<T> extends StatelessWidget {
   // final Widget Function(BuildContext, T, Object?) builder;
   final Widget Function(BuildContext, T) onData;
   final Widget Function(BuildContext, Object)? onError;
+  final Widget Function(BuildContext)? onLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class Loader<T> extends StatelessWidget {
         if (data != null) {
           return onData(context, data);
         }
-        return Center(child: CircularProgressIndicator());
+        return (onLoading ?? onLoadingDefault)(context);
       },
     );
   }
@@ -64,5 +66,9 @@ class Loader<T> extends StatelessWidget {
   Widget onErrorDefault(context, error) {
     showErrorSnackBar(context, error);
     return Container();
+  }
+
+  Widget onLoadingDefault(context) {
+    return Center(child: CircularProgressIndicator());
   }
 }

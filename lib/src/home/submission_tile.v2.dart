@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 import 'package:flutter_reddit_prototype/src/widget/custom_future_builder.dart';
+import 'package:flutter_reddit_prototype/src/widget/loader.v2.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
@@ -66,6 +67,21 @@ class SubmissionTile extends StatelessWidget {
                     //   ),
                     // ),
 
+                    SizedBox(
+                      width: iconSize,
+                      height: iconSize,
+                      child: Loader<String>(
+                        load: (context) => notifier.loadIcon(),
+                        data: (context) => notifier.icon,
+                        onData: (BuildContext context, String icon) {
+                          return Image.network(icon);
+                        },
+                        onLoading: (_) =>
+                            Container(decoration: BoxDecoration()),
+                        onError: (_, __) => Container(),
+                      ),
+                    ),
+
                     SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +107,8 @@ class SubmissionTile extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => UserProfileScreen(name:submission.author)),
+                                    builder: (_) => UserProfileScreen(
+                                        name: submission.author)),
                               );
                             },
                             child: Text(submission.author),

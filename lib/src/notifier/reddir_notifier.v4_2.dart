@@ -443,6 +443,17 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
       await Share.share('${submission.title} ${submission.shortLink}');
     }, 'fail to share');
   }
+
+  String? _icon;
+  String? get icon => _icon;
+
+  Future<void> loadIcon() async {
+    return _try(() async {
+      if (_icon != null) return null;
+      _icon = await _redditApi.subredditIcon(_submission.subreddit);
+      notifyListeners();
+    }, 'fail to load icon');
+  }
 }
 
 class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
