@@ -17,11 +17,11 @@ class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     Key? key,
     required this.name,
-    this.isCurrentUser = false,
+    // this.isCurrentUser = false,
   }) : super(key: key);
 
   final String name;
-  final bool isCurrentUser;
+  // final bool isCurrentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class UserProfileScreen extends StatelessWidget {
         onData: (context, user) {
           return ChangeNotifierProvider<UserNotifierQ>.value(
             value: user,
-            child: UserProfile(isCurrentUser: isCurrentUser),
+            child: UserProfile(isCurrentUser: false),
           );
         },
       ),
@@ -81,11 +81,11 @@ class CurrentUserProfileScreen extends StatelessWidget {
   const CurrentUserProfileScreen({
     Key? key,
     // required this.user,
-    this.isCurrentUser = false,
+    // this.isCurrentUser = false,
   }) : super(key: key);
 
   // final User user;
-  final bool isCurrentUser;
+  // final bool isCurrentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class CurrentUserProfileScreen extends StatelessWidget {
       ),
       // body: UserProfile(name: name),
       // body: UserProfile(user: user, isCurrentUser: isCurrentUser),
-      body: UserProfile(isCurrentUser: isCurrentUser),
+      body: UserProfile(isCurrentUser: true),
       // body: ChangeNotifierProvider<UserNotifierQ>.value(
       //       value: user,
       //       child: UserProfile(isCurrentUser: isCurrentUser),

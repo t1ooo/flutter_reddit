@@ -153,7 +153,7 @@ class UserMenu extends StatelessWidget {
                     // );
                     return ChangeNotifierProvider<UserNotifierQ>.value(
                       value: user,
-                      child: CurrentUserProfileScreen(isCurrentUser: true),
+                      child: CurrentUserProfileScreen(),
                     );
                   },
                 ),

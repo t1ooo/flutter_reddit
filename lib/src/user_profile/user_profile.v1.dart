@@ -10,6 +10,7 @@ import '../reddit_api/user.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
 // import '../widget/subscribe_button.dart';
+import '../widget/subscribe_button.dart';
 import 'user_about.dart';
 import 'user_submissions.dart';
 
@@ -115,6 +116,11 @@ class UserProfile extends StatelessWidget {
                       // ElevatedButton(onPressed: () {}, child: Text('FOLLOW')),
                       // ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
                       // SubscribeButton(subreddit: user.subreddit, isUserPage: true),
+                      ChangeNotifierProvider<SubredditNotifierQ>.value(
+                        value: user.subreddit,
+                        child: SubscribeButton(isUserPage: true),
+                      ),
+
                       // TODO: subscribe
                     ],
                   ),

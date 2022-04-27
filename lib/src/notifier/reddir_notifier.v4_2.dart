@@ -540,6 +540,9 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
   UserNotifierQ? _user;
   UserNotifierQ? get user => _user;
 
+  // SubredditNotifierQ? _subreddit;
+  // SubredditNotifierQ? get subreddit => _subreddit;
+
   Future<void> loadUser(String name) {
     print(name);
     return _try(() async {
@@ -547,7 +550,9 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
       _name = name;
       // _setName(name);
       // if (_user != null) return null;
+      // final user = await _redditApi.user(_name!);
       _user = UserNotifierQ(_redditApi, await _redditApi.user(_name!));
+      // _subreddit = SubredditNotifierQ(_redditApi, user.subreddit);
       notifyListeners();
     }, 'fail to load user');
   }
@@ -573,6 +578,9 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   //   if (_name != name) _reset();
   //   _name = name;
   // }
+
+  // SubredditNotifierQ? _subreddit;
+  // SubredditNotifierQ? get subreddit => _subreddit;
 
   User _user;
   User get user => _user;

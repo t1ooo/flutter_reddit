@@ -7,6 +7,7 @@ import '../reddit_api/subreddit.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';
 import '../submission/submission.v2.dart';
+import '../widget/subscribe_button.dart';
 // import '../widget/subscribe_button.dart';
 
 class SubredditWidget extends StatelessWidget {
@@ -77,6 +78,7 @@ class SubredditWidget extends StatelessWidget {
                   //     );
                   // }),
                   // SubscribeButton(subreddit: subreddit),
+                  SubscribeButton(),
 
                   // TODO: subscribe
 
