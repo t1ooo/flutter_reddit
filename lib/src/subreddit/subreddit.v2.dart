@@ -24,19 +24,27 @@ class SubredditWidget extends StatelessWidget {
     final subreddit = notifier.subreddit;
     return ListView(
       children: [
+        // SizedBox(height: topPadding),
         // if (subreddit.headerImg != '')
         //   Image.network(subreddit.headerImg),
         // if (subreddit.communityIcon != '')
         //   Image.network(subreddit.communityIcon),
         // if (subreddit.bannerBackgroundImage != '')
         //   Image.network(subreddit.bannerBackgroundImage),
-        if (subreddit.bannerBackgroundImage != '')
-          SearchFieldImage(src: subreddit.bannerBackgroundImage)
-        else
-          Padding(
-            padding: pagePadding,
-            child: SearchField(),
-          ),
+        // if (subreddit.bannerBackgroundImage != '')
+        //   SearchField(
+        //     src: subreddit.bannerBackgroundImage,
+        //     subreddit: subreddit.displayNamePrefixed,
+        //   )
+        // else
+        //   Padding(
+        //     padding: pagePadding,
+        //     child: SearchField(),
+        //   ),
+        SearchField(
+          src: subreddit.bannerBackgroundImage,
+          subreddit: subreddit.displayNamePrefixed,
+        ),
         Padding(
           padding: pagePadding,
           child: Column(
@@ -187,13 +195,12 @@ class SubredditWidget extends StatelessWidget {
           final notifier = context.watch<SubredditNotifierQ>();
           final submissions = notifier.submissions;
           return SubmissionTiles(
-            type: notifier.subType,
-            submissions: submissions,
-            onTypeChanged: (subType) {
-              print(subType);
-              notifier.loadSubmissions(subType);
-            }
-          );
+              type: notifier.subType,
+              submissions: submissions,
+              onTypeChanged: (subType) {
+                print(subType);
+                notifier.loadSubmissions(subType);
+              });
         }),
       ],
     );

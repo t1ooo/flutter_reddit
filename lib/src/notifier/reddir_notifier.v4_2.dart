@@ -73,6 +73,7 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
     // }
 
     return _try(() async {
+      print('search');
       if (_submissions != null &&
           _query == query &&
           _sort == sort &&

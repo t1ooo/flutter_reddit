@@ -8,15 +8,37 @@ class SearchField extends StatelessWidget {
   SearchField({
     Key? key,
     this.query,
+    this.subreddit,
+    this.src,
   }) : super(key: key);
 
   final String? query;
+  final String? subreddit;
+  final String? src;
   static final _controller = TextEditingController();
 
   static final name = 'SearchField';
 
   @override
   Widget build(BuildContext context) {
+    if (src != null) {
+      return Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(src!),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: pagePadding.copyWith(top: pagePadding.top + topPadding),
+          child: searchField(context),
+        ),
+      );
+    }
+    return searchField(context);
+  }
+
+  Widget searchField(BuildContext context) {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _controller.text = query ?? '';
     });
@@ -60,7 +82,7 @@ class SearchField extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: Colors.white,
               filled: true,
-              hintText: 'Search',
+              hintText: subreddit != null ? '$subreddit: Search' : 'Search',
               border: OutlineInputBorder(),
             ),
           ),
@@ -83,24 +105,27 @@ void navigatorPushOrReplace(context, MaterialPageRoute route) {
   }
 }
 
-class SearchFieldImage extends StatelessWidget {
-  const SearchFieldImage({Key? key, required this.src}) : super(key: key);
+// class SearchFieldImage extends StatelessWidget {
+//   const SearchFieldImage({
+//     Key? key,
+//     required this.src,
+//   }) : super(key: key);
 
-  final String src;
+//   final String src;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(src),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Padding(
-        padding: pagePadding,
-        child: SearchField(),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         image: DecorationImage(
+//           image: NetworkImage(src),
+//           fit: BoxFit.cover,
+//         ),
+//       ),
+//       child: Padding(
+//         padding: pagePadding,
+//         child: SearchField(),
+//       ),
+//     );
+//   }
+// }

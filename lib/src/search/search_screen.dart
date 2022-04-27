@@ -16,10 +16,10 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      // context.read<SearchSubmissionsNotifier>().query = query;
-      context.read<SearchNotifierQ>().search(query);
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   // context.read<SearchSubmissionsNotifier>().query = query;
+    //   context.read<SearchNotifierQ>().search(query);
+    // });
     return DefaultTabController(
       length: 2,
       child: Scaffold(
