@@ -134,6 +134,7 @@ class CommentWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (_) => UserProfileScreen(name: comment.author),
+                // builder: (_) => UserProfileScreen(),
               ),
             );
           },

@@ -146,13 +146,16 @@ class UserMenu extends StatelessWidget {
                   //   user: user.user,
                   //   isCurrentUser: true,
                   // ),
-                   builder: (_) { 
-                     
-                     UserProfileScreenV2(
-                     
-                      isCurrentUser: true,
+                  builder: (_) {
+                    // return CurrentUserProfileScreen(
+                    // name: user.user.name,
+                    // isCurrentUser: true,
+                    // );
+                    return ChangeNotifierProvider<UserNotifierQ>.value(
+                      value: user,
+                      child: CurrentUserProfileScreen(isCurrentUser: true),
                     );
-                   },
+                  },
                 ),
               );
               // Navigator.pop(context);

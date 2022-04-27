@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/widget/loader.v2.dart';
 
 import 'package:provider/provider.dart';
 
@@ -15,11 +16,11 @@ import 'user_profile.v1.dart';
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     Key? key,
-    // required this.name,
+    required this.name,
     this.isCurrentUser = false,
   }) : super(key: key);
 
-  // final String name;
+  final String name;
   final bool isCurrentUser;
 
   @override
@@ -60,14 +61,24 @@ class UserProfileScreen extends StatelessWidget {
       //     return UserProfile(user: user.user, isCurrentUser: isCurrentUser);
       //   },
       // ),
-      body: UserProfile(isCurrentUser: isCurrentUser),
+      // body: UserProfile(isCurrentUser: isCurrentUser),
+      body: Loader<UserNotifierQ>(
+        load: (context) => context.read<UserLoaderNotifierQ>().loadUser(name),
+        data: (context) => context.read<UserLoaderNotifierQ>().user,
+        onData: (context, user) {
+          return ChangeNotifierProvider<UserNotifierQ>.value(
+            value: user,
+            child: UserProfile(isCurrentUser: isCurrentUser),
+          );
+        },
+      ),
     );
   }
 }
 
 // TODO: rename to UserProfileScreen
-class UserProfileScreenV2 extends StatelessWidget {
-  const UserProfileScreenV2({
+class CurrentUserProfileScreen extends StatelessWidget {
+  const CurrentUserProfileScreen({
     Key? key,
     // required this.user,
     this.isCurrentUser = false,
@@ -85,6 +96,10 @@ class UserProfileScreenV2 extends StatelessWidget {
       // body: UserProfile(name: name),
       // body: UserProfile(user: user, isCurrentUser: isCurrentUser),
       body: UserProfile(isCurrentUser: isCurrentUser),
+      // body: ChangeNotifierProvider<UserNotifierQ>.value(
+      //       value: user,
+      //       child: UserProfile(isCurrentUser: isCurrentUser),
+      //     )
     );
   }
 }

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:draw/draw.dart' as draw;
-// import 'package:draw/src/listing/listing_generator.dart' as draw;
+import 'package:draw/src/listing/listing_generator.dart' as draw;
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
@@ -17,7 +17,7 @@ import 'vote.dart';
 // abstract class RedditApi {
 //   Future<List<Submission>> front({required int limit});
 //   Future<List<Submission>> popular({required int limit});
-//   Future<List<Subreddit>> userSubreddits({required int limit});
+//   Future<List<Subreddit>> currentUserSubreddits({required int limit});
 // }
 
 typedef Sort = draw.Sort;
@@ -26,6 +26,12 @@ void mustNameWithoutPrefix(String subredditName) {
   if (subredditName.startsWith('r/')) {
     throw Exception('subreddit name start with prefix: $subredditName');
   }
+}
+
+class UserSaved {
+  UserSaved(this.submissions, this.comments);
+  List<Submission> submissions;
+  List<Comment> comments;
 }
 
 // TODO: rename commentSave -> saveComment
@@ -43,7 +49,7 @@ abstract class RedditApi {
   Future<String> subredditIcon(String name);
 
   Future<User> user(String name);
-  Stream<Subreddit> userSubreddits({required int limit});
+  Stream<Subreddit> currentUserSubreddits({required int limit});
   Stream<Comment> userComments(String name, {required int limit});
   Stream<Submission> userSubmissions(String name, {required int limit});
   Future<List<Trophy>> userTrophies(String name);
@@ -68,8 +74,13 @@ abstract class RedditApi {
 
   /// return List<Submission|Comment>
   // Stream<dynamic> currentUserSaved();
-  Stream<Submission> currentUserSavedSubmissions({required int limit});
-  Stream<Comment> currentUserSavedComments({required int limit});
+  // Stream<Submission> currentUserSavedSubmissions({required int limit});
+  // Stream<Comment> currentUserSavedComments({required int limit});
+
+
+  // Stream<Submission> userSavedSubmissions(String name, {required int limit});
+  // Stream<Comment> userSavedComments(String name, {required int limit});
+  Future<UserSaved> userSaved(String name, {required int limit});
 
   Stream<Submission> search(String query,
       {required int limit, required Sort sort, subreddit = 'all'});
@@ -161,7 +172,7 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Stream<Subreddit> userSubreddits({required int limit}) async* {
+  Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
     // reddit.subreddits;
     await for (final v in reddit.user.subreddits(limit: limit)) {
       if (v.data == null) {
@@ -362,41 +373,47 @@ class RedditApiImpl implements RedditApi {
     return User.fromJson(redditor.data!);
   }
 
-  Stream<dynamic> _currentUserSaved(int limit) async* {
+  Future<UserSaved> userSaved(String name, {required int limit}) async {
     //  for(final v in await user!.saved().toList()) {
     // if (v is Submission) print('Submission ${v.id}');
     // if (v is CommentRef) print('CommentRef');
     // if (v is Comment) print('Comment ${v.id}');
-    final redditor = await reddit.user.me();
-    if (redditor == null) {
-      return;
-    }
+    // final redditor = await reddit.user.me();
+    // if (redditor == null) {
+    //   return;
+    // }
 
-    await for (final v in await redditor.saved(limit: limit)) {
+    final redditorRef = await reddit.redditor(name);
+    // final redditor = await redditorRef.populate();
+    final submissions = <Submission>[];
+    final comments = <Comment>[];
+    await for (final v in redditorRef.saved(limit: limit)) {
       try {
         if (v is draw.Submission)
-          yield Submission.fromJson(v.data!);
+          submissions.add(Submission.fromJson(v.data!));
         else if (v is draw.Comment)
-          yield Comment.fromJson(v.data!);
+          comments.add(Comment.fromJson(v.data!));
         else
           _log.warning('undefined type');
       } on Exception catch (e, st) {
         _log.error('', e, st);
       }
     }
+
+    return UserSaved(submissions, comments);
   }
 
-  Stream<Submission> currentUserSavedSubmissions({required int limit}) {
-    return _currentUserSaved(limit)
-        .where((v) => v is Submission)
-        .map((v) => v as Submission);
-  }
+  // Stream<Submission> userSavedSubmissions(String name, {required int limit}) {
+  //   return currentUserSaved(limit)
+  //       .where((v) => v is Submission)
+  //       .map((v) => v as Submission);
+  // }
 
-  Stream<Comment> currentUserSavedComments({required int limit}) {
-    return _currentUserSaved(limit)
-        .where((v) => v is Comment)
-        .map((v) => v as Comment);
-  }
+  // Stream<Comment> userSavedComments(String name, {required int limit}) {
+  //   return currentUserSaved(limit)
+  //       .where((v) => v is Comment)
+  //       .map((v) => v as Comment);
+  // }
 
   Stream<Submission> search(String query,
       {required int limit, required Sort sort, subreddit = 'all'}) async* {
@@ -457,7 +474,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   @override
-  Stream<Subreddit> userSubreddits({required int limit}) async* {
+  Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
     final data = await File('data/user.subreddits.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -611,37 +628,37 @@ class FakeRedditApi implements RedditApi {
     return User.fromJson(jsonDecode(data));
   }
 
-  Stream<dynamic> _currentUserSaved(int limit) async* {
+  Future<UserSaved> userSaved(String name, {required int limit}) async {
     final data = await File('data/user.current.saved.json').readAsString();
+    final submissions = <Submission>[];
+    final comments = <Comment>[];
 
     final items = (jsonDecode(data) as List<dynamic>)
+        .take(limit)
         .map((v) => v as Map<dynamic, dynamic>)
-        .map((v) {
+        .forEach((v) {
       if (v['name']?.contains('t1_'))
-        return Comment.fromJson(v);
+        comments.add(Comment.fromJson(v));
       else
-        return Submission.fromJson(v);
-    }).take(limit);
+        submissions.add(Submission.fromJson(v));
+    });
 
-    for (final item in items) {
-      await Future.delayed(_delay);
-      yield item;
-    }
+    return UserSaved(submissions, comments);
   }
 
-  Stream<Submission> currentUserSavedSubmissions({required int limit}) {
-    return _currentUserSaved(limit)
-        .where((v) => v is Submission)
-        .map((v) => v as Submission)
-        .take(limit);
-  }
+  // Stream<Submission> currentUserSavedSubmissions({required int limit}) {
+  //   return _currentUserSaved(limit)
+  //       .where((v) => v is Submission)
+  //       .map((v) => v as Submission)
+  //       .take(limit);
+  // }
 
-  Stream<Comment> currentUserSavedComments({required int limit}) {
-    return _currentUserSaved(limit)
-        .where((v) => v is Comment)
-        .map((v) => v as Comment)
-        .take(limit);
-  }
+  // Stream<Comment> currentUserSavedComments({required int limit}) {
+  //   return _currentUserSaved(limit)
+  //       .where((v) => v is Comment)
+  //       .map((v) => v as Comment)
+  //       .take(limit);
+  // }
 
   Future<String> subredditIcon(String name) async {
     mustNameWithoutPrefix(name);

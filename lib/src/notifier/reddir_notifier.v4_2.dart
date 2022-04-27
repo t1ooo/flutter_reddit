@@ -541,6 +541,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
   UserNotifierQ? get user => _user;
 
   Future<void> loadUser(String name) {
+    print(name);
     return _try(() async {
       if (_user != null && _name == name) return;
       _name = name;
@@ -635,6 +636,25 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to load user comments');
   }
+
+  // UserSaved? _saved;
+  List<CommentNotifierQ>? _savedComments;
+  List<CommentNotifierQ>? get savedComments => _savedComments;
+  List<SubmissionNotifierQ>? _savedSubmissions;
+  List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
+
+  Future<void> loadSaved() {
+    return _try(() async {
+      if (_savedComments != null && _savedSubmissions != null) return;
+      final saved = await _redditApi.userSaved(_user.name, limit: _limit);
+      _savedSubmissions = saved.submissions
+          .map((v) => SubmissionNotifierQ(_redditApi, v))
+          .toList();
+      _savedComments =
+          saved.comments.map((v) => CommentNotifierQ(_redditApi, v)).toList();
+      notifyListeners();
+    }, 'fail to load saved');
+  }
 }
 
 class UserAuth extends ChangeNotifier with TryMixin {
@@ -665,8 +685,9 @@ class UserAuth extends ChangeNotifier with TryMixin {
   }
 }
 
-class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
-  CurrentUserNotifierQ(this._redditApi, this._user);
+// class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
+class CurrentUserNotifierQ extends UserNotifierQ {
+  CurrentUserNotifierQ(this._redditApi, this._user) : super(_redditApi, _user);
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -699,42 +720,42 @@ class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
   Future<void> loadSubreddits() {
     return _try(() async {
       _subreddits = await _redditApi
-          .userSubreddits(limit: _limit)
+          .currentUserSubreddits(limit: _limit)
           .map((v) => SubredditNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to load subreddits');
   }
 
-  List<CommentNotifierQ>? _savedComments;
-  List<CommentNotifierQ>? get savedComments => _savedComments;
+  // List<CommentNotifierQ>? _savedComments;
+  // List<CommentNotifierQ>? get savedComments => _savedComments;
 
-  Future<void> loadSavedComments() {
-    {
-      return _try(() async {
-        _savedComments = await _redditApi
-            .userComments(_user.name, limit: _limit)
-            .map((v) => CommentNotifierQ(_redditApi, v))
-            .toList();
-        notifyListeners();
-      }, 'fail to login');
-    }
-  }
+  // Future<void> loadSavedComments() {
+  //   {
+  //     return _try(() async {
+  //       _savedComments = await _redditApi
+  //           .userComments(_user.name, limit: _limit)
+  //           .map((v) => CommentNotifierQ(_redditApi, v))
+  //           .toList();
+  //       notifyListeners();
+  //     }, 'fail to login');
+  //   }
+  // }
 
-  List<SubmissionNotifierQ>? _savedSubmissions;
-  List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
+  // List<SubmissionNotifierQ>? _savedSubmissions;
+  // List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
 
-  Future<void> loadSavedSubmissions() {
-    {
-      return _try(() async {
-        _savedSubmissions = await _redditApi
-            .userSubmissions(_user.name, limit: _limit)
-            .map((v) => SubmissionNotifierQ(_redditApi, v))
-            .toList();
-        notifyListeners();
-      }, 'fail to load saved submissions');
-    }
-  }
+  // Future<void> loadSavedSubmissions() {
+  //   {
+  //     return _try(() async {
+  //       _savedSubmissions = await _redditApi
+  //           .userSubmissions(_user.name, limit: _limit)
+  //           .map((v) => SubmissionNotifierQ(_redditApi, v))
+  //           .toList();
+  //       notifyListeners();
+  //     }, 'fail to load saved submissions');
+  //   }
+  // }
 }
 
 class UIException implements Exception {

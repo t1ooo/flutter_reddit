@@ -91,8 +91,7 @@ class SubmissionTile extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => UserProfileScreen(
-                                        name: submission.author)),
+                                    builder: (_) => UserProfileScreen(name:submission.author)),
                               );
                             },
                             child: Text(submission.author),
