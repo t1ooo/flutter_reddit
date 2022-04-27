@@ -16,7 +16,7 @@ class SubmissionTiles extends StatelessWidget {
     required this.submissions,
     required this.onTypeChanged,
     this.activeLink = true,
-    this.showTrending = true,
+    // this.showTrending = true,
     this.showTypeSelector = true,
     // this.showLocationSelector = true,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class SubmissionTiles extends StatelessWidget {
   final List<SubmissionNotifierQ>? submissions;
   final Function(SubType) onTypeChanged;
   final bool activeLink;
-  final bool showTrending;
+  // final bool showTrending;
   final bool showTypeSelector;
   // final bool showLocationSelector;
 
@@ -63,25 +63,25 @@ class SubmissionTiles extends StatelessWidget {
         ),
         SizedBox(height: 50),
         // ],
-        if (showTrending) ...[
-          Text('Trending today'),
-          SizedBox(
-            height: 200,
-            child: CustomScroll(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  for (int i = 0; i < 10; i++)
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: SizedPlaceholder(width: 200, height: 200 * 3 / 4),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-        ],
+        // if (showTrending) ...[
+        //   Text('Trending today'),
+        //   SizedBox(
+        //     height: 200,
+        //     child: CustomScroll(
+        //       child: ListView(
+        //         scrollDirection: Axis.horizontal,
+        //         children: <Widget>[
+        //           for (int i = 0; i < 10; i++)
+        //             Padding(
+        //               padding: EdgeInsets.only(left: 10),
+        //               child: SizedPlaceholder(width: 200, height: 200 * 3 / 4),
+        //             ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        //   SizedBox(height: 10),
+        // ],
         for (final sub in submissions ?? [])
           ChangeNotifierProvider<SubmissionNotifierQ>.value(
             value: sub,

@@ -142,10 +142,17 @@ class UserMenu extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => UserProfileScreenV2(
-                    user: user.user,
-                    isCurrentUser: true,
-                  ),
+                  // builder: (_) => UserProfileScreenV2(
+                  //   user: user.user,
+                  //   isCurrentUser: true,
+                  // ),
+                   builder: (_) { 
+                     
+                     UserProfileScreenV2(
+                     
+                      isCurrentUser: true,
+                    );
+                   },
                 ),
               );
               // Navigator.pop(context);

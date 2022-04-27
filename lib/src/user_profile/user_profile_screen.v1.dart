@@ -15,11 +15,11 @@ import 'user_profile.v1.dart';
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     Key? key,
-    required this.name,
+    // required this.name,
     this.isCurrentUser = false,
   }) : super(key: key);
 
-  final String name;
+  // final String name;
   final bool isCurrentUser;
 
   @override
@@ -47,19 +47,20 @@ class UserProfileScreen extends StatelessWidget {
       //     return UserProfile(user: user, isCurrentUser: isCurrentUser);
       //   },
       // ),
-      body: Builder(
-        builder: (BuildContext context) {
-          final notifier = context.watch<UserLoaderNotifierQ>();
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
-            notifier.loadUser(name);
-          });
-          final user = notifier.user;
-          if (user == null) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return UserProfile(user: user.user, isCurrentUser: isCurrentUser);
-        },
-      ),
+      // body: Builder(
+      //   builder: (BuildContext context) {
+      //     final notifier = context.watch<UserLoaderNotifierQ>();
+      //     WidgetsBinding.instance?.addPostFrameCallback((_) {
+      //       notifier.loadUser(name);
+      //     });
+      //     final user = notifier.user;
+      //     if (user == null) {
+      //       return Center(child: CircularProgressIndicator());
+      //     }
+      //     return UserProfile(user: user.user, isCurrentUser: isCurrentUser);
+      //   },
+      // ),
+      body: UserProfile(isCurrentUser: isCurrentUser),
     );
   }
 }
@@ -68,11 +69,11 @@ class UserProfileScreen extends StatelessWidget {
 class UserProfileScreenV2 extends StatelessWidget {
   const UserProfileScreenV2({
     Key? key,
-    required this.user,
+    // required this.user,
     this.isCurrentUser = false,
   }) : super(key: key);
 
-  final User user;
+  // final User user;
   final bool isCurrentUser;
 
   @override
@@ -82,7 +83,8 @@ class UserProfileScreenV2 extends StatelessWidget {
         title: Text('User Profile'),
       ),
       // body: UserProfile(name: name),
-      body: UserProfile(user: user, isCurrentUser: isCurrentUser),
+      // body: UserProfile(user: user, isCurrentUser: isCurrentUser),
+      body: UserProfile(isCurrentUser: isCurrentUser),
     );
   }
 }

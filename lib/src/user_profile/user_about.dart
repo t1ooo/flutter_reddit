@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_trophies.dart';
 import 'package:provider/provider.dart';
@@ -7,18 +8,19 @@ import '../reddit_api/user.dart';
 import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
-import '../widget/stream_list_builder.dart';
+// import '../widget/stream_list_builder.dart';
 
 class UserAbout extends StatelessWidget {
   const UserAbout({
     Key? key,
-    required this.user,
+    // required this.user,
   }) : super(key: key);
 
-  final User user;
+  // final User user;
 
   @override
   Widget build(BuildContext context) {
+    final user = context.read<UserNotifierQ>().user;
     // return GridView.count(
     //   crossAxisCount: 2,
     //   childAspectRatio: 6/3,
@@ -75,10 +77,9 @@ class UserAbout extends StatelessWidget {
               ],
             ),
             SizedBox(height: 50),
-
             ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
             ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
-            UserTrophies(user: user),
+            UserTrophies(),
           ],
         ),
       ),

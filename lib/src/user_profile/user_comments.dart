@@ -10,10 +10,10 @@ import '../widget/loader.v2.dart';
 class UserComments extends StatelessWidget {
   const UserComments({
     Key? key,
-    required this.name,
+    // required this.name,
   }) : super(key: key);
 
-  final String name;
+  // final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +40,11 @@ class UserComments extends StatelessWidget {
       //     );
       //   },
       // ),
-      
-      child: Loader<List<CommentNotifierQ>?>(
+
+      child: Loader<List<CommentNotifierQ>>(
         load: (context) => context.read<UserNotifierQ>().loadComments(),
         data: (context) => context.read<UserNotifierQ>().comments,
-        builder: (context, comments, error) {
-          if (error != null) {
-            showErrorSnackBar(context, error);
-            return Container();
-          }
-          if (comments == null) {
-            return Center(child: CircularProgressIndicator());
-          }
+        onData: (context, comments) {
           return ListView(
             children: [
               for (final comment in comments)

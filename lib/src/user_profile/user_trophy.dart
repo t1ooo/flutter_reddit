@@ -9,7 +9,7 @@ import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
 import '../widget/custom_future_builder.dart';
-import '../widget/stream_list_builder.dart';
+// import '../widget/stream_list_builder.dart';
 
 class UserTrophy extends StatelessWidget {
   const UserTrophy({

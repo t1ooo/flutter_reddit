@@ -3,6 +3,7 @@ import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
+import '../home/submission_tile.v2.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
@@ -14,8 +15,8 @@ import '../widget/custom_future_builder.dart';
 import '../widget/loader.v2.dart';
 import 'user_trophy.dart';
 
-class UserTrophies extends StatelessWidget {
-  const UserTrophies({
+class UserSubmissions extends StatelessWidget {
+  const UserSubmissions({
     Key? key,
     // required this.user,
   }) : super(key: key);
@@ -25,13 +26,13 @@ class UserTrophies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return CustomFutureBuilder(
-    //   future: context.read<UserNotifier>().trophies(),
-    //   onData: (BuildContext context, List<Trophy> trophies) {
+    //   future: context.read<UserNotifier>().submissions(),
+    //   onData: (BuildContext context, List<Trophy> submissions) {
     //     return ListView(
     //       shrinkWrap: true,
     //       children: [
     //         ListTile(title: Text('TROPHIES')),
-    //         for (final trophy in trophies) UserTrophy(trophy: trophy)
+    //         for (final trophy in submissions) UserTrophy(trophy: trophy)
     //       ],
     //     );
     //   },
@@ -40,52 +41,55 @@ class UserTrophies extends StatelessWidget {
     //   builder: (context) {
     //     final notifier = context.watch<UserNotifierQ>();
     //     WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //       notifier.loadTrophies();
+    //       notifier.loadSubmissions();
     //     });
-    //     final trophies = notifier.trophies;
-    //     if (trophies == null) {
+    //     final submissions = notifier.submissions;
+    //     if (submissions == null) {
     //       return Center(child: CircularProgressIndicator());
     //     }
     //     return ListView(
     //       shrinkWrap: true,
     //       children: [
     //         ListTile(title: Text('TROPHIES')),
-    //         for (final trophy in trophies) UserTrophy(trophy: trophy)
+    //         for (final trophy in submissions) UserTrophy(trophy: trophy)
     //       ],
     //     );
     //   },
     // );
 
     // return Loader<List<Trophy>?>(
-    //   load: (context) => context.watch<UserNotifierQ>().loadTrophies(),
-    //   data: (context) => context.watch<UserNotifierQ>().trophies,
-    //   builder: (context, trophies, error) {
+    //   load: (context) => context.watch<UserNotifierQ>().loadSubmissions(),
+    //   data: (context) => context.watch<UserNotifierQ>().submissions,
+    //   builder: (context, submissions, error) {
     //     if (error != null) {
     //       showErrorSnackBar(context, error);
     //       return Container();
     //     }
-    //     if (trophies == null) {
+    //     if (submissions == null) {
     //       return Center(child: CircularProgressIndicator());
     //     }
     //     return ListView(
     //       shrinkWrap: true,
     //       children: [
     //         ListTile(title: Text('TROPHIES')),
-    //         for (final trophy in trophies) UserTrophy(trophy: trophy)
+    //         for (final trophy in submissions) UserTrophy(trophy: trophy)
     //       ],
     //     );
     //   },
     // );
 
-    return Loader<List<Trophy>>(
-      load: (context) => context.watch<UserNotifierQ>().loadTrophies(),
-      data: (context) => context.watch<UserNotifierQ>().trophies,
-      onData: (context, trophies) {
+    return Loader<List<SubmissionNotifierQ>>(
+      load: (context) => context.watch<UserNotifierQ>().loadSubmissions(),
+      data: (context) => context.watch<UserNotifierQ>().submissions,
+      onData: (context, submissions) {
         return ListView(
           shrinkWrap: true,
           children: [
-            ListTile(title: Text('TROPHIES')),
-            for (final trophy in trophies) UserTrophy(trophy: trophy)
+            for (final sub in submissions)
+              ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                value: sub,
+                child: SubmissionTile(),
+              ),
           ],
         );
       },
