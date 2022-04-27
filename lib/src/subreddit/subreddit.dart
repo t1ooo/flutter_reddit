@@ -53,16 +53,11 @@ class SubredditWidget extends StatelessWidget {
           ),
         ),
         Divider(),
-        Builder(
-          builder: (context) {
-            final notifier = context.watch<SubredditNotifierQ>();
-            return GSubmissionTiles<SubType>(
-              type: notifier.subType,
-              types: SubType.values,
-              submissions: notifier.submissions,
-              onTypeChanged: notifier.loadSubmissions,
-            );
-          },
+        GSubmissionTiles<SubType>(
+          type: notifier.subType,
+          types: SubType.values,
+          submissions: notifier.submissions,
+          onTypeChanged: notifier.loadSubmissions,
         ),
       ],
     );
