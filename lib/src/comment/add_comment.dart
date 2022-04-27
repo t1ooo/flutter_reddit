@@ -36,9 +36,9 @@ class _AddCommentState extends State<AddComment> {
           onChanged: (v) {
             _message = v.trim();
           },
-          onFieldSubmitted: (v) {
-            print(1);
-          },
+          // onFieldSubmitted: (v) {
+          //   print(1);
+          // },
           maxLines: 10,
           validator: (v) {
             if (v == null || v.trim() == '') {

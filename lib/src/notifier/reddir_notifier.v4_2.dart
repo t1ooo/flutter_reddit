@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../logging/logging.dart';
@@ -10,6 +11,21 @@ import '../reddit_api/comment.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/vote.dart';
+
+// abstract class VoteNotifer with TryMixin {
+//   Future<void> updateVote(Vote vote) async {
+//     return _try(() async {
+//       if (likes == vote) return null;
+
+//       await _vote(vote);
+//       comment = comment.copyWith(
+//         likes: vote,
+//         score: calcScore(comment.score, comment.likes, vote),
+//       );
+//       notifyListeners();
+//     }, 'fail to vote');
+//   }
+// }
 
 // TODO: _try
 class SearchNotifierQ extends ChangeNotifier with TryMixin {
@@ -210,6 +226,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   Future<void> unstar() => throw UnimplementedError();
 }
 
+// TODO: move to current user
 class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   HomeFrontNotifierQ(this._redditApi);
 
@@ -429,47 +446,56 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
-  CommentNotifierQ(this._redditApi, this.comment) {
-    _replies =
-        comment.replies.map((v) => CommentNotifierQ(_redditApi, v)).toList();
-  }
+  CommentNotifierQ(this._redditApi, this._comment)
+      : _replies = _comment.replies
+            .map((v) => CommentNotifierQ(_redditApi, v))
+            .toList();
 
   final RedditApi _redditApi;
-  Comment comment;
-  List<CommentNotifierQ> _replies = [];
+  // Comment comment;
   static final _log = Logger('SubmissionNotifierQ');
 
+  Comment _comment;
+  Comment get comment => _comment;
+
+  final List<CommentNotifierQ> _replies;
   List<CommentNotifierQ> get replies => _replies;
+
+  Future<void> copyText() {
+    return _try(() {
+      return Clipboard.setData(ClipboardData(text: _comment.body));
+    }, 'fail to copy');
+  }
 
   Future<void> save() async {
     return _try(() async {
-      if (comment.saved) return null;
+      if (_comment.saved) return null;
 
-      await _redditApi.commentSave(comment.id);
-      comment = comment.copyWith(saved: true);
+      await _redditApi.commentSave(_comment.id);
+      _comment = comment.copyWith(saved: true);
       notifyListeners();
     }, 'fail to save');
   }
 
   Future<void> unsave() async {
     return _try(() async {
-      if (!comment.saved) return null;
+      if (!_comment.saved) return null;
 
       await _redditApi.commentUnsave(comment.id);
-      comment = comment.copyWith(saved: false);
+      _comment = comment.copyWith(saved: false);
       notifyListeners();
     }, 'fail to unsave');
   }
 
   Future<void> upVote() async {
-    if (comment.likes == Vote.up) {
+    if (_comment.likes == Vote.up) {
       return _updateVote(Vote.none);
     }
     return await _updateVote(Vote.up);
   }
 
   Future<void> downVote() async {
-    if (comment.likes == Vote.down) {
+    if (_comment.likes == Vote.down) {
       return _updateVote(Vote.none);
     }
     return await _updateVote(Vote.down);
@@ -480,7 +506,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
       if (comment.likes == vote) return null;
 
       await _redditApi.submissionVote(comment.id, vote);
-      comment = comment.copyWith(
+      _comment = comment.copyWith(
         likes: vote,
         score: calcScore(comment.score, comment.likes, vote),
       );
@@ -490,7 +516,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
 
   Future<void> share() async {
     return _try(() async {
-      await Share.share('${comment.linkTitle} ${comment.shortLink}');
+      await Share.share('${_comment.linkTitle} ${_comment.shortLink}');
     }, 'fail to share');
   }
 
@@ -510,7 +536,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
 
     return _try(() async {
       // throw Exception('error');
-      final commentReply = await _redditApi.commentReply(comment.id, body);
+      final commentReply = await _redditApi.commentReply(_comment.id, body);
       // comment = comment.copyWith(replies: [commentReply] + comment.replies);
       // _replies.add(CommentNotifierQ(_redditApi, commentReply));
       _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
@@ -523,7 +549,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
   UserLoaderNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+  // int _limit = 10;
   static final _log = Logger('UserLoaderNotifierQ');
 
   // void _reset() {
@@ -544,7 +570,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
   // SubredditNotifierQ? get subreddit => _subreddit;
 
   Future<void> loadUser(String name) {
-    print(name);
+    // print(name);
     return _try(() async {
       if (_user != null && _name == name) return;
       _name = name;
@@ -559,7 +585,9 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class UserNotifierQ extends ChangeNotifier with TryMixin {
-  UserNotifierQ(this._redditApi, this._user) : _name = _user.name;
+  UserNotifierQ(this._redditApi, this._user)
+      : _name = _user.name,
+        _subreddit = SubredditNotifierQ(_redditApi, _user.subreddit);
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -579,8 +607,8 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   //   _name = name;
   // }
 
-  // SubredditNotifierQ? _subreddit;
-  // SubredditNotifierQ? get subreddit => _subreddit;
+  final SubredditNotifierQ _subreddit;
+  SubredditNotifierQ get subreddit => _subreddit;
 
   User _user;
   User get user => _user;
@@ -594,21 +622,21 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   //   }, 'fail to load user');
   // }
 
-  Future<void> subscribe() {
-    return _try(() async {
-      if (user.subreddit.userIsSubscriber) return null;
-      await _redditApi.subscribe(user.subreddit.displayName);
-      notifyListeners();
-    }, 'fail to subscribe');
-  }
+  // Future<void> subscribe() {
+  //   return _try(() async {
+  //     if (user.subreddit.userIsSubscriber) return null;
+  //     await _redditApi.subscribe(user.subreddit.displayName);
+  //     notifyListeners();
+  //   }, 'fail to subscribe');
+  // }
 
-  Future<void> unsubscribe() {
-    return _try(() async {
-      if (!(user.subreddit.userIsSubscriber)) return null;
-      await _redditApi.subscribe(user.subreddit.displayName);
-      notifyListeners();
-    }, 'fail to unsubscribe');
-  }
+  // Future<void> unsubscribe() {
+  //   return _try(() async {
+  //     if (!(user.subreddit.userIsSubscriber)) return null;
+  //     await _redditApi.subscribe(user.subreddit.displayName);
+  //     notifyListeners();
+  //   }, 'fail to unsubscribe');
+  // }
 
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
@@ -693,6 +721,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   }
 }
 
+// TODO: create AnonymousUser
 // class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
 class CurrentUserNotifierQ extends UserNotifierQ {
   CurrentUserNotifierQ(this._redditApi, this._user) : super(_redditApi, _user);
@@ -789,7 +818,7 @@ mixin TryMixin {
       return await fn();
     } on Exception catch (e, st) {
       _log.error('', e, st);
-      throw Exception(error);
+      throw UIException(error);
     }
   }
 }

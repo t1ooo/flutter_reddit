@@ -73,7 +73,7 @@ class Home extends StatelessWidget {
           type: notifier.subType,
           submissions: submissions,
           onTypeChanged: (subType) {
-            print(subType);
+            // print(subType);
             notifier.loadSubmissions(subType);
           },
         );

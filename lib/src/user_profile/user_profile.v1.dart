@@ -26,7 +26,8 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserNotifierQ>().user;
+    final notifier = context.read<UserNotifierQ>();
+    final user = notifier.user;
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -117,7 +118,7 @@ class UserProfile extends StatelessWidget {
                       // ElevatedButton(onPressed: () {}, child: Text('FOLLOWING')),
                       // SubscribeButton(subreddit: user.subreddit, isUserPage: true),
                       ChangeNotifierProvider<SubredditNotifierQ>.value(
-                        value: user.subreddit,
+                        value: notifier.subreddit,
                         child: SubscribeButton(isUserPage: true),
                       ),
 

@@ -77,13 +77,16 @@ abstract class RedditApi {
   // Stream<Submission> currentUserSavedSubmissions({required int limit});
   // Stream<Comment> currentUserSavedComments({required int limit});
 
-
   // Stream<Submission> userSavedSubmissions(String name, {required int limit});
   // Stream<Comment> userSavedComments(String name, {required int limit});
   Future<UserSaved> userSaved(String name, {required int limit});
 
-  Stream<Submission> search(String query,
-      {required int limit, required Sort sort, subreddit = 'all'});
+  Stream<Submission> search(
+    String query, {
+    required int limit,
+    required Sort sort,
+    String subreddit = 'all',
+  });
 
   // Future<String> userIcon(String name);
 
@@ -415,8 +418,12 @@ class RedditApiImpl implements RedditApi {
   //       .map((v) => v as Comment);
   // }
 
-  Stream<Submission> search(String query,
-      {required int limit, required Sort sort, subreddit = 'all'}) async* {
+  Stream<Submission> search(
+    String query, {
+    required int limit,
+    required Sort sort,
+    String subreddit = 'all',
+  }) async* {
     mustNameWithoutPrefix(subreddit);
     final params = {'limit': limit.toString()};
     await for (final v
@@ -443,6 +450,8 @@ class RedditApiImpl implements RedditApi {
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
+  static final _log = Logger('FakeRedditApi');
+
   Duration _delay = Duration(seconds: 1 ~/ 10);
 
   Map _addType(Map v, Enum type) {
@@ -454,7 +463,7 @@ class FakeRedditApi implements RedditApi {
     required int limit,
     required SubType type,
   }) async* {
-    print(type);
+    _log.info('front($limit, $type)');
     final data = await File('data/user.front.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -470,11 +479,14 @@ class FakeRedditApi implements RedditApi {
   }
 
   Stream<Submission> popular({required int limit, required SubType type}) {
+    _log.info('popular($limit, $type)');
     return front(limit: limit, type: type);
   }
 
   @override
   Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
+    _log.info('currentUserSubreddits($limit)');
+
     final data = await File('data/user.subreddits.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -493,16 +505,20 @@ class FakeRedditApi implements RedditApi {
     required int limit,
     required SubType type,
   }) {
+    _log.info('subredditSubmissions($name, $limit, $type)');
     mustNameWithoutPrefix(name);
     return front(limit: limit, type: type);
   }
 
   Future<User> user(String name) async {
+    _log.info('user($name)');
     final data = await File('data/user.info.json').readAsString();
     return User.fromJson(jsonDecode(data));
   }
 
   Stream<Comment> userComments(String name, {required int limit}) async* {
+    _log.info('userComments($name, $limit)');
+
     final data = await File('data/user.comments.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -517,6 +533,8 @@ class FakeRedditApi implements RedditApi {
   }
 
   Stream<Submission> userSubmissions(String name, {required int limit}) async* {
+    _log.info('userSubmissions($name, $limit)');
+    
     final data = await File('data/user.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -532,8 +550,9 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<List<Trophy>> userTrophies(String name) async {
-    await Future.delayed(_delay);
+    _log.info('userTrophies($name)');
 
+    await Future.delayed(_delay);
     final data = await File('data/user.trophies.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -544,18 +563,21 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<void> subscribe(String name) async {
+    _log.info('subscribe($name)');
     mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> unsubscribe(String name) async {
+    _log.info('unsubscribe($name)');
     mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return;
   }
 
   Future<Submission> submission(String id) async {
+    _log.info('submission($id)');
     await Future.delayed(_delay);
 
     final subData = await File('data/submission.json').readAsString();
@@ -587,48 +609,57 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<Subreddit> subreddit(String name) async {
+    _log.info('subreddit($name)');
     mustNameWithoutPrefix(name);
     final data = await File('data/subreddit.json').readAsString();
     return Subreddit.fromJson(jsonDecode(data) as Map);
   }
 
   Future<void> submissionVote(String id, Vote vote) async {
+    _log.info('submissionVote($id, $vote)');
     await Future.delayed(_delay);
     return;
   }
 
   @override
   Future<void> commentVote(String id, Vote vote) async {
+    _log.info('commentVote($id, $vote)');
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> submissionSave(String id) async {
+    _log.info('submissionSave($id)');
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> submissionUnsave(String id) async {
+    _log.info('submissionUnsave($id)');
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> commentSave(String id) async {
+    _log.info('commentSave($id)');
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> commentUnsave(String id) async {
+    _log.info('commentUnsave($id)');
     await Future.delayed(_delay);
     return;
   }
 
   Future<User?> currentUser() async {
+    _log.info('currentUser()');
     final data = await File('data/user.current.info.json').readAsString();
     return User.fromJson(jsonDecode(data));
   }
 
   Future<UserSaved> userSaved(String name, {required int limit}) async {
+    _log.info('userSaved($name, $limit)');
     final data = await File('data/user.current.saved.json').readAsString();
     final submissions = <Submission>[];
     final comments = <Comment>[];
@@ -661,6 +692,7 @@ class FakeRedditApi implements RedditApi {
   // }
 
   Future<String> subredditIcon(String name) async {
+    _log.info('subredditIcon($name)');
     mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
@@ -671,8 +703,13 @@ class FakeRedditApi implements RedditApi {
   //   return 'https://styles.redditmedia.com/t5_27o1ou/styles/profileIcon_snoo1bb735c3-8e35-4cf7-86db-61a16e425270-headshot.png?width=256&height=256&crop=256:256,smart&s=b2b6b0dbdc33478836366f4b75a132c734d19126';
   // }
 
-  Stream<Submission> search(String query,
-      {required int limit, required Sort sort, subreddit = 'all'}) async* {
+  Stream<Submission> search(
+    String query, {
+    required int limit,
+    required Sort sort,
+    String subreddit = 'all',
+  }) async* {
+    _log.info('search($query, $limit, $sort, $subreddit)');
     mustNameWithoutPrefix(subreddit);
     final data = await File('data/search.json').readAsString();
 
@@ -690,11 +727,13 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<Comment> submissionReply(String id, String body) async {
+    _log.info('submissionReply($id, $body)');
     await Future.delayed(_delay);
     return Comment.fromJson({'body': body});
   }
 
   Future<Comment> commentReply(String id, String body) async {
+    _log.info('commentReply($id, $body)');
     await Future.delayed(_delay);
     return Comment.fromJson({'body': body});
   }

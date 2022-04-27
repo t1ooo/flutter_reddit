@@ -1,7 +1,6 @@
 // TODO: save/unsave, vote, share interfaces for generic widget implementation
 // TODO: use controller instead watch
 // TODO: subredditIcon
-// TODO: subscribe button
 // TODO: retry, undo, reload
 // TODO: user inbox
 // TODO: login

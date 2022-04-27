@@ -21,7 +21,7 @@ Future<void> main() async {
   // foo(1).then((r) => print(r)).catchError((e, st) => print('$e + $st'));
 
   WidgetsFlutterBinding.ensureInitialized();
-  // configureLogger(kDebugMode);
+  configureLogger(kDebugMode);
 
   final redditApi = FakeRedditApi();
 
