@@ -14,8 +14,8 @@ class UserSubmissions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Loader<List<SubmissionNotifierQ>>(
-      load: (context) => context.watch<UserNotifierQ>().loadSubmissions(),
-      data: (context) => context.watch<UserNotifierQ>().submissions,
+      load: (context) => context.read<UserNotifierQ>().loadSubmissions(),
+      data: (context) => context.read<UserNotifierQ>().submissions,
       onData: (context, submissions) {
         return ListView(
           shrinkWrap: true,
