@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
-import '../widget/sized_placeholder.dart';
-import 'custom_scroll.dart';
 import 'submission_tile.v2.dart';
 
 class GSubmissionTiles<T> extends StatelessWidget {
@@ -17,9 +14,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
     required this.onTypeChanged,
     required this.submissions,
     this.activeLink = true,
-    // this.showTrending = true,
     this.showTypeSelector = true,
-    // this.showLocationSelector = true,
   }) : super(key: key);
 
   final T type;
@@ -27,9 +22,8 @@ class GSubmissionTiles<T> extends StatelessWidget {
   final List<SubmissionNotifierQ>? submissions;
   final Function(T) onTypeChanged;
   final bool activeLink;
-  // final bool showTrending;
+
   final bool showTypeSelector;
-  // final bool showLocationSelector;
 
   @override
   Widget build(BuildContext context) {

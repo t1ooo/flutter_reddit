@@ -4,20 +4,13 @@ import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
-// import 'notifier/reddir_notifier.dart';
 import 'notifier/reddir_notifier.v4_2.dart';
-import 'reddit_api/user.dart';
 import 'util/date_time.dart';
 
 class UserMenu extends StatelessWidget {
   UserMenu({
     Key? key,
-    // required this.user,
-    // required this.totalAwardsReceived,
   }) : super(key: key);
-
-  // final User? user;
-  // final int totalAwardsReceived;
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +44,9 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.login),
             title: Text('Sign up/ Log in'),
             onTap: () {
-              // final result = await notifier.login('name', 'password');
-              // if (result != null) {
-              //   showSnackBar(context, result);
-              // }
               notifier
                   .login('name', 'password')
                   .catchError((e) => showErrorSnackBar(context, e));
-              // Navigator.pop(context);
             },
           ),
           // Expanded(child: Container()),
@@ -78,29 +66,8 @@ class UserMenu extends StatelessWidget {
 
   Widget userMenu(BuildContext context, CurrentUserNotifierQ user) {
     return Drawer(
-      // Add a ListView to the drawer. This ensures the user can scroll
-      // through the options in the drawer if there isn't enough vertical
-      // space to fit everything.
       child: Column(
-        // child: ListView(
-        // padding: EdgeInsets.zero,
         children: [
-          // DrawerHeader(
-          //   // margin: EdgeInsets.zero,
-          //   // padding: EdgeInsets.zero,
-          //   // decoration: BoxDecoration(
-          //   //   color: Colors.blue,
-          //   // ),
-          //   child: Column(
-          //     children: [
-          //       CircleAvatar(
-          //         radius: 50,
-          //         backgroundImage: NetworkImage(''),
-          //       ),
-          //       Text('u/graibn'),
-          //     ],
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Column(
@@ -114,9 +81,7 @@ class UserMenu extends StatelessWidget {
             ),
           ),
           SizedBox(height: 25),
-
           Table(
-            // defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
               TableRow(
                 children: [
@@ -133,7 +98,6 @@ class UserMenu extends StatelessWidget {
             ],
           ),
           SizedBox(height: 25),
-
           ListTile(
             minLeadingWidth: 0,
             leading: Icon(Icons.account_circle),
@@ -142,15 +106,7 @@ class UserMenu extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  // builder: (_) => UserProfileScreenV2(
-                  //   user: user.user,
-                  //   isCurrentUser: true,
-                  // ),
                   builder: (_) {
-                    // return CurrentUserProfileScreen(
-                    // name: user.user.name,
-                    // isCurrentUser: true,
-                    // );
                     return ChangeNotifierProvider<UserNotifierQ>.value(
                       value: user,
                       child: CurrentUserProfileScreen(),
@@ -158,7 +114,6 @@ class UserMenu extends StatelessWidget {
                   },
                 ),
               );
-              // Navigator.pop(context);
             },
           ),
           ListTile(
@@ -180,7 +135,6 @@ class UserMenu extends StatelessWidget {
                   builder: (_) => SavedScreen(),
                 ),
               );
-              // Navigator.pop(context);
             },
           ),
           ListTile(
@@ -200,7 +154,6 @@ class UserMenu extends StatelessWidget {
             },
           ),
           Spacer(),
-          // Expanded(child: Container()),
           ListTile(
             minLeadingWidth: 0,
             leading: Icon(Icons.settings),
@@ -209,12 +162,6 @@ class UserMenu extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          // Expanded(
-          //   child: Align(
-          //     alignment: Alignment.bottomCenter,
-          //     child: Text('Bottom'),
-          //   ),
-          // ),
         ],
       ),
     );

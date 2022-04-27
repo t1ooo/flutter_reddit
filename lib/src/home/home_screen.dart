@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
-// import '../notifier/reddir_notifier.dart';
-// import '../provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../search/search_field.dart';
-import '../widget/sized_placeholder.dart';
 import 'home.dart';
 import 'home_anonymous.dart';
 import 'popular.dart';
@@ -16,11 +13,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final subTypeHome = submissionTypeNotifierProvider();
-    // final subTypePopular = submissionTypeNotifierProvider();
-    // final subTypeHome = SubTypeNotifier();
-    // final subTypePopular = SubTypeNotifier();
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -31,13 +23,11 @@ class HomeScreen extends StatelessWidget {
           children: [
             SizedBox(height: topPadding),
             Padding(
-              // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
               padding: pagePadding,
               child: SearchField(),
             ),
             Container(
               child: TabBar(
-                // key: PageStorageKey('homeScreenTabs'),
                 labelColor: Colors.blue,
                 tabs: [
                   Tab(child: Text('Home')),
@@ -56,16 +46,6 @@ class HomeScreen extends StatelessWidget {
                     return Home();
                   }),
                   Popular(),
-                  // ChangeNotifierProvider.value(value: subTypeHome, child: Home()),
-                  // ChangeNotifierProvider.value(value: subTypePopular, child: Popular()),
-                  // MultiProvider(
-                  //   providers: [submissionTypeNotifierProvider()],
-                  //   child: Home(),
-                  // ),
-                  // MultiProvider(
-                  //   providers: [submissionTypeNotifierProvider()],
-                  //   child: Popular(),
-                  // ),
                 ],
               ),
             ),

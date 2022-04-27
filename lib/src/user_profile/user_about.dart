@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart';
-import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_trophies.dart';
 import 'package:provider/provider.dart';
 
-import '../reddit_api/user.dart';
-import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
 // import '../widget/stream_list_builder.dart';
@@ -13,54 +10,18 @@ import '../util/date_time.dart';
 class UserAbout extends StatelessWidget {
   const UserAbout({
     Key? key,
-    // required this.user,
   }) : super(key: key);
-
-  // final User user;
 
   @override
   Widget build(BuildContext context) {
     final user = context.read<UserNotifierQ>().user;
-    // return GridView.count(
-    //   crossAxisCount: 2,
-    //   childAspectRatio: 6/3,
-    //   children: [
-    //     Center(child: Text('Item')),
-    //     Center(child: Text('Item')),
-    //   ],
-    // );
-    // return Column(
-    //   children: [
-    //     Row(
-    //       children: [
-    //         Column(
-    //           children: [
-    //             Text(user.totalKarma.toString()),
-    //             Text('Karma'),
-    //           ],
-    //         ),
-    //         Spacer(),
-    //         Column(
-    //           children: [
-    //             Text(formatDateTime(user.created)),
-    //             Text('Reddit age'),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-
-    //   ],
-    // );
-
     return Padding(
       padding: pagePadding,
       child: Card(
         child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 50),
             Table(
-              // defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 TableRow(
                   children: [

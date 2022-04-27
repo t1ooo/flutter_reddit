@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// import '../notifier/reddir_notifier.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 import '../util/snackbar.dart';
@@ -29,16 +28,14 @@ class _AddCommentState extends State<AddComment> {
     return ListView(
       children: [
         SizedBox(height: topPadding),
-        // Text('Making food on the street'),
-        // SizedBox(height: 10),
         Divider(),
         TextFormField(
           onChanged: (v) {
             _message = v.trim();
           },
-          // onFieldSubmitted: (v) {
-          //   print(1);
-          // },
+          onFieldSubmitted: (v) {
+            submit();
+          },
           maxLines: 10,
           validator: (v) {
             if (v == null || v.trim() == '') {
@@ -48,51 +45,27 @@ class _AddCommentState extends State<AddComment> {
           },
           decoration: InputDecoration(hintText: 'You comment'),
         ),
-        // SizedBox(height: 50),
-        // Spacer(),
         ElevatedButton(
-          onPressed: () async {
-            // if (widget.isComment) {
-            //   context.read<SubmissionNotifier>().commentReply(widget.id, _message);
-            // } else {
-            //   context
-            //       .read<SubmissionNotifier>()
-            //       .submissionReply(widget.id, _message);
-            // }
-
-            // TODO
-            if (widget.isComment) {
-              final notifer = context.read<CommentNotifierQ>();
-              // final result = await notifer.reply(_message);
-              // if (result != null) {
-              // showSnackBar(context, result);
-              // }
-              notifer
-                  .reply(_message)
-                  .catchError((e) => showErrorSnackBar(context, e));
-            } else {
-              final notifer = context.read<SubmissionNotifierQ>();
-              // final result = await notifer.reply(_message);
-              // if (result != null) {
-              //   showSnackBar(context, result);
-              // }
-              notifer
-                  .reply(_message)
-                  .catchError((e) => showErrorSnackBar(context, e));
-            }
-
-            // final notifer = context.read<SubmissionNotifier>();
-            // final result = await (widget.isComment
-            //     ? notifer.commentReply(widget.id, _message)
-            //     : notifer.submissionReply(widget.id, _message));
-            // if (result != null) {
-            //   showSnackBar(context, result);
-            // }
-            Navigator.pop(context);
-          },
+          onPressed: submit,
           child: Text('Post'),
         ),
       ],
     );
+  }
+
+  void submit() {
+    if (widget.isComment) {
+      context
+          .read<CommentNotifierQ>()
+          .reply(_message)
+          .catchError((e) => showErrorSnackBar(context, e));
+    } else {
+      context
+          .read<SubmissionNotifierQ>()
+          .reply(_message)
+          .catchError((e) => showErrorSnackBar(context, e));
+    }
+
+    Navigator.pop(context);
   }
 }

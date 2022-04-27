@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
+// TODO: move to home
+// TODO: implements login
 class HomeAnonymous extends StatelessWidget {
   const HomeAnonymous({Key? key}) : super(key: key);
 

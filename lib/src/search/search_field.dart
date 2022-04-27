@@ -17,7 +17,7 @@ class SearchField extends StatelessWidget {
   final String? src;
   static final _controller = TextEditingController();
 
-  static final name = 'SearchField';
+  static final routeName = 'SearchField';
 
   @override
   Widget build(BuildContext context) {
@@ -49,31 +49,15 @@ class SearchField extends StatelessWidget {
       },
       child: Column(
         children: [
-          // SizedBox(height: 20),
           TextFormField(
-            // initialValue: value,
             controller: _controller,
             onFieldSubmitted: (String? query) {
               final q = (query ?? '').trim();
               if (q != '') {
-                // _controller.clear();
-                // print(ModalRoute.of(context)?.settings.name);
-                // context.read<SearchSubmissionsNotifier>().query = q;
-
-                // if (ModalRoute.of(context)?.settings.name != name) {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       settings: RouteSettings(name: name),
-                //       builder: (_) => SearchScreen(query: q),
-                //     ),
-                //   );
-                // }
-
                 navigatorPushOrReplace(
                   context,
                   MaterialPageRoute(
-                    settings: RouteSettings(name: name),
+                    settings: RouteSettings(name: routeName),
                     builder: (_) => SearchScreen(query: q),
                   ),
                 );

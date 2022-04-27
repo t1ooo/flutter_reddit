@@ -4,29 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../util/snackbar.dart';
 
-class LoaderBuilder<T> extends StatelessWidget {
-  LoaderBuilder({
-    Key? key,
-    required this.load,
-    required this.data,
-    required this.builder,
-  }) : super(key: key);
-
-  final Future Function(BuildContext) load;
-  final T Function(BuildContext) data;
-  final Widget Function(BuildContext, T, Object?) builder;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: load(context),
-      builder: (BuildContext context, AsyncSnapshot snap) {
-        return builder(context, this.data(context), snap.error);
-      },
-    );
-  }
-}
-
 class Loader<T> extends StatelessWidget {
   Loader({
     Key? key,
@@ -70,5 +47,28 @@ class Loader<T> extends StatelessWidget {
 
   Widget onLoadingDefault(context) {
     return Center(child: CircularProgressIndicator());
+  }
+}
+
+class LoaderBuilder<T> extends StatelessWidget {
+  LoaderBuilder({
+    Key? key,
+    required this.load,
+    required this.data,
+    required this.builder,
+  }) : super(key: key);
+
+  final Future Function(BuildContext) load;
+  final T Function(BuildContext) data;
+  final Widget Function(BuildContext, T, Object?) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: load(context),
+      builder: (BuildContext context, AsyncSnapshot snap) {
+        return builder(context, this.data(context), snap.error);
+      },
+    );
   }
 }

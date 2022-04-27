@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 typedef FutureVoidCallback = Future<void> Function();
 
+// TODO: remove unnessery fields
 /// auto disabled during onPressed and onLongPress
 class FutureElevatedButton extends StatefulWidget {
   const FutureElevatedButton({

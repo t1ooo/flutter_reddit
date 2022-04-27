@@ -3,22 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subscriptions/subscriptions_screen.dart';
 import 'package:flutter_reddit_prototype/src/user_menu.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
 
-import 'home/home.dart';
 import 'home/home_screen.dart';
-import 'notifier/reddir_notifier.v4_2.dart';
 
 class Tabs extends StatelessWidget {
   Tabs({Key? key}) : super(key: key);
-
-  // final List<Widget> _screens = [
-  //   HomeScreen(),
-  //   SubscriptionsScreen(),
-  //   // Home(),
-  //   // Home(),
-  //   // Home(),
-  // ];
 
   Widget withScaffold(Widget body) {
     return Scaffold(
@@ -31,13 +20,8 @@ class Tabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
-      // controller: _controller,
       screens: [
         HomeScreen(),
-        // ChangeNotifierProvider<HomePopularNotifierQ>.value(
-        //   value: context.read<HomePopularNotifierQ>(),
-        //   child: HomeScreen(),
-        // ),
         SubscriptionsScreen(),
       ].map(withScaffold).toList(),
       items: [

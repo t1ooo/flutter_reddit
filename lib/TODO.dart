@@ -1,3 +1,8 @@
+// TODO: merge loggers
+// TODO: listview save croll position
+// TODO: merge screen with widgets
+// TODO: load on screen on widget ?
+// TODO: add top padding to page padding
 // TODO: save/unsave, vote, share interfaces for generic widget implementation
 // TODO: use controller instead watch
 // TODO: retry, undo, reload

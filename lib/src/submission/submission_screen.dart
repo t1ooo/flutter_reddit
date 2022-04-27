@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../comment/comment_field.dart';
-import '../util/snackbar.dart';
 import 'submission.v2.dart';
 
 class SubmissionScreen extends StatelessWidget {
@@ -16,26 +15,6 @@ class SubmissionScreen extends StatelessWidget {
 
   final String id;
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   // final notifer = context.watch<SubmissionNotifier>();
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Submission'),
-  //     ),
-  //     // body: Submission(),
-  //     body: CustomFutureBuilder(
-  //       future: context.read<RedditNotifier>().submission(id),
-  //       // future: notifer.load(id),
-  //       onData: (BuildContext context, Submission submission) {
-  //         return SubmissionWidget(submission: submission);
-  //       },
-  //     ),
-  //     // bottomNavigationBar: CommentField(),
-  //     bottomNavigationBar: CommentField(id:id),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     // final notifer = context.watch<SubmissionNotifier>();
@@ -43,20 +22,13 @@ class SubmissionScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Submission'),
       ),
-      // body: Submission(),
       body: Padding(
         padding: pagePadding,
+        // TODO: replace to Loader
         child: Builder(builder: (context) {
           final notifier = context.read<SubmissionLoaderNotifierQ>();
           WidgetsBinding.instance?.addPostFrameCallback((_) {
             notifier.loadSubmission(id);
-            // final result = context.read<SubmissionNotifierQ>().loadSubmission(id);
-            // if (result is Reload) {
-
-            // }
-            // if (result is Error) {
-            //   showSnackBar(context, result.toString());
-            // }
           });
           final submission = notifier.submission;
           if (submission == null) {
@@ -66,35 +38,9 @@ class SubmissionScreen extends StatelessWidget {
             value: submission,
             child: SubmissionWidget(),
           );
-          // return SubmissionWidget();
         }),
       ),
       bottomNavigationBar: CommentField(id: id),
-      // floatingActionButton: FloatingActionButton(child:Icon(Icons.update), onPressed: () {},),
     );
   }
 }
-
-
-/* class SubmissionScreenV2 extends StatelessWidget {
-  const SubmissionScreenV2({
-    Key? key,
-    required this.submission,
-  }) : super(key: key);
-
-  final Submission submission;
-
-  @override
-  Widget build(BuildContext context) {
-    // final notifer = context.watch<SubmissionNotifier>();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Submission'),
-      ),
-      // body: Submission(),
-      body: SubmissionWidget(initSubmission: submission),
-      // bottomNavigationBar: CommentField(),
-      // bottomNavigationBar: CommentField(id:id),
-    );
-  }
-} */

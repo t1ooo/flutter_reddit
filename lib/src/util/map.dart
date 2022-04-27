@@ -2,31 +2,6 @@ import '../logging/logging.dart';
 
 final _log = Logger('mapGet');
 
-// get value from map and cast to type T
-// T mapGet<T>(Map data, String key, T defaultValue) {
-//   final v = data[key];
-//   if (v == null) {
-//     _log.info('not found: $key');
-//     return defaultValue;
-//   }
-
-//   if (v is List) {
-//     if (v.every((el) => el is T)) {
-//       return v as T;
-//     } else {
-//     _log.info('fail to cast list: {$key: $v} to <$T>');
-//       return defaultValue;
-//     }
-//   }
-
-//   if (!(v is T)) {
-//     _log.info('fail to cast: {$key: $v} to <$T>');
-//     return defaultValue;
-//   }
-
-//   return v;
-// }
-
 T mapGet<T>(Map m, String key, T defaultValue) {
   final val = m[key];
   try {

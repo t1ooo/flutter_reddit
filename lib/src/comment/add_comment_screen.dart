@@ -20,26 +20,11 @@ class AddCommentScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add comment'),
-        // actions: [
-        //   ElevatedButton(
-        //     // textColor: Colors.white,
-        //     onPressed: () {},
-        //     child: Text('Post'),
-        //     // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-        //   ),
-        // ],
       ),
       body: Padding(
         padding: pagePadding,
         child: AddComment(id: id, isComment: isComment),
       ),
-      /* bottomNavigationBar: Padding(
-        padding: pagePadding.copyWith(bottom: 20),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text('Post'),
-        ),
-      ), */
     );
   }
 }

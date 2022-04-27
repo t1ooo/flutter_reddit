@@ -118,7 +118,6 @@ class CommentWidget extends StatelessWidget {
           icon: Icon(Icons.reply),
         ),
         SizedBox(width: 20),
-        // Comment_voteButton(),
         _voteButton(context, comment),
       ],
     );
@@ -127,14 +126,12 @@ class CommentWidget extends StatelessWidget {
   Widget header(BuildContext context, Comment comment) {
     return Row(
       children: [
-        // Text(comment.body.substring(0,1) + ' '),
         InkWell(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => UserProfileScreen(name: comment.author),
-                // builder: (_) => UserProfileScreen(),
               ),
             );
           },
@@ -155,12 +152,6 @@ class CommentWidget extends StatelessWidget {
       onTap: () {
         final notifier = context.read<CommentNotifierQ>();
 
-        // final result = await (notifier.comment.saved
-        //     ? notifier.unsave()
-        //     : notifier.save());
-        // if (result != null) {
-        //   showSnackBar(context, result);
-        // }
         (notifier.comment.saved ? notifier.unsave() : notifier.save())
             .catchError((e) => showErrorSnackBar(context, e));
       },
@@ -184,7 +175,6 @@ class CommentWidget extends StatelessWidget {
   PopupMenuItem _sharePopupMenuItem(BuildContext context, Comment comment) {
     return PopupMenuItem(
       onTap: () async {
-        // Share.share('${comment.linkTitle} ${comment.shortLink}');
         context.read<CommentNotifierQ>().share();
       },
       child: ListTile(
@@ -199,7 +189,7 @@ class CommentWidget extends StatelessWidget {
   PopupMenuItem _copyTextPopupMenuItem(BuildContext context, Comment comment) {
     return PopupMenuItem(
       onTap: () {
-        Clipboard.setData(ClipboardData(text: comment.body));
+        context.read<CommentNotifierQ>().copyText();
       },
       child: ListTile(
         contentPadding: EdgeInsets.zero,
@@ -231,13 +221,6 @@ class CommentWidget extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
-            // final result = await (comment.likes == Vote.up
-            //     ? notifier.clearVote()
-            //     : notifier.upVote());
-            // final result = await notifier.upVote();
-            // if (result != null) {
-            //   showSnackBar(context, result);
-            // }
             notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
@@ -248,13 +231,6 @@ class CommentWidget extends StatelessWidget {
         Text(comment.score.toString()),
         IconButton(
           onPressed: () {
-            // final result = await (comment.likes == Vote.down
-            //     ? notifier.clearVote()
-            //     : notifier.downVote());
-            // final result = await notifier.downVote();
-            // if (result != null) {
-            //   showSnackBar(context, result);
-            // }
             notifier
                 .downVote()
                 .catchError((e) => showErrorSnackBar(context, e));

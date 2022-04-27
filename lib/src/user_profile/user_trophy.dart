@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/user_profile/user_comment.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../reddit_api/trophy.dart';
-import '../reddit_api/user.dart';
-import '../reddit_api/comment.dart';
-import '../style/style.dart';
-import '../util/date_time.dart';
-import '../widget/custom_future_builder.dart';
-// import '../widget/stream_list_builder.dart';
 
 class UserTrophy extends StatelessWidget {
   const UserTrophy({

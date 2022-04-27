@@ -10,10 +10,7 @@ import 'subreddit.v2.dart';
 class SubredditScreen extends StatelessWidget {
   const SubredditScreen({
     Key? key,
-    // required this.subreddit,
   }) : super(key: key);
-
-  // final SubredditNotifierQ subreddit;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +18,7 @@ class SubredditScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      // body: SubredditWidget(subreddit: subreddit),
       body: SubredditWidget(),
-      // body: ChangeNotifierProvider<SubredditNotifierQ>.value(
-          // value: subreddit, child: SubredditWidget()),
-      // body: MultiProvider(
-      //   providers: [subscriptionNotifierProvider(subreddit.userIsSubscriber)],
-      //   child: SubredditWidget(subreddit: subreddit),
-      // ),
     );
   }
 }
@@ -47,6 +37,7 @@ class SubredditScreenLoader extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
+      // TODO: replace to Loader
       body: Builder(builder: (context) {
         final notifier = context.watch<SubredditLoaderNotifierQ>();
         WidgetsBinding.instance?.addPostFrameCallback((_) {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/home/home_screen.dart';
 
-// import 'tabs.dart';
 import 'tabs.v2.dart';
 
 class MyApp extends StatelessWidget {
@@ -14,7 +12,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: HomeScreen(),
       home: Tabs(),
     );
   }

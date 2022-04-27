@@ -3,20 +3,15 @@ import 'package:flutter_reddit_prototype/src/submission/submission_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/comment.dart';
 import '../style/style.dart';
 import '../submission/style.dart';
-import '../user_profile/user_profile_screen.dart';
-import '../widget/sized_placeholder.dart';
 
 class UserComment extends StatelessWidget {
   const UserComment({
     Key? key,
-    // required this.comment,
   }) : super(key: key);
 
-  // final Comment comment;
-
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
@@ -26,7 +21,6 @@ class UserComment extends StatelessWidget {
     );
   }
 
-  @override
   Widget body(BuildContext context) {
     final notifier = context.read<CommentNotifierQ>();
     final comment = notifier.comment;
@@ -66,5 +60,3 @@ class UserComment extends StatelessWidget {
     );
   }
 }
-
-class UserCommentPadding {}
