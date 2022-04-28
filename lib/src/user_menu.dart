@@ -118,6 +118,7 @@ class UserMenu extends StatelessWidget {
                   },
                 ),
               );
+              Navigator.pop(context);
             },
           ),
           ListTile(
@@ -139,6 +140,7 @@ class UserMenu extends StatelessWidget {
                   builder: (_) => SavedScreen(),
                 ),
               );
+              Navigator.pop(context);
             },
           ),
           ListTile(
