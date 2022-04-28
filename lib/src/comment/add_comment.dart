@@ -30,16 +30,14 @@ class _AddCommentState extends State<AddComment> {
         SizedBox(height: topPadding),
         Divider(),
         TextFormField(
-          onChanged: (v) {
-            _message = v.trim();
-          },
+          onChanged: (v) => _message = v,
           onFieldSubmitted: (v) {
             submit();
           },
           maxLines: 10,
           validator: (v) {
             if (v == null || v.trim() == '') {
-              return 'Please, enter a message';
+              return 'Please enter a message';
             }
             return null;
           },
@@ -54,6 +52,8 @@ class _AddCommentState extends State<AddComment> {
   }
 
   void submit() {
+    _message = _message.trim();
+
     if (widget.isComment) {
       context
           .read<CommentNotifierQ>()
