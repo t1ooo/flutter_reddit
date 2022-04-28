@@ -49,7 +49,6 @@ abstract class RedditApi {
   Future<String> subredditIcon(String name);
 
   Future<User> user(String name);
-  Stream<Subreddit> currentUserSubreddits({required int limit});
   Stream<Comment> userComments(String name, {required int limit});
   Stream<Submission> userSubmissions(String name, {required int limit});
   Future<List<Trophy>> userTrophies(String name);
@@ -71,6 +70,7 @@ abstract class RedditApi {
   Future<void> commentUnsave(String id);
 
   Future<User?> currentUser();
+  Stream<Subreddit> currentUserSubreddits({required int limit});
 
   /// return List<Submission|Comment>
   // Stream<dynamic> currentUserSaved();
