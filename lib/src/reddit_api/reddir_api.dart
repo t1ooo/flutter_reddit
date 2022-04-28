@@ -92,6 +92,10 @@ abstract class RedditApi {
 
   Future<Comment> submissionReply(String id, String body);
   Future<Comment> commentReply(String id, String body);
+
+  Future<bool> isLoggedIn();
+  Future<void> login(String user, String pass);
+  Future<void> logout(String user, String pass);
 }
 
 class RedditApiImpl implements RedditApi {
@@ -445,6 +449,19 @@ class RedditApiImpl implements RedditApi {
     final commentReply = await comment.reply(body);
     return Comment.fromJson(commentReply.data!);
   }
+
+  Future<bool> isLoggedIn() async {
+    try {
+      final redditor = await reddit.user.me();
+      return redditor != null;
+    } on Exception catch (e) {
+      _log.info('', e);
+    }
+    return false;
+  }
+
+  Future<void> login(String user, String pass) => throw UnimplementedError();
+  Future<void> logout(String user, String pass) => throw UnimplementedError();
 }
 
 class FakeRedditApi implements RedditApi {
@@ -762,5 +779,18 @@ class FakeRedditApi implements RedditApi {
     _log.info('commentReply($id, $body)');
     await Future.delayed(_delay);
     return Comment.fromJson({'body': body});
+  }
+
+  bool _isLoggedIn = false;
+
+  Future<bool> isLoggedIn() async => _isLoggedIn;
+  Future<void> login(String user, String pass) async {
+    _isLoggedIn = true;
+    return;
+  }
+
+  Future<void> logout(String user, String pass) async {
+    _isLoggedIn = false;
+    return;
   }
 }
