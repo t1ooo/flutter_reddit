@@ -122,7 +122,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class SubredditNotifierQ extends ChangeNotifier with TryMixin {
+class SubredditNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
   SubredditNotifierQ(this._redditApi, this._subreddit)
       : _name = _subreddit.displayName;
 
@@ -167,7 +167,9 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   //   }, 'fail to load subreddit');
   // }
 
-  Future<void> subscribe() {
+  Future<void> subscribe() async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (_subreddit.userIsSubscriber) return;
       await _redditApi.subscribe(_name);
@@ -177,7 +179,9 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to subscribe');
   }
 
-  Future<void> unsubscribe() {
+  Future<void> unsubscribe() async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (!(_subreddit.userIsSubscriber)) return;
       await _redditApi.subscribe(_name);
@@ -228,7 +232,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 // TODO: move to current user
-class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
+class HomeFrontNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
   HomeFrontNotifierQ(this._redditApi);
 
   final RedditApi _redditApi;
@@ -241,7 +245,9 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
-  Future<void> loadSubmissions(FrontSubType subType) {
+  Future<void> loadSubmissions(FrontSubType subType) async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (_submissions != null && _subType == subType) return null;
       _subType = subType;
@@ -308,7 +314,7 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
+class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -381,6 +387,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   } */
 
   Future<void> reply(String body) async {
+    await mustLoggedIn();
+
     return _try(() async {
       final commentReply =
           await _redditApi.submissionReply(submission.id, body);
@@ -396,6 +404,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
 
   // TODO: save unsave
   Future<void> save() async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (submission.saved) return null;
 
@@ -405,7 +415,9 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to save');
   }
 
-  Future<void> unsave() {
+  Future<void> unsave() async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (submission.saved) return null;
 
@@ -424,6 +436,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   Future<void> _updateSubmissionsVote(Vote vote) async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (submission.likes == vote) {
         vote = Vote.none;
@@ -457,7 +471,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
+class CommentNotifierQ
+    with TryMixin, CollapseMixin, LoggedInMixin, ChangeNotifier {
   CommentNotifierQ(this._redditApi, this._comment)
       : _replies = _comment.replies
             .map((v) => CommentNotifierQ(_redditApi, v))
@@ -480,6 +495,8 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
   }
 
   Future<void> save() async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (_comment.saved) return null;
 
@@ -490,6 +507,8 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
   }
 
   Future<void> unsave() async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (!_comment.saved) return null;
 
@@ -514,6 +533,8 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
   }
 
   Future<void> _updateVote(Vote vote) async {
+    await mustLoggedIn();
+
     return _try(() async {
       if (comment.likes == vote) return null;
 
@@ -831,6 +852,16 @@ mixin TryMixin {
     } on Exception catch (e, st) {
       _log.error('', e, st);
       throw UIException(error);
+    }
+  }
+}
+
+mixin LoggedInMixin {
+  late final RedditApi _redditApi;
+
+  Future<void> mustLoggedIn() async {
+    if (!(await _redditApi.isLoggedIn())) {
+      throw UIException('please, login to continue');
     }
   }
 }
