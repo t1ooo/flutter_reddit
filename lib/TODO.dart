@@ -1,3 +1,5 @@
+// TODO: image cache
+// TODO: remove context from widget helpers
 // TODO: flutter image.network catch exception
 // TODO: login on voit, ets
 // TODO: refresh
