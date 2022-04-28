@@ -1,3 +1,4 @@
+import 'package:draw/draw.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
 
-  final redditApi = FakeRedditApi();
+  const clientId = 'JmK31vyAOebqCsKrwUticg';
+  const secret = 'l2b3p-Ldfm_6rs4qvX16bm9W_0XdPw';
+  const username = 'graibn';
+  const password = '5"u/#sAJh%=aGo^k(2Kh*&A8ft<l9=29';
+  final anonymousReddit = await Reddit.createReadOnlyInstance(
+    clientId: clientId,
+    clientSecret: secret,
+    userAgent: 'Flutter Client',
+  );
+  final redditApi = RedditApiImpl(anonymousReddit);
+
+  // final redditApi = FakeRedditApi();
 
   runApp(
     MultiProvider(
