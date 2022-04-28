@@ -784,7 +784,11 @@ class FakeRedditApi implements RedditApi {
   bool _isLoggedIn = false;
 
   Future<bool> isLoggedIn() async => _isLoggedIn;
+
   Future<void> login(String user, String pass) async {
+    if (user != 'fake' || pass != 'fake') {
+      throw Exception('fail to login, use user=fake, pass=fake for login');
+    }
     _isLoggedIn = true;
     return;
   }
