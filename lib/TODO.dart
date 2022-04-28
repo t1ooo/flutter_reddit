@@ -1,3 +1,5 @@
+// TODO: flutter image.network catch exception
+// TODO: login on voit, ets
 // TODO: refresh
 // TODO: merge loggers
 // TODO: listview save croll position
