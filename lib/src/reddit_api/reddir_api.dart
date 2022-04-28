@@ -157,22 +157,23 @@ class RedditApiImpl implements RedditApi {
   }
 
   Stream<Submission> popular({required int limit, required SubType type}) {
-    final s = reddit.subreddit('all');
-    switch (type) {
-      // case SubType.best:
-      // TODO: find a solution without exception
-      // throw Exception('unsupported type: $type');
-      case SubType.hot:
-        return _submissionsStream(s.hot(limit: limit));
-      case SubType.newest:
-        return _submissionsStream(s.newest(limit: limit));
-      case SubType.top:
-        return _submissionsStream(s.top(limit: limit));
-      case SubType.rising:
-        return _submissionsStream(s.rising(limit: limit));
-      case SubType.controversial:
-        return _submissionsStream(s.controversial(limit: limit));
-    }
+    // final s = reddit.subreddit('popular');
+    // switch (type) {
+    //   // case SubType.best:
+    //   // TODO: find a solution without exception
+    //   // throw Exception('unsupported type: $type');
+    //   case SubType.hot:
+    //     return _submissionsStream(s.hot(limit: limit));
+    //   case SubType.newest:
+    //     return _submissionsStream(s.newest(limit: limit));
+    //   case SubType.top:
+    //     return _submissionsStream(s.top(limit: limit));
+    //   case SubType.rising:
+    //     return _submissionsStream(s.rising(limit: limit));
+    //   case SubType.controversial:
+    //     return _submissionsStream(s.controversial(limit: limit));
+    // }
+    return subredditSubmissions('popular', limit: limit, type: type);
   }
 
   Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
