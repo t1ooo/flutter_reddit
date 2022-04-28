@@ -11,6 +11,7 @@ import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
+import '../util/login.dart';
 import '../util/snackbar.dart';
 
 
@@ -170,7 +171,9 @@ class SubmissionTile extends StatelessWidget {
   PopupMenuItem _savePopupMenuItem(
       BuildContext context, Submission submission) {
     return PopupMenuItem(
-      onTap: () {
+      onTap: () async {
+        await loggedInGuard(context);
+        
         final notifier = context.read<SubmissionNotifierQ>();
 
         (submission.saved ? notifier.unsave() : notifier.save())
@@ -211,7 +214,8 @@ class SubmissionTile extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () {
+          onPressed: () async {
+            await loggedInGuard(context);
             notifier.voteUp().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
@@ -221,7 +225,8 @@ class SubmissionTile extends StatelessWidget {
         ),
         Text(submission.score.toString()),
         IconButton(
-          onPressed: () {
+          onPressed: () async {
+            await loggedInGuard(context);
             notifier
                 .voteDown()
                 .catchError((e) => showErrorSnackBar(context, e));

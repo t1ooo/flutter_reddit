@@ -9,6 +9,7 @@ import '../reddit_api/comment.dart';
 import '../reddit_api/vote.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
+import '../util/login.dart';
 import '../util/snackbar.dart';
 import '../widget/awards.dart';
 import 'style.dart';
@@ -149,7 +150,9 @@ class CommentWidget extends StatelessWidget {
 
   PopupMenuItem _savePopupMenuItem(BuildContext context) {
     return PopupMenuItem(
-      onTap: () {
+      onTap: () async {
+        await loggedInGuard(context);
+
         final notifier = context.read<CommentNotifierQ>();
 
         (notifier.comment.saved ? notifier.unsave() : notifier.save())
@@ -220,7 +223,8 @@ class CommentWidget extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () {
+          onPressed: () async {
+            await loggedInGuard(context);
             notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
@@ -230,7 +234,8 @@ class CommentWidget extends StatelessWidget {
         ),
         Text(comment.score.toString()),
         IconButton(
-          onPressed: () {
+          onPressed: () async {
+            await loggedInGuard(context);
             notifier
                 .downVote()
                 .catchError((e) => showErrorSnackBar(context, e));

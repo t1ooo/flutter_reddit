@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
+import '../util/login.dart';
 import '../util/snackbar.dart';
 
 class AddComment extends StatefulWidget {
@@ -51,9 +52,10 @@ class _AddCommentState extends State<AddComment> {
     );
   }
 
-  void submit() {
+  void submit() async {
     _message = _message.trim();
-
+    
+    await loggedInGuard(context);
     if (widget.isComment) {
       context
           .read<CommentNotifierQ>()
