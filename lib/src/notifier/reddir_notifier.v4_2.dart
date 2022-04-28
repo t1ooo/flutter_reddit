@@ -736,8 +736,9 @@ class UserAuth extends ChangeNotifier with TryMixin {
   CurrentUserNotifierQ? _user;
   CurrentUserNotifierQ? get user => _user;
 
-  Future<void> login(String name, String password) async {
+  Future<void> login(String name, String pass) async {
     return _try(() async {
+      await _redditApi.login(name, pass);
       final user = await _redditApi.currentUser();
       if (user == null) {
         throw Exception('user is null');
