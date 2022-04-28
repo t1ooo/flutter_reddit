@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/login/login_screen.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_profile_screen.dart';
-import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
@@ -42,11 +42,15 @@ class UserMenu extends StatelessWidget {
           ListTile(
             minLeadingWidth: 0,
             leading: Icon(Icons.login),
-            title: Text('Sign up/ Log in'),
+            title: Text('Log in'),
             onTap: () {
-              notifier
-                  .login('name', 'password')
-                  .catchError((e) => showErrorSnackBar(context, e));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LoginScreen(),
+                ),
+              );
+              Navigator.pop(context);
             },
           ),
           // Expanded(child: Container()),
