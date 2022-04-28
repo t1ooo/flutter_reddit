@@ -835,7 +835,8 @@ class UIException implements Exception {
 }
 
 mixin TryMixin {
-  static late final Logger _log;
+  // static late final Logger _log;
+  static Logger _log = Logger('TryMixin');
 
   // Future<void> _try(Future<void> Function() fn, String error) async {
   //   try {
