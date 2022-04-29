@@ -40,20 +40,3 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 }
-
-// TODO: move to dir current user
-class CurrentUserProfileScreen extends StatelessWidget {
-  const CurrentUserProfileScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('User Profile'),
-      ),
-      body: UserProfile(isCurrentUser: true),
-    );
-  }
-}
