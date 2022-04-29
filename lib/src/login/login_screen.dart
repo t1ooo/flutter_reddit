@@ -8,16 +8,13 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('LoginScreen'),
-        ),
-        body: Padding(
-          padding: pagePadding,
-          child: Login(),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('LoginScreen'),
+      ),
+      body: Padding(
+        padding: pagePadding,
+        child: Login(),
       ),
     );
   }
