@@ -14,8 +14,8 @@ import '../util/snackbar.dart';
 import '../widget/awards.dart';
 import 'style.dart';
 
-class CommentWidget extends StatelessWidget {
-  const CommentWidget({
+class SubmissionComment extends StatelessWidget {
+  const SubmissionComment({
     Key? key,
     this.depth = 0,
     this.showNested = true,
@@ -64,7 +64,7 @@ class CommentWidget extends StatelessWidget {
                 for (final reply in notifier.replies)
                   ChangeNotifierProvider<CommentNotifierQ>.value(
                     value: reply,
-                    child: CommentWidget(
+                    child: SubmissionComment(
                       showNested: showNested,
                       depth: depth + 1,
                     ),

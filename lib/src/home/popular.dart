@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission_type.dart';
-import 'submission_tiles.dart';
+import '../submission_tile/submission_tiles.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);

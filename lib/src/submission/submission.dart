@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/submission_tile.dart';
+import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
-import 'comment.dart';
+import 'submission_comment.dart';
 
 class SubmissionWidget extends StatelessWidget {
   SubmissionWidget({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class SubmissionWidget extends StatelessWidget {
             for (final comment in notifier.comments ?? [])
               ChangeNotifierProvider<CommentNotifierQ>.value(
                 value: comment,
-                child: CommentWidget(),
+                child: SubmissionComment(),
               ),
           ],
         ),

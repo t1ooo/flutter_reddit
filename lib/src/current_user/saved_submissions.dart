@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../submission/comment.dart';
+import '../submission/submission_comment.dart';
 import '../widget/loader.dart';
 
 class SavedSubmissions extends StatelessWidget {
@@ -20,7 +20,7 @@ class SavedSubmissions extends StatelessWidget {
             for (final comment in comments)
               ChangeNotifierProvider<CommentNotifierQ>.value(
                 value: comment,
-                child: CommentWidget(),
+                child: SubmissionComment(),
               ),
           ],
         );
