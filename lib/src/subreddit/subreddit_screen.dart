@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/subreddit.dart';
+import '../widget/loader.dart';
 import 'subreddit.dart';
 
 class SubredditScreen extends StatelessWidget {
@@ -37,20 +38,17 @@ class SubredditScreenLoader extends StatelessWidget {
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      // TODO: replace to Loader
-      body: Builder(builder: (context) {
-        final notifier = context.watch<SubredditLoaderNotifierQ>();
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
-          notifier.loadSubreddit(name);
-        });
-        final subreddit = notifier.subreddit;
-        if (subreddit == null) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        return ChangeNotifierProvider<SubredditNotifierQ>.value(
-            value: subreddit, child: SubredditWidget());
-      }),
+      body: Loader<SubredditNotifierQ>(
+        load: (context) =>
+            context.read<SubredditLoaderNotifierQ>().loadSubreddit(name),
+        data: (context) => context.read<SubredditLoaderNotifierQ>().subreddit,
+        onData: (context, subreddit) {
+          return ChangeNotifierProvider<SubredditNotifierQ>.value(
+            value: subreddit,
+            child: SubredditWidget(),
+          );
+        },
+      ),
     );
   }
 }

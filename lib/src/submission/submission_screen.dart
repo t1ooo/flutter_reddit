@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../comment/comment_field.dart';
+import '../widget/loader.dart';
 import 'submission.dart';
 
 class SubmissionScreen extends StatelessWidget {
@@ -17,28 +18,22 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final notifer = context.watch<SubmissionNotifier>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Submission'),
       ),
       body: Padding(
         padding: pagePadding,
-        // TODO: replace to Loader
-        child: Builder(builder: (context) {
-          final notifier = context.read<SubmissionLoaderNotifierQ>();
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
-            notifier.loadSubmission(id);
-          });
-          final submission = notifier.submission;
-          if (submission == null) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return ChangeNotifierProvider<SubmissionNotifierQ>.value(
-            value: submission,
-            child: SubmissionWidget(),
-          );
-        }),
+        child: Loader<SubmissionNotifierQ>(
+          load: (context) => context.read<SubmissionLoaderNotifierQ>().loadSubmission(id),
+          data: (context) => context.read<SubmissionLoaderNotifierQ>().submission,
+          onData: (context, submission) {
+            return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+              value: submission,
+              child: SubmissionWidget(),
+            );
+          },
+        ),
       ),
       bottomNavigationBar: CommentField(id: id),
     );
