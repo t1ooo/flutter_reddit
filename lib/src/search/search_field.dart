@@ -59,14 +59,14 @@ class SearchField extends StatelessWidget {
         children: [
           TextFormField(
             controller: _controller,
-            onFieldSubmitted: (String? query) {
-              final q = (query ?? '').trim();
-              if (q != '') {
+            onFieldSubmitted: (query) {
+              query = query.trim();
+              if (query != '') {
                 navigatorPushOrReplace(
                   context,
                   MaterialPageRoute(
                     settings: RouteSettings(name: routeName),
-                    builder: (_) => SearchScreen(query: q),
+                    builder: (_) => SearchScreen(query: query),
                   ),
                 );
               }
