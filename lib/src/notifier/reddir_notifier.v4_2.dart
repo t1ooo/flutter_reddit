@@ -76,7 +76,7 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
       if (_submissions != null &&
           _query == query &&
           _sort == sort &&
-          _subredditName == subredditName) return null;
+          _subredditName == subredditName) return;
 
       _query = query;
       _sort = sort;
@@ -89,7 +89,6 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
           .map((v) => SubmissionNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
-      return null;
     }, 'fail to search');
   }
 }
@@ -116,7 +115,6 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
       _subreddit =
           SubredditNotifierQ(_redditApi, await _redditApi.subreddit(_name!));
       notifyListeners();
-      return null;
     }, 'fail to load subreddit');
   }
 }
@@ -174,7 +172,6 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
       await _redditApi.subscribe(_name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: true);
       notifyListeners();
-      return null;
     }, 'fail to subscribe');
   }
 
@@ -186,7 +183,6 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
       await _redditApi.subscribe(_name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: false);
       notifyListeners();
-      return null;
     }, 'fail to unsubscribe');
   }
 
@@ -198,14 +194,13 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
 
   Future<void> loadSubmissions(SubType subType) {
     return _try(() async {
-      if (_submissions != null && _subType == subType) return null;
+      if (_submissions != null && _subType == subType) return;
       _subType = subType;
       _submissions = await _redditApi
           .subredditSubmissions(_name, limit: _limit, type: _subType)
           .map((v) => SubmissionNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
-      return null;
     }, 'fail to load subreddit submissions');
   }
 
@@ -248,7 +243,7 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
     await mustLoggedIn();
 
     return _try(() async {
-      if (_submissions != null && _subType == subType) return null;
+      if (_submissions != null && _subType == subType) return;
       _subType = subType;
 
       _submissions =
@@ -256,7 +251,6 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();
-      return null;
     }, 'fail to search');
   }
 }
@@ -276,7 +270,7 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 
   Future<void> loadSubmissions(SubType subType) {
     return _try(() async {
-      if (_submissions != null && _subType == subType) return null;
+      if (_submissions != null && _subType == subType) return;
       _subType = subType;
 
       _submissions =
@@ -284,7 +278,6 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
       notifyListeners();
-      return null;
     }, 'fail to search');
   }
 }
@@ -302,13 +295,12 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
 
   Future<void> loadSubmission(String id) async {
     return _try(() async {
-      if (_submission != null && _id == id) return null;
+      if (_submission != null && _id == id) return;
       _id = id;
       _submission =
           SubmissionNotifierQ(_redditApi, await _redditApi.submission(_id!));
       // _setComments(_submission?.comments);
       notifyListeners();
-      return null;
     }, 'fail to load submission');
   }
 }
@@ -397,7 +389,6 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
       }
       _comments!.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
-      return null;
     }, 'fail to reply');
   }
 
@@ -406,7 +397,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
     await mustLoggedIn();
 
     return _try(() async {
-      if (submission.saved) return null;
+      if (submission.saved) return;
 
       await _redditApi.submissionSave(submission.id);
       _submission = submission.copyWith(saved: true);
@@ -418,7 +409,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
     await mustLoggedIn();
 
     return _try(() async {
-      if (!submission.saved) return null;
+      if (!submission.saved) return;
 
       await _redditApi.submissionSave(submission.id);
       _submission = submission.copyWith(saved: false);
@@ -448,7 +439,6 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
         score: calcScore(submission.score, submission.likes, vote),
       );
       notifyListeners();
-      return null;
     }, 'fail to vote');
   }
 
@@ -463,7 +453,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
 
   Future<void> loadIcon() async {
     return _try(() async {
-      if (_icon != null) return null;
+      if (_icon != null) return;
       _icon = await _redditApi.subredditIcon(_submission.subreddit);
       notifyListeners();
     }, 'fail to load icon');
@@ -497,7 +487,7 @@ class CommentNotifierQ
     await mustLoggedIn();
 
     return _try(() async {
-      if (_comment.saved) return null;
+      if (_comment.saved) return;
 
       await _redditApi.commentSave(_comment.id);
       _comment = comment.copyWith(saved: true);
@@ -509,7 +499,7 @@ class CommentNotifierQ
     await mustLoggedIn();
 
     return _try(() async {
-      if (!_comment.saved) return null;
+      if (!_comment.saved) return;
 
       await _redditApi.commentUnsave(comment.id);
       _comment = comment.copyWith(saved: false);
@@ -535,7 +525,7 @@ class CommentNotifierQ
     await mustLoggedIn();
 
     return _try(() async {
-      if (comment.likes == vote) return null;
+      if (comment.likes == vote) return;
 
       await _redditApi.submissionVote(comment.id, vote);
       _comment = comment.copyWith(
@@ -674,7 +664,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   List<SubmissionNotifierQ>? get submissions => _submissions;
   Future<void> loadSubmissions() {
     return _try(() async {
-      if (_submissions != null) return null;
+      if (_submissions != null) return;
       _submissions =
           (await _redditApi.userSubmissions(_name, limit: _limit).toList())
               .map((v) => SubmissionNotifierQ(_redditApi, v))
@@ -687,7 +677,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   List<CommentNotifierQ>? get comments => _comments;
   Future<void> loadComments() {
     return _try(() async {
-      if (_comments != null) return null;
+      if (_comments != null) return;
       _comments = (await _redditApi.userComments(_name, limit: _limit).toList())
           .map((v) => CommentNotifierQ(_redditApi, v))
           .toList();
@@ -699,7 +689,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   List<Trophy>? get trophies => _trophies;
   Future<void> loadTrophies() {
     return _try(() async {
-      if (_trophies != null) return null;
+      if (_trophies != null) return;
       _trophies = await _redditApi.userTrophies(_name);
       notifyListeners();
     }, 'fail to load user comments');
@@ -750,7 +740,6 @@ class UserAuth extends ChangeNotifier with TryMixin {
   Future<void> logout() async {
     _user = null;
     notifyListeners();
-    return null;
   }
 }
 
