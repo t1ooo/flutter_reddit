@@ -10,10 +10,11 @@ class SavedSubmissions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<UserNotifierQ>();
     return Loader<List<CommentNotifierQ>>(
-      load: (context) => context.read<UserNotifierQ>().loadSaved(),
-      data: (context) => context.read<UserNotifierQ>().savedComments,
-      onData: (context, comments) {
+      load: (_) => notifier.loadSaved(),
+      data: (_) => notifier.savedComments,
+      onData: (_, comments) {
         return ListView(
           shrinkWrap: true,
           children: [

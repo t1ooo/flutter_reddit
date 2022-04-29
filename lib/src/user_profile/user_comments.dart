@@ -13,12 +13,13 @@ class UserComments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<UserNotifierQ>();
     return Padding(
       padding: pagePadding,
       child: Loader<List<CommentNotifierQ>>(
-        load: (context) => context.read<UserNotifierQ>().loadComments(),
-        data: (context) => context.read<UserNotifierQ>().comments,
-        onData: (context, comments) {
+        load: (_) => notifier.loadComments(),
+        data: (_) => notifier.comments,
+        onData: (_, comments) {
           return ListView(
             children: [
               for (final comment in comments)

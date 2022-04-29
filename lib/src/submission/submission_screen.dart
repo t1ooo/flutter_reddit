@@ -18,6 +18,7 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<SubmissionLoaderNotifierQ>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Submission'),
@@ -25,9 +26,9 @@ class SubmissionScreen extends StatelessWidget {
       body: Padding(
         padding: pagePadding,
         child: Loader<SubmissionNotifierQ>(
-          load: (context) => context.read<SubmissionLoaderNotifierQ>().loadSubmission(id),
-          data: (context) => context.read<SubmissionLoaderNotifierQ>().submission,
-          onData: (context, submission) {
+          load: (_) => notifier.loadSubmission(id),
+          data: (_) => notifier.submission,
+          onData: (_, submission) {
             return ChangeNotifierProvider<SubmissionNotifierQ>.value(
               value: submission,
               child: SubmissionWidget(),

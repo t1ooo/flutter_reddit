@@ -34,15 +34,15 @@ class SubredditScreenLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<SubredditLoaderNotifierQ>();
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
       ),
       body: Loader<SubredditNotifierQ>(
-        load: (context) =>
-            context.read<SubredditLoaderNotifierQ>().loadSubreddit(name),
-        data: (context) => context.read<SubredditLoaderNotifierQ>().subreddit,
-        onData: (context, subreddit) {
+        load: (_) => notifier.loadSubreddit(name),
+        data: (_) => notifier.subreddit,
+        onData: (_, subreddit) {
           return ChangeNotifierProvider<SubredditNotifierQ>.value(
             value: subreddit,
             child: SubredditWidget(),

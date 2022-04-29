@@ -13,10 +13,11 @@ class UserTrophies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<UserNotifierQ>();
     return Loader<List<Trophy>>(
-      load: (context) => context.read<UserNotifierQ>().loadTrophies(),
-      data: (context) => context.read<UserNotifierQ>().trophies,
-      onData: (context, trophies) {
+      load: (_) => notifier.loadTrophies(),
+      data: (_) => notifier.trophies,
+      onData: (_, trophies) {
         return ListView(
           shrinkWrap: true,
           children: [

@@ -18,14 +18,15 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.read<UserLoaderNotifierQ>();
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
       ),
       body: Loader<UserNotifierQ>(
-        load: (context) => context.read<UserLoaderNotifierQ>().loadUser(name),
-        data: (context) => context.read<UserLoaderNotifierQ>().user,
-        onData: (context, user) {
+        load: (_) => notifier.loadUser(name),
+        data: (_) => notifier.user,
+        onData: (_, user) {
           return ChangeNotifierProvider<UserNotifierQ>.value(
             value: user,
             child: UserProfile(isCurrentUser: false),
