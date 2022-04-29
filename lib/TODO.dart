@@ -1,4 +1,3 @@
-// TODO: BUG: submission page not loaded
 // TODO: refresh
 // TODO: merge loggers
 // TODO: listview save croll position
