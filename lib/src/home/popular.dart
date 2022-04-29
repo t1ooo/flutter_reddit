@@ -10,16 +10,12 @@ class Popular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final notifier = context.watch<HomePopularNotifierQ>();
-        return GSubmissionTiles<SubType>(
-          type: notifier.subType,
-          types: SubType.values,
-          submissions: notifier.submissions,
-          onTypeChanged: notifier.loadSubmissions,
-        );
-      },
+    final notifier = context.watch<HomePopularNotifierQ>();
+    return GSubmissionTiles<SubType>(
+      type: notifier.subType,
+      types: SubType.values,
+      submissions: notifier.submissions,
+      onTypeChanged: notifier.loadSubmissions,
     );
   }
 }

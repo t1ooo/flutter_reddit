@@ -38,16 +38,12 @@ class Home extends StatelessWidget {
   }
 
   Widget home(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final notifier = context.watch<HomeFrontNotifierQ>();
-        return GSubmissionTiles<FrontSubType>(
-          type: notifier.subType,
-          types: FrontSubType.values,
-          submissions: notifier.submissions,
-          onTypeChanged: notifier.loadSubmissions,
-        );
-      },
+    final notifier = context.watch<HomeFrontNotifierQ>();
+    return GSubmissionTiles<FrontSubType>(
+      type: notifier.subType,
+      types: FrontSubType.values,
+      submissions: notifier.submissions,
+      onTypeChanged: notifier.loadSubmissions,
     );
   }
 }

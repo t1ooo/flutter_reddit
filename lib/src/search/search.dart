@@ -17,17 +17,13 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final notifier = context.watch<SearchNotifierQ>();
-        return GSubmissionTiles<Sort>(
-          type: notifier.sort,
-          types: Sort.values,
-          submissions: notifier.submissions,
-          onTypeChanged: (subType) {
-            notifier.search(query, subType);
-          },
-        );
+    final notifier = context.watch<SearchNotifierQ>();
+    return GSubmissionTiles<Sort>(
+      type: notifier.sort,
+      types: Sort.values,
+      submissions: notifier.submissions,
+      onTypeChanged: (subType) {
+        notifier.search(query, subType);
       },
     );
   }
