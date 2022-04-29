@@ -418,10 +418,10 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
     await mustLoggedIn();
 
     return _try(() async {
-      if (submission.saved) return null;
+      if (!submission.saved) return null;
 
       await _redditApi.submissionSave(submission.id);
-      _submission = submission.copyWith(saved: true);
+      _submission = submission.copyWith(saved: false);
       notifyListeners();
     }, 'fail to unsave');
   }
