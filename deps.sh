@@ -1,6 +1,8 @@
 #!/bin/bash
 
 deps=(
+    path_provider
+    alfred
     flutter_cache_manager
     cached_network_image
     # carousel_slider

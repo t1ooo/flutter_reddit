@@ -6,6 +6,7 @@ import 'package:draw/src/listing/listing_generator.dart' as draw;
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
+import 'login.dart';
 import 'trophy.dart';
 import 'user.dart';
 import 'comment.dart';
@@ -99,7 +100,54 @@ abstract class RedditApi {
 }
 
 class RedditApiImpl implements RedditApi {
-  RedditApiImpl(this.reddit);
+  RedditApiImpl._(this.reddit) {
+    // reddit =
+  }
+
+  static Future<RedditApiImpl> auth(String clientId, Uri redirectUri) async {
+    final file = File('credentials.json');
+
+    final userAgent = 'Flutter Client';
+
+    final credentialsJson =
+        await file.exists() ? await file.readAsString() : '';
+
+    final s = AuthServer(redirectUri);
+
+    draw.Reddit reddit;
+    if (credentialsJson == '') {
+      print('login');
+      reddit = await draw.Reddit.createInstalledFlowInstance(
+        clientId: clientId,
+        userAgent: userAgent,
+        redirectUri: redirectUri,
+      );
+
+      final authUrl = reddit.auth.url(['*'], 'state');
+      print(authUrl);
+
+      final authCode = await s.stream.first;
+      await reddit.auth.authorize(authCode);
+
+      await file.writeAsString(reddit.auth.credentials.toJson());
+    } else {
+      print('cached');
+      reddit = draw.Reddit.restoreAuthenticatedInstance(
+        credentialsJson,
+        clientId: clientId,
+        userAgent: userAgent,
+        redirectUri: redirectUri,
+      );
+    }
+
+    await s.close();
+
+    return RedditApiImpl._(reddit);
+  }
+
+  // final String clientId;
+  final String userAgent = 'Flutter Client';
+  // final Uri redirectUri;
 
   final draw.Reddit reddit;
   static final _log = Logger('RedditApiImpl');
@@ -450,15 +498,19 @@ class RedditApiImpl implements RedditApi {
     return Comment.fromJson(commentReply.data!);
   }
 
-  Future<bool> isLoggedIn() async {
-    try {
-      final redditor = await reddit.user.me();
-      return redditor != null;
-    } on Exception catch (e) {
-      _log.info('', e);
-    }
-    return false;
-  }
+  bool _isLoggedIn = false;
+
+  Future<bool> isLoggedIn() async => _isLoggedIn;
+
+  // Future<bool> isLoggedIn() async {
+  //   try {
+  //     final redditor = await reddit.user.me();
+  //     return redditor != null;
+  //   } on Exception catch (e) {
+  //     _log.info('', e);
+  //   }
+  //   return false;
+  // }
 
   Future<void> login(String user, String pass) => throw UnimplementedError();
   Future<void> logout(String user, String pass) => throw UnimplementedError();
