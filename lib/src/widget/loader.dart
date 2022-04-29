@@ -23,10 +23,9 @@ class Loader<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<void>(
       future: load(context),
-      builder: (BuildContext context, AsyncSnapshot snap) {
-        // return builder(context, this.data(context), snap.error);
+      builder: (context, snap) {
         final error = snap.error;
         if (error != null) {
           return (onError ?? onErrorDefault)(context, error);
@@ -64,9 +63,9 @@ class LoaderBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<void>(
       future: load(context),
-      builder: (BuildContext context, AsyncSnapshot snap) {
+      builder: (context, snap) {
         return builder(context, this.data(context), snap.error);
       },
     );
