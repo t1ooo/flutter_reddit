@@ -48,8 +48,8 @@ class UserMenu extends StatelessWidget {
             minLeadingWidth: 0,
             leading: Icon(Icons.login),
             title: Text('Log in'),
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => LoginScreen(),
@@ -116,8 +116,8 @@ class UserMenu extends StatelessWidget {
             minLeadingWidth: 0,
             leading: Icon(Icons.account_circle),
             title: Text('My profile'),
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) {
@@ -143,8 +143,8 @@ class UserMenu extends StatelessWidget {
             minLeadingWidth: 0,
             leading: Icon(Icons.bookmark),
             title: Text('Saved'),
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => SavedScreen(),
@@ -165,8 +165,8 @@ class UserMenu extends StatelessWidget {
             minLeadingWidth: 0,
             leading: Icon(Icons.logout),
             title: Text('Log out'),
-            onTap: () {
-              notifier
+            onTap: () async {
+              await notifier
                   .logout()
                   .catchError((e) => showErrorSnackBar(context, e));
               Navigator.pop(context);
