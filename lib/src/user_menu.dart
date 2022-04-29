@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/login/login_screen.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_profile_screen.dart';
+import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
@@ -24,7 +25,7 @@ class UserMenu extends StatelessWidget {
     if (user == null) {
       return anonymousUserMenu(context, notifier);
     }
-    return userMenu(context, user);
+    return userMenu(context, notifier);
   }
 
   Widget anonymousUserMenu(BuildContext context, UserAuth notifier) {
@@ -72,7 +73,8 @@ class UserMenu extends StatelessWidget {
     );
   }
 
-  Widget userMenu(BuildContext context, CurrentUserNotifierQ user) {
+  Widget userMenu(BuildContext context, UserAuth notifier) {
+    final user = notifier.user!;
     return Drawer(
       child: Column(
         children: [
@@ -164,6 +166,9 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Log out'),
             onTap: () {
+              notifier
+                  .logout()
+                  .catchError((e) => showErrorSnackBar(context, e));
               Navigator.pop(context);
             },
           ),

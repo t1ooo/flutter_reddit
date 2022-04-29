@@ -747,7 +747,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
     }, 'fail to login');
   }
 
-  Future<void> logout(String name, String password) async {
+  Future<void> logout() async {
     _user = null;
     notifyListeners();
     return null;
