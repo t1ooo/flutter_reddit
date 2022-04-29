@@ -135,17 +135,7 @@ class SubmissionTile extends StatelessWidget {
             ),
           ],
         ),
-        // PopupMenuButton(
-        //   icon: Icon(Icons.more_vert),
-        //   itemBuilder: (_) => [
-        //     _savePopupMenuItem(context, submission),
-        //     _sharePopupMenuItem(context, submission),
-        //     // TODO
-        //     PopupMenuItem(child: Text('Report')),
-        //     PopupMenuItem(child: Text('Block user')),
-        //   ],
-        // ),
-        _popupMenuButtonV2(context, notifier),
+        _popupMenuButton(context, notifier),
       ],
     );
   }
@@ -156,7 +146,7 @@ class SubmissionTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _voteButton(context, submission),
+        _voteButton(context, notifier),
         Row(
           children: [
             Icon(Icons.comment),
@@ -179,62 +169,10 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  PopupMenuButton _popupMenuButton(
-      BuildContext context, Submission submission) {
-    return PopupMenuButton<String>(
-      onSelected: (selected) async {
-        switch (selected) {
-          case 'save':
-            await loggedInGuard(context);
-            final notifier = context.read<SubmissionNotifierQ>();
-            (submission.saved ? notifier.unsave() : notifier.save())
-                .catchError((e) => showErrorSnackBar(context, e));
-            break;
-
-          case 'share':
-            context.read<SubmissionNotifierQ>().share();
-            break;
-
-          default:
-            log('undefined selected: $selected');
-        }
-      },
-      icon: Icon(Icons.more_vert),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 'save',
-          child: Builder(
-            builder: (_) {
-              return ListTile(
-                contentPadding: EdgeInsets.zero,
-                minLeadingWidth: 0,
-                leading: Icon(
-                  submission.saved ? Icons.bookmark : Icons.bookmark_border,
-                ),
-                title: Text(submission.saved ? 'Unsave' : 'Save'),
-              );
-            },
-          ),
-        ),
-
-        PopupMenuItem(
-          value: 'share',
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            minLeadingWidth: 0,
-            leading: Icon(Icons.share),
-            title: Text('Share'),
-          ),
-        ),
-
-        // TODO
-        PopupMenuItem(child: Text('Report')),
-        PopupMenuItem(child: Text('Block user')),
-      ],
-    );
-  }
-
-  CustomPopupMenuButton _popupMenuButtonV2(BuildContext context, SubmissionNotifierQ notifier) {
+  CustomPopupMenuButton _popupMenuButton(
+    BuildContext context,
+    SubmissionNotifierQ notifier,
+  ) {
     final submission = notifier.submission;
 
     return CustomPopupMenuButton(
@@ -247,19 +185,18 @@ class SubmissionTile extends StatelessWidget {
           label: submission.saved ? 'Unsave' : 'Save',
           onTap: () async {
             await loggedInGuard(context);
-
             return (submission.saved ? notifier.unsave() : notifier.save())
                 .catchError((e) => showErrorSnackBar(context, e));
           },
         ),
 
-        CustomPopupMenuItem(
-          icon: Icon(Icons.share),
-          label: 'Share',
-          onTap: () async {
-            return notifier.share();
-          },
-        ),
+        // CustomPopupMenuItem(
+        //   icon: Icon(Icons.share),
+        //   label: 'Share',
+        //   onTap: () async {
+        //     return notifier.share();
+        //   },
+        // ),
 
         // TODO
         CustomPopupMenuItem(label: 'Report', onTap: () {}),
@@ -268,55 +205,17 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  PopupMenuItem _savePopupMenuItem(
-      BuildContext context, Submission submission) {
-    return PopupMenuItem(
-      onTap: () async {
-        await loggedInGuard(context);
+  Widget _voteButton(BuildContext context, SubmissionNotifierQ notifier) {
+    final submission = notifier.submission;
 
-        final notifier = context.read<SubmissionNotifierQ>();
-
-        (submission.saved ? notifier.unsave() : notifier.save())
-            .catchError((e) => showErrorSnackBar(context, e));
-      },
-      child: Builder(
-        builder: (_) {
-          return ListTile(
-            contentPadding: EdgeInsets.zero,
-            minLeadingWidth: 0,
-            leading: Icon(
-              submission.saved ? Icons.bookmark : Icons.bookmark_border,
-            ),
-            title: Text(submission.saved ? 'Unsave' : 'Save'),
-          );
-        },
-      ),
-    );
-  }
-
-  PopupMenuItem _sharePopupMenuItem(
-      BuildContext context, Submission submission) {
-    return PopupMenuItem(
-      onTap: () async {
-        context.read<SubmissionNotifierQ>().share();
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        minLeadingWidth: 0,
-        leading: Icon(Icons.share),
-        title: Text('Share'),
-      ),
-    );
-  }
-
-  Widget _voteButton(BuildContext context, Submission submission) {
-    final notifier = context.read<SubmissionNotifierQ>();
     return Row(
       children: [
         IconButton(
           onPressed: () async {
             await loggedInGuard(context);
-            notifier.voteUp().catchError((e) => showErrorSnackBar(context, e));
+            return notifier
+                .voteUp()
+                .catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -327,7 +226,7 @@ class SubmissionTile extends StatelessWidget {
         IconButton(
           onPressed: () async {
             await loggedInGuard(context);
-            notifier
+            return notifier
                 .voteDown()
                 .catchError((e) => showErrorSnackBar(context, e));
           },

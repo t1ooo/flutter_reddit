@@ -109,19 +109,7 @@ class SubmissionComment extends StatelessWidget {
     return Row(
       children: [
         Spacer(),
-        // PopupMenuButton(
-        //   icon: Icon(Icons.more_vert),
-        //   itemBuilder: (_) => [
-        //     _savePopupMenuItem(context),
-        //     _sharePopupMenuItem(context, comment),
-        //     _copyTextPopupMenuItem(context, comment),
-        //     _collapsePopupMenuItem(context),
-        //     // TODO
-        //     PopupMenuItem(child: Text('Report')),
-        //     PopupMenuItem(child: Text('Block user')),
-        //   ],
-        // ),
-        _popupMenuButtonV2(context, notifier),
+        _popupMenuButton(context, notifier),
         SizedBox(width: 20),
         Icon(Icons.star_outline),
         SizedBox(width: 20),
@@ -149,12 +137,12 @@ class SubmissionComment extends StatelessWidget {
           icon: Icon(Icons.reply),
         ),
         SizedBox(width: 20),
-        _voteButton(context, comment),
+        _voteButton(context, notifier),
       ],
     );
   }
 
-  CustomPopupMenuButton _popupMenuButtonV2(
+  CustomPopupMenuButton _popupMenuButton(
     BuildContext context,
     CommentNotifierQ notifier,
   ) {
@@ -170,7 +158,6 @@ class SubmissionComment extends StatelessWidget {
           label: comment.saved ? 'Unsave' : 'Save',
           onTap: () async {
             await loggedInGuard(context);
-
             return (comment.saved ? notifier.unsave() : notifier.save())
                 .catchError((e) => showErrorSnackBar(context, e));
           },
@@ -207,84 +194,15 @@ class SubmissionComment extends StatelessWidget {
     );
   }
 
-  PopupMenuItem _savePopupMenuItem(BuildContext context) {
-    return PopupMenuItem(
-      onTap: () async {
-        await loggedInGuard(context);
-
-        final notifier = context.read<CommentNotifierQ>();
-
-        (notifier.comment.saved ? notifier.unsave() : notifier.save())
-            .catchError((e) => showErrorSnackBar(context, e));
-      },
-      child: Builder(
-        builder: (_) {
-          final notifier = context.read<CommentNotifierQ>();
-
-          return ListTile(
-            contentPadding: EdgeInsets.zero,
-            minLeadingWidth: 0,
-            leading: Icon(
-              notifier.comment.saved ? Icons.bookmark : Icons.bookmark_border,
-            ),
-            title: Text(notifier.comment.saved ? 'Unsave' : 'Save'),
-          );
-        },
-      ),
-    );
-  }
-
-  PopupMenuItem _sharePopupMenuItem(BuildContext context, Comment comment) {
-    return PopupMenuItem(
-      onTap: () async {
-        context.read<CommentNotifierQ>().share();
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        minLeadingWidth: 0,
-        leading: Icon(Icons.share),
-        title: Text('Share'),
-      ),
-    );
-  }
-
-  PopupMenuItem _copyTextPopupMenuItem(BuildContext context, Comment comment) {
-    return PopupMenuItem(
-      onTap: () {
-        context.read<CommentNotifierQ>().copyText();
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        minLeadingWidth: 0,
-        leading: Icon(Icons.content_copy),
-        title: Text('Copy text'),
-      ),
-    );
-  }
-
-  PopupMenuItem _collapsePopupMenuItem(BuildContext context) {
-    return PopupMenuItem(
-      onTap: () {
-        context.read<CommentNotifierQ>().collapse();
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        minLeadingWidth: 0,
-        leading: Icon(Icons.expand_less),
-        title: Text('Collapse thread'),
-      ),
-    );
-  }
-
-  Widget _voteButton(BuildContext context, Comment comment) {
-    final notifier = context.read<CommentNotifierQ>();
+  Widget _voteButton(BuildContext context, CommentNotifierQ notifier) {
+    final comment = notifier.comment;
 
     return Row(
       children: [
         IconButton(
           onPressed: () async {
             await loggedInGuard(context);
-            notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
+            return notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -292,10 +210,11 @@ class SubmissionComment extends StatelessWidget {
           ),
         ),
         Text(comment.score.toString()),
+        // TODO: disable on progress
         IconButton(
           onPressed: () async {
             await loggedInGuard(context);
-            notifier
+            return notifier
                 .downVote()
                 .catchError((e) => showErrorSnackBar(context, e));
           },
