@@ -12,6 +12,7 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/login.dart';
 import '../util/snackbar.dart';
 import '../widget/awards.dart';
+import '../widget/custom_popup_menu_button.dart';
 import 'style.dart';
 
 class SubmissionComment extends StatelessWidget {
@@ -56,10 +57,10 @@ class SubmissionComment extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            header(context, comment),
+            header(context, notifier),
             if (notifier.expanded) ...[
               Text(comment.body),
-              footer(context, comment),
+              footer(context, notifier),
               if (showNested)
                 for (final reply in notifier.replies)
                   ChangeNotifierProvider<CommentNotifierQ>.value(
@@ -76,22 +77,51 @@ class SubmissionComment extends StatelessWidget {
     );
   }
 
-  Widget footer(BuildContext context, Comment comment) {
+  Widget header(BuildContext context, CommentNotifierQ notifier) {
+    final comment = notifier.comment;
+
+    return Row(
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => UserProfileScreen(name: comment.author),
+              ),
+            );
+          },
+          child: Text(comment.author),
+        ),
+        Text(' • '),
+        Text(formatDateTime(comment.created)),
+        Awards(
+          awardIcons: comment.awardIcons,
+          totalAwardsReceived: comment.totalAwardsReceived,
+        ),
+      ],
+    );
+  }
+
+  Widget footer(BuildContext context, CommentNotifierQ notifier) {
+    final comment = notifier.comment;
+
     return Row(
       children: [
         Spacer(),
-        PopupMenuButton(
-          icon: Icon(Icons.more_vert),
-          itemBuilder: (_) => [
-            _savePopupMenuItem(context),
-            _sharePopupMenuItem(context, comment),
-            _copyTextPopupMenuItem(context, comment),
-            _collapsePopupMenuItem(context),
-            // TODO
-            PopupMenuItem(child: Text('Report')),
-            PopupMenuItem(child: Text('Block user')),
-          ],
-        ),
+        // PopupMenuButton(
+        //   icon: Icon(Icons.more_vert),
+        //   itemBuilder: (_) => [
+        //     _savePopupMenuItem(context),
+        //     _sharePopupMenuItem(context, comment),
+        //     _copyTextPopupMenuItem(context, comment),
+        //     _collapsePopupMenuItem(context),
+        //     // TODO
+        //     PopupMenuItem(child: Text('Report')),
+        //     PopupMenuItem(child: Text('Block user')),
+        //   ],
+        // ),
+        _popupMenuButtonV2(context, notifier),
         SizedBox(width: 20),
         Icon(Icons.star_outline),
         SizedBox(width: 20),
@@ -124,26 +154,55 @@ class SubmissionComment extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, Comment comment) {
-    return Row(
-      children: [
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => UserProfileScreen(name: comment.author),
-              ),
-            );
+  CustomPopupMenuButton _popupMenuButtonV2(
+    BuildContext context,
+    CommentNotifierQ notifier,
+  ) {
+    final comment = notifier.comment;
+
+    return CustomPopupMenuButton(
+      icon: Icon(Icons.more_vert),
+      items: [
+        CustomPopupMenuItem(
+          icon: Icon(
+            comment.saved ? Icons.bookmark : Icons.bookmark_border,
+          ),
+          label: comment.saved ? 'Unsave' : 'Save',
+          onTap: () async {
+            await loggedInGuard(context);
+
+            return (comment.saved ? notifier.unsave() : notifier.save())
+                .catchError((e) => showErrorSnackBar(context, e));
           },
-          child: Text(comment.author),
         ),
-        Text(' • '),
-        Text(formatDateTime(comment.created)),
-        Awards(
-          awardIcons: comment.awardIcons,
-          totalAwardsReceived: comment.totalAwardsReceived,
+
+        CustomPopupMenuItem(
+          icon: Icon(Icons.share),
+          label: 'Share',
+          onTap: () async {
+            return notifier.share();
+          },
         ),
+
+        CustomPopupMenuItem(
+          icon: Icon(Icons.content_copy),
+          label: 'Copy Text',
+          onTap: () async {
+            return notifier.copyText();
+          },
+        ),
+
+        CustomPopupMenuItem(
+          icon: Icon(Icons.expand_less),
+          label: 'Collapse thread',
+          onTap: () {
+            notifier.collapse();
+          },
+        ),
+
+        // TODO
+        CustomPopupMenuItem(label: 'Report', onTap: () {}),
+        CustomPopupMenuItem(label: 'Block user', onTap: () {}),
       ],
     );
   }
