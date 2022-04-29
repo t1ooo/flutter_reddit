@@ -22,15 +22,16 @@ class Awards extends StatelessWidget {
       // for (final icon in (awardIcons).take(4))
       for (final icon in awardIcons)
         // Image.network(icon, width: 16, height: 16),
-        NetworkImageBuilder(icon, builder: (context, image, error) {
-          if (error != null) {
-            log('$error');
-            return Container();
-          }
-          if (image != null) {
-            return Image(width: 16, height: 16, image: image);
-          }
-          return Container();
+        CustomNetworkImage(icon, onData: (_, image) {
+          return Image(
+            width: 16,
+            height: 16,
+            image: image,
+            errorBuilder: (_, e, __) {
+              log('$e');
+              return Container();
+            },
+          );
         }),
       SizedBox(width: 5),
       Text('$totalAwardsReceived Awards'),

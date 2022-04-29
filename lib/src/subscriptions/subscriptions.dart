@@ -33,7 +33,7 @@ class Subscriptions extends StatelessWidget {
               height: 16,
               child: (subreddit.subreddit.communityIcon != '')
                   // ? Image.network(subreddit.subreddit.communityIcon)
-                  ? NetworkImageBuilder(subreddit.subreddit.communityIcon)
+                  ? CustomNetworkImageBuilder(subreddit.subreddit.communityIcon)
                   : Image.asset('communityIcon.png'),
             ),
             title: Text(subreddit.subreddit.displayNamePrefixed),

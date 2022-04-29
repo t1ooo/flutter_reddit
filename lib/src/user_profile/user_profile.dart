@@ -41,7 +41,7 @@ class UserProfile extends StatelessWidget {
                           width: iconSize,
                           height: iconSize,
                           // child: Image.network(user.iconImg),
-                          child: NetworkImageBuilder(user.iconImg),
+                          child: CustomNetworkImageBuilder(user.iconImg),
                         ),
                       ],
                     ),

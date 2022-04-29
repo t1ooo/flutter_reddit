@@ -50,10 +50,52 @@ import '../logging/logging.dart';
 //   }
 // }
 
-class NetworkImageBuilder extends StatelessWidget {
-  static final _log = Logger('NetworkImageBuilder');
+class CustomNetworkImage extends StatelessWidget {
+  CustomNetworkImage(
+    this.src, {
+    Key? key,
+    this.onData,
+    this.onError,
+    this.onLoading,
+  }) : super(key: key);
 
-  const NetworkImageBuilder(
+  final String src;
+  final Widget Function(BuildContext, ImageProvider<Object>)? onData;
+  final Widget Function(BuildContext, Object)? onError;
+  final Widget Function(BuildContext)? onLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: src,
+      cacheManager: context.read<CacheManager>(),
+      imageBuilder: (context, imageProvider) =>
+          (onData ?? onDataDefault)(context, imageProvider),
+      placeholder: (context, url) => (onLoading ?? onLoadingDefault)(context),
+      errorWidget: (context, url, error) =>
+          (onError ?? onErrorDefault)(context, error),
+    );
+  }
+
+  Widget onDataDefault(BuildContext context, ImageProvider<Object> image) {
+    return Image(
+      image: image,
+      errorBuilder: (_, e, __) => (onError ?? onErrorDefault)(context, e),
+    );
+  }
+
+  Widget onLoadingDefault(BuildContext context) {
+    return Container();
+  }
+
+  Widget onErrorDefault(BuildContext context, Object error) {
+    log('$error');
+    return Container();
+  }
+}
+
+class CustomNetworkImageBuilder extends StatelessWidget {
+  const CustomNetworkImageBuilder(
     this.src, {
     Key? key,
     // this.width,
@@ -101,7 +143,13 @@ class NetworkImageBuilder extends StatelessWidget {
       return Container();
     }
     if (image != null) {
-      return Image(image: image);
+      return Image(
+        image: image,
+        errorBuilder: (_, e, __) {
+          log('$e');
+          return Container();
+        },
+      );
     }
     return Container();
   }
