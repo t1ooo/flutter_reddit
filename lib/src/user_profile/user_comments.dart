@@ -14,6 +14,7 @@ class UserComments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifierQ>();
+
     return Padding(
       padding: pagePadding,
       child: Loader<List<CommentNotifierQ>>(
@@ -31,24 +32,6 @@ class UserComments extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class UserCommentsLoader extends StatelessWidget {
-  const UserCommentsLoader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final notifier = context.watch<UserNotifierQ>();
-    return Loader<List<CommentNotifierQ>>(
-      load: (_) => notifier.loadComments(),
-      data: (_) => notifier.comments,
-      onData: (_, __) {
-        return UserComments();
-      },
     );
   }
 }

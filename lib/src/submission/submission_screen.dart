@@ -18,40 +18,18 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<SubmissionLoaderNotifierQ>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Submission'),
       ),
-      body: Padding(
-        padding: pagePadding,
-        child: Loader<SubmissionNotifierQ>(
-          load: (_) => notifier.loadSubmission(id),
-          data: (_) => notifier.submission,
-          onData: (_, submission) {
-            return ChangeNotifierProvider<SubmissionNotifierQ>.value(
-              value: submission,
-              child: SubmissionWidget(),
-            );
-          },
-        ),
-      ),
+      body: body(context),
       bottomNavigationBar: CommentField(id: id),
     );
   }
-}
 
-class SubmissionLoader extends StatelessWidget {
-  const SubmissionLoader({
-    Key? key,
-    required this.id,
-  }) : super(key: key);
-
-  final String id;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget body(BuildContext context) {
     final notifier = context.watch<SubmissionLoaderNotifierQ>();
+
     return Loader<SubmissionNotifierQ>(
       load: (_) => notifier.loadSubmission(id),
       data: (_) => notifier.submission,
@@ -64,17 +42,3 @@ class SubmissionLoader extends StatelessWidget {
     );
   }
 }
-
-// Widget submissionLoader(BuildContext context, String id) {
-//   final notifier = context.watch<SubmissionLoaderNotifierQ>();
-//   return Loader<SubmissionNotifierQ>(
-//     load: (_) => notifier.loadSubmission(id),
-//     data: (_) => notifier.submission,
-//     onData: (_, submission) {
-//       return ChangeNotifierProvider<SubmissionNotifierQ>.value(
-//         value: submission,
-//         child: SubmissionWidget(),
-//       );
-//     },
-//   );
-// }

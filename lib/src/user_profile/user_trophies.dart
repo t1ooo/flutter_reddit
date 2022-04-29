@@ -14,6 +14,7 @@ class UserTrophies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifierQ>();
+
     return Loader<List<Trophy>>(
       load: (_) => notifier.loadTrophies(),
       data: (_) => notifier.trophies,

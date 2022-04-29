@@ -34,36 +34,17 @@ class SubredditScreenLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<SubredditLoaderNotifierQ>();
     return Scaffold(
       appBar: AppBar(
         title: Text('User Profile'),
       ),
-      body: Loader<SubredditNotifierQ>(
-        load: (_) => notifier.loadSubreddit(name),
-        data: (_) => notifier.subreddit,
-        onData: (_, subreddit) {
-          return ChangeNotifierProvider<SubredditNotifierQ>.value(
-            value: subreddit,
-            child: SubredditWidget(),
-          );
-        },
-      ),
+      body: body(context),
     );
   }
-}
 
-class SubredditLoader extends StatelessWidget {
-  const SubredditLoader({
-    Key? key,
-    required this.name,
-  }) : super(key: key);
+  Widget body(BuildContext context) {
+    final notifier = context.read<SubredditLoaderNotifierQ>();
 
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    final notifier = context.watch<SubredditLoaderNotifierQ>();
     return Loader<SubredditNotifierQ>(
       load: (_) => notifier.loadSubreddit(name),
       data: (_) => notifier.subreddit,

@@ -13,6 +13,7 @@ class SavedComments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifierQ>();
+
     return Loader<List<CommentNotifierQ>>(
       load: (_) => notifier.loadSaved(),
       data: (_) => notifier.savedComments,
@@ -27,44 +28,6 @@ class SavedComments extends StatelessWidget {
               ),
           ],
         );
-      },
-    );
-
-    /* return Builder(
-      builder: (context) {
-        final submissions =
-            context.select<UserNotifierQ, List<SubmissionNotifierQ>?>(
-                (v) => v.savedSubmissions);
-        if (submissions == null) {
-          return CircularProgressIndicator();
-        }
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            for (final sub in submissions)
-              ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                value: sub,
-                child: SubmissionTile(),
-              ),
-          ],
-        );
-      },
-    ); */
-  }
-}
-
-
-class SavedCommentsLoader extends StatelessWidget {
-  const SavedCommentsLoader({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final notifier = context.watch<UserNotifierQ>();
-    return Loader<List<CommentNotifierQ>>(
-      load: (_) => notifier.loadSaved(),
-      data: (_) => notifier.savedComments,
-      onData: (_, __) {
-        return SavedComments();
       },
     );
   }

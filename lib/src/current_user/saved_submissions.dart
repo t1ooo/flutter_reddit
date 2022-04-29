@@ -11,6 +11,7 @@ class SavedSubmissions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifierQ>();
+
     return Loader<List<SubmissionNotifierQ>>(
       load: (_) => notifier.loadSaved(),
       data: (_) => notifier.savedSubmissions,
