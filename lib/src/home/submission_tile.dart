@@ -49,7 +49,7 @@ class SubmissionTile extends StatelessWidget {
                       child: Loader<String>(
                         load: (context) => notifier.loadIcon(),
                         data: (context) => notifier.icon,
-                        onData: (BuildContext context, String icon) {
+                        onData: (_, icon) {
                           // return Image.network(icon);
                           return NetworkImageBuilder(icon);
                         },

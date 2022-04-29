@@ -18,31 +18,30 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         Provider<CacheManager>(
-          create: (BuildContext context) => CacheManager(
+          create: (context) => CacheManager(
             Config('flutter_reddit_cache'),
           ),
         ),
         ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
-          create: (BuildContext context) =>
-              SubmissionLoaderNotifierQ(redditApi),
+          create: (context) => SubmissionLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<SearchNotifierQ>(
-          create: (BuildContext context) => SearchNotifierQ(redditApi),
+          create: (context) => SearchNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<SubredditLoaderNotifierQ>(
-          create: (BuildContext context) => SubredditLoaderNotifierQ(redditApi),
+          create: (context) => SubredditLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<UserLoaderNotifierQ>(
-          create: (BuildContext context) => UserLoaderNotifierQ(redditApi),
+          create: (context) => UserLoaderNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<UserAuth>(
-          create: (BuildContext context) => UserAuth(redditApi),
+          create: (context) => UserAuth(redditApi),
         ),
         ChangeNotifierProvider<HomeFrontNotifierQ>(
-          create: (BuildContext context) => HomeFrontNotifierQ(redditApi),
+          create: (context) => HomeFrontNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<HomePopularNotifierQ>(
-          create: (BuildContext context) => HomePopularNotifierQ(redditApi),
+          create: (context) => HomePopularNotifierQ(redditApi),
         ),
       ],
       child: MyApp(),
