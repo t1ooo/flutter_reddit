@@ -1,0 +1,108 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:provider/provider.dart';
+
+import '../logging/logging.dart';
+
+// Widget voidError(_, __) => Container();
+
+// class CustomNetworkImage extends StatelessWidget {
+//   static final _log = Logger('CustomNetworkImage');
+
+//   const CustomNetworkImage(
+//     this.src, {
+//     Key? key,
+//     this.width,
+//     this.height,
+//     this.imageBuilder,
+//   }) : super(key: key);
+
+//   final String src;
+//   final Widget Function(BuildContext, ImageProvider<Object>)? imageBuilder;
+//   final double? width;
+//   final double? height;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // return Image.network(
+//     //   src,
+//     //   width: width,
+//     //   height: width,
+//     //   errorBuilder: (_, e, st) {
+//     //     _log.info('', e);
+//     //     return Container();
+//     //   },
+//     // );
+//     return CachedNetworkImage(
+//       imageUrl: src,
+//       width: width,
+//       height: height,
+//       imageBuilder: imageBuilder,
+//       placeholder: (context, url) => CircularProgressIndicator(),
+//       errorWidget: (context, url, error) {
+//         _log.info('', error);
+//         return Icon(Icons.error);
+//       },
+//     );
+//   }
+// }
+
+class NetworkImageBuilder extends StatelessWidget {
+  static final _log = Logger('NetworkImageBuilder');
+
+  const NetworkImageBuilder(
+    this.src, {
+    Key? key,
+    // this.width,
+    // this.height,
+    this.builder,
+  }) : super(key: key);
+
+  final String src;
+  final Widget Function(BuildContext, ImageProvider<Object>?, Object?)? builder;
+  // final double? width;
+  // final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    // return Image.network(
+    //   src,
+    //   width: width,
+    //   height: width,
+    //   errorBuilder: (_, e, st) {
+    //     _log.info('', e);
+    //     return Container();
+    //   },
+    // );
+    return CachedNetworkImage(
+      imageUrl: src,
+      // width: width,
+      // height: height,
+      cacheManager: context.read<CacheManager>(),
+      imageBuilder: (context, imageProvider) =>
+          (builder ?? builderDefault)(context, imageProvider, null),
+      placeholder: (context, url) =>
+          (builder ?? builderDefault)(context, null, null),
+      errorWidget: (context, url, error) =>
+          (builder ?? builderDefault)(context, null, error),
+    );
+  }
+
+  Widget builderDefault(
+    BuildContext context,
+    ImageProvider<Object>? image,
+    Object? error,
+  ) {
+    if (error != null) {
+      log('$error');
+      return Container();
+    }
+    if (image != null) {
+      return Image(image: image);
+    }
+    return Container();
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'logger.dart';
@@ -16,6 +17,11 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<CacheManager>(
+          create: (BuildContext context) => CacheManager(
+            Config('flutter_reddit_cache'),
+          ),
+        ),
         ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
           create: (BuildContext context) =>
               SubmissionLoaderNotifierQ(redditApi),

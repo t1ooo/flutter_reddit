@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
+import '../widget/network_image.dart';
 import '../widget/subscribe_button.dart';
 import 'user_about.dart';
 import 'user_submissions.dart';
@@ -39,7 +40,8 @@ class UserProfile extends StatelessWidget {
                         SizedBox(
                           width: iconSize,
                           height: iconSize,
-                          child: Image.network(user.iconImg),
+                          // child: Image.network(user.iconImg),
+                          child: NetworkImageBuilder(user.iconImg),
                         ),
                       ],
                     ),

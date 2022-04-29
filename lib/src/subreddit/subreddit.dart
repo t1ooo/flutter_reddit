@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../home/submission_tiles.dart';
@@ -35,8 +39,24 @@ class SubredditWidget extends StatelessWidget {
                   if (subreddit.communityIcon != '')
                     CircleAvatar(
                       radius: 16, // Image radius
-                      backgroundImage: NetworkImage(subreddit.communityIcon),
+                      backgroundImage: CachedNetworkImageProvider(
+                        subreddit.communityIcon,
+                        cacheManager: context.read<CacheManager>(),
+                      ),
+                      onBackgroundImageError: (e, _) => log('$e'),
                     ),
+                  // CachedNetworkImage(
+                  //   imageUrl: subreddit.communityIcon,
+                  //   fit: BoxFit.fitHeight,
+                  //   errorWidget: (_, __, error) {
+                  //     print(error);
+                  //     return Container();
+                  //   },
+                  //   imageBuilder: (context, imageProvider) => CircleAvatar(
+                  //     radius: 16, // Image radius
+                  //     backgroundImage: imageProvider,
+                  //   ),
+                  // ),
                   SizedBox(width: 10),
                   Text(subreddit.displayNamePrefixed, textScaleFactor: 2),
                   Spacer(),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
@@ -13,7 +15,7 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../util/login.dart';
 import '../util/snackbar.dart';
-
+import '../widget/network_image.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
@@ -48,7 +50,8 @@ class SubmissionTile extends StatelessWidget {
                         load: (context) => notifier.loadIcon(),
                         data: (context) => notifier.icon,
                         onData: (BuildContext context, String icon) {
-                          return Image.network(icon);
+                          // return Image.network(icon);
+                          return NetworkImageBuilder(icon);
                         },
                         onLoading: (_) =>
                             Container(decoration: BoxDecoration()),
@@ -133,7 +136,9 @@ class SubmissionTile extends StatelessWidget {
 
             SizedBox(height: 10),
 
-            if (submission.thumbnail != '') Image.network(submission.thumbnail),
+            if (submission.thumbnail != '')
+              // Image.network(submission.thumbnail),
+              NetworkImageBuilder(submission.thumbnail),
             SizedBox(height: 10),
             Text(submission.desc),
             SizedBox(height: 10),
@@ -173,7 +178,7 @@ class SubmissionTile extends StatelessWidget {
     return PopupMenuItem(
       onTap: () async {
         await loggedInGuard(context);
-        
+
         final notifier = context.read<SubmissionNotifierQ>();
 
         (submission.saved ? notifier.unsave() : notifier.save())

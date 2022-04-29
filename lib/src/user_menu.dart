@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/login/login_screen.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -78,7 +82,11 @@ class UserMenu extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(user.user.iconImg),
+                  backgroundImage: CachedNetworkImageProvider(
+                    user.user.iconImg,
+                    cacheManager: context.read<CacheManager>(),
+                  ),
+                  onBackgroundImageError: (e, _) => log('$e'),
                 ),
                 Text(user.user.subreddit.displayNamePrefixed),
               ],

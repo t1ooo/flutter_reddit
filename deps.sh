@@ -1,6 +1,8 @@
 #!/bin/bash
 
 deps=(
+    flutter_cache_manager
+    cached_network_image
     # carousel_slider
     draw
     provider

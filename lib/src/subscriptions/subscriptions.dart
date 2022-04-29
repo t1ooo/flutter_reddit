@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../subreddit/subreddit_screen.dart';
+import '../widget/network_image.dart';
 
 class Subscriptions extends StatelessWidget {
   const Subscriptions({
@@ -31,7 +32,8 @@ class Subscriptions extends StatelessWidget {
               width: 16,
               height: 16,
               child: (subreddit.subreddit.communityIcon != '')
-                  ? Image.network(subreddit.subreddit.communityIcon)
+                  // ? Image.network(subreddit.subreddit.communityIcon)
+                  ? NetworkImageBuilder(subreddit.subreddit.communityIcon)
                   : Image.asset('communityIcon.png'),
             ),
             title: Text(subreddit.subreddit.displayNamePrefixed),

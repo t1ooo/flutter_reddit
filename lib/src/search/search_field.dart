@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../style/style.dart';
@@ -25,7 +29,11 @@ class SearchField extends StatelessWidget {
       return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(src!),
+            image: CachedNetworkImageProvider(
+              src!,
+              cacheManager: context.read<CacheManager>(),
+            ),
+            onError: (e, _) => log('$e'),
             fit: BoxFit.cover,
           ),
         ),
