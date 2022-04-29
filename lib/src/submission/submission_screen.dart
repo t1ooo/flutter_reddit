@@ -40,3 +40,41 @@ class SubmissionScreen extends StatelessWidget {
     );
   }
 }
+
+class SubmissionLoader extends StatelessWidget {
+  const SubmissionLoader({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.watch<SubmissionLoaderNotifierQ>();
+    return Loader<SubmissionNotifierQ>(
+      load: (_) => notifier.loadSubmission(id),
+      data: (_) => notifier.submission,
+      onData: (_, submission) {
+        return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+          value: submission,
+          child: SubmissionWidget(),
+        );
+      },
+    );
+  }
+}
+
+// Widget submissionLoader(BuildContext context, String id) {
+//   final notifier = context.watch<SubmissionLoaderNotifierQ>();
+//   return Loader<SubmissionNotifierQ>(
+//     load: (_) => notifier.loadSubmission(id),
+//     data: (_) => notifier.submission,
+//     onData: (_, submission) {
+//       return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+//         value: submission,
+//         child: SubmissionWidget(),
+//       );
+//     },
+//   );
+// }

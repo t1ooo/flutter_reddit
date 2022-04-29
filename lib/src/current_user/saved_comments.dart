@@ -52,3 +52,20 @@ class SavedComments extends StatelessWidget {
     ); */
   }
 }
+
+
+class SavedCommentsLoader extends StatelessWidget {
+  const SavedCommentsLoader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.watch<UserNotifierQ>();
+    return Loader<List<CommentNotifierQ>>(
+      load: (_) => notifier.loadSaved(),
+      data: (_) => notifier.savedComments,
+      onData: (_, __) {
+        return SavedComments();
+      },
+    );
+  }
+}

@@ -32,3 +32,22 @@ class UserSubmissions extends StatelessWidget {
     );
   }
 }
+
+
+class UserSubmissionsLoader extends StatelessWidget {
+  const UserSubmissionsLoader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.watch<UserNotifierQ>();
+    return Loader<List<SubmissionNotifierQ>>(
+      load: (_) => notifier.loadSubmissions(),
+      data: (_) => notifier.submissions,
+      onData: (_, __) {
+        return UserSubmissions();
+      },
+    );
+  }
+}

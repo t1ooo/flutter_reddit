@@ -52,3 +52,27 @@ class SubredditScreenLoader extends StatelessWidget {
     );
   }
 }
+
+class SubredditLoader extends StatelessWidget {
+  const SubredditLoader({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.watch<SubredditLoaderNotifierQ>();
+    return Loader<SubredditNotifierQ>(
+      load: (_) => notifier.loadSubreddit(name),
+      data: (_) => notifier.subreddit,
+      onData: (_, subreddit) {
+        return ChangeNotifierProvider<SubredditNotifierQ>.value(
+          value: subreddit,
+          child: SubredditWidget(),
+        );
+      },
+    );
+  }
+}

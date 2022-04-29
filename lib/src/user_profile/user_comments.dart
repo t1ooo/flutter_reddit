@@ -34,3 +34,21 @@ class UserComments extends StatelessWidget {
     );
   }
 }
+
+class UserCommentsLoader extends StatelessWidget {
+  const UserCommentsLoader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final notifier = context.watch<UserNotifierQ>();
+    return Loader<List<CommentNotifierQ>>(
+      load: (_) => notifier.loadComments(),
+      data: (_) => notifier.comments,
+      onData: (_, __) {
+        return UserComments();
+      },
+    );
+  }
+}
