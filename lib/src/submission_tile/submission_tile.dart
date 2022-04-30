@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
@@ -7,13 +5,12 @@ import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/submission.dart';
 import '../reddit_api/vote.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
-import '../util/login.dart';
+
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/network_image.dart';
@@ -183,8 +180,7 @@ class SubmissionTile extends StatelessWidget {
             submission.saved ? Icons.bookmark : Icons.bookmark_border,
           ),
           label: submission.saved ? 'Unsave' : 'Save',
-          onTap: () async {
-            await loggedInGuard(context);
+          onTap: () {
             return (submission.saved ? notifier.unsave() : notifier.save())
                 .catchError((e) => showErrorSnackBar(context, e));
           },
@@ -211,11 +207,8 @@ class SubmissionTile extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () async {
-            await loggedInGuard(context);
-            return notifier
-                .voteUp()
-                .catchError((e) => showErrorSnackBar(context, e));
+          onPressed: () {
+            notifier.voteUp().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -224,9 +217,8 @@ class SubmissionTile extends StatelessWidget {
         ),
         Text(submission.score.toString()),
         IconButton(
-          onPressed: () async {
-            await loggedInGuard(context);
-            return notifier
+          onPressed: () {
+            notifier
                 .voteDown()
                 .catchError((e) => showErrorSnackBar(context, e));
           },

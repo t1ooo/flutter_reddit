@@ -9,7 +9,6 @@ import '../reddit_api/comment.dart';
 import '../reddit_api/vote.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
-import '../util/login.dart';
 import '../util/snackbar.dart';
 import '../widget/awards.dart';
 import '../widget/custom_popup_menu_button.dart';
@@ -156,8 +155,7 @@ class SubmissionComment extends StatelessWidget {
             comment.saved ? Icons.bookmark : Icons.bookmark_border,
           ),
           label: comment.saved ? 'Unsave' : 'Save',
-          onTap: () async {
-            await loggedInGuard(context);
+          onTap: () {
             return (comment.saved ? notifier.unsave() : notifier.save())
                 .catchError((e) => showErrorSnackBar(context, e));
           },
@@ -200,9 +198,8 @@ class SubmissionComment extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () async {
-            await loggedInGuard(context);
-            return notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
+          onPressed: () {
+            notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -212,9 +209,8 @@ class SubmissionComment extends StatelessWidget {
         Text(comment.score.toString()),
         // TODO: disable on progress
         IconButton(
-          onPressed: () async {
-            await loggedInGuard(context);
-            return notifier
+          onPressed: () {
+            notifier
                 .downVote()
                 .catchError((e) => showErrorSnackBar(context, e));
           },
