@@ -20,61 +20,8 @@ class UserMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<UserAuth>();
-
-    final user = notifier.user;
-    if (user == null) {
-      return anonymousUserMenu(context, notifier);
-    }
-    return userMenu(context, notifier);
-  }
-
-  Widget anonymousUserMenu(BuildContext context, UserAuth notifier) {
-    return Drawer(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  child: Icon(Icons.person, size: 80),
-                ),
-                Text('anonymous'),
-              ],
-            ),
-          ),
-          ListTile(
-            minLeadingWidth: 0,
-            leading: Icon(Icons.login),
-            title: Text('Log in'),
-            onTap: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => LoginScreen(),
-                ),
-              );
-              Navigator.pop(context);
-            },
-          ),
-          // Expanded(child: Container()),
-          Spacer(),
-          ListTile(
-            minLeadingWidth: 0,
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget userMenu(BuildContext context, UserAuth notifier) {
     final user = notifier.user!;
+
     return Drawer(
       child: Column(
         children: [

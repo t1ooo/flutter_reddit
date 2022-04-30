@@ -11,33 +11,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<UserAuth>();
-    if (notifier.user == null) {
-      return anonymousHome(context);
-    }
-    return home(context);
-  }
-
-  Widget anonymousHome(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => LoginScreen(),
-              ),
-            );
-          },
-          child: Text('Log in'),
-        ),
-      ],
-    );
-  }
-
-  Widget home(BuildContext context) {
     final notifier = context.watch<HomeFrontNotifierQ>();
     return GSubmissionTiles<FrontSubType>(
       type: notifier.subType,

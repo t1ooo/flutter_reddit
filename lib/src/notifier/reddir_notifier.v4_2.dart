@@ -832,7 +832,6 @@ class UserAuth extends ChangeNotifier with TryMixin {
   }
 }
 
-// TODO: create AnonymousUser
 // class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
 class CurrentUserNotifierQ extends UserNotifierQ {
   CurrentUserNotifierQ(this._redditApi, this._user) : super(_redditApi, _user);
