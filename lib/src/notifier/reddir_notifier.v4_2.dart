@@ -725,21 +725,62 @@ class UserAuth extends ChangeNotifier with TryMixin {
   CurrentUserNotifierQ? _user;
   CurrentUserNotifierQ? get user => _user;
 
+  // late bool _isLoggedIn;
+  // bool get isLoggedIn => _redditApi.isLoggedIn();
+
+  // String? _authUrl;
+  // String? get authUrl => _authUrl;
+
+  Future<bool> loginSilently(String name, String pass) async {
+    // print('loginSilently');
+    return _try<bool>(() async {
+      if (await _redditApi.loginSilently()) {
+        await _loadUser();
+        notifyListeners();
+        return true;
+      }
+      return false;
+    }, 'fail to login silently');
+  }
+
   Future<void> login(String name, String pass) async {
     return _try(() async {
-      await _redditApi.login(name, pass);
-      final user = await _redditApi.currentUser();
-      if (user == null) {
-        throw Exception('user is null');
-      }
-      _user = CurrentUserNotifierQ(_redditApi, user);
+      await _redditApi.login();
+      await _loadUser();
       notifyListeners();
     }, 'fail to login');
   }
 
+  Future<void> _loadUser() async {
+    final user = await _redditApi.currentUser();
+    if (user == null) {
+      throw Exception('user is null');
+    }
+    _user = CurrentUserNotifierQ(_redditApi, user);
+  }
+
+  // Future<void> ___login(String name, String pass) async {
+  //   return _try(() async {
+  //     final authUrl = await _redditApi.authUrl();
+  //     if (authUrl != null) {
+  //       launchUrl(authUrl);
+  //       await _redditApi.auth();
+  //     }
+  //     final user = await _redditApi.currentUser();
+  //     if (user == null) {
+  //       throw Exception('user is null');
+  //     }
+  //     _user = CurrentUserNotifierQ(_redditApi, user);
+  //     notifyListeners();
+  //   }, 'fail to login');
+  // }
+
   Future<void> logout() async {
-    _user = null;
-    notifyListeners();
+    return _try(() async {
+      await _redditApi.logout();
+      _user = null;
+      notifyListeners();
+    }, 'fail to logout');
   }
 }
 
@@ -836,7 +877,16 @@ mixin TryMixin {
   //   }
   // }
 
-  Future<void> _try(Future<void> Function() fn, String error) async {
+  // Future<void> _try(Future<void> Function() fn, String error) async {
+  //   try {
+  //     return await fn();
+  //   } on Exception catch (e, st) {
+  //     _log.error('', e, st);
+  //     throw UIException(error);
+  //   }
+  // }
+
+  Future<T> _try<T>(Future<T> Function() fn, String error) async {
     try {
       return await fn();
     } on Exception catch (e, st) {

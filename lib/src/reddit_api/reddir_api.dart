@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:draw/draw.dart' as draw;
 import 'package:draw/src/listing/listing_generator.dart' as draw;
+import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../logging/logging.dart';
 import '../util/cast.dart';
-import 'login.dart';
+import 'auth.dart';
 import 'trophy.dart';
 import 'user.dart';
 import 'comment.dart';
@@ -94,63 +96,158 @@ abstract class RedditApi {
   Future<Comment> submissionReply(String id, String body);
   Future<Comment> commentReply(String id, String body);
 
-  Future<bool> isLoggedIn();
-  Future<void> login(String user, String pass);
-  Future<void> logout(String user, String pass);
+  // Future<bool> isLoggedIn();
+  bool isLoggedIn();
+  Future<bool> loginSilently();
+  Future<void> login();
+  Future<void> logout();
 }
 
 class RedditApiImpl implements RedditApi {
-  RedditApiImpl._(this.reddit) {
-    // reddit =
+  RedditApiImpl(this.clientId, this.redirectUri, this.credentials);
+
+  // final file = File('credentials.json');
+  final userAgent = 'Flutter Client';
+
+  // bool _isLoggedIn = false;
+
+  // Future<bool> isLoggedIn() async => _isLoggedIn;
+  // Future<bool> isLoggedIn() async => _reddit != null;
+  bool isLoggedIn() => _reddit != null;
+
+  // Future<bool> isLoggedIn() async {
+  //   try {
+  //     final redditor = await reddit.user.me();
+  //     return redditor != null;
+  //   } on Exception catch (e) {
+  //     _log.info('', e);
+  //   }
+  //   return false;
+  // }
+
+  // Future<void> login() {
+  //   return _auth();
+  // }
+
+  // Future<bool> loginSilently() {
+  //   return _authSilently();
+  // }
+
+  Future<void> logout() async {
+    _reddit = null;
+    await credentials.delete();
   }
 
-  static Future<RedditApiImpl> auth(String clientId, Uri redirectUri) async {
-    final file = File('credentials.json');
+  // Future<bool> login() async {
+  //   await loginSilently();
+  //   await loginOauth();
+  // }
 
-    final userAgent = 'Flutter Client';
+  Future<bool> loginSilently() async {
+    if (_reddit != null) {
+      return true;
+    }
 
-    final credentialsJson =
-        await file.exists() ? await file.readAsString() : '';
+    final credentialsJson = await credentials.read();
+
+    if (credentialsJson == '') {
+      return false;
+    }
+
+    _reddit = draw.Reddit.restoreAuthenticatedInstance(
+      credentialsJson,
+      clientId: clientId,
+      userAgent: userAgent,
+      redirectUri: redirectUri,
+    );
+
+    return true;
+  }
+
+  Future<void> login() async {
+    if (_reddit != null) {
+      return;
+    }
 
     final s = AuthServer(redirectUri);
 
-    draw.Reddit reddit;
-    if (credentialsJson == '') {
-      print('login');
-      reddit = await draw.Reddit.createInstalledFlowInstance(
-        clientId: clientId,
-        userAgent: userAgent,
-        redirectUri: redirectUri,
-      );
+    _reddit = draw.Reddit.createInstalledFlowInstance(
+      clientId: clientId,
+      userAgent: userAgent,
+      redirectUri: redirectUri,
+    );
 
-      final authUrl = reddit.auth.url(['*'], 'state');
-      print(authUrl);
+    final authUrl = reddit.auth.url(['*'], 'state');
+    launch(authUrl.toString());
 
-      final authCode = await s.stream.first;
-      await reddit.auth.authorize(authCode);
+    final authCode = await s.stream.first;
+    await reddit.auth.authorize(authCode);
 
-      await file.writeAsString(reddit.auth.credentials.toJson());
-    } else {
-      print('cached');
-      reddit = draw.Reddit.restoreAuthenticatedInstance(
-        credentialsJson,
-        clientId: clientId,
-        userAgent: userAgent,
-        redirectUri: redirectUri,
-      );
-    }
+    await credentials.write(reddit.auth.credentials.toJson());
 
     await s.close();
-
-    return RedditApiImpl._(reddit);
   }
 
-  // final String clientId;
-  final String userAgent = 'Flutter Client';
-  // final Uri redirectUri;
+  // Future<String> _credentialsPath() async {
+  //   return (await getTemporaryDirectory()).path + '/credentials.json';
+  // }
 
-  final draw.Reddit reddit;
+  // Future<void> _auth() async {
+  //   if (_reddit != null) {
+  //     return;
+  //   }
+
+  //   final credentialsJson =
+  //       await file.exists() ? await file.readAsString() : '';
+
+  //   draw.Reddit reddit;
+  //   if (credentialsJson == '') {
+  //     print('login');
+
+  //     final s = AuthServer(redirectUri);
+
+  //     reddit = draw.Reddit.createInstalledFlowInstance(
+  //       clientId: clientId,
+  //       userAgent: userAgent,
+  //       redirectUri: redirectUri,
+  //     );
+
+  //     final authUrl = reddit.auth.url(['*'], 'state');
+  //     launch(authUrl.toString());
+
+  //     final authCode = await s.stream.first;
+  //     await reddit.auth.authorize(authCode);
+
+  //     await file.writeAsString(reddit.auth.credentials.toJson());
+
+  //     await s.close();
+  //   } else {
+  //     print('cached');
+  //     reddit = draw.Reddit.restoreAuthenticatedInstance(
+  //       credentialsJson,
+  //       clientId: clientId,
+  //       userAgent: userAgent,
+  //       redirectUri: redirectUri,
+  //     );
+  //   }
+
+  //   _reddit = reddit;
+  // }
+
+  final String clientId;
+  // final String userAgent = 'Flutter Client';
+  final Uri redirectUri;
+  final Credentials credentials;
+  // final draw.Reddit reddit;
   static final _log = Logger('RedditApiImpl');
+
+  draw.Reddit? _reddit;
+  draw.Reddit get reddit {
+    if (_reddit == null) {
+      throw Exception('not logged in');
+    }
+    return _reddit!;
+  }
 
   Stream<Submission> _submissionsStream(
     Stream<draw.UserContent> s,
@@ -497,23 +594,6 @@ class RedditApiImpl implements RedditApi {
     final commentReply = await comment.reply(body);
     return Comment.fromJson(commentReply.data!);
   }
-
-  bool _isLoggedIn = false;
-
-  Future<bool> isLoggedIn() async => _isLoggedIn;
-
-  // Future<bool> isLoggedIn() async {
-  //   try {
-  //     final redditor = await reddit.user.me();
-  //     return redditor != null;
-  //   } on Exception catch (e) {
-  //     _log.info('', e);
-  //   }
-  //   return false;
-  // }
-
-  Future<void> login(String user, String pass) => throw UnimplementedError();
-  Future<void> logout(String user, String pass) => throw UnimplementedError();
 }
 
 class FakeRedditApi implements RedditApi {
@@ -533,6 +613,7 @@ class FakeRedditApi implements RedditApi {
     required FrontSubType type,
   }) async* {
     _log.info('front($limit, $type)');
+    _mustLoggedIn();
     final data = await File('data/user.front.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -552,6 +633,7 @@ class FakeRedditApi implements RedditApi {
     required SubType type,
   }) async* {
     _log.info('popular($limit, $type)');
+    _mustLoggedIn();
     final data = await File('data/popular.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -569,6 +651,7 @@ class FakeRedditApi implements RedditApi {
   @override
   Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
     _log.info('currentUserSubreddits($limit)');
+    _mustLoggedIn();
 
     final data = await File('data/user.subreddits.json').readAsString();
 
@@ -589,6 +672,7 @@ class FakeRedditApi implements RedditApi {
     required SubType type,
   }) async* {
     _log.info('subredditSubmissions($name, $limit, $type)');
+    _mustLoggedIn();
     mustNameWithoutPrefix(name);
 
     final data = await File('data/subreddit.submissions.json').readAsString();
@@ -607,12 +691,14 @@ class FakeRedditApi implements RedditApi {
 
   Future<User> user(String name) async {
     _log.info('user($name)');
+    _mustLoggedIn();
     final data = await File('data/user.info.json').readAsString();
     return User.fromJson(jsonDecode(data));
   }
 
   Stream<Comment> userComments(String name, {required int limit}) async* {
     _log.info('userComments($name, $limit)');
+    _mustLoggedIn();
 
     final data = await File('data/user.comments.json').readAsString();
 
@@ -629,6 +715,7 @@ class FakeRedditApi implements RedditApi {
 
   Stream<Submission> userSubmissions(String name, {required int limit}) async* {
     _log.info('userSubmissions($name, $limit)');
+    _mustLoggedIn();
 
     final data = await File('data/user.submissions.json').readAsString();
 
@@ -646,6 +733,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<List<Trophy>> userTrophies(String name) async {
     _log.info('userTrophies($name)');
+    _mustLoggedIn();
 
     await Future.delayed(_delay);
     final data = await File('data/user.trophies.json').readAsString();
@@ -659,6 +747,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<void> subscribe(String name) async {
     _log.info('subscribe($name)');
+    _mustLoggedIn();
     mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return;
@@ -666,6 +755,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<void> unsubscribe(String name) async {
     _log.info('unsubscribe($name)');
+    _mustLoggedIn();
     mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return;
@@ -673,6 +763,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<Submission> submission(String id) async {
     _log.info('submission($id)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
 
     final subData = await File('data/submission.json').readAsString();
@@ -705,6 +796,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<Subreddit> subreddit(String name) async {
     _log.info('subreddit($name)');
+    _mustLoggedIn();
     mustNameWithoutPrefix(name);
     final data = await File('data/subreddit.json').readAsString();
     return Subreddit.fromJson(jsonDecode(data) as Map);
@@ -712,6 +804,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<void> submissionVote(String id, Vote vote) async {
     _log.info('submissionVote($id, $vote)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
@@ -719,42 +812,49 @@ class FakeRedditApi implements RedditApi {
   @override
   Future<void> commentVote(String id, Vote vote) async {
     _log.info('commentVote($id, $vote)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> submissionSave(String id) async {
     _log.info('submissionSave($id)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> submissionUnsave(String id) async {
     _log.info('submissionUnsave($id)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> commentSave(String id) async {
     _log.info('commentSave($id)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
   Future<void> commentUnsave(String id) async {
     _log.info('commentUnsave($id)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
   Future<User?> currentUser() async {
     _log.info('currentUser()');
+    _mustLoggedIn();
     final data = await File('data/user.current.info.json').readAsString();
     return User.fromJson(jsonDecode(data));
   }
 
   Future<UserSaved> userSaved(String name, {required int limit}) async {
     _log.info('userSaved($name, $limit)');
+    _mustLoggedIn();
     final data = await File('data/user.current.saved.json').readAsString();
     final submissions = <Submission>[];
     final comments = <Comment>[];
@@ -788,6 +888,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<String> subredditIcon(String name) async {
     _log.info('subredditIcon($name)');
+    _mustLoggedIn();
     mustNameWithoutPrefix(name);
     await Future.delayed(_delay);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
@@ -805,6 +906,7 @@ class FakeRedditApi implements RedditApi {
     String subreddit = 'all',
   }) async* {
     _log.info('search($query, $limit, $sort, $subreddit)');
+    _mustLoggedIn();
     mustNameWithoutPrefix(subreddit);
     final data = await File('data/search.json').readAsString();
 
@@ -823,29 +925,54 @@ class FakeRedditApi implements RedditApi {
 
   Future<Comment> submissionReply(String id, String body) async {
     _log.info('submissionReply($id, $body)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return Comment.fromJson({'body': body});
   }
 
   Future<Comment> commentReply(String id, String body) async {
     _log.info('commentReply($id, $body)');
+    _mustLoggedIn();
     await Future.delayed(_delay);
     return Comment.fromJson({'body': body});
   }
 
+  Future<String> _loginPath() async {
+    return (await getTemporaryDirectory()).path + '/fake_reddit_api.login';
+  }
+
+  void _mustLoggedIn() {
+    if (!_isLoggedIn) {
+      throw Exception('login to continue');
+    }
+  }
+
   bool _isLoggedIn = false;
 
-  Future<bool> isLoggedIn() async => _isLoggedIn;
+  // Future<bool> isLoggedIn() async => _isLoggedIn;
+  bool isLoggedIn() => _isLoggedIn;
 
-  Future<void> login(String user, String pass) async {
-    if (user != 'fake' || pass != 'fake') {
-      throw Exception('fail to login, use user=fake, pass=fake for login');
-    }
+  Future<void> login() async {
+    _log.info('login()');
+    // if (user != 'fake' || pass != 'fake') {
+    //   throw Exception('fail to login, use user=fake, pass=fake for login');
+    // }
+    await File(await _loginPath()).create();
     _isLoggedIn = true;
     return;
   }
 
-  Future<void> logout(String user, String pass) async {
+  Future<bool> loginSilently() async {
+    _isLoggedIn = await File(await _loginPath()).exists();
+    _log.info('loginSilently: $_isLoggedIn');
+    return _isLoggedIn;
+    // _isLoggedIn = true;
+    // return true;
+  }
+
+  Future<void> logout() async {
+    _log.info('logout()');
+    await File(await _loginPath()).delete();
     _isLoggedIn = false;
     return;
   }
