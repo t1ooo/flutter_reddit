@@ -1,3 +1,8 @@
+// TODO: reset notifiers after logout
+// TODO: remove anonymous widgets
+// TODO: remove logged in guards
+// TODO: remove LoggedInMixin.mustLoggedIn
+// TODO: create separate logger instances, config it (or config draw logger)
 // TODO: refresh
 // TODO: merge loggers
 // TODO: listview save croll position
@@ -8,7 +13,6 @@
 // TODO: MEAYBE: use controller instead watch
 // TODO: retry, undo, reload
 // TODO: user inbox
-// TODO: login
 // TODO: show/edit current user settings
 // TODO: show/edit current user profile
 // TODO: block user
