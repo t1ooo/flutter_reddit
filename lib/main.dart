@@ -1,15 +1,10 @@
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'logger.dart';
 import 'src/app.dart';
 import 'src/notifier/reddir_notifier.v4_2.dart';
-import 'src/reddit_api/auth.dart';
 import 'src/reddit_api/reddir_api.dart';
 
 Future<void> main() async {
@@ -44,14 +39,27 @@ Future<void> main() async {
         ChangeNotifierProvider<UserLoaderNotifierQ>(
           create: (context) => UserLoaderNotifierQ(redditApi),
         ),
-        ChangeNotifierProvider<UserAuth>(
-          create: (context) => UserAuth(redditApi),
-        ),
         ChangeNotifierProvider<HomeFrontNotifierQ>(
           create: (context) => HomeFrontNotifierQ(redditApi),
         ),
         ChangeNotifierProvider<HomePopularNotifierQ>(
           create: (context) => HomePopularNotifierQ(redditApi),
+        ),
+        ChangeNotifierProvider<UserAuth>(
+          create: (context) {
+            final notifier = UserAuth(redditApi);
+            return notifier
+              ..addListener(() {
+                if (notifier.user == null) {
+                  context.read<SubmissionLoaderNotifierQ>().reset();
+                  context.read<SearchNotifierQ>().reset();
+                  context.read<SubredditLoaderNotifierQ>().reset();
+                  context.read<UserLoaderNotifierQ>().reset();
+                  context.read<HomeFrontNotifierQ>().reset();
+                  context.read<HomePopularNotifierQ>().reset();
+                }
+              });
+          },
         ),
       ],
       child: MyApp(),

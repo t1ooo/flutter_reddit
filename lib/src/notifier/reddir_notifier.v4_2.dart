@@ -29,24 +29,31 @@ import '../reddit_api/vote.dart';
 
 // TODO: _try
 class SearchNotifierQ extends ChangeNotifier with TryMixin {
-  SearchNotifierQ(this._redditApi);
+  SearchNotifierQ(this._redditApi) {
+    reset();
+  }
 
   final RedditApi _redditApi;
   int _limit = 10;
   static final _log = Logger('SearchNotifierQX');
 
-  String _subredditName = '';
-  // String get subredditName => _subredditName;
+  void reset() {
+    _subredditName = '';
+    _query = '';
+    _sort = Sort.relevance;
+    _submissions = null;
+    notifyListeners();
+  }
 
-  String _query = '';
-  // String get query => query;
+  late String _subredditName;
+  late String _query;
 
-  Sort _sort = Sort.relevance;
+  late Sort _sort;
   Sort get sort => _sort;
 
   List<Sort> get sorts => Sort.values;
 
-  List<SubmissionNotifierQ>? _submissions;
+  late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
   Future<void> search(
@@ -94,14 +101,22 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
-  SubredditLoaderNotifierQ(this._redditApi);
+  SubredditLoaderNotifierQ(this._redditApi) {
+    reset();
+  }
 
   final RedditApi _redditApi;
-
   static final _log = Logger('SubredditNotifierQ');
 
-  String? _name;
-  SubredditNotifierQ? _subreddit;
+  void reset() {
+    _name = null;
+    _subreddit = null;
+    notifyListeners();
+  }
+
+  late String? _name;
+
+  late SubredditNotifierQ? _subreddit;
   SubredditNotifierQ? get subreddit => _subreddit;
 
   Future<void> loadSubreddit(String name) {
@@ -227,16 +242,24 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
 
 // TODO: move to current user
 class HomeFrontNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
-  HomeFrontNotifierQ(this._redditApi);
+  HomeFrontNotifierQ(this._redditApi) {
+    reset();
+  }
 
   final RedditApi _redditApi;
   int _limit = 10;
   static final _log = Logger('HomeFrontNotifierQ');
 
-  FrontSubType _subType = FrontSubType.values.first;
+  void reset() {
+    _subType = FrontSubType.values.first;
+    _submissions = null;
+    notifyListeners();
+  }
+
+  late FrontSubType _subType;
   FrontSubType get subType => _subType;
 
-  List<SubmissionNotifierQ>? _submissions;
+  late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
   Future<void> loadSubmissions(FrontSubType subType) async {
@@ -256,16 +279,24 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin, LoggedInMixin {
 }
 
 class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
-  HomePopularNotifierQ(this._redditApi);
+  HomePopularNotifierQ(this._redditApi) {
+    reset();
+  }
 
   final RedditApi _redditApi;
   int _limit = 10;
   static final _log = Logger('HomePopularNotifierQ');
 
-  SubType _subType = SubType.values.first;
+  void reset() {
+    _subType = SubType.values.first;
+    _submissions = null;
+    notifyListeners();
+  }
+
+  late SubType _subType;
   SubType get subType => _subType;
 
-  List<SubmissionNotifierQ>? _submissions;
+  late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
   Future<void> loadSubmissions(SubType subType) {
@@ -283,14 +314,22 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
-  SubmissionLoaderNotifierQ(this._redditApi);
-
-  String? _id;
+  SubmissionLoaderNotifierQ(this._redditApi) {
+    reset();
+  }
 
   final RedditApi _redditApi;
   static final _log = Logger('SubmissionNotifierQ');
 
-  SubmissionNotifierQ? _submission;
+  void reset() {
+    _id = null;
+    _submission = null;
+    notifyListeners();
+  }
+
+  late String? _id;
+
+  late SubmissionNotifierQ? _submission;
   SubmissionNotifierQ? get submission => _submission;
 
   Future<void> loadSubmission(String id) async {
@@ -568,24 +607,32 @@ class CommentNotifierQ
 }
 
 class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
-  UserLoaderNotifierQ(this._redditApi);
+  UserLoaderNotifierQ(this._redditApi) {
+    reset();
+  }
 
   final RedditApi _redditApi;
   // int _limit = 10;
   static final _log = Logger('UserLoaderNotifierQ');
 
+  void reset() {
+    _name = null;
+    _user = null;
+    notifyListeners();
+  }
+
   // void _reset() {
   //   _user = null;
   // }
 
-  String? _name;
+  late String? _name;
 
   // void _setName(String name) {
   //   if (_name != name) _reset();
   //   _name = name;
   // }
 
-  UserNotifierQ? _user;
+  late UserNotifierQ? _user;
   UserNotifierQ? get user => _user;
 
   // SubredditNotifierQ? _subreddit;
@@ -715,6 +762,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
+// TODO: rename to AuthNotifier
 class UserAuth extends ChangeNotifier with TryMixin {
   UserAuth(this._redditApi);
 
