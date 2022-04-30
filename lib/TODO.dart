@@ -1,4 +1,3 @@
-// TODO: reset notifiers after logout
 // TODO: remove anonymous widgets
 // TODO: remove logged in guards
 // TODO: remove LoggedInMixin.mustLoggedIn
