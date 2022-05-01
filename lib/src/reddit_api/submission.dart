@@ -1,6 +1,7 @@
 import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
 
+import '../logging/logging.dart';
 import '../util/map.dart';
 import 'comment.dart';
 import 'vote.dart';
@@ -93,37 +94,39 @@ class Submission extends Equatable {
     List<Comment> comments = const [],
   }) {
     return Submission(
-      author: mapGet(data, 'author', ''),
-      authorFlairText: mapGet(data, 'author_flair_text', ''),
-      awardIcons: parseAwardIcons(data['all_awardings']),
-      created: parseTime(data['created']),
-      createdUtc: parseTime(data['created_utc'], isUtc: true),
-      domain: mapGet(data, 'domain', ''),
-      downs: mapGet(data, 'downs', 0),
-      // edited: mapGet(data, 'edited', 0),
-      hidden: mapGet(data, 'hidden', false),
-      id: mapGet(data, 'id', ''),
-      isVideo: mapGet(data, 'is_video', false),
-      linkFlairText: mapGet(data, 'link_flair_text', ''),
-      totalAwardsReceived: mapGet(data, 'total_awards_received', 0),
-      numComments: mapGet(data, 'num_comments', 0),
-      over18: mapGet(data, 'over_18', false),
-      pinned: mapGet(data, 'pinned', false),
-      score: mapGet(data, 'score', 0),
-      selftext: mapGet(data, 'selftext', ''),
-      subreddit: mapGet(data, 'subreddit', ''),
-      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
-      thumbnail: parseUrl(data['thumbnail']),
-      title: mapGet(data, 'title', ''),
-      upvotes: mapGet(data, 'ups', 0),
-      url: parseUrl(data['url']),
-      likes: parseLikes(data['likes']),
-      saved: mapGet(data, 'saved', false),
+      author: mapGet(data, 'author', '', _log),
+      authorFlairText: mapGet(data, 'author_flair_text', '', _log),
+      awardIcons: parseAwardIcons(data['all_awardings'], _log),
+      created: parseTime(data['created'], false, _log),
+      createdUtc: parseTime(data['created_utc'], true, _log),
+      domain: mapGet(data, 'domain', '', _log),
+      downs: mapGet(data, 'downs', 0, _log),
+      // edited: mapGet(data, 'edited', 0, _log),
+      hidden: mapGet(data, 'hidden', false, _log),
+      id: mapGet(data, 'id', '', _log),
+      isVideo: mapGet(data, 'is_video', false, _log),
+      linkFlairText: mapGet(data, 'link_flair_text', '', _log),
+      totalAwardsReceived: mapGet(data, 'total_awards_received', 0, _log),
+      numComments: mapGet(data, 'num_comments', 0, _log),
+      over18: mapGet(data, 'over_18', false, _log),
+      pinned: mapGet(data, 'pinned', false, _log),
+      score: mapGet(data, 'score', 0, _log),
+      selftext: mapGet(data, 'selftext', '', _log),
+      subreddit: mapGet(data, 'subreddit', '', _log),
+      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', '', _log),
+      thumbnail: parseUrl(data['thumbnail'], _log),
+      title: mapGet(data, 'title', '', _log),
+      upvotes: mapGet(data, 'ups', 0, _log),
+      url: parseUrl(data['url'], _log),
+      likes: parseLikes(data['likes'], _log),
+      saved: mapGet(data, 'saved', false, _log),
       // shortLink: _genShortLink(mapGet(data, 'id', '')),
       // type: type,
       comments: comments,
     );
   }
+
+  static final _log = getLogger('Submission');
 
   // static String _genShortLink(String id) {
   //   if (id == '') {

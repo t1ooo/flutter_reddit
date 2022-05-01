@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../logging/logging.dart';
 import '../util/map.dart';
 import 'parse.dart';
 
@@ -56,29 +57,32 @@ class Subreddit extends Equatable {
   factory Subreddit.fromJson(Map data) {
     // final data = sub.data!;
     return Subreddit(
-      communityIcon: parseUrl(data['community_icon']),
-      created: parseTime(data['created']),
-      createdUtc: parseTime(data['created_utc'], isUtc: true),
-      description: mapGet(data, 'description', ''),
-      descriptionHtml: mapGet(data, 'description_html', ''),
-      displayName: mapGet(data, 'display_name', ''),
-      displayNamePrefixed: mapGet(data, 'display_name_prefixed', ''),
-      id: mapGet(data, 'id', ''),
-      lang: mapGet(data, 'lang', ''),
-      name: mapGet(data, 'name', ''),
-      publicDescription: mapGet(data, 'public_description', ''),
-      publicDescriptionHtml: mapGet(data, 'public_description_html', ''),
-      submitTextHtml: mapGet(data, 'submit_text_html', ''),
-      submitText: mapGet(data, 'submit_text', ''),
-      subredditType: mapGet(data, 'subreddit_type', ''),
-      subscribers: mapGet(data, 'subscribers', 0),
-      title: mapGet(data, 'title', ''),
-      url: mapGet(data, 'url', ''),
-      headerImg: parseUrl(data['header_img']),
-      bannerBackgroundImage: parseUrl(data['banner_background_image']),
-      userIsSubscriber: mapGet(data, 'user_is_subscriber', false),
+      communityIcon: parseUrl(data['community_icon'], _log),
+      created: parseTime(data['created'], false, _log),
+      createdUtc: parseTime(data['created_utc'], true, _log),
+      description: mapGet(data, 'description', '', _log),
+      descriptionHtml: mapGet(data, 'description_html', '', _log),
+      displayName: mapGet(data, 'display_name', '', _log),
+      displayNamePrefixed: mapGet(data, 'display_name_prefixed', '', _log),
+      id: mapGet(data, 'id', '', _log),
+      lang: mapGet(data, 'lang', '', _log),
+      name: mapGet(data, 'name', '', _log),
+      publicDescription: mapGet(data, 'public_description', '', _log),
+      publicDescriptionHtml: mapGet(data, 'public_description_html', '', _log),
+      submitTextHtml: mapGet(data, 'submit_text_html', '', _log),
+      submitText: mapGet(data, 'submit_text', '', _log),
+      subredditType: mapGet(data, 'subreddit_type', '', _log),
+      subscribers: mapGet(data, 'subscribers', 0, _log),
+      title: mapGet(data, 'title', '', _log),
+      url: mapGet(data, 'url', '', _log),
+      headerImg: parseUrl(data['header_img'], _log),
+      bannerBackgroundImage: parseUrl(data['banner_background_image'], _log),
+      userIsSubscriber: mapGet(data, 'user_is_subscriber', false, _log),
     );
   }
+
+  static final _log = getLogger('Subreddit');
+
 
   // static String _parseIcon(dynamic data) {
   //   final s = cast<String>(data, '');

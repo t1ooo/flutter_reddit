@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 export 'package:logging/logging.dart'
-    show Level, LogRecord, hierarchicalLoggingEnabled;
+    show Logger, Level, LogRecord, hierarchicalLoggingEnabled;
 
 extension LoggerExt on Logger {
   void error(Object? message, [Object? error, StackTrace? stackTrace]) {

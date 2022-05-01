@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
+import '../logging/logging.dart';
 import '../util/map.dart';
 import 'vote.dart';
 
 // class Comment extends Equatable {
-class Comment  {
+class Comment {
   Comment({
     required this.subredditId,
     required this.authorIsBlocked,
@@ -57,54 +58,56 @@ class Comment  {
 
   factory Comment.fromJson(Map data) {
     return Comment(
-      subredditId: mapGet(data, 'subreddit_id', ''),
-      authorIsBlocked: mapGet(data, 'author_is_blocked', false),
-      commentType: mapGet(data, 'comment_type', ''),
-      linkTitle: mapGet(data, 'link_title', ''),
-      ups: mapGet(data, 'ups', 0),
-      authorFlairType: mapGet(data, 'author_flair_type', ''),
-      totalAwardsReceived: mapGet(data, 'total_awards_received', 0),
-      subreddit: mapGet(data, 'subreddit', ''),
-      linkAuthor: mapGet(data, 'link_author', ''),
-      likes: parseLikes(data['likes']),
-      replies: parseCommentReplies(data['replies']),
-      saved: mapGet(data, 'saved', false),
-      id: mapGet(data, 'id', ''),
-      gilded: mapGet(data, 'gilded', 0),
-      archived: mapGet(data, 'archived', false),
-      noFollow: mapGet(data, 'no_follow', false),
-      author: mapGet(data, 'author', ''),
-      numComments: mapGet(data, 'num_comments', 0),
-      sendReplies: mapGet(data, 'send_replies', false),
-      parentId: mapGet(data, 'parent_id', ''),
-      score: mapGet(data, 'score', 0),
-      authorFullname: mapGet(data, 'author_fullname', ''),
-      over18: mapGet(data, 'over_18', false),
-      controversiality: mapGet(data, 'controversiality', 0),
+      subredditId: mapGet(data, 'subreddit_id', '', _log),
+      authorIsBlocked: mapGet(data, 'author_is_blocked', false, _log),
+      commentType: mapGet(data, 'comment_type', '', _log),
+      linkTitle: mapGet(data, 'link_title', '', _log),
+      ups: mapGet(data, 'ups', 0, _log),
+      authorFlairType: mapGet(data, 'author_flair_type', '', _log),
+      totalAwardsReceived: mapGet(data, 'total_awards_received', 0, _log),
+      subreddit: mapGet(data, 'subreddit', '', _log),
+      linkAuthor: mapGet(data, 'link_author', '', _log),
+      likes: parseLikes(data['likes'], _log),
+      replies: parseCommentReplies(data['replies'], _log),
+      saved: mapGet(data, 'saved', false, _log),
+      id: mapGet(data, 'id', '', _log),
+      gilded: mapGet(data, 'gilded', 0, _log),
+      archived: mapGet(data, 'archived', false, _log),
+      noFollow: mapGet(data, 'no_follow', false, _log),
+      author: mapGet(data, 'author', '', _log),
+      numComments: mapGet(data, 'num_comments', 0, _log),
+      sendReplies: mapGet(data, 'send_replies', false, _log),
+      parentId: mapGet(data, 'parent_id', '', _log),
+      score: mapGet(data, 'score', 0, _log),
+      authorFullname: mapGet(data, 'author_fullname', '', _log),
+      over18: mapGet(data, 'over_18', false, _log),
+      controversiality: mapGet(data, 'controversiality', 0, _log),
       body: parseText(data['body']),
-      downs: mapGet(data, 'downs', 0),
-      isSubmitter: mapGet(data, 'is_submitter', false),
-      collapsed: mapGet(data, 'collapsed', false),
-      bodyHtml: mapGet(data, 'body_html', ''),
-      distinguished: mapGet(data, 'distinguished', false),
-      stickied: mapGet(data, 'stickied', false),
-      authorPremium: mapGet(data, 'author_premium', false),
-      linkId: mapGet(data, 'link_id', ''),
-      permalink: mapGet(data, 'permalink', ''),
-      subredditType: mapGet(data, 'subreddit_type', ''),
-      linkPermalink: parseUrl(data['link_permalink']),
-      name: mapGet(data, 'name', ''),
-      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', ''),
-      treatmentTags: mapGetList(data, 'treatment_tags', []),
-      created: parseTime(data['created']),
-      createdUtc: parseTime(data['created_utc'], isUtc: true),
-      locked: mapGet(data, 'locked', false),
-      quarantine: mapGet(data, 'quarantine', false),
-      linkUrl: parseUrl(data['link_url']),
-      submissionId: mapGet(data, 'link_id', '').split('_').last,
-      awardIcons: parseAwardIcons(data['all_awardings']),
+      downs: mapGet(data, 'downs', 0, _log),
+      isSubmitter: mapGet(data, 'is_submitter', false, _log),
+      collapsed: mapGet(data, 'collapsed', false, _log),
+      bodyHtml: mapGet(data, 'body_html', '', _log),
+      distinguished: mapGet(data, 'distinguished', false, _log),
+      stickied: mapGet(data, 'stickied', false, _log),
+      authorPremium: mapGet(data, 'author_premium', false, _log),
+      linkId: mapGet(data, 'link_id', '', _log),
+      permalink: mapGet(data, 'permalink', '', _log),
+      subredditType: mapGet(data, 'subreddit_type', '', _log),
+      linkPermalink: parseUrl(data['link_permalink'], _log),
+      name: mapGet(data, 'name', '', _log),
+      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', '', _log),
+      treatmentTags: mapGetList(data, 'treatment_tags', [], _log),
+      created: parseTime(data['created'], false, _log),
+      createdUtc: parseTime(data['created_utc'], true, _log),
+      locked: mapGet(data, 'locked', false, _log),
+      quarantine: mapGet(data, 'quarantine', false, _log),
+      linkUrl: parseUrl(data['link_url'], _log),
+      submissionId: mapGet(data, 'link_id', '', _log).split('_').last,
+      awardIcons: parseAwardIcons(data['all_awardings'], _log),
     );
   }
+
+  static final _log = getLogger('Comment');
 
   final String subredditId;
   final bool authorIsBlocked;
@@ -152,6 +155,8 @@ class Comment  {
   final String linkUrl;
   final String submissionId;
   final List<String> awardIcons;
+
+  
 
   String get shortLink {
     if (submissionId == '' || id == '') {

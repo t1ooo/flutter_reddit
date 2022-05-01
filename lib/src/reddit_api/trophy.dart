@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../logging/logging.dart';
 import '../util/map.dart';
 import 'parse.dart';
 
@@ -26,16 +27,19 @@ class Trophy extends Equatable {
 
   factory Trophy.fromJson(Map data) {
     return Trophy(
-      icon70: mapGet(data, 'icon_70', ''),
-      grantedAt: parseTime(data['granted_at']),
-      url: mapGet(data, 'url', ''),
-      icon40: mapGet(data, 'icon_40', ''),
-      name: mapGet(data, 'name', ''),
-      awardId: mapGet(data, 'award_id', ''),
-      id: mapGet(data, 'id', ''),
-      description: mapGet(data, 'description', ''),
+      icon70: mapGet(data, 'icon_70', '', _log),
+      grantedAt: parseTime(data['granted_at'], false, _log),
+      url: mapGet(data, 'url', '', _log),
+      icon40: mapGet(data, 'icon_40', '', _log),
+      name: mapGet(data, 'name', '', _log),
+      awardId: mapGet(data, 'award_id', '', _log),
+      id: mapGet(data, 'id', '', _log),
+      description: mapGet(data, 'description', '', _log),
     );
   }
+
+  static final _log = getLogger('Trophy');
+
 
   @override
   List<Object> get props {
