@@ -1,9 +1,10 @@
+import 'package:clock/clock.dart';
+
 const _year = Duration(days: 1 * 365);
 const _month = Duration(days: 1 * 30);
 
-// TODO: replace DateTime.now() to Clock
-String formatDateTime(DateTime dTime) {
-  final diff = DateTime.now().difference(dTime);
+String formatDateTime(DateTime dTime, [clock=const Clock()]) {
+  final diff = clock.now().difference(dTime);
 
   if (diff >= _year) {
     return '${diff.inMicroseconds ~/ _year.inMicroseconds}y';
