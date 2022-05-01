@@ -19,6 +19,16 @@ final _loggerRoot = Logger('app');
 
 setLevel(Level level) => _loggerRoot.level = level;
 
+// void setLevelByName(String name, Level level) {
+//   for (final e in _loggerRoot.children.entries) {
+//     if (e.key == name) {
+//       e.value.level = level;
+//       break;
+//     }
+//   }
+//   throw Exception('logger not found: $name');
+// }
+
 Logger getLogger(String name) => Logger('app.$name');
 
 StreamSubscription<LogRecord>? _loggerSub;

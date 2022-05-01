@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -18,13 +17,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
 
-
   // TODO: move to env
-  final credentials = Credentials(File((await getTemporaryDirectory()).path + '/credentials.json'));
-  final clientId = 'Qg2iboouRpvW_CrGzfxprA';
-  final redirectUri = Uri.parse('http://127.0.0.1:6565/flutter_app_callback');
-  final redditApi = RedditApiImpl(clientId, redirectUri, credentials);
-  // final redditApi = FakeRedditApi();
+  // final credentials = Credentials(
+  //     File((await getTemporaryDirectory()).path + '/credentials.json'));
+  // final clientId = 'Qg2iboouRpvW_CrGzfxprA';
+  // final redirectUri = Uri.parse('http://127.0.0.1:6565/flutter_app_callback');
+  // final redditApi = RedditApiImpl(clientId, redirectUri, credentials);
+
+  final redditApi = FakeRedditApi();
 
   runApp(
     MultiProvider(
