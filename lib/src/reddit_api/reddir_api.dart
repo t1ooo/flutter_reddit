@@ -97,7 +97,7 @@ abstract class RedditApi {
   Future<Comment> commentReply(String id, String body);
 
   // Future<bool> isLoggedIn();
-  bool isLoggedIn();
+  bool get isLoggedIn;
   Future<bool> loginSilently();
   Future<void> login();
   Future<void> logout();
@@ -113,7 +113,7 @@ class RedditApiImpl implements RedditApi {
 
   // Future<bool> isLoggedIn() async => _isLoggedIn;
   // Future<bool> isLoggedIn() async => _reddit != null;
-  bool isLoggedIn() => _reddit != null;
+  bool get isLoggedIn => _reddit != null;
 
   // Future<bool> isLoggedIn() async {
   //   try {
@@ -950,7 +950,7 @@ class FakeRedditApi implements RedditApi {
   bool _isLoggedIn = false;
 
   // Future<bool> isLoggedIn() async => _isLoggedIn;
-  bool isLoggedIn() => _isLoggedIn;
+  bool get isLoggedIn => _isLoggedIn;
 
   Future<void> login() async {
     _log.info('login()');

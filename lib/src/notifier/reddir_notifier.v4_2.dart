@@ -759,6 +759,9 @@ class UserAuth extends ChangeNotifier with TryMixin {
   Future<bool> loginSilently(String name, String pass) async {
     // print('loginSilently');
     return _try<bool>(() async {
+      if (_redditApi.isLoggedIn) {
+        return true;
+      }
       if (await _redditApi.loginSilently()) {
         await _loadUser();
         notifyListeners();
@@ -770,6 +773,9 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
   Future<void> login(String name, String pass) {
     return _try(() async {
+      if (_redditApi.isLoggedIn) {
+        return;
+      }
       await _redditApi.login();
       await _loadUser();
       notifyListeners();
@@ -802,6 +808,9 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
   Future<void> logout() {
     return _try(() async {
+      if (!_redditApi.isLoggedIn) {
+        return;
+      }
       await _redditApi.logout();
       _user = null;
       notifyListeners();
@@ -920,15 +929,15 @@ mixin TryMixin {
   }
 }
 
-mixin LoggedInMixin {
-  late final RedditApi _redditApi;
+// mixin LoggedInMixin {
+//   late final RedditApi _redditApi;
 
-  Future<void> mustLoggedIn() async {
-    if (!(await _redditApi.isLoggedIn())) {
-      throw UIException('please, login to continue');
-    }
-  }
-}
+//   Future<void> mustLoggedIn() async {
+//     if (!(await _redditApi.isLoggedIn)) {
+//       throw UIException('please, login to continue');
+//     }
+//   }
+// }
 
 mixin CollapseMixin {
   bool _collapsed = false;
