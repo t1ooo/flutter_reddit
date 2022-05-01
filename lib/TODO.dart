@@ -1,4 +1,3 @@
-// TODO: create separate logger instances, config it (or config draw logger)
 // TODO: refresh
 // TODO: merge loggers
 // TODO: listview save croll position
