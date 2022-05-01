@@ -1,7 +1,7 @@
 import 'src/logging/logging.dart';
 
 void configureLogger(bool debugMode) {
-  enableHierarchicalLogging();
+  baseConfigure();
   setLevel(debugMode ? Level.ALL : Level.WARNING);
   onLogRecord((LogRecord record) {
     // ignore: avoid_print
