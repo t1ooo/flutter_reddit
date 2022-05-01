@@ -35,7 +35,7 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('SearchNotifierQX');
+  static final _log = getLogger('SearchNotifierQX');
 
   void reset() {
     _subredditName = '';
@@ -106,7 +106,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   final RedditApi _redditApi;
-  static final _log = Logger('SubredditNotifierQ');
+  static final _log = getLogger('SubredditNotifierQ');
 
   void reset() {
     _name = null;
@@ -140,7 +140,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('SubredditNotifierQ');
+  static final _log = getLogger('SubredditNotifierQ');
 
   // set name(name);
 
@@ -244,7 +244,7 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('HomeFrontNotifierQ');
+  static final _log = getLogger('HomeFrontNotifierQ');
 
   void reset() {
     _subType = FrontSubType.values.first;
@@ -279,7 +279,7 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('HomePopularNotifierQ');
+  static final _log = getLogger('HomePopularNotifierQ');
 
   void reset() {
     _subType = SubType.values.first;
@@ -313,7 +313,7 @@ class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   final RedditApi _redditApi;
-  static final _log = Logger('SubmissionNotifierQ');
+  static final _log = getLogger('SubmissionNotifierQ');
 
   void reset() {
     _id = null;
@@ -346,7 +346,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   // final String _id;
 
   final RedditApi _redditApi;
-  static final _log = Logger('SubmissionNotifierQ');
+  static final _log = getLogger('SubmissionNotifierQ');
 
   List<CommentNotifierQ>? _comments;
   List<CommentNotifierQ>? get comments => _comments;
@@ -493,7 +493,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
 
   final RedditApi _redditApi;
   // Comment comment;
-  static final _log = Logger('SubmissionNotifierQ');
+  static final _log = getLogger('SubmissionNotifierQ');
 
   Comment _comment;
   Comment get comment => _comment;
@@ -590,7 +590,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   // int _limit = 10;
-  static final _log = Logger('UserLoaderNotifierQ');
+  static final _log = getLogger('UserLoaderNotifierQ');
 
   void reset() {
     _name = null;
@@ -637,7 +637,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('UserNotifierQ');
+  static final _log = getLogger('UserNotifierQ');
 
   // void _reset() {
   //   _user = null;
@@ -745,7 +745,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('UserAuth');
+  static final _log = getLogger('UserAuth');
 
   CurrentUserNotifierQ? _user;
   CurrentUserNotifierQ? get user => _user;
@@ -815,7 +815,7 @@ class CurrentUserNotifierQ extends UserNotifierQ {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('CurrentUserNotifierQ');
+  static final _log = getLogger('CurrentUserNotifierQ');
 
   User _user;
   User get user => _user;
@@ -890,7 +890,7 @@ class UIException implements Exception {
 
 mixin TryMixin {
   // static late final Logger _log;
-  static Logger _log = Logger('TryMixin');
+  static final _log = getLogger('TryMixin');
 
   // Future<void> _try(Future<void> Function() fn, String error) async {
   //   try {

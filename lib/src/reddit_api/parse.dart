@@ -7,7 +7,7 @@ import '../logging/logging.dart';
 import '../util/cast.dart';
 import 'vote.dart';
 
-final _log = Logger('parserLog');
+final _log = getLogger('parserLog');
 
 
 String parseText(dynamic data) {

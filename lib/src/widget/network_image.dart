@@ -10,7 +10,7 @@ import '../logging/logging.dart';
 // Widget voidError(_, __) => Container();
 
 // class CustomNetworkImage extends StatelessWidget {
-//   static final _log = Logger('CustomNetworkImage');
+//   static final _log = getLogger('CustomNetworkImage');
 
 //   const CustomNetworkImage(
 //     this.src, {

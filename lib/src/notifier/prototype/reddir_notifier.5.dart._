@@ -18,7 +18,7 @@ abstract class RedditNotifier extends ChangeNotifier {
 
   final RedditApi redditApi;
 
-  static final _log = Logger('RedditNotifier');
+  static final _log = getLogger('RedditNotifier');
 
   SubType? _frontType;
   SubType get frontType;

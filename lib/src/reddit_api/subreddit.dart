@@ -50,7 +50,7 @@ class Subreddit extends Equatable {
   final String bannerBackgroundImage;
   final bool userIsSubscriber;
 
-  // static final _log = Logger('Subreddit');
+  // static final _log = getLogger('Subreddit');
 
   // factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
   factory Subreddit.fromJson(Map data) {

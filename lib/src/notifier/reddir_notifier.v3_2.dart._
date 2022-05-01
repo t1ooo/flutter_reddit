@@ -29,7 +29,7 @@ class SearchNotifierX with SubmissionsMixinX, ChangeNotifier {
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = Logger('SearchNotifierX');
+  static final _log = getLogger('SearchNotifierX');
 
   String _subredditName = '';
   String get subredditName => _subredditName;
@@ -72,7 +72,7 @@ class SubredditNotifierX with SubmissionsMixinX, ChangeNotifier {
   SubredditNotifierX(this._redditApi);
 
   final RedditApi _redditApi;
-  static final _log = Logger('SearchNotifierX');
+  static final _log = getLogger('SearchNotifierX');
   int _limit = 10;
 
   String _name = '';
@@ -186,7 +186,7 @@ class HomeNotifierX with SubmissionsMixinX, ChangeNotifier {
   HomeNotifierX(this._redditApi);
 
   final RedditApi _redditApi;
-  static final _log = Logger('HomeNotifierX');
+  static final _log = getLogger('HomeNotifierX');
   int _limit = 10;
 
   List<SubType> get subTypes => SubType.values;
@@ -235,7 +235,7 @@ abstract class SubmissionNotifierX with CommentsMixin, SubmissionsMixinX {
   SubmissionNotifierX(this._redditApi);
 
   final RedditApi _redditApi;
-  static final _log = Logger('SubmissionNotifierX');
+  static final _log = getLogger('SubmissionNotifierX');
 
   Submission? _submission;
   Submission? get submission => _submission;

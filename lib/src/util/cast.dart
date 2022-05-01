@@ -1,6 +1,6 @@
 import '../logging/logging.dart';
 
-final _log = Logger('cast');
+final _log = getLogger('cast');
 
 T cast<T>(dynamic v, T defaultValue) {
   try {

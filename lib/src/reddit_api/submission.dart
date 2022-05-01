@@ -69,7 +69,7 @@ class Submission extends Equatable {
   final List<Comment> comments;
   // final String shortLink;
 
-  // static final _log = Logger('Submission');
+  // static final _log = getLogger('Submission');
 
   static const _descLen = 200;
   String get desc {

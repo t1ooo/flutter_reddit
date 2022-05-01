@@ -84,7 +84,7 @@ class RedditNotifier extends ChangeNotifier {
 
   final RedditApi redditApi;
 
-  static final _log = Logger('RedditNotifier');
+  static final _log = getLogger('RedditNotifier');
 
 /*   Stream<Submission> front({int limit = 10, SubType type = SubType.best}) {
     return redditApi.front(limit: limit, type: type);
@@ -213,7 +213,7 @@ abstract class SubmissionsNotifier<Type> extends ChangeNotifier {
   SubmissionsNotifier(this.types, [Type? type]) : _type = type ?? types.first;
 
   // final RedditApi redditApi;
-  static final _log = Logger('SubmissionNotifier');
+  static final _log = getLogger('SubmissionNotifier');
   // final List<Submission> _submissions = [];
   late final _submissions = CachedStream(_loadSubmissions);
   final List<Type> types;
@@ -414,7 +414,7 @@ class UserNotifier extends ChangeNotifier {
 //   FrontSubmission(this.redditApi);
 
 //   final RedditApi redditApi;
-//   static final _log = Logger('FrontSubmission');
+//   static final _log = getLogger('FrontSubmission');
 //   final List<Submission> _submissions = [];
 
 //   SubType _type = SubType.best;
@@ -450,7 +450,7 @@ class UserNotifier extends ChangeNotifier {
 //   PopularSubmission(this.redditApi);
 
 //   final RedditApi redditApi;
-//   static final _log = Logger('PopularSubmission');
+//   static final _log = getLogger('PopularSubmission');
 //   final List<Submission> _submissions = [];
 
 //   SubType _type = SubType.best;
@@ -485,7 +485,7 @@ class CurrentUserNotifier extends ChangeNotifier /* with Error<Object> */ {
   CurrentUserNotifier(this.redditApi);
 
   final RedditApi redditApi;
-  static final _log = Logger('CurrentUserNotifier');
+  static final _log = getLogger('CurrentUserNotifier');
 
   User? _user;
   User? get user => _user;
@@ -620,7 +620,7 @@ class SubscriptionNotifier extends ChangeNotifier /* with Error<Object> */ {
       : _isSubscriber = isSubscriber;
 
   final RedditApi redditApi;
-  static final _log = Logger('SubscriptionNotifier');
+  static final _log = getLogger('SubscriptionNotifier');
 
   // bool _isLoading = false;
   // bool get isLoading => _isLoading;
@@ -719,7 +719,7 @@ abstract class VoteNotifier extends ChangeNotifier /* with Error<Object> */ {
   int get score => _score;
 
   final RedditApi redditApi;
-  static final _log = Logger('VoteNotifier');
+  static final _log = getLogger('VoteNotifier');
 
   // Object? _error;
   // Object? get error {
@@ -812,7 +812,7 @@ class CommentVoteNotifier extends VoteNotifier {
   bool get saved => _saved;
 
   final RedditApi redditApi;
-  static final _log = Logger('SaveNotifier');
+  static final _log = getLogger('SaveNotifier');
 
   // Object? _error;
   // Object? get error {
@@ -866,7 +866,7 @@ abstract class SaveNotifier extends ChangeNotifier {
   bool get saved => _saved;
 
   final RedditApi redditApi;
-  static final _log = Logger('SaveNotifier');
+  static final _log = getLogger('SaveNotifier');
 
   // Future<Result<String, String>> save(String id) async {
   //   if (_saved) return Result.empty();
@@ -937,7 +937,7 @@ abstract class SaveNotifier extends ChangeNotifier {
   bool get saved => _saved;
 
   final RedditApi redditApi;
-  static final _log = Logger('SaveNotifier');
+  static final _log = getLogger('SaveNotifier');
 
   Future<String?> save(String id) async {
     if (_saved) return null;
@@ -1017,7 +1017,7 @@ class SubmissionNotifier extends ChangeNotifier {
   Submission submission;
   final RedditApi redditApi;
 
-  static final _log = Logger('Submission');
+  static final _log = getLogger('Submission');
 
   // Future<Submission> load(String id) async {
   //   _log.info('load submission');
@@ -1287,7 +1287,7 @@ mixin SaveMixin {
   final RedditApi redditApi;
   Comment comment;
 
-  static final _log = Logger('CommentNotifier');
+  static final _log = getLogger('CommentNotifier');
 
   @override
   Future<void> _doVote(String id, Vote vote) {
@@ -1312,7 +1312,7 @@ class CommentNotifier with CollapseMixin, ChangeNotifier {
   final RedditApi redditApi;
   Comment comment;
 
-  static final _log = Logger('CommentNotifier');
+  static final _log = getLogger('CommentNotifier');
 
   Future<void> share() {
     return Share.share('${comment.linkTitle} ${comment.shortLink}');

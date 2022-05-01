@@ -239,7 +239,7 @@ class RedditApiImpl implements RedditApi {
   final Uri redirectUri;
   final Credentials credentials;
   // final draw.Reddit reddit;
-  static final _log = Logger('RedditApiImpl');
+  static final _log = getLogger('RedditApiImpl');
 
   draw.Reddit? _reddit;
   draw.Reddit get reddit {
@@ -599,7 +599,7 @@ class RedditApiImpl implements RedditApi {
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
-  static final _log = Logger('FakeRedditApi');
+  static final _log = getLogger('FakeRedditApi');
 
   Duration _delay = Duration(seconds: 1 ~/ 10);
 

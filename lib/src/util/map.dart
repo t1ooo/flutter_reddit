@@ -1,6 +1,6 @@
 import '../logging/logging.dart';
 
-final _log = Logger('mapGet');
+final _log = getLogger('mapGet');
 
 T mapGet<T>(Map m, String key, T defaultValue) {
   final val = m[key];
