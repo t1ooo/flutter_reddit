@@ -1,6 +1,3 @@
-// TODO: move not shared functions to file
-// TODO: use one logger per folder
-
 import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
 
 import '../logging/logging.dart';
@@ -42,13 +39,13 @@ String parseText(dynamic data) {
 }
 
 Vote parseLikes(dynamic data, [Logger? log]) {
-  if(data == null) {
+  if (data == null) {
     return Vote.none;
   }
-  if(data == true) {
+  if (data == true) {
     return Vote.up;
   }
-  if(data == false) {
+  if (data == false) {
     return Vote.up;
   }
 
@@ -71,22 +68,6 @@ List<Comment> parseCommentReplies(dynamic data, [Logger? log]) {
     log?.warning(e);
     return [];
   }
-
-  // final children = data?['data']?['children'];
-  // if (!(children is List)) {
-  //   log?.warning('fail to parse comment replies: $data');
-  // }
-
-  // final comments = <Comment>[];
-  // for (final child in children) {
-  //   final childData = child['data'];
-  //   if (!(children is Map)) {
-  //     log?.warning('fail to parse comment: $childData');
-  //   }
-  //   comments.add(Comment.fromJson(childData as Map));
-  // }
-
-  // return [];
 }
 
 String parseUrl(dynamic data, [Logger? log]) {
@@ -99,63 +80,25 @@ String parseUrl(dynamic data, [Logger? log]) {
     log?.warning('fail to parse uri: $data');
     return '';
   }
-  // return s;
+
   return s.replaceAll('&amp;', '&');
 }
 
-// String parseIcon(dynamic data) {
-//   final s = parseUrl(data);
-//   final uri = Uri.tryParse(s);
-//   if (uri == null) {
-//     log?.warning('fail to parse icon: $data');
-//     return '';
-//   }
-//   return uri.scheme + ':' + '//' + uri.authority + uri.path;
-// }
-
-// static DateTime _parseTime(dynamic data) {
-//   final num = double.tryParse(data);
-//   if (num == null) {
-//     log?.warning('fail to parse time: $data');
-//     return DateTime.now();
-//   }
-//   return DateTime(num.toInt());
-// }
 DateTime parseTime(dynamic data, bool isUtc, [Logger? log]) {
   final num = cast<double>(data, 0);
   if (num == 0.0) {
     log?.warning('fail to parse time: $data');
     return DateTime.now();
   }
-  // return DateTime(num.toInt());
+
   return DateTime.fromMillisecondsSinceEpoch(
     num.round() * 1000,
     isUtc: isUtc,
   );
 }
 
-// String parseThumbnail(dynamic data) {
-//   try {
-//     return data.startsWith('http') ? data : '';
-//   } on Exception catch (e) {
-//     log?.warning(e);
-//     return '';
-//   }
-// }
-
 List<String> parseAwardIcons(dynamic data, [Logger? log]) {
   try {
-    // return (data as List<dynamic>)
-    //     .map((v) {
-    //       return v?['resized_icons']?[0]?['url'];
-    //     })
-    //     .where((v) {
-    //       return (v is String) && v.startsWith('http');
-    //       // v.contains('redditstatic.com');
-    //     })
-    //     .map((v) => (v as String).replaceAll('&amp;', '&'))
-    //     .toList();
-
     return (data as List<dynamic>).map((v) {
       return parseUrl(v?['resized_icons']?[0]?['url']);
     }).where((v) {
