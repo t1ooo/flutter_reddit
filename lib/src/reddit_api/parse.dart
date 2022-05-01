@@ -4,8 +4,37 @@
 import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
 
 import '../logging/logging.dart';
-import '../util/cast.dart';
 import 'vote.dart';
+
+T cast<T>(dynamic v, T defaultValue, [Logger? log]) {
+  try {
+    return v as T;
+  } on TypeError catch (_) {
+    log?.warning('fail to cast: $v to <$T>');
+    return defaultValue;
+  }
+}
+
+T mapGet<T>(Map m, String key, T defaultValue, [Logger? log]) {
+  final val = m[key];
+  try {
+    return val as T;
+  } on TypeError catch (_) {
+    log?.warning('fail to cast: {$key: $val} to <$T>');
+    return defaultValue;
+  }
+}
+
+List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [Logger? log]) {
+  final val = m[key];
+  try {
+    return (val as List).cast<T>();
+  } on TypeError catch (_) {
+    // _log.warning(e);
+    log?.warning('fail to cast: {$key: $val} to List<$T>');
+    return defaultValue;
+  }
+}
 
 String parseText(dynamic data) {
   final text = cast<String>(data, '');

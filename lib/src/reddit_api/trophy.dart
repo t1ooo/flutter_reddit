@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
-import '../util/map.dart';
 import 'parse.dart';
 
 class Trophy extends Equatable {

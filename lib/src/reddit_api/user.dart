@@ -1,11 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/subreddit.dart';
-
 import '../logging/logging.dart';
-import '../util/cast.dart';
-import '../util/map.dart';
+import 'subreddit.dart';
+import 'parse.dart';
 
 class User extends Equatable {
   User({

@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../logging/logging.dart';
-import '../util/cast.dart';
+import 'parse.dart';
 import 'auth.dart';
 import 'trophy.dart';
 import 'user.dart';

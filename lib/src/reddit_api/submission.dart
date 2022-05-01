@@ -2,10 +2,9 @@ import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
-import '../util/map.dart';
+import 'parse.dart';
 import 'comment.dart';
 import 'vote.dart';
-import 'parse.dart';
 import 'submission_type.dart';
 
 class Submission extends Equatable {

@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
 import '../logging/logging.dart';
-import '../util/map.dart';
+import 'parse.dart';
 import 'vote.dart';
 
 // class Comment extends Equatable {
