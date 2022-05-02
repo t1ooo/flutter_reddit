@@ -16,10 +16,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: white,
       ),
       // home: Tabs(),
       home: StartScreen(),
     );
   }
 }
+
+final MaterialColor white =
+    MaterialColor(Colors.white.value, const <int, Color>{
+  50: Colors.white,
+  100: Colors.white,
+  200: Colors.white,
+  300: Colors.white,
+  400: Colors.white,
+  500: Colors.white,
+  600: Colors.white,
+  700: Colors.white,
+  800: Colors.white,
+  900: Colors.white,
+});
