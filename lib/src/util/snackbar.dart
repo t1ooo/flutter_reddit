@@ -17,3 +17,13 @@ void showErrorSnackBar(BuildContext context, Object error) {
     ));
   });
 }
+
+
+void showTodoSnackBar(BuildContext context) {
+  WidgetsBinding.instance?.addPostFrameCallback((_) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Text('TODO'),
+    ));
+  });
+}
