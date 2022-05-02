@@ -6,6 +6,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../style/style.dart';
+import '../util/snackbar.dart';
+import '../widget/custom_popup_menu_button.dart';
 import 'search_screen.dart';
 
 class SearchField extends StatelessWidget {
@@ -14,11 +16,13 @@ class SearchField extends StatelessWidget {
     this.query,
     this.subreddit,
     this.src,
+    this.trailing,
   }) : super(key: key);
 
   final String? query;
   final String? subreddit;
   final String? src;
+  final Widget? trailing;
   static final _controller = TextEditingController();
 
   static final routeName = 'SearchField';
@@ -27,6 +31,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     if (src != null) {
       return Container(
+        height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: CachedNetworkImageProvider(
@@ -34,13 +39,14 @@ class SearchField extends StatelessWidget {
               cacheManager: context.read<CacheManager>(),
             ),
             onError: (e, _) => log('$e'),
-            fit: BoxFit.cover,
+            fit: BoxFit.fitHeight,
           ),
         ),
-        child: Padding(
-          padding: pagePadding.copyWith(top: pagePadding.top + topPadding),
-          child: searchField(context),
-        ),
+        child: searchField(context),
+        // child: Padding(
+        //   padding: pagePadding.copyWith(top: pagePadding.top + topPadding),
+        //   child: searchField(context),
+        // ),
       );
     }
     return searchField(context);
@@ -97,40 +103,44 @@ class SearchField extends StatelessWidget {
         _controller.clear();
         return true;
       },
-      child: ListTile(
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Scaffold.of(context).openEndDrawer();
-        //   },
-        //   icon: Icon(Icons.account_circle),
-        // ),
-        leading: SizedBox(width: 20),
-        minLeadingWidth: 0,
-        title: TextFormField(
-          controller: _controller,
-          onFieldSubmitted: (query) {
-            query = query.trim();
-            if (query != '') {
-              navigatorPushOrReplace(
-                context,
-                MaterialPageRoute(
-                  settings: RouteSettings(name: routeName),
-                  builder: (_) => SearchScreen(query: query),
-                ),
-              );
-            }
-          },
-          decoration: InputDecoration(
-            // icon: Icon(Icons.account_circle, size: 50),
-            // label: IconButton(onPressed: () {
-            // Scaffold.of(context).openDrawer();
-            // }, icon: Icon(Icons.account_circle, size: 50),),
-            prefixIcon: Icon(Icons.search),
-            fillColor: Colors.white,
-            filled: true,
-            hintText: subreddit != null ? '$subreddit: Search' : 'Search',
-            border: OutlineInputBorder(),
+      child: Padding(
+        padding: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 10),
+        child: ListTile(
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Scaffold.of(context).openEndDrawer();
+          //   },
+          //   icon: Icon(Icons.account_circle),
+          // ),
+          leading: SizedBox(width: 20),
+          minLeadingWidth: 0,
+          title: TextFormField(
+            controller: _controller,
+            onFieldSubmitted: (query) {
+              query = query.trim();
+              if (query != '') {
+                navigatorPushOrReplace(
+                  context,
+                  MaterialPageRoute(
+                    settings: RouteSettings(name: routeName),
+                    builder: (_) => SearchScreen(query: query),
+                  ),
+                );
+              }
+            },
+            decoration: InputDecoration(
+              // icon: Icon(Icons.account_circle, size: 50),
+              // label: IconButton(onPressed: () {
+              // Scaffold.of(context).openDrawer();
+              // }, icon: Icon(Icons.account_circle, size: 50),),
+              prefixIcon: Icon(Icons.search),
+              fillColor: Colors.white,
+              filled: true,
+              hintText: subreddit != null ? '$subreddit' : 'Search',
+              border: OutlineInputBorder(),
+            ),
           ),
+          trailing: trailing,
         ),
       ),
     );
