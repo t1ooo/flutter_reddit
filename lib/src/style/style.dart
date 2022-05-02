@@ -8,3 +8,6 @@ const cardPadding =  EdgeInsets.all(20);
 const topPadding = 20.0;
 const iconSize = 50.0;
 const selectedColor = Colors.blue;
+const appBarIconTheme = IconThemeData(color: Colors.white);
+const appBarIconThemeDark = IconThemeData(color: black);
+const black = Colors.black87;

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'notifier/reddir_notifier.v4_2.dart';
 import 'start_screen.dart';
+import 'style/style.dart';
 import 'tabs.dart';
 
 class MyApp extends StatelessWidget {
@@ -13,7 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const black = Colors.black87;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -35,7 +35,13 @@ class MyApp extends StatelessWidget {
           overlayColor: MaterialStateProperty.all(black),
         ),
         iconTheme: IconThemeData(color: black),
-        primaryIconTheme: IconThemeData(color: black),
+        appBarTheme: AppBarTheme(
+          iconTheme: appBarIconTheme,
+          elevation: 0,
+          toolbarHeight: 150,
+        ),
+        // popupMenuTheme: PopupMenuThemeData(
+            // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
       ),
       // home: Tabs(),
       home: StartScreen(),
