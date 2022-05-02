@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission_type.dart';
+import '../style/style.dart';
 import 'submission_tile.dart';
 
 class GSubmissionTiles<T> extends StatelessWidget {
@@ -20,7 +21,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
   final T type;
   final List<T> types;
   final List<SubmissionNotifierQ>? submissions;
-  final Function(T) onTypeChanged;
+  final void Function(T) onTypeChanged;
   final bool activeLink;
 
   final bool showTypeSelector;
@@ -33,28 +34,182 @@ class GSubmissionTiles<T> extends StatelessWidget {
     if (submissions == null) {
       return Center(child: CircularProgressIndicator());
     }
+
     return ListView(
       // shrinkWrap: true,
       children: [
-        DropdownButton<T>(
-          value: type,
-          onChanged: (v) {
-            if (v != null) onTypeChanged(v);
-          },
-          items: [
-            for (final type in types)
-              DropdownMenuItem(
-                value: type,
-                child: Text(type.toString()),
-              )
-          ],
+        // Padding(
+        //   // width: 100,
+        //   padding: const EdgeInsets.only(left: 20),
+        //   child: // alignedDropdown: false,
+        //       DropdownButton<T>(
+        //     // isExpanded: true,
+        //     // selectedItemBuilder: (ctx) => [Text(_typeToString(type))],
+        //     // hint: Text('123'),
+        //     // disabledHint: Text('123'),
+        //     // menuMaxHeight: 100,
+        //     onTap: () {
+
+        //     },
+        //     underline: Container(),
+        //     value: type,
+        //     onChanged: (v) {
+        //       if (v != null) onTypeChanged(v);
+        //     },
+        //     items: [
+        //       for (final type in types)
+        //         DropdownMenuItem(
+        //           value: type,
+        //           child: Text(_typeToString(type) + ' POSTS'),
+        //         )
+        //     ],
+        //   ),
+        // ),
+
+        Align(
+          alignment: Alignment.centerLeft,
+          // width: 100,
+          // padding: const EdgeInsets.only(left: 20),
+          // TODO: add icon
+          child: TextButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return RadioList<T>(
+                    initialValue: type,
+                    onChanged: (t) {
+                      onTypeChanged(t);
+                      Navigator.pop(context);
+                    },
+                    titleBuilder: (t) => Text(_typeToString(t)),
+                    values: types,
+                  );
+                  // return Column(
+                  // children: [
+                  //   for (final type in types)
+                  //     RadioListTile<T>(
+                  //       controlAffinity: ListTileControlAffinity.trailing,
+                  //       value: type,
+                  //       secondary: Icon(Icons.check),
+                  //       groupValue: type,
+                  //       title: Text(_typeToString(type) + ' POSTS'),
+                  //       onChanged: (_) {},
+                  //     )
+                  // ],
+
+                  // title: Text('Material Dialog'),
+                  // content: Text('Hey! I am Coflutter!'),
+                  // actions: <Widget>[
+                  //   TextButton(
+                  //       onPressed: () {
+                  //         // _dismissDialog();
+                  //       },
+                  //       child: Text('Close')),
+                  //   TextButton(
+                  //     onPressed: () {
+                  //       print('HelloWorld!');
+                  //       // _dismissDialog();
+                  //     },
+                  //     child: Text('HelloWorld!'),
+                  //   )
+                  // ],
+                  // );
+                },
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(_typeToString(type) + ' POSTS'),
+                ),
+                Icon(Icons.expand_more),
+              ],
+            ),
+          ),
         ),
-        SizedBox(height: 50),
+        // SizedBox(height: 50),
         for (final sub in submissions ?? [])
           ChangeNotifierProvider<SubmissionNotifierQ>.value(
             value: sub,
             child: SubmissionTile(activeLink: activeLink),
           ),
+      ],
+    );
+  }
+
+  String _typeToString(s) {
+    return s.toString().split('.').last.toUpperCase();
+  }
+}
+
+class RadioList<T> extends StatefulWidget {
+  RadioList({
+    Key? key,
+    required this.initialValue,
+    required this.values,
+    required this.titleBuilder,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final T initialValue;
+  final List<T> values;
+  final Widget Function(T) titleBuilder;
+  final void Function(T) onChanged;
+
+  @override
+  State<RadioList<T>> createState() => _RadioListState();
+}
+
+class _RadioListState<T> extends State<RadioList<T>> {
+  late T _value;
+
+  @override
+  void initState() {
+    _value = widget.initialValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final value in widget.values)
+          ListTile(
+            minLeadingWidth: 0,
+            title: widget.titleBuilder(value),
+            onTap: () {
+              setState(() {
+                _value = value;
+              });
+
+              widget.onChanged(_value);
+            },
+            trailing: value == _value
+                ? Icon(
+                    Icons.check,
+                    color: selectedColor,
+                  )
+                : null,
+          )
+        // RadioListTile<T>(
+        //   controlAffinity: ListTileControlAffinity.trailing,
+        //   selected: value == _value,
+        //   // toggleable: true,
+        //   value: value,
+        //   // secondary: Icon(Icons.check),
+        //   groupValue: _value,
+        //   title: widget.titleBuilder(value),
+        //   onChanged: (v) {
+        //     if (v != null) {
+        //       widget.onChanged(v);
+        //     }
+        //   },
+        //   // tileColor:Colors.black,
+        //   // selectedTileColor: Colors.black,
+        // )
       ],
     );
   }
