@@ -483,6 +483,20 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to load icon');
   }
+
+  // Future<void> loadIcon([String? defaultIcon]) {
+  //   final fn = () async {
+  //     throw Exception();
+  //     if (_icon != null) return;
+  //     _icon = await _redditApi.subredditIcon(_submission.subreddit);
+  //     notifyListeners();
+  //   };
+
+  //   if (defaultIcon != null) {
+  //     return _tryOr(fn, defaultIcon);
+  //   }
+  //   return _try(fn, 'fail to load icon');
+  // }
 }
 
 class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
@@ -927,6 +941,15 @@ mixin TryMixin {
       throw UIException(error);
     }
   }
+
+  // Future<T> _tryOr<T>(Future<T> Function() fn, T defaultValue) async {
+  //   try {
+  //     return await fn();
+  //   } on Exception catch (e, st) {
+  //     _log.error('', e, st);
+  //     return defaultValue;
+  //   }
+  // }
 }
 
 // mixin LoggedInMixin {
