@@ -13,10 +13,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const black = Colors.black87;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: white,
+        // buttonTheme: ButtonThemeData(
+        //   buttonColor: black,
+        //   textTheme: ButtonTextTheme.primary,
+        // ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: black,
+            textStyle: TextStyle(fontWeight: FontWeight.normal),
+          ),
+        ),
       ),
       // home: Tabs(),
       home: StartScreen(),
