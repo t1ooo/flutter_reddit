@@ -34,7 +34,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
       return Center(child: CircularProgressIndicator());
     }
     return ListView(
-      shrinkWrap: true,
+      // shrinkWrap: true,
       children: [
         DropdownButton<T>(
           value: type,
