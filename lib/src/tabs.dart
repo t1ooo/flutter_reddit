@@ -10,10 +10,11 @@ class Tabs extends StatelessWidget {
   Tabs({Key? key}) : super(key: key);
 
   Widget withScaffold(Widget body) {
-    return Scaffold(
-      drawer: UserMenu(),
-      body: body,
-    );
+    return body;
+    // return Scaffold(
+    //   drawer: UserMenu(),
+    //   body: body,
+    // );
   }
 
   @override
