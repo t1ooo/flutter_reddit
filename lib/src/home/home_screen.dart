@@ -244,19 +244,7 @@ class HomeScreen extends StatelessWidget {
 //   }
 // }
 
-class HomeScreenV4 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _HomeScreenV4State();
-}
-
-class _HomeScreenV4State extends State<HomeScreenV4> {
-  final List<String> listItems = [];
-
-  final List<String> _tabs = <String>[
-    "Featured",
-    "Popular",
-  ];
-
+class HomeScreenV4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -271,7 +259,7 @@ class _HomeScreenV4State extends State<HomeScreenV4> {
         ),
         drawer: UserMenu(),
         body: DefaultTabController(
-          length: _tabs.length, // This is the number of tabs.
+          length: 2, // This is the number of tabs.
           child: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -288,9 +276,60 @@ class _HomeScreenV4State extends State<HomeScreenV4> {
 
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  flexibleSpace: TabBar(
-                    // These are the widgets to put in each tab in the tab bar.
-                    tabs: _tabs.map((String name) => Tab(text: name)).toList(),
+                  flexibleSpace: Container(
+                    width: 100,
+                    child: TabBar(
+                      // padding: EdgeInsets.zero,
+                      // labelPadding: EdgeInsets.zero,
+                      // labelPadding: EdgeInsets.only(left: 300),
+                      indicatorColor: Colors.blue,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      // indicator: BoxDecoration(
+                      //   border: Border(
+                      //     bottom: BorderSide(
+                      //       color: Colors.blue,
+                      //       width: 2.0,
+                      //     ),
+                      //   ),
+                      // ),
+                      tabs: [
+                        Tab(text: 'Home'),
+                        Tab(text: 'Popular'),
+                        // Container( width: 100, child: Tab(text: 'Home')),
+                        // Container( width: 100, child: Tab(text: 'Popular')),
+
+                        // Align(
+                        //   alignment: Alignment.centerRight,
+                        //   child: Container(
+                        //     width: 150,
+                        //     // decoration: BoxDecoration(
+                        //     //   border: Border(
+                        //     //     bottom: BorderSide(
+                        //     //       color: Colors.blue,
+                        //     //       width: 2.0,
+                        //     //     ),
+                        //     //   ),
+                        //     // ),
+                        //     child: Tab(text: 'Home'),
+                        //   ),
+                        // ),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Container(
+                        //     width: 150,
+                        //     // decoration: BoxDecoration(
+                        //     //   border: Border(
+                        //     //     bottom: BorderSide(
+                        //     //       color: Colors.blue,
+                        //     //       width: 2.0,
+                        //     //     ),
+                        //     //   ),
+                        //     // ),
+                        //     child: Tab(text: 'Popular'),
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
 

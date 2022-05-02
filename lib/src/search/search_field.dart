@@ -125,6 +125,7 @@ class SearchField extends StatelessWidget {
             // label: IconButton(onPressed: () {
             // Scaffold.of(context).openDrawer();
             // }, icon: Icon(Icons.account_circle, size: 50),),
+            prefixIcon: Icon(Icons.search),
             fillColor: Colors.white,
             filled: true,
             hintText: subreddit != null ? '$subreddit: Search' : 'Search',
