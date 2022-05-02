@@ -30,11 +30,11 @@ class UserMenu extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: CachedNetworkImageProvider(
+                  foregroundImage: CachedNetworkImageProvider(
                     user.user.iconImg,
                     cacheManager: context.read<CacheManager>(),
                   ),
-                  onBackgroundImageError: (e, _) => log('$e'),
+                  onForegroundImageError: (e, _) => log('$e'),
                 ),
                 Text(user.user.subreddit.displayNamePrefixed),
               ],

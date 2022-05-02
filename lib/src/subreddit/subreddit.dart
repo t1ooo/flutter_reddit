@@ -39,11 +39,11 @@ class SubredditWidget extends StatelessWidget {
                   if (subreddit.communityIcon != '')
                     CircleAvatar(
                       radius: 16, // Image radius
-                      backgroundImage: CachedNetworkImageProvider(
+                      foregroundImage: CachedNetworkImageProvider(
                         subreddit.communityIcon,
                         cacheManager: context.read<CacheManager>(),
                       ),
-                      onBackgroundImageError: (e, _) => log('$e'),
+                      onForegroundImageError: (e, _) => log('$e'),
                     ),
                   // CachedNetworkImage(
                   //   imageUrl: subreddit.communityIcon,
