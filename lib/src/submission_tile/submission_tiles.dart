@@ -36,7 +36,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
     }
 
     return ListView(
-      // shrinkWrap: true,
+      shrinkWrap: true,
       children: [
         // Padding(
         //   // width: 100,
