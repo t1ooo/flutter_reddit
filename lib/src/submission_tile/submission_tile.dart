@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 import 'package:flutter_reddit_prototype/src/widget/loader.dart';
@@ -78,20 +82,11 @@ class SubmissionTile extends StatelessWidget {
       children: [
         Row(
           children: [
-            SizedBox(
-              width: iconSize,
-              height: iconSize,
-              child: Loader<String>(
-                load: (_) => notifier.loadIcon(),
-                data: (_) => notifier.icon,
-                onData: (_, icon) {
-                  // return Image.network(icon);
-                  return CustomNetworkImageBuilder(icon);
-                },
-                onLoading: (_) => Container(decoration: BoxDecoration()),
-                onError: (_, __) => Container(),
-              ),
-            ),
+            // SizedBox(
+            //   width: iconSize,
+            //   height: iconSize,
+            //   child: _subredditIcon(context, notifier),),
+            _subredditIcon(context, notifier),
             SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,6 +132,54 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
+  // Widget _subredditIcon(ImageProvider<Object> image) {
+  //   return CircleAvatar(
+  //     radius: 50,
+  //     foregroundImage: image,
+  //     onForegroundImageError: (e, _) => log('$e'),
+  //   );
+  // }
+
+  // Widget _subredditIconV2(context, String? icon, String? fallbackIcon) {
+  //   if (icon != null) {
+  //     return _subredditIcon(CachedNetworkImageProvider(icon,
+  //         cacheManager: context.read<CacheManager>()));
+  //   }
+  //   if (icon != null) {
+  //     _subredditIcon(AssetImage('communityIcon.png'));
+  //   }
+  //   return Container(decoration: BoxDecoration());
+  // }
+
+  Widget _subredditIcon(BuildContext context, notifier) {
+    Widget _icon(ImageProvider<Object> image) {
+      return CircleAvatar(
+        radius: 20,
+        foregroundImage: image,
+        onForegroundImageError: (e, _) => log('$e'),
+      );
+    }
+
+    return LoaderBuilder<String?>(
+      load: (_) => notifier.loadIcon(),
+      data: (_) => notifier.icon,
+      builder: (_, icon, error) {
+        if (error != null) {
+          _icon(AssetImage('communityIcon.png'));
+        }
+        if (icon != null) {
+          return _icon(
+            CachedNetworkImageProvider(
+              icon,
+              cacheManager: context.read<CacheManager>(),
+            ),
+          );
+        }
+        return Container(decoration: BoxDecoration());
+      },
+    );
+  }
+
   Widget footer(BuildContext context, SubmissionNotifierQ notifier) {
     final submission = notifier.submission;
 
@@ -164,6 +207,13 @@ class SubmissionTile extends StatelessWidget {
             ],
           ),
         ),
+        // TextButton.icon(
+        //   onPressed: () {
+        //     notifier.share();
+        //   },
+        //   icon:Icon(Icons.share),
+        //   label:Text('Share'),
+        // ),
         TextButton(
           onPressed: () {
             showTodoSnackBar(context); // TODO
