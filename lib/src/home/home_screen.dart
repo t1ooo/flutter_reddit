@@ -250,12 +250,11 @@ class HomeScreenV4 extends StatelessWidget {
     return Material(
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 85,
-          elevation: 0,
-          flexibleSpace: Padding(
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-            child: SearchField(),
-          ),
+          // toolbarHeight: 85,
+          // toolbarHeight: 150,
+          // elevation: 0,
+          iconTheme: appBarIconThemeDark,
+          flexibleSpace: SearchField(),
         ),
         drawer: UserMenu(),
         body: DefaultTabController(
