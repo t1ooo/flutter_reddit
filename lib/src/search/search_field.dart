@@ -46,6 +46,48 @@ class SearchField extends StatelessWidget {
     return searchField(context);
   }
 
+  // Widget searchField(BuildContext context) {
+  //   WidgetsBinding.instance?.addPostFrameCallback((_) {
+  //     _controller.text = query ?? '';
+  //   });
+  //   return WillPopScope(
+  //     onWillPop: () async {
+  //       _controller.clear();
+  //       return true;
+  //     },
+  //     child: Column(
+  //       children: [
+  //         TextFormField(
+  //           controller: _controller,
+  //           onFieldSubmitted: (query) {
+  //             query = query.trim();
+  //             if (query != '') {
+  //               navigatorPushOrReplace(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   settings: RouteSettings(name: routeName),
+  //                   builder: (_) => SearchScreen(query: query),
+  //                 ),
+  //               );
+  //             }
+  //           },
+  //           decoration: InputDecoration(
+  //             // icon: Icon(Icons.account_circle, size: 50),
+  //             // label: IconButton(onPressed: () {
+  //               // Scaffold.of(context).openDrawer();
+  //             // }, icon: Icon(Icons.account_circle, size: 50),),
+  //             fillColor: Colors.white,
+  //             filled: true,
+  //             hintText: subreddit != null ? '$subreddit: Search' : 'Search',
+  //             border: OutlineInputBorder(),
+  //           ),
+  //         ),
+  //         SizedBox(height: 50),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget searchField(BuildContext context) {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _controller.text = query ?? '';
@@ -55,31 +97,40 @@ class SearchField extends StatelessWidget {
         _controller.clear();
         return true;
       },
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _controller,
-            onFieldSubmitted: (query) {
-              query = query.trim();
-              if (query != '') {
-                navigatorPushOrReplace(
-                  context,
-                  MaterialPageRoute(
-                    settings: RouteSettings(name: routeName),
-                    builder: (_) => SearchScreen(query: query),
-                  ),
-                );
-              }
-            },
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              hintText: subreddit != null ? '$subreddit: Search' : 'Search',
-              border: OutlineInputBorder(),
-            ),
+      child: ListTile(
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Scaffold.of(context).openEndDrawer();
+        //   },
+        //   icon: Icon(Icons.account_circle),
+        // ),
+        leading: SizedBox(width: 20),
+        minLeadingWidth: 0,
+        title: TextFormField(
+          controller: _controller,
+          onFieldSubmitted: (query) {
+            query = query.trim();
+            if (query != '') {
+              navigatorPushOrReplace(
+                context,
+                MaterialPageRoute(
+                  settings: RouteSettings(name: routeName),
+                  builder: (_) => SearchScreen(query: query),
+                ),
+              );
+            }
+          },
+          decoration: InputDecoration(
+            // icon: Icon(Icons.account_circle, size: 50),
+            // label: IconButton(onPressed: () {
+            // Scaffold.of(context).openDrawer();
+            // }, icon: Icon(Icons.account_circle, size: 50),),
+            fillColor: Colors.white,
+            filled: true,
+            hintText: subreddit != null ? '$subreddit: Search' : 'Search',
+            border: OutlineInputBorder(),
           ),
-          SizedBox(height: 50),
-        ],
+        ),
       ),
     );
   }

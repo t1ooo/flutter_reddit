@@ -21,7 +21,7 @@ class Tabs extends StatelessWidget {
     return PersistentTabView(
       context,
       screens: [
-        HomeScreen(),
+        HomeScreenV4(),
         SubscriptionsScreen(),
       ].map(withScaffold).toList(),
       items: [
