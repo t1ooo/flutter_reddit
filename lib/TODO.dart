@@ -1,4 +1,4 @@
-// TODO: refresh
+// TODO: refresh after duration
 // TODO: merge loggers
 // TODO: listview save croll position
 // TODO: merge screen with widgets (how about header screen?)

@@ -155,6 +155,7 @@ class SubmissionTile extends StatelessWidget {
           onPressed: () {
             notifier.share();
           },
+          // TODO: replace to TextButton.icon
           child: Row(
             children: [
               Icon(Icons.share),
