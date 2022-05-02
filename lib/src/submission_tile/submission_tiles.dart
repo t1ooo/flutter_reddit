@@ -71,62 +71,70 @@ class GSubmissionTiles<T> extends StatelessWidget {
           // width: 100,
           // padding: const EdgeInsets.only(left: 20),
           // TODO: add icon
-          child: TextButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return RadioList<T>(
-                    initialValue: type,
-                    onChanged: (t) {
-                      onTypeChanged(t);
-                      Navigator.pop(context);
-                    },
-                    titleBuilder: (t) => Text(_typeToString(t)),
-                    values: types,
-                  );
-                  // return Column(
-                  // children: [
-                  //   for (final type in types)
-                  //     RadioListTile<T>(
-                  //       controlAffinity: ListTileControlAffinity.trailing,
-                  //       value: type,
-                  //       secondary: Icon(Icons.check),
-                  //       groupValue: type,
-                  //       title: Text(_typeToString(type) + ' POSTS'),
-                  //       onChanged: (_) {},
-                  //     )
-                  // ],
-
-                  // title: Text('Material Dialog'),
-                  // content: Text('Hey! I am Coflutter!'),
-                  // actions: <Widget>[
-                  //   TextButton(
-                  //       onPressed: () {
-                  //         // _dismissDialog();
-                  //       },
-                  //       child: Text('Close')),
-                  //   TextButton(
-                  //     onPressed: () {
-                  //       print('HelloWorld!');
-                  //       // _dismissDialog();
-                  //     },
-                  //     child: Text('HelloWorld!'),
-                  //   )
-                  // ],
-                  // );
-                },
-              );
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text(_typeToString(type) + ' POSTS'),
+          child: ButtonTheme(
+            height: 200,
+            child: TextButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(vertical: 30),
                 ),
-                Icon(Icons.expand_more),
-              ],
+              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return RadioList<T>(
+                      initialValue: type,
+                      onChanged: (t) {
+                        onTypeChanged(t);
+                        Navigator.pop(context);
+                      },
+                      titleBuilder: (t) => Text(_typeToString(t)),
+                      values: types,
+                    );
+                    // return Column(
+                    // children: [
+                    //   for (final type in types)
+                    //     RadioListTile<T>(
+                    //       controlAffinity: ListTileControlAffinity.trailing,
+                    //       value: type,
+                    //       secondary: Icon(Icons.check),
+                    //       groupValue: type,
+                    //       title: Text(_typeToString(type) + ' POSTS'),
+                    //       onChanged: (_) {},
+                    //     )
+                    // ],
+
+                    // title: Text('Material Dialog'),
+                    // content: Text('Hey! I am Coflutter!'),
+                    // actions: <Widget>[
+                    //   TextButton(
+                    //       onPressed: () {
+                    //         // _dismissDialog();
+                    //       },
+                    //       child: Text('Close')),
+                    //   TextButton(
+                    //     onPressed: () {
+                    //       print('HelloWorld!');
+                    //       // _dismissDialog();
+                    //     },
+                    //     child: Text('HelloWorld!'),
+                    //   )
+                    // ],
+                    // );
+                  },
+                );
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(_typeToString(type) + ' POSTS'),
+                  ),
+                  Icon(Icons.expand_more),
+                ],
+              ),
             ),
           ),
         ),
@@ -134,7 +142,10 @@ class GSubmissionTiles<T> extends StatelessWidget {
         for (final sub in submissions ?? [])
           ChangeNotifierProvider<SubmissionNotifierQ>.value(
             value: sub,
-            child: SubmissionTile(activeLink: activeLink),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: SubmissionTile(activeLink: activeLink),
+            ),
           ),
       ],
     );
