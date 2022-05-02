@@ -16,22 +16,6 @@ import '../widget/custom_popup_menu_button.dart';
 import '../widget/loader.dart';
 import 'subreddit.dart';
 
-// class SubredditScreen extends StatelessWidget {
-//   const SubredditScreen({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Subreddit'),
-//       ),
-//       body: SubredditWidget(),
-//     );
-//   }
-// }
-
 class SubredditScreen extends StatelessWidget {
   const SubredditScreen({
     Key? key,
@@ -41,10 +25,6 @@ class SubredditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.share))],
-        // toolbarHeight: MediaQuery.of(context).size.height/4,
-        // toolbarHeight: 150,
-        // elevation: 0,
         flexibleSpace: Builder(builder: (context) {
           final notifier = context.watch<SubredditNotifierQ>();
           final src = notifier.subreddit.bannerBackgroundImage;
@@ -109,116 +89,6 @@ class SubredditScreenLoader extends StatelessWidget {
         return ChangeNotifierProvider<SubredditNotifierQ>.value(
           value: subreddit,
           child: SubredditScreen(),
-        );
-      },
-    );
-    return Scaffold(
-      appBar: AppBar(
-        // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.share))],
-        // toolbarHeight: MediaQuery.of(context).size.height/4,
-        // toolbarHeight: 150,
-        // elevation: 0,
-        flexibleSpace: Builder(builder: (context) {
-          final src = context
-              .watch<SubredditLoaderNotifierQ>()
-              .subreddit
-              ?.subreddit
-              .bannerBackgroundImage;
-          return SearchField(
-            subreddit: 'r/$name',
-            src: src == '' ? null : src,
-            trailing: subredditMenu(context),
-          );
-        }),
-      ),
-      body: body(context),
-    );
-  }
-
-  Widget subredditMenu(BuildContext context) {
-    return CustomPopupMenuButton(
-      icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
-      // icon: Icon(Icons.more_vert),
-      items: [
-        CustomPopupMenuItem(
-          icon: Icon(Icons.visibility_off),
-          label: 'Hide Post',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.report),
-          label: 'Report',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.block),
-          label: 'Block user',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-      ],
-    );
-  }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   final subreddit = context.watch<SubredditLoaderNotifierQ>().subreddit;
-  //   final src = subreddit?.subreddit.bannerBackgroundImage;
-  //   if (src != null && src != '') {
-  //     return Scaffold(
-  //       appBar: AppBar(
-  //         toolbarHeight: 150,
-  //         // toolbarHeight: 150,
-  //         elevation: 0,
-  //         flexibleSpace: Container(
-  //           height: 200,
-  //           padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-  //           child: SearchField(subreddit: 'r/$name'),
-  //           decoration: BoxDecoration(
-  //             image: DecorationImage(
-  //               image: CachedNetworkImageProvider(
-  //                 src,
-  //                 cacheManager: context.read<CacheManager>(),
-  //               ),
-  //               onError: (e, _) => log('$e'),
-  //               fit: BoxFit.fitHeight,
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       body: body(context),
-  //     );
-  //   }
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       toolbarHeight: 100,
-  //       // toolbarHeight: 150,
-  //       elevation: 0,
-  //       flexibleSpace: Container(
-  //         height: 150,
-  //         padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-  //         child: SearchField(subreddit: 'r/$name'),
-  //       ),
-  //     ),
-  //     body: body(context),
-  //   );
-  // }
-
-  Widget body(BuildContext context) {
-    final notifier = context.read<SubredditLoaderNotifierQ>();
-
-    return Loader<SubredditNotifierQ>(
-      load: (_) => notifier.loadSubreddit(name),
-      data: (_) => notifier.subreddit,
-      onData: (_, subreddit) {
-        return ChangeNotifierProvider<SubredditNotifierQ>.value(
-          value: subreddit,
-          child: SubredditWidget(),
         );
       },
     );
