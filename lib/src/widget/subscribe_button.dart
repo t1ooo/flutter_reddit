@@ -23,7 +23,7 @@ class SubscribeButton extends StatelessWidget {
               .unsubscribe()
               .catchError((e) => showErrorSnackBar(context, e));
         },
-        child: Text(isUserPage ? 'FOLLOWING' : 'LEAVE'),
+        child: Text(isUserPage ? 'FOLLOWING' : 'JOINED'),
       );
     else
       return FutureElevatedButton(
