@@ -28,6 +28,10 @@ class MyApp extends StatelessWidget {
             textStyle: TextStyle(fontWeight: FontWeight.normal),
           ),
         ),
+        radioTheme: RadioThemeData(
+          fillColor: MaterialStateProperty.all(black),
+          overlayColor: MaterialStateProperty.all(black),
+        ),
       ),
       // home: Tabs(),
       home: StartScreen(),
