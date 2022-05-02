@@ -22,16 +22,20 @@ class MyApp extends StatelessWidget {
         //   buttonColor: black,
         //   textTheme: ButtonTextTheme.primary,
         // ),
+        // textTheme: TextTheme(),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             primary: black,
-            textStyle: TextStyle(fontWeight: FontWeight.normal),
+            // textStyle: TextStyle(fontWeight: FontWeight.normal,),
+            textStyle: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         radioTheme: RadioThemeData(
           fillColor: MaterialStateProperty.all(black),
           overlayColor: MaterialStateProperty.all(black),
         ),
+        iconTheme: IconThemeData(color: black),
+        primaryIconTheme: IconThemeData(color: black),
       ),
       // home: Tabs(),
       home: StartScreen(),
