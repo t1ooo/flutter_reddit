@@ -136,7 +136,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
 
 class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   SubredditNotifierQ(this._redditApi, this._subreddit)
-      : _name = _subreddit.displayName;
+      : name = _subreddit.displayName;
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -144,7 +144,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
 
   // set name(name);
 
-  final String _name;
+  final String name;
   Subreddit _subreddit;
   Subreddit get subreddit => _subreddit;
 
@@ -182,7 +182,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   Future<void> subscribe() {
     return _try(() async {
       if (_subreddit.userIsSubscriber) return;
-      await _redditApi.subscribe(_name);
+      await _redditApi.subscribe(name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: true);
       notifyListeners();
     }, 'fail to subscribe');
@@ -191,7 +191,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   Future<void> unsubscribe() {
     return _try(() async {
       if (!(_subreddit.userIsSubscriber)) return;
-      await _redditApi.subscribe(_name);
+      await _redditApi.subscribe(name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: false);
       notifyListeners();
     }, 'fail to unsubscribe');
@@ -208,7 +208,7 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
       if (_submissions != null && _subType == subType) return;
       _subType = subType;
       _submissions = await _redditApi
-          .subredditSubmissions(_name, limit: _limit, type: _subType)
+          .subredditSubmissions(name, limit: _limit, type: _subType)
           .map((v) => SubmissionNotifierQ(_redditApi, v))
           .toList();
       notifyListeners();
