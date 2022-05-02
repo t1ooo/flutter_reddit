@@ -147,6 +147,7 @@ class SubmissionTile extends StatelessWidget {
         Row(
           children: [
             Icon(Icons.comment),
+            SizedBox(width: 5),
             Text(submission.numComments.toString()),
           ],
         ),
@@ -157,11 +158,17 @@ class SubmissionTile extends StatelessWidget {
           child: Row(
             children: [
               Icon(Icons.share),
+              SizedBox(width: 5),
               Text('Share'),
             ],
           ),
         ),
-        Icon(Icons.star_outline),
+        TextButton(
+          onPressed: () {
+            showTodoSnackBar(context); // TODO
+          },
+          child: Icon(Icons.star_outline),
+        ),
       ],
     );
   }
@@ -194,9 +201,27 @@ class SubmissionTile extends StatelessWidget {
         //   },
         // ),
 
-        // TODO
-        CustomPopupMenuItem(label: 'Report', onTap: () {}),
-        CustomPopupMenuItem(label: 'Block user', onTap: () {}),
+        CustomPopupMenuItem(
+          icon: Icon(Icons.visibility_off),
+          label: 'Hide Post',
+          onTap: () {
+            showTodoSnackBar(context); // TODO
+          },
+        ),
+        CustomPopupMenuItem(
+          icon: Icon(Icons.report),
+          label: 'Report',
+          onTap: () {
+            showTodoSnackBar(context); // TODO
+          },
+        ),
+        CustomPopupMenuItem(
+          icon: Icon(Icons.block),
+          label: 'Block user',
+          onTap: () {
+            showTodoSnackBar(context); // TODO
+          },
+        ),
       ],
     );
   }
