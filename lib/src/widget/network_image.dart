@@ -94,6 +94,16 @@ class CustomNetworkImage extends StatelessWidget {
   }
 }
 
+// Widget imageErrorBuilder(BuildContext context, Object error) {
+//   log('$error');
+//   return Container();
+// }
+
+Widget imageErrorBuilder(BuildContext context, Object error, dynamic st) {
+  log('$error');
+  return Container();
+}
+
 class CustomNetworkImageBuilder extends StatelessWidget {
   const CustomNetworkImageBuilder(
     this.src, {
