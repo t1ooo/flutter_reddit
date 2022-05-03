@@ -10,6 +10,23 @@ import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import 'search_screen.dart';
 
+class SearchBackButton extends StatelessWidget {
+  SearchBackButton({Key? key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return IconButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      icon: IconTheme(
+        data: appBarIconTheme,
+        child: Icon(Icons.arrow_back),
+      ),
+    );
+  }
+}
+
 class SearchField extends StatelessWidget {
   SearchField({
     Key? key,
