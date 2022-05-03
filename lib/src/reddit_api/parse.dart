@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
 
 import '../logging/logging.dart';
@@ -32,6 +33,18 @@ List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [Logger? log]) {
     return defaultValue;
   }
 }
+
+final colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive:false);
+
+String parseColor(dynamic data, [Logger? log]) {
+  final text = cast<String>(data, '');
+  if (colorRegExp.hasMatch(text)) {
+    return text;
+  }
+  log?.warning('fail to parse color: $data');
+  return '';
+}
+
 
 String parseText(dynamic data) {
   final text = cast<String>(data, '');

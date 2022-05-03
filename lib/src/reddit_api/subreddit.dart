@@ -25,6 +25,7 @@ class Subreddit extends Equatable {
     required this.url,
     required this.headerImg,
     required this.bannerBackgroundImage,
+    required this.bannerBackgroundColor,
     required this.userIsSubscriber,
   });
 
@@ -48,6 +49,7 @@ class Subreddit extends Equatable {
   final String url;
   final String headerImg;
   final String bannerBackgroundImage;
+  final String bannerBackgroundColor;
   final bool userIsSubscriber;
 
   // static final _log = getLogger('Subreddit');
@@ -76,12 +78,12 @@ class Subreddit extends Equatable {
       url: mapGet(data, 'url', '', _log),
       headerImg: parseUrl(data['header_img'], _log),
       bannerBackgroundImage: parseUrl(data['banner_background_image'], _log),
+      bannerBackgroundColor: parseColor(data['banner_background_color'], _log),
       userIsSubscriber: mapGet(data, 'user_is_subscriber', false, _log),
     );
   }
 
   static final _log = getLogger('Subreddit');
-
 
   // static String _parseIcon(dynamic data) {
   //   final s = cast<String>(data, '');
@@ -143,6 +145,7 @@ class Subreddit extends Equatable {
     String? url,
     String? headerImg,
     String? bannerBackgroundImage,
+    String? bannerBackgroundColor,
     bool? userIsSubscriber,
   }) {
     return Subreddit(
@@ -168,6 +171,8 @@ class Subreddit extends Equatable {
       headerImg: headerImg ?? this.headerImg,
       bannerBackgroundImage:
           bannerBackgroundImage ?? this.bannerBackgroundImage,
+      bannerBackgroundColor:
+          bannerBackgroundColor ?? this.bannerBackgroundColor,
       userIsSubscriber: userIsSubscriber ?? this.userIsSubscriber,
     );
   }
@@ -195,6 +200,7 @@ class Subreddit extends Equatable {
       url,
       headerImg,
       bannerBackgroundImage,
+      bannerBackgroundColor,
       userIsSubscriber,
     ];
   }
