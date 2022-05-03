@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        primaryColor: Colors.white,
         primarySwatch: white,
         // buttonTheme: ButtonThemeData(
         //   buttonColor: black,
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           iconTheme: appBarIconTheme,
           elevation: 0,
           toolbarHeight: 150,
+          // foregroundColor: Colors.white,
         ),
         // popupMenuTheme: PopupMenuThemeData(
             // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
