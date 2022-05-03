@@ -15,34 +15,51 @@ class UserAbout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<UserNotifierQ>().user;
-    return Padding(
-      padding: pagePadding,
-      child: Card(
-        child: ListView(
-          children: [
-            SizedBox(height: 50),
-            Table(
+    return Container(
+      // padding: pagePadding,
+      color: Theme.of(context).primaryColor,
+
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          // SizedBox(height: 10),
+          Container(
+            // height: 40,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            height: 10,
+          ),
+          Container(
+            // color: Theme.of(context).primaryColor,
+            // elevation: 0,
+            child: ListView(
+              shrinkWrap: true,
               children: [
-                TableRow(
+                SizedBox(height: 50),
+                Table(
                   children: [
-                    Center(child: Text(user.totalKarma.toString())),
-                    Center(child: Text(formatDateTime(user.created))),
+                    TableRow(
+                      children: [
+                        Center(child: Text(user.totalKarma.toString())),
+                        Center(child: Text(formatDateTime(user.created))),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Center(child: Text('Karma')),
+                        Center(child: Text('Reddit age')),
+                      ],
+                    ),
                   ],
                 ),
-                TableRow(
-                  children: [
-                    Center(child: Text('Karma')),
-                    Center(child: Text('Reddit age')),
-                  ],
-                ),
+                SizedBox(height: 50),
+                ListTile(
+                    leading: Icon(Icons.mail), title: Text('Send a message')),
+                ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
               ],
             ),
-            SizedBox(height: 50),
-            ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
-            ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
-            UserTrophies(),
-          ],
-        ),
+          ),
+          UserTrophies(),
+        ],
       ),
     );
   }

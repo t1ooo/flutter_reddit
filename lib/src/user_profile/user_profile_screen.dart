@@ -17,12 +17,13 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('User Profile'),
-      ),
-      body: body(context),
-    );
+    return body(context);
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: Text('User Profile'),
+    //   ),
+    //   body: body(context),
+    // );
   }
 
   Widget body(BuildContext context) {
@@ -34,7 +35,7 @@ class UserProfileScreen extends StatelessWidget {
       onData: (_, user) {
         return ChangeNotifierProvider<UserNotifierQ>.value(
           value: user,
-          child: UserProfile(isCurrentUser: false),
+          child: UserProfile(),
         );
       },
     );

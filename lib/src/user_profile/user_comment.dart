@@ -13,12 +13,13 @@ class UserComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: cardPadding,
-        child: body(context),
-      ),
-    );
+    // return Card(
+    //   child: Padding(
+    //     padding: cardPadding,
+    //     child: body(context),
+    //   ),
+    // );
+    return Container(color: Theme.of(context).primaryColor,child: body(context));
   }
 
   Widget body(BuildContext context) {
@@ -36,7 +37,8 @@ class UserComment extends StatelessWidget {
               );
             },
       child: Padding(
-        padding: commentPadding(0),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        // padding: commentPadding(0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,7 +55,7 @@ class UserComment extends StatelessWidget {
             SizedBox(height: 10),
             Text(comment.body),
             Text(comment.isSubmitter.toString()),
-            // Divider(),
+            Divider(),
           ],
         ),
       ),

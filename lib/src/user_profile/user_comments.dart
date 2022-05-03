@@ -15,8 +15,8 @@ class UserComments extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifierQ>();
 
-    return Padding(
-      padding: pagePadding,
+    return Container(
+      // padding: pagePadding,
       child: Loader<List<CommentNotifierQ>>(
         load: (_) => notifier.loadComments(),
         data: (_) => notifier.comments,
