@@ -27,10 +27,7 @@ class Awards extends StatelessWidget {
             width: 16,
             height: 16,
             image: image,
-            errorBuilder: (_, e, __) {
-              log('$e');
-              return Container();
-            },
+            errorBuilder: imageErrorBuilder,
           );
         }),
       SizedBox(width: 5),
