@@ -77,10 +77,50 @@ class SubmissionTile extends StatelessWidget {
   Widget header(BuildContext context, SubmissionNotifierQ notifier) {
     final submission = notifier.submission;
 
-    return Row(
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: SizedBox.square(
+        dimension: 40,
+        child: _subredditIcon(context, notifier),
+      ),
+      title: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => SubredditScreenLoader(
+                name: submission.subreddit,
+              ),
+            ),
+          );
+        },
+        child: Text(submission.subredditNamePrefixed),
+      ),
+      subtitle: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => UserProfileScreen(
+                name: submission.author,
+              ),
+            ),
+          );
+        },
+        child: Text(
+          'Posted by ${submission.author} • ${formatDateTime(submission.created)}',
+          softWrap: true,
+          // overflow: TextOverflow.clip,
+        ),
+      ),
+      trailing: _popupMenuButton(context, notifier),
+    );
+
+    /* return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
+        Wrap(
+          clipBehavior: Clip.hardEdge,
           children: [
             // SizedBox(
             //   width: iconSize,
@@ -104,32 +144,30 @@ class SubmissionTile extends StatelessWidget {
                   },
                   child: Text(submission.subredditNamePrefixed),
                 ),
-                Row(children: [
-                  Text('Post by'),
-                  Text(' '),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => UserProfileScreen(
-                            name: submission.author,
-                          ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => UserProfileScreen(
+                          name: submission.author,
                         ),
-                      );
-                    },
-                    child: Text(submission.author),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Posted by ${submission.author} • ${formatDateTime(submission.created)}',
+                    softWrap: true,
+                    // overflow: TextOverflow.clip,
                   ),
-                  Text(' • '),
-                  Text(formatDateTime(submission.created)),
-                ]),
+                ),
               ],
             ),
           ],
         ),
         _popupMenuButton(context, notifier),
       ],
-    );
+    ); */
   }
 
   // Widget _subredditIcon(ImageProvider<Object> image) {
