@@ -1,3 +1,4 @@
+// TODO: explicit wrap each widget with provider
 // TODO: format likes 31000 -> 31k
 // TODO: refresh after duration
 // TODO: merge loggers
