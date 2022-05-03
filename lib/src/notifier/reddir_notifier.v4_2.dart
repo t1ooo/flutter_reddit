@@ -645,7 +645,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class UserNotifierQ extends ChangeNotifier with TryMixin {
-  UserNotifierQ(this._redditApi, this._user)
+  UserNotifierQ(this._redditApi, this._user, [this.isCurrentUser=false])
       : _name = _user.name,
         _subreddit = SubredditNotifierQ(_redditApi, _user.subreddit);
 
@@ -659,6 +659,8 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   //   _comments = null;
   //   _trophies = null;
   // }
+
+  final bool isCurrentUser;
 
   final String _name;
 
@@ -834,7 +836,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
 // class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
 class CurrentUserNotifierQ extends UserNotifierQ {
-  CurrentUserNotifierQ(this._redditApi, this._user) : super(_redditApi, _user);
+  CurrentUserNotifierQ(this._redditApi, this._user) : super(_redditApi, _user, true);
 
   final RedditApi _redditApi;
   int _limit = 10;
