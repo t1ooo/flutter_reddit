@@ -260,8 +260,7 @@ class HomeScreenV4 extends StatelessWidget {
         body: DefaultTabController(
           length: 2, // This is the number of tabs.
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 // SliverAppBar(
                 //   collapsedHeight: 80,
