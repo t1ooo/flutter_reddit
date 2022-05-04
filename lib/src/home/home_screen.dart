@@ -249,19 +249,41 @@ class HomeScreenV4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        appBar: AppBar(
-          // toolbarHeight: 85,
-          // toolbarHeight: 150,
-          // elevation: 0,
-          iconTheme: appBarIconThemeDark,
-          flexibleSpace: SearchField(),
-        ),
+        // appBar: AppBar(
+        //   // toolbarHeight: 85,
+        //   // toolbarHeight: 150,
+        //   // elevation: 0,
+        //   iconTheme: appBarIconThemeDark,
+        //   flexibleSpace: SearchField(),
+        // ),
         drawer: UserMenu(),
         body: DefaultTabController(
           length: 2, // This is the number of tabs.
           child: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
+                SliverAppBar(
+                  // stretch: true,
+                  pinned: true,
+                  // snap: true,
+                  primary: false,
+                  // leading: Icon(Icons.back_hand),
+                  automaticallyImplyLeading: false,
+                  collapsedHeight: 120,
+                  expandedHeight: appBarExpandedHeight,
+
+                  flexibleSpace: SearchField(
+                    leading: SearchIconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      iconData: Icons.account_circle,
+                      theme: appBarIconThemeDark,
+                    ),
+                    showSearchForm: true,
+                  ),
+                ),
+
                 // SliverAppBar(
                 //   collapsedHeight: 80,
                 //   flexibleSpace: Padding(
