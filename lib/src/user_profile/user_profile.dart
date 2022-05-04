@@ -3,7 +3,6 @@ import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../search/search_field.dart';
 import '../style/style.dart';
 import '../subreddit/subreddit_info.dart';
 import '../util/color.dart';
@@ -11,6 +10,8 @@ import '../util/date_time.dart';
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/network_image.dart';
+import '../widget/sliver_app_bar.dart';
+import '../widget/space_bar.dart';
 import '../widget/subscribe_button.dart';
 import 'user_about.dart';
 import 'user_info.dart';
@@ -136,15 +137,15 @@ class UserProfile extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             // print(innerBoxIsScrolled);
             return [
-              SliverAppBar(
+              PrimarySliverAppBar(
                 // stretch: true,
-                pinned: true,
-                // snap: true,
-                primary: false,
-                // leading: Icon(Icons.back_hand),
-                automaticallyImplyLeading: false,
-                collapsedHeight: 120,
-                expandedHeight: appBarExpandedHeight,
+                // pinned: true,
+                // // snap: true,
+                // primary: false,
+                // // leading: Icon(Icons.back_hand),
+                // automaticallyImplyLeading: false,
+                // collapsedHeight: 120,
+                // expandedHeight: appBarExpandedHeight,
                 // expandedHeight: 500,
                 // leading: Padding(
                 //   padding: const EdgeInsets.only(top:10),
@@ -153,15 +154,23 @@ class UserProfile extends StatelessWidget {
                 //         child: Icon(Icons.arrow_back),
                 //       ),
                 // ),
-                flexibleSpace: SearchField(
-                  subreddit: 'r/${subreddit.name}',
-                  src: backgroundImage == '' ? null : backgroundImage,
-                  backgroundColor:
-                      colorFromHex(backgroundColor) ?? generateColor(user.name),
-                  // backgroundColor: colorFromHex('#005ba1'),
+                // flexibleSpace: SearchField(
+                //   subreddit: 'r/${subreddit.name}',
+                //   src: backgroundImage == '' ? null : backgroundImage,
+                //   backgroundColor:
+                //       colorFromHex(backgroundColor) ?? generateColor(user.name),
+                //   // backgroundColor: colorFromHex('#005ba1'),
+                //   leading: SearchSearchBackButton.black(),
+                //   trailing: _userMenu(context),
+                //   showSearchForm: false,
+                // ),
+
+                 flexibleSpace: SpaceBar(
                   leading: SearchBackButton(),
+                  // title: SearchForm(subreddit: 'r/${subreddit.name}',),
+                  src: backgroundImage == '' ? null : backgroundImage,
+                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(user.name),
                   trailing: _userMenu(context),
-                  showSearchForm: false,
                 ),
 
                 // title: Text('123'),
@@ -182,7 +191,7 @@ class UserProfile extends StatelessWidget {
                 //           src: backgroundImage == '' ? null : backgroundImage,
                 //           backgroundColor: colorFromHex(backgroundColor),
                 //           // backgroundColor: colorFromHex('#005ba1'),
-                //           leading: SearchBackButton(),
+                //           leading: SearchSearchBackButton.black(),
                 //           trailing: _userMenu(context),
                 //         ),
                 //       ),
@@ -348,8 +357,8 @@ class UserProfile extends StatelessWidget {
 
   Widget _userMenu(BuildContext context) {
     return CustomPopupMenuButton(
-      icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
-      // icon: Icon(Icons.more_vert),
+      // icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
+      icon: SpaceBarIcon(Icons.more_vert),
       items: [
         CustomPopupMenuItem(
           icon: Icon(Icons.report),
