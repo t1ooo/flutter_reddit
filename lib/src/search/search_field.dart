@@ -43,32 +43,42 @@ class SearchIconButton extends StatelessWidget {
   }
 }
 
-class SearchBackButton extends StatelessWidget {
-  SearchBackButton({Key? key}) : super(key: key);
+// class SearchBackButton extends StatelessWidget {
+//   SearchBackButton({
+//     Key? key,
+//     this.theme=appBarIconTheme,
+//   }) : super(key: key);
 
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 8),
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: IconTheme(
-          data: appBarIconTheme,
-          child: Icon(Icons.arrow_back),
-        ),
-      ),
-    );
-    // return SearchIconButton(
-    //   onPressed: () {
-    //     Navigator.of(context).pop(); // does not work
-    //   },
-    //   iconData: Icons.arrow_back,
-    //   theme: appBarIconTheme,
-    // );
-  }
-}
+//   SearchBackButton.black({
+//     Key? key,
+//     this.theme=appBarIconThemeDark,
+//   });
+
+//   final IconThemeData theme;
+
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.only(left: 8),
+//       child: IconButton(
+//         padding: EdgeInsets.zero,
+//         onPressed: () {
+//           Navigator.of(context).pop();
+//         },
+//         icon: IconTheme(
+//           data: theme,
+//           child: Icon(Icons.arrow_back),
+//         ),
+//       ),
+//     );
+//     // return SearchIconButton(
+//     //   onPressed: () {
+//     //     Navigator.of(context).pop(); // does not work
+//     //   },
+//     //   iconData: Icons.arrow_back,
+//     //   theme: appBarIconTheme,
+//     // );
+//   }
+// }
 
 // TODO: split to app bar and search form
 // TODO: rename to search bar|app bar
