@@ -81,6 +81,7 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.paid),
             title: Text('Reddit coins'),
             onTap: () {
+              showTodoSnackBar(context); // TODO
               Navigator.pop(context);
             },
           ),
@@ -106,6 +107,7 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.history),
             title: Text('History'),
             onTap: () {
+              showTodoSnackBar(context); // TODO
               Navigator.pop(context);
             },
           ),
@@ -126,6 +128,7 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () {
+              showTodoSnackBar(context); // TODO
               Navigator.pop(context);
             },
           ),
