@@ -12,6 +12,36 @@ import '../widget/custom_popup_menu_button.dart';
 import '../widget/network_image.dart';
 import 'search_screen.dart';
 
+class SearchIconButton extends StatelessWidget {
+  SearchIconButton({
+    Key? key,
+    required this.iconData,
+    this.onPressed,
+    this.theme,
+  }) : super(key: key);
+
+  final IconData iconData;
+  final void Function()? onPressed;
+  final IconThemeData? theme;
+
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+        icon: theme != null
+            ? IconTheme(
+                data: theme!,
+                child: Icon(iconData),
+              )
+            : Icon(iconData),
+      ),
+    );
+  }
+}
 class SearchBackButton extends StatelessWidget {
   SearchBackButton({Key? key}) : super(key: key);
 
