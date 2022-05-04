@@ -29,7 +29,8 @@ class UserTrophies extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Text(
                   'TROPHIES',
-                  style: Theme.of(context).textTheme.headline6,
+                  // style: Theme.of(context).textTheme.headline6,
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 )),
             Container(
               color: Theme.of(context).primaryColor,
