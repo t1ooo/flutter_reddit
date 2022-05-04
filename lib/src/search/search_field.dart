@@ -42,6 +42,7 @@ class SearchIconButton extends StatelessWidget {
     );
   }
 }
+
 class SearchBackButton extends StatelessWidget {
   SearchBackButton({Key? key}) : super(key: key);
 
@@ -49,14 +50,14 @@ class SearchBackButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 8),
       child: IconButton(
-      padding: EdgeInsets.zero,
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      icon: IconTheme(
-        data: appBarIconTheme,
-        child: Icon(Icons.arrow_back),
-      ),
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: IconTheme(
+          data: appBarIconTheme,
+          child: Icon(Icons.arrow_back),
+        ),
       ),
     );
     // return SearchIconButton(
@@ -69,6 +70,8 @@ class SearchBackButton extends StatelessWidget {
   }
 }
 
+// TODO: split to app bar and search form
+// TODO: rename to search bar|app bar
 class SearchField extends StatelessWidget {
   SearchField({
     Key? key,
@@ -78,6 +81,7 @@ class SearchField extends StatelessWidget {
     this.backgroundColor,
     this.leading,
     this.trailing,
+    this.showSearchForm = true,
   }) : super(key: key);
 
   final String? query;
@@ -86,8 +90,9 @@ class SearchField extends StatelessWidget {
   final Color? backgroundColor;
   final Widget? leading;
   final Widget? trailing;
-  static final _controller = TextEditingController();
+  final bool showSearchForm;
 
+  static final _controller = TextEditingController();
   static final routeName = 'SearchField';
 
   @override
@@ -289,34 +294,44 @@ class SearchField extends StatelessWidget {
           leading: leading ?? SizedBox(width: 40),
           minLeadingWidth: 0,
           contentPadding: EdgeInsets.zero,
-          title: TextFormField(
-            controller: _controller,
-            onFieldSubmitted: (query) {
-              query = query.trim();
-              if (query != '') {
-                navigatorPushOrReplace(
-                  context,
-                  MaterialPageRoute(
-                    settings: RouteSettings(name: routeName),
-                    builder: (_) => SearchScreen(query: query),
-                  ),
-                );
-              }
-            },
-            decoration: InputDecoration(
-              // icon: Icon(Icons.account_circle, size: 50),
-              // label: IconButton(onPressed: () {
-              // Scaffold.of(context).openDrawer();
-              // }, icon: Icon(Icons.account_circle, size: 50),),
-              prefixIcon: Icon(Icons.search),
-              fillColor: Colors.white,
-              filled: true,
-              hintText: subreddit != null ? '$subreddit' : 'Search',
-              border: OutlineInputBorder(),
-            ),
+          // title: showSearchForm ? _searchForm(context) : null,
+
+          // NOTE: opacity prevents the leading icon from shifting
+          title: Opacity(
+            opacity: showSearchForm ? 1 : 0,
+            child: _searchForm(context),
           ),
           trailing: trailing,
         ),
+      ),
+    );
+  }
+
+  Widget _searchForm(BuildContext context) {
+    return TextFormField(
+      controller: _controller,
+      onFieldSubmitted: (query) {
+        query = query.trim();
+        if (query != '') {
+          navigatorPushOrReplace(
+            context,
+            MaterialPageRoute(
+              settings: RouteSettings(name: routeName),
+              builder: (_) => SearchScreen(query: query),
+            ),
+          );
+        }
+      },
+      decoration: InputDecoration(
+        // icon: Icon(Icons.account_circle, size: 50),
+        // label: IconButton(onPressed: () {
+        // Scaffold.of(context).openDrawer();
+        // }, icon: Icon(Icons.account_circle, size: 50),),
+        prefixIcon: Icon(Icons.search),
+        fillColor: Colors.white,
+        filled: true,
+        hintText: subreddit != null ? '$subreddit' : 'Search',
+        border: OutlineInputBorder(),
       ),
     );
   }
