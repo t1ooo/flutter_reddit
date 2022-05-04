@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_reddit_prototype/src/comment/add_comment_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 
 class CommentField extends StatelessWidget {
@@ -25,7 +27,13 @@ class CommentField extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => AddCommentScreen(id: id)),
+              // MaterialPageRoute(builder: (_) => AddCommentScreen(id: id)),
+              MaterialPageRoute(builder: (_) => 
+                ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                  value: context.read<SubmissionNotifierQ>(),
+                  child: AddCommentScreen(id: id),
+                ),
+              ),
             );
           },
           decoration: InputDecoration(
