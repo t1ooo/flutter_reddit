@@ -110,7 +110,6 @@ import 'user_submissions.dart';
 //   }
 // }
 
-
 class UserProfile extends StatelessWidget {
   // class UserProfile extends StatelessWidget {
 //   const UserProfile({
@@ -159,10 +158,11 @@ class UserProfile extends StatelessWidget {
                   flexibleSpace: SearchField(
                     subreddit: 'r/${subreddit.name}',
                     src: backgroundImage == '' ? null : backgroundImage,
-                    backgroundColor: colorFromHex(backgroundColor) ?? generateColor(user.name),
+                    backgroundColor: colorFromHex(backgroundColor) ??
+                        generateColor(user.name),
                     // backgroundColor: colorFromHex('#005ba1'),
                     leading: SearchBackButton(),
-                    trailing: _subredditMenu(context),
+                    trailing: _userMenu(context),
                   ),
 
                   // title: Text('123'),
@@ -184,7 +184,7 @@ class UserProfile extends StatelessWidget {
                   //           backgroundColor: colorFromHex(backgroundColor),
                   //           // backgroundColor: colorFromHex('#005ba1'),
                   //           leading: SearchBackButton(),
-                  //           trailing: _subredditMenu(context),
+                  //           trailing: _userMenu(context),
                   //         ),
                   //       ),
                   //       // Container(
@@ -203,12 +203,12 @@ class UserProfile extends StatelessWidget {
                 //   flexibleSpace:  Container(
                 //     width: 400,
                 //     child: SubredditInfo()),
-                  
+
                 // ),
 
                 SliverList(
                     delegate: SliverChildListDelegate([
-                      UserInfo(),
+                  UserInfo(),
                   // ChangeNotifierProvider<SubredditNotifierQ>.value(
                   //   value: subreddit,
                   //   child: UserInfo(),
@@ -348,21 +348,14 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  Widget _subredditMenu(BuildContext context) {
+  Widget _userMenu(BuildContext context) {
     return CustomPopupMenuButton(
       icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
       // icon: Icon(Icons.more_vert),
       items: [
         CustomPopupMenuItem(
-          icon: Icon(Icons.visibility_off),
-          label: 'Hide Post',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
           icon: Icon(Icons.report),
-          label: 'Report',
+          label: 'Share',
           onTap: () {
             showTodoSnackBar(context); // TODO
           },
@@ -378,5 +371,3 @@ class UserProfile extends StatelessWidget {
     );
   }
 }
-
-
