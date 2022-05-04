@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
@@ -58,10 +59,15 @@ class UserInfo extends StatelessWidget {
                 Spacer(),
                 // ElevatedButton(onPressed: () {}, child: Icon(Icons.doorbell)),
                 // SizedBox(width: 10),
-                ChangeNotifierProvider<SubredditNotifierQ>.value(
-                  value: notifier.subreddit,
-                  child: SubscribeButton(),
-                ),
+                if (notifier.isCurrentUser)
+                  ElevatedButton(onPressed: () {
+                    showTodoSnackBar(context); // TODO
+                  }, child: Text('EDIT'))
+                else
+                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                    value: notifier.subreddit,
+                    child: SubscribeButton(),
+                  ),
               ],
             ),
             // SizedBox(height: 10),
