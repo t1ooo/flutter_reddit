@@ -12,7 +12,7 @@ class CustomPopupMenuItem {
     required this.onTap,
   });
 
-  final Icon? icon;
+  final Widget? icon;
   final String label;
   final FutureOr Function() onTap;
 }
