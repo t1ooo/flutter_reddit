@@ -46,7 +46,9 @@ class SearchBackButton extends StatelessWidget {
   SearchBackButton({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
-    return IconButton(
+    return Padding(
+      padding: EdgeInsets.only(left: 8),
+      child: IconButton(
       padding: EdgeInsets.zero,
       onPressed: () {
         Navigator.of(context).pop();
@@ -55,7 +57,15 @@ class SearchBackButton extends StatelessWidget {
         data: appBarIconTheme,
         child: Icon(Icons.arrow_back),
       ),
+      ),
     );
+    // return SearchIconButton(
+    //   onPressed: () {
+    //     Navigator.of(context).pop(); // does not work
+    //   },
+    //   iconData: Icons.arrow_back,
+    //   theme: appBarIconTheme,
+    // );
   }
 }
 
