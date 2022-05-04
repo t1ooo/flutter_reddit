@@ -74,7 +74,7 @@ import 'subreddit_info.dart';
 //   }
 // }
 
-class SubredditScreenV2 extends StatelessWidget {
+class SubredditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<SubredditNotifierQ>();
@@ -351,7 +351,7 @@ class SubredditScreenLoader extends StatelessWidget {
       onData: (_, subreddit) {
         return ChangeNotifierProvider<SubredditNotifierQ>.value(
           value: subreddit,
-          child: SubredditScreenV2(),
+          child: SubredditScreen(),
         );
       },
     );
