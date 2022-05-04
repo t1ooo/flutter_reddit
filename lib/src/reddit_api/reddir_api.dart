@@ -869,7 +869,10 @@ class FakeRedditApi implements RedditApi {
         submissions.add(Submission.fromJson(v));
     });
 
-    return UserSaved(submissions, comments);
+    return UserSaved(
+      submissions + submissions + submissions,
+      comments + comments + comments,
+    );
   }
 
   // Stream<Submission> currentUserSavedSubmissions({required int limit}) {
