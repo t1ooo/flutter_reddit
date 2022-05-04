@@ -9,69 +9,70 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/subreddit.dart';
-import '../search/search_field.dart';
 import '../style/style.dart';
 import '../util/color.dart';
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/loader.dart';
+import '../widget/sliver_app_bar.dart';
+import '../widget/space_bar.dart';
 import '../widget/subscribe_button.dart';
 import 'subreddit.dart';
 import 'subreddit_info.dart';
 
-class SubredditScreen extends StatelessWidget {
-  const SubredditScreen({
-    Key? key,
-  }) : super(key: key);
+// class SubredditScreen extends StatelessWidget {
+//   const SubredditScreen({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Builder(builder: (context) {
-          final notifier = context.watch<SubredditNotifierQ>();
-          final src = notifier.subreddit.bannerBackgroundImage;
-          return SearchField(
-            subreddit: 'r/${notifier.name}',
-            src: src == '' ? null : src,
-            trailing: _subredditMenu(context),
-          );
-        }),
-      ),
-      body: SubredditWidget(),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         flexibleSpace: Builder(builder: (context) {
+//           final notifier = context.watch<SubredditNotifierQ>();
+//           final src = notifier.subreddit.bannerBackgroundImage;
+//           return SearchField(
+//             subreddit: 'r/${notifier.name}',
+//             src: src == '' ? null : src,
+//             trailing: _subredditMenu(context),
+//           );
+//         }),
+//       ),
+//       body: SubredditWidget(),
+//     );
+//   }
 
-  Widget _subredditMenu(BuildContext context) {
-    return CustomPopupMenuButton(
-      icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
-      // icon: Icon(Icons.more_vert),
-      items: [
-        CustomPopupMenuItem(
-          icon: Icon(Icons.visibility_off),
-          label: 'Hide Post',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.report),
-          label: 'Report',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.block),
-          label: 'Block user',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-      ],
-    );
-  }
-}
+//   Widget _subredditMenu(BuildContext context) {
+//     return CustomPopupMenuButton(
+//       icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
+//       // icon: Icon(Icons.more_vert),
+//       items: [
+//         CustomPopupMenuItem(
+//           icon: Icon(Icons.visibility_off),
+//           label: 'Hide Post',
+//           onTap: () {
+//             showTodoSnackBar(context); // TODO
+//           },
+//         ),
+//         CustomPopupMenuItem(
+//           icon: Icon(Icons.report),
+//           label: 'Report',
+//           onTap: () {
+//             showTodoSnackBar(context); // TODO
+//           },
+//         ),
+//         CustomPopupMenuItem(
+//           icon: Icon(Icons.block),
+//           label: 'Block user',
+//           onTap: () {
+//             showTodoSnackBar(context); // TODO
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class SubredditScreenV2 extends StatelessWidget {
   @override
@@ -90,29 +91,36 @@ class SubredditScreenV2 extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             print(innerBoxIsScrolled);
             return [
-              SliverAppBar(
-                // stretch: true,
-                pinned: true,
-                // snap: true,
-                primary: false,
-                // leading: Icon(Icons.back_hand),
-                automaticallyImplyLeading: false,
-                collapsedHeight: 120,
-                expandedHeight: appBarExpandedHeight,
-                // expandedHeight: 500,
-                // leading: Padding(
-                //   padding: const EdgeInsets.only(top:10),
-                //   child: IconTheme(
-                //         data: appBarIconTheme,
-                //         child: Icon(Icons.arrow_back),
-                //       ),
+              PrimarySliverAppBar(
+                // // stretch: true,
+                // pinned: true,
+                // // snap: true,
+                // primary: false,
+                // // leading: Icon(Icons.back_hand),
+                // automaticallyImplyLeading: false,
+                // collapsedHeight: 120,
+                // expandedHeight: appBarExpandedHeight,
+                // // expandedHeight: 500,
+                // // leading: Padding(
+                // //   padding: const EdgeInsets.only(top:10),
+                // //   child: IconTheme(
+                // //         data: appBarIconTheme,
+                // //         child: Icon(Icons.arrow_back),
+                // //       ),
+                // // ),
+                // flexibleSpace: SearchField(
+                //   subreddit: 'r/${notifier.name}',
+                //   src: backgroundImage == '' ? null : backgroundImage,
+                //   backgroundColor: colorFromHex(backgroundColor),
+                //   // backgroundColor: colorFromHex('#005ba1'),
+                //   leading: SearchSearchBackButton.black(),
+                //   trailing: _subredditMenu(context),
                 // ),
-                flexibleSpace: SearchField(
-                  subreddit: 'r/${notifier.name}',
-                  src: backgroundImage == '' ? null : backgroundImage,
-                  backgroundColor: colorFromHex(backgroundColor),
-                  // backgroundColor: colorFromHex('#005ba1'),
+                flexibleSpace: SpaceBar(
                   leading: SearchBackButton(),
+                  title: SearchForm(),
+                  src: backgroundImage == '' ? null : backgroundImage,
+                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(notifier.name),
                   trailing: _subredditMenu(context),
                 ),
 
@@ -134,7 +142,7 @@ class SubredditScreenV2 extends StatelessWidget {
                 //           src: backgroundImage == '' ? null : backgroundImage,
                 //           backgroundColor: colorFromHex(backgroundColor),
                 //           // backgroundColor: colorFromHex('#005ba1'),
-                //           leading: SearchBackButton(),
+                //           leading: SearchSearchBackButton.black(),
                 //           trailing: _subredditMenu(context),
                 //         ),
                 //       ),
@@ -296,8 +304,8 @@ class SubredditScreenV2 extends StatelessWidget {
 
   Widget _subredditMenu(BuildContext context) {
     return CustomPopupMenuButton(
-      icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
-      // icon: Icon(Icons.more_vert),
+      // icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
+      icon: SpaceBarIcon(Icons.more_vert),
       items: [
         CustomPopupMenuItem(
           icon: Icon(Icons.visibility_off),
