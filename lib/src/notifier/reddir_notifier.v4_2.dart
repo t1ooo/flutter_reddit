@@ -135,7 +135,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class SubredditNotifierQ extends ChangeNotifier with TryMixin {
-  SubredditNotifierQ(this._redditApi, this._subreddit)
+  SubredditNotifierQ(this._redditApi, this._subreddit, [this.isUserSubreddit=false])
       : name = _subreddit.displayName;
 
   final RedditApi _redditApi;
@@ -143,6 +143,8 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   static final _log = getLogger('SubredditNotifierQ');
 
   // set name(name);
+
+  final bool isUserSubreddit;
 
   final String name;
   Subreddit _subreddit;
@@ -647,7 +649,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
 class UserNotifierQ extends ChangeNotifier with TryMixin {
   UserNotifierQ(this._redditApi, this._user, [this.isCurrentUser=false])
       : _name = _user.name,
-        _subreddit = SubredditNotifierQ(_redditApi, _user.subreddit);
+        _subreddit = SubredditNotifierQ(_redditApi, _user.subreddit, true);
 
   final RedditApi _redditApi;
   int _limit = 10;

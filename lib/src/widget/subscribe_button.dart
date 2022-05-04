@@ -8,10 +8,10 @@ import '../widget/future_elevated_button.dart';
 class SubscribeButton extends StatelessWidget {
   const SubscribeButton({
     Key? key,
-    this.isUserPage = false,
+    // this.isUserPage = false,
   }) : super(key: key);
 
-  final bool isUserPage;
+  // final bool isUserPage;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class SubscribeButton extends StatelessWidget {
               .unsubscribe()
               .catchError((e) => showErrorSnackBar(context, e));
         },
-        child: Text(isUserPage ? 'FOLLOWING' : 'JOINED'),
+        child: Text(notifier.isUserSubreddit ? 'FOLLOWING' : 'JOINED'),
       );
     else
       return FutureElevatedButton(
@@ -32,7 +32,7 @@ class SubscribeButton extends StatelessWidget {
               .subscribe()
               .catchError((e) => showErrorSnackBar(context, e));
         },
-        child: Text(isUserPage ? 'FOLLOW' : '+JOIN'),
+        child: Text(notifier.isUserSubreddit ? 'FOLLOW' : '+JOIN'),
       );
   }
 }
