@@ -47,6 +47,79 @@ import 'submission.dart';
 //   }
 // }
 
+// class SubmissionScreen extends StatelessWidget {
+//   const SubmissionScreen({
+//     Key? key,
+//     required this.id,
+//   }) : super(key: key);
+
+//   final String id;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       bottomNavigationBar: CommentField(id: id),
+//       body: DefaultTabController(
+//         length: 2, // This is the number of tabs.
+//         child: NestedScrollView(
+//           headerSliverBuilder: (context, innerBoxIsScrolled) {
+//             return [
+//               PrimarySliverAppBar(
+//                 flexibleSpace: SpaceBar(
+//                   leading: SearchBackButton(),
+//                   trailing: _submissionMenu(context),
+//                   // title: Text('Saved'),
+//                 ),
+//               ),
+//             ];
+//           },
+//           body: body(context),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget body(BuildContext context) {
+//     final notifier = context.watch<SubmissionLoaderNotifierQ>();
+
+//     return Loader<SubmissionNotifierQ>(
+//       load: (_) => notifier.loadSubmission(id),
+//       data: (_) => notifier.submission,
+//       onData: (_, submission) {
+//         return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+//           value: submission,
+//           child: SubmissionWidget(),
+//         );
+//       },
+//     );
+//   }
+
+//   Widget _submissionMenu(BuildContext context) {
+//     return CustomPopupMenuButton(
+//       // icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
+//       // icon: Icon(Icons.more_vert),
+//       // icon: Icon(Icons.more_vert),
+//       icon : SpaceBarIcon(Icons.more_vert),
+//       items: [
+//         CustomPopupMenuItem(
+//           icon: Icon(Icons.report),
+//           label: 'Share',
+//           onTap: () {
+//             showTodoSnackBar(context); // TODO
+//           },
+//         ),
+//         CustomPopupMenuItem(
+//           icon: Icon(Icons.block),
+//           label: 'Block user',
+//           onTap: () {
+//             showTodoSnackBar(context); // TODO
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
+
 class SubmissionScreen extends StatelessWidget {
   const SubmissionScreen({
     Key? key,
@@ -57,8 +130,37 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.watch<SubmissionLoaderNotifierQ>();
+
+    return Loader<SubmissionNotifierQ>(
+      load: (_) => notifier.loadSubmission(id),
+      data: (_) => notifier.submission,
+      onData: (_, submission) {
+        return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+          value: submission,
+          child: _SubmissionScreen(id: id),
+        );
+      },
+    );
+  }
+}
+
+class _SubmissionScreen extends StatelessWidget {
+  const _SubmissionScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CommentField(id: id),
+      // bottomNavigationBar: ChangeNotifierProvider<SubmissionNotifierQ>.value(
+      //   value: context.read<SubmissionNotifierQ>(),
+      //   child: CommentField(id: id),
+      // ),
       body: DefaultTabController(
         length: 2, // This is the number of tabs.
         child: NestedScrollView(
@@ -73,24 +175,9 @@ class SubmissionScreen extends StatelessWidget {
               ),
             ];
           },
-          body: body(context),
+          body: SubmissionWidget(),
         ),
       ),
-    );
-  }
-
-  Widget body(BuildContext context) {
-    final notifier = context.watch<SubmissionLoaderNotifierQ>();
-
-    return Loader<SubmissionNotifierQ>(
-      load: (_) => notifier.loadSubmission(id),
-      data: (_) => notifier.submission,
-      onData: (_, submission) {
-        return ChangeNotifierProvider<SubmissionNotifierQ>.value(
-          value: submission,
-          child: SubmissionWidget(),
-        );
-      },
     );
   }
 
@@ -99,7 +186,7 @@ class SubmissionScreen extends StatelessWidget {
       // icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
       // icon: Icon(Icons.more_vert),
       // icon: Icon(Icons.more_vert),
-      icon : SpaceBarIcon(Icons.more_vert),
+      icon: SpaceBarIcon(Icons.more_vert),
       items: [
         CustomPopupMenuItem(
           icon: Icon(Icons.report),
