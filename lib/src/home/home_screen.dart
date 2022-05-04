@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../search/search_field.dart';
 import '../user_menu.dart';
+import '../widget/sliver_app_bar.dart';
+import '../widget/space_bar.dart';
 import 'home.dart';
 import 'popular.dart';
 
@@ -261,25 +263,37 @@ class HomeScreenV4 extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              SliverAppBar(
-                // stretch: true,
-                pinned: true,
-                // snap: true,
-                primary: false,
-                // leading: Icon(Icons.back_hand),
-                automaticallyImplyLeading: false,
-                collapsedHeight: 120,
-                expandedHeight: appBarExpandedHeight,
+              PrimarySliverAppBar(
+                // // stretch: true,
+                // pinned: true,
+                // // snap: true,
+                // primary: true,
+                // // leading: Icon(Icons.back_hand),
+                // automaticallyImplyLeading: false,
+                // collapsedHeight: 120,
+                // expandedHeight: appBarExpandedHeight,
 
-                flexibleSpace: SearchField(
-                  leading: SearchIconButton(
+                // flexibleSpace: SearchField(
+                //   leading: SearchIconButton(
+                //     onPressed: () {
+                //       Scaffold.of(context).openDrawer();
+                //     },
+                //     iconData: Icons.account_circle,
+                //     theme: appBarIconThemeDark,
+                //   ),
+                //   showSearchForm: true,
+                // ),
+
+                flexibleSpace: SpaceBar(
+                  leading: IconButton(
                     onPressed: () {
                       Scaffold.of(context).openDrawer();
                     },
-                    iconData: Icons.account_circle,
-                    theme: appBarIconThemeDark,
+                    icon: SpaceBarIcon(Icons.account_circle),
+                    // iconData: Icons.account_circle,
+                    // theme: appBarIconThemeDark,
                   ),
-                  showSearchForm: true,
+                  title: SearchForm(),
                 ),
               ),
 
@@ -294,6 +308,7 @@ class HomeScreenV4 extends StatelessWidget {
               // ),
 
               SliverAppBar(
+                pinned: true,
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
                   width: 100,
