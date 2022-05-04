@@ -20,7 +20,6 @@ class UserMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<UserAuth>();
     final user = notifier.user!;
-
     return Drawer(
       child: Column(
         children: [
@@ -93,7 +92,10 @@ class UserMenu extends StatelessWidget {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SavedScreen(),
+                  builder: (_) => ChangeNotifierProvider<UserNotifierQ>.value(
+                    value: user,
+                    child: SavedScreen(),
+                  ),
                 ),
               );
               Navigator.pop(context);
