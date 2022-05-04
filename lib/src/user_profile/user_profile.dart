@@ -126,168 +126,167 @@ class UserProfile extends StatelessWidget {
     final subreddit = notifier.subreddit;
     final backgroundImage = subreddit.subreddit.bannerBackgroundImage;
     final backgroundColor = subreddit.subreddit.bannerBackgroundColor;
-    return Material(
-      // TODO: remove Material
-      child: Scaffold(
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        // ),
-        body: DefaultTabController(
-          length: 3, // This is the number of tabs.
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              print(innerBoxIsScrolled);
-              return [
-                SliverAppBar(
-                  // stretch: true,
-                  pinned: true,
-                  // snap: true,
-                  primary: false,
-                  // leading: Icon(Icons.back_hand),
-                  automaticallyImplyLeading: false,
-                  collapsedHeight: 120,
-                  expandedHeight: appBarExpandedHeight,
-                  // expandedHeight: 500,
-                  // leading: Padding(
-                  //   padding: const EdgeInsets.only(top:10),
-                  //   child: IconTheme(
-                  //         data: appBarIconTheme,
-                  //         child: Icon(Icons.arrow_back),
-                  //       ),
-                  // ),
-                  flexibleSpace: SearchField(
-                    subreddit: 'r/${subreddit.name}',
-                    src: backgroundImage == '' ? null : backgroundImage,
-                    backgroundColor: colorFromHex(backgroundColor) ??
-                        generateColor(user.name),
-                    // backgroundColor: colorFromHex('#005ba1'),
-                    leading: SearchBackButton(),
-                    trailing: _userMenu(context),
-                  ),
-
-                  // title: Text('123'),
-                  // bottom: PreferredSize(preferredSize: Size(100, 100),child: Text('123123')),
-                  // flexibleSpace: FlexibleSpaceBar(
-                  //   background: Column(
-                  //     children: [
-                  //       // Container(
-                  //       //     height: appBarExpandedHeight / 2,
-                  //       //     color: Colors.yellow),
-                  //       // Container(
-                  //       //     height: appBarExpandedHeight / 2,
-                  //       //     color: Colors.red),
-                  //       Container(
-                  //         height: 500,
-                  //         child: SearchField(
-                  //           subreddit: 'r/${notifier.name}',
-                  //           src: backgroundImage == '' ? null : backgroundImage,
-                  //           backgroundColor: colorFromHex(backgroundColor),
-                  //           // backgroundColor: colorFromHex('#005ba1'),
-                  //           leading: SearchBackButton(),
-                  //           trailing: _userMenu(context),
-                  //         ),
-                  //       ),
-                  //       // Container(
-                  //       //   height: 400,
-                  //       //   child: SubredditInfo(),
-                  //       // ),
-                  //     ],
-                  //   ),
-                  // ),
+    return Scaffold(
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      // ),
+      body: DefaultTabController(
+        length: 3, // This is the number of tabs.
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            // print(innerBoxIsScrolled);
+            return [
+              SliverAppBar(
+                // stretch: true,
+                pinned: true,
+                // snap: true,
+                primary: false,
+                // leading: Icon(Icons.back_hand),
+                automaticallyImplyLeading: false,
+                collapsedHeight: 120,
+                expandedHeight: appBarExpandedHeight,
+                // expandedHeight: 500,
+                // leading: Padding(
+                //   padding: const EdgeInsets.only(top:10),
+                //   child: IconTheme(
+                //         data: appBarIconTheme,
+                //         child: Icon(Icons.arrow_back),
+                //       ),
+                // ),
+                flexibleSpace: SearchField(
+                  subreddit: 'r/${subreddit.name}',
+                  src: backgroundImage == '' ? null : backgroundImage,
+                  backgroundColor:
+                      colorFromHex(backgroundColor) ?? generateColor(user.name),
+                  // backgroundColor: colorFromHex('#005ba1'),
+                  leading: SearchBackButton(),
+                  trailing: _userMenu(context),
+                  showSearchForm: false,
                 ),
 
-                // SliverAppBar(
-                //   collapsedHeight: 400,
-                //   // pinned: true,
-                //   automaticallyImplyLeading: false,
-                //   flexibleSpace:  Container(
-                //     width: 400,
-                //     child: SubredditInfo()),
-
+                // title: Text('123'),
+                // bottom: PreferredSize(preferredSize: Size(100, 100),child: Text('123123')),
+                // flexibleSpace: FlexibleSpaceBar(
+                //   background: Column(
+                //     children: [
+                //       // Container(
+                //       //     height: appBarExpandedHeight / 2,
+                //       //     color: Colors.yellow),
+                //       // Container(
+                //       //     height: appBarExpandedHeight / 2,
+                //       //     color: Colors.red),
+                //       Container(
+                //         height: 500,
+                //         child: SearchField(
+                //           subreddit: 'r/${notifier.name}',
+                //           src: backgroundImage == '' ? null : backgroundImage,
+                //           backgroundColor: colorFromHex(backgroundColor),
+                //           // backgroundColor: colorFromHex('#005ba1'),
+                //           leading: SearchBackButton(),
+                //           trailing: _userMenu(context),
+                //         ),
+                //       ),
+                //       // Container(
+                //       //   height: 400,
+                //       //   child: SubredditInfo(),
+                //       // ),
+                //     ],
+                //   ),
                 // ),
+              ),
 
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  UserInfo(),
-                  // ChangeNotifierProvider<SubredditNotifierQ>.value(
-                  //   value: subreddit,
-                  //   child: UserInfo(),
-                  // ),
-                ])),
+              // SliverAppBar(
+              //   collapsedHeight: 400,
+              //   // pinned: true,
+              //   automaticallyImplyLeading: false,
+              //   flexibleSpace:  Container(
+              //     width: 400,
+              //     child: SubredditInfo()),
 
-                SliverAppBar(
-                  pinned: true,
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: Container(
-                    width: 100,
-                    child: TabBar(
-                      indicatorColor: selectedColor,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      tabs: [
-                        Tab(text: 'Posts'),
-                        Tab(text: 'Comments'),
-                        Tab(text: 'About'),
-                      ],
-                    ),
+              // ),
+
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                UserInfo(),
+                // ChangeNotifierProvider<SubredditNotifierQ>.value(
+                //   value: subreddit,
+                //   child: UserInfo(),
+                // ),
+              ])),
+
+              SliverAppBar(
+                pinned: true,
+                automaticallyImplyLeading: false,
+                flexibleSpace: Container(
+                  width: 100,
+                  child: TabBar(
+                    indicatorColor: selectedColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: [
+                      Tab(text: 'Posts'),
+                      Tab(text: 'Comments'),
+                      Tab(text: 'About'),
+                    ],
                   ),
                 ),
+              ),
 
-                // SliverList(
-                //     delegate: SliverChildListDelegate([
-                //   SliverAppBar(
-                //     automaticallyImplyLeading: false,
-                //     flexibleSpace: Container(width: 100, child: Text('test')),
-                //   ),
-                // ])),
+              // SliverList(
+              //     delegate: SliverChildListDelegate([
+              //   SliverAppBar(
+              //     automaticallyImplyLeading: false,
+              //     flexibleSpace: Container(width: 100, child: Text('test')),
+              //   ),
+              // ])),
 
-                // SliverAppBar(
-                //   automaticallyImplyLeading: false,
-                //   flexibleSpace: Container(width: 100, child: Text('test')),
-                // ),
+              // SliverAppBar(
+              //   automaticallyImplyLeading: false,
+              //   flexibleSpace: Container(width: 100, child: Text('test')),
+              // ),
 
-                // SliverOverlapAbsorber(
-                //   handle:
-                //       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                //   sliver: SliverSafeArea(
-                //     top: false,
-                //     sliver: SliverAppBar(
-                //       floating: true,
-                //       primary:  false,
-                //       pinned: true,
-                //       // leading: Icon(Icons.back_hand),
-                //       automaticallyImplyLeading: false,
-                //       toolbarHeight: 0,
-                //       // collapsedHeight: 0,
-                //       // expandedHeight: appBarExpandedHeight,
-                //       expandedHeight: 400,
-                //       flexibleSpace: SingleChildScrollView(child:SubredditInfo()),
-                //     ),
-                //   ),
-                // ),
+              // SliverOverlapAbsorber(
+              //   handle:
+              //       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              //   sliver: SliverSafeArea(
+              //     top: false,
+              //     sliver: SliverAppBar(
+              //       floating: true,
+              //       primary:  false,
+              //       pinned: true,
+              //       // leading: Icon(Icons.back_hand),
+              //       automaticallyImplyLeading: false,
+              //       toolbarHeight: 0,
+              //       // collapsedHeight: 0,
+              //       // expandedHeight: appBarExpandedHeight,
+              //       expandedHeight: 400,
+              //       flexibleSpace: SingleChildScrollView(child:SubredditInfo()),
+              //     ),
+              //   ),
+              // ),
 
-                // SliverAppBar(
-                //   floating: true,
-                //   primary: true,
-                //   pinned: true,
+              // SliverAppBar(
+              //   floating: true,
+              //   primary: true,
+              //   pinned: true,
 
-                //   // leading: Icon(Icons.back_hand),
-                //   automaticallyImplyLeading: false,
-                //   toolbarHeight: 0,
-                //   collapsedHeight: 0,
-                //   // expandedHeight: appBarExpandedHeight,
-                //   expandedHeight: 400,
-                //   flexibleSpace: SingleChildScrollView(child: SubredditInfo()),
-                // ),
+              //   // leading: Icon(Icons.back_hand),
+              //   automaticallyImplyLeading: false,
+              //   toolbarHeight: 0,
+              //   collapsedHeight: 0,
+              //   // expandedHeight: appBarExpandedHeight,
+              //   expandedHeight: 400,
+              //   flexibleSpace: SingleChildScrollView(child: SubredditInfo()),
+              // ),
 
-                // SliverPersistentHeader(delegate: SliverPersistentHeaderDelegate()),
+              // SliverPersistentHeader(delegate: SliverPersistentHeaderDelegate()),
 
-                // SliverList(
-                //   delegate: SliverChildBuilderDelegate((_, __) {
-                //     return SubredditInfo();
-                //   }, childCount: 1),
-                // ),
+              // SliverList(
+              //   delegate: SliverChildBuilderDelegate((_, __) {
+              //     return SubredditInfo();
+              //   }, childCount: 1),
+              // ),
 
-                /*  SliverList(
+              /*  SliverList(
                   delegate: SliverChildListDelegate(
                     [
                       Row(
@@ -320,29 +319,28 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
                */
-              ];
-            },
-            body: TabBarView(
-              children: [
-                UserSubmissions(),
-                UserComments(),
-                UserAbout(),
-              ],
-            ),
-            // body: SubredditWidget(),
-            // body:Card(color: colorFromHex('#005ba1')),
-            // body:Card(color: Color(0xFF005ba1)),
-
-            // ListView(
-            // children: [
-            //   for (var i = 0; i < 100; i++)
-            //     ListTile(
-            //       leading: Text('$i'),
-            //       title: Text('Some Text'),
-            //     )
-            // ],
-            // ),
+            ];
+          },
+          body: TabBarView(
+            children: [
+              UserSubmissions(),
+              UserComments(),
+              UserAbout(),
+            ],
           ),
+          // body: SubredditWidget(),
+          // body:Card(color: colorFromHex('#005ba1')),
+          // body:Card(color: Color(0xFF005ba1)),
+
+          // ListView(
+          // children: [
+          //   for (var i = 0; i < 100; i++)
+          //     ListTile(
+          //       leading: Text('$i'),
+          //       title: Text('Some Text'),
+          //     )
+          // ],
+          // ),
         ),
       ),
     );

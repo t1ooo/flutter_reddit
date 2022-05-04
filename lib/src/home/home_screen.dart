@@ -247,205 +247,203 @@ class HomeScreen extends StatelessWidget {
 class HomeScreenV4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        // appBar: AppBar(
-        //   // toolbarHeight: 85,
-        //   // toolbarHeight: 150,
-        //   // elevation: 0,
-        //   iconTheme: appBarIconThemeDark,
-        //   flexibleSpace: SearchField(),
-        // ),
-        drawer: UserMenu(),
-        body: DefaultTabController(
-          length: 2, // This is the number of tabs.
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  // stretch: true,
-                  pinned: true,
-                  // snap: true,
-                  primary: false,
-                  // leading: Icon(Icons.back_hand),
-                  automaticallyImplyLeading: false,
-                  collapsedHeight: 120,
-                  expandedHeight: appBarExpandedHeight,
+    return Scaffold(
+      // appBar: AppBar(
+      //   // toolbarHeight: 85,
+      //   // toolbarHeight: 150,
+      //   // elevation: 0,
+      //   iconTheme: appBarIconThemeDark,
+      //   flexibleSpace: SearchField(),
+      // ),
+      drawer: UserMenu(),
+      body: DefaultTabController(
+        length: 2, // This is the number of tabs.
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                // stretch: true,
+                pinned: true,
+                // snap: true,
+                primary: false,
+                // leading: Icon(Icons.back_hand),
+                automaticallyImplyLeading: false,
+                collapsedHeight: 120,
+                expandedHeight: appBarExpandedHeight,
 
-                  flexibleSpace: SearchField(
-                    leading: SearchIconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      iconData: Icons.account_circle,
-                      theme: appBarIconThemeDark,
-                    ),
-                    showSearchForm: true,
+                flexibleSpace: SearchField(
+                  leading: SearchIconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    iconData: Icons.account_circle,
+                    theme: appBarIconThemeDark,
                   ),
+                  showSearchForm: true,
                 ),
+              ),
 
-                // SliverAppBar(
-                //   collapsedHeight: 80,
-                //   flexibleSpace: Padding(
-                //     padding: EdgeInsets.only(
-                //         top: 10, left: 10, right: 10, bottom: 10),
-                //     child: SearchField(),
-                //   ),
-                //   pinned: true,
-                // ),
+              // SliverAppBar(
+              //   collapsedHeight: 80,
+              //   flexibleSpace: Padding(
+              //     padding: EdgeInsets.only(
+              //         top: 10, left: 10, right: 10, bottom: 10),
+              //     child: SearchField(),
+              //   ),
+              //   pinned: true,
+              // ),
 
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: Container(
-                    width: 100,
-                    child: TabBar(
-                      // padding: EdgeInsets.zero,
-                      // labelPadding: EdgeInsets.zero,
-                      // labelPadding: EdgeInsets.only(left: 300),
-                      indicatorColor: selectedColor,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      // indicator: BoxDecoration(
-                      //   border: Border(
-                      //     bottom: BorderSide(
-                      //       color: Colors.blue,
-                      //       width: 2.0,
-                      //     ),
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                flexibleSpace: Container(
+                  width: 100,
+                  child: TabBar(
+                    // padding: EdgeInsets.zero,
+                    // labelPadding: EdgeInsets.zero,
+                    // labelPadding: EdgeInsets.only(left: 300),
+                    indicatorColor: selectedColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    // indicator: BoxDecoration(
+                    //   border: Border(
+                    //     bottom: BorderSide(
+                    //       color: Colors.blue,
+                    //       width: 2.0,
+                    //     ),
+                    //   ),
+                    // ),
+                    tabs: [
+                      Tab(text: 'Home'),
+                      Tab(text: 'Popular'),
+                      // Container( width: 100, child: Tab(text: 'Home')),
+                      // Container( width: 100, child: Tab(text: 'Popular')),
+
+                      // Align(
+                      //   alignment: Alignment.centerRight,
+                      //   child: Container(
+                      //     width: 150,
+                      //     // decoration: BoxDecoration(
+                      //     //   border: Border(
+                      //     //     bottom: BorderSide(
+                      //     //       color: Colors.blue,
+                      //     //       width: 2.0,
+                      //     //     ),
+                      //     //   ),
+                      //     // ),
+                      //     child: Tab(text: 'Home'),
                       //   ),
                       // ),
-                      tabs: [
-                        Tab(text: 'Home'),
-                        Tab(text: 'Popular'),
-                        // Container( width: 100, child: Tab(text: 'Home')),
-                        // Container( width: 100, child: Tab(text: 'Popular')),
-
-                        // Align(
-                        //   alignment: Alignment.centerRight,
-                        //   child: Container(
-                        //     width: 150,
-                        //     // decoration: BoxDecoration(
-                        //     //   border: Border(
-                        //     //     bottom: BorderSide(
-                        //     //       color: Colors.blue,
-                        //     //       width: 2.0,
-                        //     //     ),
-                        //     //   ),
-                        //     // ),
-                        //     child: Tab(text: 'Home'),
-                        //   ),
-                        // ),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Container(
-                        //     width: 150,
-                        //     // decoration: BoxDecoration(
-                        //     //   border: Border(
-                        //     //     bottom: BorderSide(
-                        //     //       color: Colors.blue,
-                        //     //       width: 2.0,
-                        //     //     ),
-                        //     //   ),
-                        //     // ),
-                        //     child: Tab(text: 'Popular'),
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                      // Align(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: Container(
+                      //     width: 150,
+                      //     // decoration: BoxDecoration(
+                      //     //   border: Border(
+                      //     //     bottom: BorderSide(
+                      //     //       color: Colors.blue,
+                      //     //       width: 2.0,
+                      //     //     ),
+                      //     //   ),
+                      //     // ),
+                      //     child: Tab(text: 'Popular'),
+                      //   ),
+                      // ),
+                    ],
                   ),
                 ),
+              ),
 
-                // SliverAppBar(
-                //   floating: true,
-                //   pinned: false,
-                //   snap: false,
-                //   centerTitle: false,
-                //   title: Text('Kindacode.com'),
-                //   actions: [
-                //     IconButton(
-                //       icon: Icon(Icons.shopping_cart),
-                //       onPressed: () {},
-                //     ),
-                //   ],
-                //   bottom: AppBar(
-                //     title: Container(
-                //       width: double.infinity,
-                //       // height: 40,
-                //       color: Colors.white,
-                //       child: Center(
-                //         child: TextField(
-                //           decoration: InputDecoration(
-                //               hintText: 'Search for something',
-                //               prefixIcon: Icon(Icons.search),
-                //               suffixIcon: Icon(Icons.camera_alt)),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // // SliverAppBar(
-                // //   title: const Text('HomeScreen'),
-                // //   floating: true,
-                // //   pinned: false,
-                // //   snap: false,
-                // //   primary: true,
-                // //   forceElevated: innerBoxIsScrolled,
-                // //   bottom: AppBar(
-                // //     title: SearchField(),
-                // //   ),
-                // // ),
-                // // SearchField(),
-                // // SliverSafeArea(
-                // //     top: false,
-                // //     sliver: SliverAppBar(
-                // //       title: const Text('HomeScreen'),
-                // //       floating: true,
-                // //       pinned: false,
-                // //       snap: false,
-                // //       primary: true,
-                // //       forceElevated: innerBoxIsScrolled,
-                // //       bottom: AppBar(title: SearchField(),),
-                // //     ),
-                // //   ),
-                // // SliverOverlapAbsorber(
-                // //   handle:
-                // //       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                // //   sliver: SliverSafeArea(
-                // //     top: false,
-                // //     sliver: SliverAppBar(
-                // //       // title: const Text('HomeScreen'),
-                // //       floating: true,
-                // //       pinned: false,
-                // //       snap: false,
-                // //       primary: true,
-                // //       forceElevated: innerBoxIsScrolled,
-                // //       bottom: TabBar(
-                // //         // These are the widgets to put in each tab in the tab bar.
-                // //         tabs: _tabs
-                // //             .map((String name) => Tab(text: name))
-                // //             .toList(),
-                // //       ),
-                // //     ),
-                // //   ),
-                // // ),
-                // SliverAppBar(
-                //   // title: const Text('HomeScreen'),
-                //   floating: true,
-                //   pinned: false,
-                //   snap: false,
-                //   primary: true,
-                //   forceElevated: innerBoxIsScrolled,
-                //   bottom: TabBar(
-                //     // These are the widgets to put in each tab in the tab bar.
-                //     tabs: _tabs.map((String name) => Tab(text: name)).toList(),
-                //   ),
-                // ),
-              ];
-            },
-            body: TabBarView(
-              children: [
-                Home(),
-                Popular(),
-              ],
-            ),
+              // SliverAppBar(
+              //   floating: true,
+              //   pinned: false,
+              //   snap: false,
+              //   centerTitle: false,
+              //   title: Text('Kindacode.com'),
+              //   actions: [
+              //     IconButton(
+              //       icon: Icon(Icons.shopping_cart),
+              //       onPressed: () {},
+              //     ),
+              //   ],
+              //   bottom: AppBar(
+              //     title: Container(
+              //       width: double.infinity,
+              //       // height: 40,
+              //       color: Colors.white,
+              //       child: Center(
+              //         child: TextField(
+              //           decoration: InputDecoration(
+              //               hintText: 'Search for something',
+              //               prefixIcon: Icon(Icons.search),
+              //               suffixIcon: Icon(Icons.camera_alt)),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // // SliverAppBar(
+              // //   title: const Text('HomeScreen'),
+              // //   floating: true,
+              // //   pinned: false,
+              // //   snap: false,
+              // //   primary: true,
+              // //   forceElevated: innerBoxIsScrolled,
+              // //   bottom: AppBar(
+              // //     title: SearchField(),
+              // //   ),
+              // // ),
+              // // SearchField(),
+              // // SliverSafeArea(
+              // //     top: false,
+              // //     sliver: SliverAppBar(
+              // //       title: const Text('HomeScreen'),
+              // //       floating: true,
+              // //       pinned: false,
+              // //       snap: false,
+              // //       primary: true,
+              // //       forceElevated: innerBoxIsScrolled,
+              // //       bottom: AppBar(title: SearchField(),),
+              // //     ),
+              // //   ),
+              // // SliverOverlapAbsorber(
+              // //   handle:
+              // //       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              // //   sliver: SliverSafeArea(
+              // //     top: false,
+              // //     sliver: SliverAppBar(
+              // //       // title: const Text('HomeScreen'),
+              // //       floating: true,
+              // //       pinned: false,
+              // //       snap: false,
+              // //       primary: true,
+              // //       forceElevated: innerBoxIsScrolled,
+              // //       bottom: TabBar(
+              // //         // These are the widgets to put in each tab in the tab bar.
+              // //         tabs: _tabs
+              // //             .map((String name) => Tab(text: name))
+              // //             .toList(),
+              // //       ),
+              // //     ),
+              // //   ),
+              // // ),
+              // SliverAppBar(
+              //   // title: const Text('HomeScreen'),
+              //   floating: true,
+              //   pinned: false,
+              //   snap: false,
+              //   primary: true,
+              //   forceElevated: innerBoxIsScrolled,
+              //   bottom: TabBar(
+              //     // These are the widgets to put in each tab in the tab bar.
+              //     tabs: _tabs.map((String name) => Tab(text: name)).toList(),
+              //   ),
+              // ),
+            ];
+          },
+          body: TabBarView(
+            children: [
+              Home(),
+              Popular(),
+            ],
           ),
         ),
       ),
