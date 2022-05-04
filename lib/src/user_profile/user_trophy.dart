@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../reddit_api/trophy.dart';
+import '../util/snackbar.dart';
 import '../widget/network_image.dart';
 
 class UserTrophy extends StatelessWidget {
@@ -15,6 +16,9 @@ class UserTrophy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        showTodoSnackBar(context); // TODO
+      },
       // leading: Image.network(trophy.icon40),
       leading: SizedBox.square(
           dimension: 50, child: CustomNetworkImageBuilder(trophy.icon40)),
