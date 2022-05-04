@@ -120,7 +120,7 @@ class SubmissionComment extends StatelessWidget {
                 builder: (_) {
                   return MultiProvider(
                     providers: [
-                      ChangeNotifierProvider.value(
+                      ChangeNotifierProvider<CommentNotifierQ>.value(
                         value: context.read<CommentNotifierQ>(),
                       ),
                     ],
