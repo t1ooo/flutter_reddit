@@ -16,7 +16,8 @@ class UserTrophy extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       // leading: Image.network(trophy.icon40),
-      leading: CustomNetworkImageBuilder(trophy.icon40),
+      leading: SizedBox.square(
+          dimension: 50, child: CustomNetworkImageBuilder(trophy.icon40)),
       title: Text(trophy.name),
       subtitle: Text(_formatter.format(trophy.grantedAt)),
     );
