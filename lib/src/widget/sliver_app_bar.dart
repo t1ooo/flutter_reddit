@@ -11,9 +11,11 @@ class PrimarySliverAppBar extends StatelessWidget {
   PrimarySliverAppBar({
     Key? key,
     this.flexibleSpace,
+    this.collapsed=false,
   }) : super(key: key);
 
   final Widget? flexibleSpace;
+  final bool collapsed;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +23,8 @@ class PrimarySliverAppBar extends StatelessWidget {
       pinned: true,
       primary: true,
       automaticallyImplyLeading: false,
-      collapsedHeight: 120,
-      expandedHeight: appBarExpandedHeight,
+      collapsedHeight: appBarCollapsedHeight,
+      expandedHeight: collapsed ? null : appBarExpandedHeight,
       flexibleSpace: flexibleSpace,
     );
   }
