@@ -1,11 +1,8 @@
-// TODO: split search to subreddit search and general search
 // TODO: hide bottom bar on some screens
 // TODO: saved comments onTap
-// TODO: add icons to submission type
 // TODO: explicit wrap each widget with provider
 // TODO: format likes 31000 -> 31k
 // TODO: refresh after duration
-// TODO: merge loggers
 // TODO: listview save croll position
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: load on screen on widget ?
