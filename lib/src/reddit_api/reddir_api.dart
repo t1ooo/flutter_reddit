@@ -93,10 +93,11 @@ abstract class RedditApi {
     String subreddit = 'all',
   });
 
-  Stream<Subreddit> searchSubreddits(
-    String query, {
-    required int limit
-  });
+  // Search subreddits by title and description.
+  Stream<Subreddit> searchSubreddits(String query, {required int limit});
+
+  // Search subreddits by title
+  Stream<Subreddit> searchSubredditsByName(String query);
 
   // Future<String> userIcon(String name);
 
@@ -598,12 +599,26 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Stream<Subreddit> searchSubreddits(
-    String query, {
-    required int limit
-  }) async* {
-    await for (final v in reddit.subreddits.search(query, limit:limit)) {
-       final dsub = cast<draw.Subreddit?>(v, null);
+  Stream<Subreddit> searchSubreddits(String query,
+      {required int limit}) async* {
+    await for (final v in reddit.subreddits.search(query, limit: limit)) {
+      final dsub = cast<draw.Subreddit?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Subreddit: $v');
+        continue;
+      }
+      if (dsub.data == null) {
+        _log.warning('draw.Subreddit.data is empty: $v');
+        continue;
+      }
+      yield Subreddit.fromJson(dsub.data!);
+    }
+  }
+
+  Stream<Subreddit> searchSubredditsByName(String query,
+) async* {
+     for (final v in await reddit.subreddits.searchByName(query)) {
+      final dsub = cast<draw.Subreddit?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Subreddit: $v');
         continue;
@@ -961,10 +976,8 @@ class FakeRedditApi implements RedditApi {
     }
   }
 
-  Stream<Subreddit> searchSubreddits(
-    String query, {
-    required int limit
-  }) async* {
+  Stream<Subreddit> searchSubreddits(String query,
+      {required int limit, }) async* {
     _log.info('searchSubreddits($query, $limit)');
     _mustLoggedIn();
     final data = await File('data/subreddits.search.json').readAsString();
@@ -975,6 +988,23 @@ class FakeRedditApi implements RedditApi {
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Subreddit.fromJson(v))
         .take(limit);
+
+    for (final item in items) {
+      await Future.delayed(_delay);
+      yield item;
+    }
+  }
+
+  Stream<Subreddit> searchSubredditsByName(String query) async* {
+    _log.info('searchSubredditsByName($query)');
+    _mustLoggedIn();
+    final data = await File('data/subreddits.search.by.name.json').readAsString();
+
+    final items = (jsonDecode(data) as List<dynamic>)
+        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => _addType(v, sort))
+        // .map((v) => Submission.fromJson(v, type: SubType.hot))
+        .map((v) => Subreddit.fromJson(v));
 
     for (final item in items) {
       await Future.delayed(_delay);
@@ -1035,6 +1065,4 @@ class FakeRedditApi implements RedditApi {
     _isLoggedIn = false;
     return;
   }
-
-
 }
