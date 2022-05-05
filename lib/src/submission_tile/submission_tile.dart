@@ -113,7 +113,7 @@ class SubmissionTile extends StatelessWidget {
           // overflow: TextOverflow.clip,
         ),
       ),
-      trailing: _popupMenuButton(context, notifier),
+      trailing: activeLink ? _popupMenuButton(context, notifier) : null,
     );
 
     /* return Row(

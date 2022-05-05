@@ -66,7 +66,7 @@ import 'submission.dart';
 //             return [
 //               PrimarySliverAppBar(
 //                 flexibleSpace: SpaceBar(
-//                   leading: SearchBackButton(),
+//                   leading: AppBarBackButton(),
 //                   trailing: _submissionMenu(context),
 //                   // title: Text('Saved'),
 //                 ),
@@ -168,7 +168,7 @@ class _SubmissionScreen extends StatelessWidget {
             return [
               PrimarySliverAppBar(
                 flexibleSpace: SpaceBar(
-                  leading: SearchBackButton(),
+                  leading: AppBarBackButton(),
                   trailing: _submissionMenu(context),
                   // title: Text('Saved'),
                 ),

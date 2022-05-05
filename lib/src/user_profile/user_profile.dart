@@ -160,13 +160,13 @@ class UserProfile extends StatelessWidget {
                 //   backgroundColor:
                 //       colorFromHex(backgroundColor) ?? generateColor(user.name),
                 //   // backgroundColor: colorFromHex('#005ba1'),
-                //   leading: SearchSearchBackButton.black(),
+                //   leading: SearchAppBarBackButton.black(),
                 //   trailing: _userMenu(context),
                 //   showSearchForm: false,
                 // ),
 
                  flexibleSpace: SpaceBar(
-                  leading: SearchBackButton(),
+                  leading: AppBarBackButton(),
                   // title: SearchForm(subreddit: 'r/${subreddit.name}',),
                   src: backgroundImage == '' ? null : backgroundImage,
                   backgroundColor: colorFromHex(backgroundColor) ?? generateColor(user.name),
@@ -191,7 +191,7 @@ class UserProfile extends StatelessWidget {
                 //           src: backgroundImage == '' ? null : backgroundImage,
                 //           backgroundColor: colorFromHex(backgroundColor),
                 //           // backgroundColor: colorFromHex('#005ba1'),
-                //           leading: SearchSearchBackButton.black(),
+                //           leading: SearchAppBarBackButton.black(),
                 //           trailing: _userMenu(context),
                 //         ),
                 //       ),

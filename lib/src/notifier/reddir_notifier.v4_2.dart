@@ -912,7 +912,7 @@ class CurrentUserNotifierQ extends UserNotifierQ {
 class UIException implements Exception {
   UIException(this._message);
   String _message;
-  String toString() => 'Error: $_message';
+  String toString() => _message;
 }
 
 mixin TryMixin {

@@ -43,13 +43,13 @@ class SearchIconButton extends StatelessWidget {
   }
 }
 
-// class SearchBackButton extends StatelessWidget {
-//   SearchBackButton({
+// class AppBarBackButton extends StatelessWidget {
+//   AppBarBackButton({
 //     Key? key,
 //     this.theme=appBarIconTheme,
 //   }) : super(key: key);
 
-//   SearchBackButton.black({
+//   AppBarBackButton.black({
 //     Key? key,
 //     this.theme=appBarIconThemeDark,
 //   });
@@ -318,9 +318,9 @@ class SearchField extends StatelessWidget {
   }
 
   Widget _searchForm(BuildContext context) {
-    return TextFormField(
+    return TextField(
       controller: _controller,
-      onFieldSubmitted: (query) {
+      onSubmitted: (query) {
         query = query.trim();
         if (query != '') {
           navigatorPushOrReplace(
@@ -332,6 +332,7 @@ class SearchField extends StatelessWidget {
           );
         }
       },
+      cursorColor: black,
       decoration: InputDecoration(
         // icon: Icon(Icons.account_circle, size: 50),
         // label: IconButton(onPressed: () {

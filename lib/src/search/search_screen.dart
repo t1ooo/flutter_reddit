@@ -54,8 +54,8 @@ class SearchScreen extends StatelessWidget {
           return [
             PrimarySliverAppBar(
               flexibleSpace: SpaceBar(
-                leading: SearchBackButton(),
-                // leading: SearchBackButton.black(),
+                leading: AppBarBackButton(),
+                // leading: AppBarBackButton.black(),
                 title: SearchForm(query: query),
               ),
             ),

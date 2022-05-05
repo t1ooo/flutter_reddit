@@ -35,6 +35,7 @@ class _AddCommentState extends State<AddComment> {
             submit();
           },
           maxLines: 10,
+          cursorColor: black,
           validator: (v) {
             if (v == null || v.trim() == '') {
               return 'Please enter a message';
@@ -43,10 +44,10 @@ class _AddCommentState extends State<AddComment> {
           },
           decoration: InputDecoration(hintText: 'You comment'),
         ),
-        ElevatedButton(
-          onPressed: submit,
-          child: Text('Post'),
-        ),
+        // ElevatedButton(
+        //   onPressed: submit,
+        //   child: Text('Post'),
+        // ),
       ],
     );
   }

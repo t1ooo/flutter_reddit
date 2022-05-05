@@ -71,12 +71,12 @@ class SavedScreen extends StatelessWidget {
                 // expandedHeight: appBarExpandedHeight,
 
                 // flexibleSpace: SearchField(
-                //   leading: SearchBackButton.black(),
+                //   leading: AppBarBackButton.black(),
                 //   showSearchForm: false,
                 // ),
                 flexibleSpace: SpaceBar(
-                  leading: SearchBackButton(),
-                  title: Text('Saved'),
+                  leading: AppBarBackButton(),
+                  title: AppBarTitle('Saved'),
                 ),
               ),
               SliverAppBar(

@@ -81,13 +81,28 @@ class SpaceBarIcon extends StatelessWidget {
 //   }
 // }
 
-class SearchBackButton extends StatelessWidget {
-  SearchBackButton({
+class AppBarTitle extends StatelessWidget {
+  const AppBarTitle(this.text, {Key? key}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top:10),
+      child: Text(text, style: Theme.of(context).textTheme.titleLarge),
+    );
+  }
+}
+
+// TODO: rename
+class AppBarBackButton extends StatelessWidget {
+  AppBarBackButton({
     Key? key,
     // this.theme = appBarIconThemeDark,
   }) : super(key: key);
 
-  // SearchBackButton.black({
+  // AppBarBackButton.black({
   //   Key? key,
   //   this.theme = appBarIconThemeDark,
   // });
@@ -284,10 +299,10 @@ class SearchForm extends StatelessWidget {
         _controller.clear();
         return true;
       },
-      child: TextFormField(
+      child: TextField(
         controller: _controller,
         textInputAction: TextInputAction.search,
-        onFieldSubmitted: (query) {
+        onSubmitted: (query) {
           query = query.trim();
           if (query != '') {
             navigatorPushOrReplace(

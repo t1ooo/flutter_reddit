@@ -42,6 +42,14 @@ class MyApp extends StatelessWidget {
           toolbarHeight: 150,
           // foregroundColor: Colors.white,
         ),
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: Colors.white,
+          // actionTextColor: black,
+          contentTextStyle: TextStyle(color: black),
+          // shape: Border(left:BorderSide(color: Colors.red, width: 5)),
+          // shape: RoundedRectangleBorder(side:BorderSide(color: Colors.red, width: 5)),
+          behavior: SnackBarBehavior.floating,
+        ),
         // popupMenuTheme: PopupMenuThemeData(
             // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
       ),
