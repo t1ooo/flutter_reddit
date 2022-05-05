@@ -310,7 +310,7 @@ class UserProfile extends StatelessWidget {
                                 subreddit.communityIcon,
                                 cacheManager: context.read<CacheManager>(),
                               ),
-                              onForegroundImageError: (e, _) => log('$e'),
+                              onForegroundImageError: (e, _) => uiLogger.error('$e'),
                             ),
                           SizedBox(width: 10),
                           Text(subreddit.displayNamePrefixed,

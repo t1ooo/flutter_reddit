@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../style/style.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/space_bar.dart';
-import 'search.dart';
+import 'search_posts.dart';
+import 'search_subreddits.dart';
 // import 'search_field.dart';
 
 // class SearchScreen extends StatelessWidget {
@@ -47,42 +48,66 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          // print(innerBoxIsScrolled);
-          return [
-            PrimarySliverAppBar(
-              collapsed:  true,
-              flexibleSpace: SpaceBar(
-                leading: AppBarBackButton(),
-                // leading: AppBarBackButton.black(),
-                title: SearchForm(query: query),
-              ),
-            ),
-            SliverAppBar(
-              toolbarHeight: 120,
-              pinned:  true,
-              automaticallyImplyLeading: false,
-              flexibleSpace: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: ListTile(
-                  minLeadingWidth: 0,
-                  title: Text(query),
-                  subtitle: Text('Search results'),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            // print(innerBoxIsScrolled);
+            return [
+              PrimarySliverAppBar(
+                collapsed: true,
+                flexibleSpace: SpaceBar(
+                  leading: AppBarBackButton(),
+                  // leading: AppBarBackButton.black(),
+                  title: SearchForm(query: query),
                 ),
               ),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //   Text(query),
-              //   Text('Search results'),
-              // ],)
-            ),
-          ];
-        },
-        // body: Expanded(child: Search(query: query)),
-        body: Search(query: query),
+              SliverAppBar(
+                toolbarHeight: 120,
+                pinned: true,
+                automaticallyImplyLeading: false,
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: ListTile(
+                    minLeadingWidth: 0,
+                    title: Text(query),
+                    subtitle: Text('Search results'),
+                  ),
+                ),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //   Text(query),
+                //   Text('Search results'),
+                // ],)
+              ),
+              SliverAppBar(
+                pinned: true,
+                automaticallyImplyLeading: false,
+                flexibleSpace: Container(
+                  width: 100,
+                  child: TabBar(
+                    indicatorColor: selectedColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: [
+                      Tab(text: 'Posts'),
+                      Tab(text: 'Subreddits'),
+                    ],
+                  ),
+                ),
+              ),
+            ];
+          },
+          // body: Expanded(child: Search(query: query)),
+          // body: SearchPosts(query: query),
+          body: TabBarView(
+            children: [
+              SearchPosts(query: query),
+              SearchSubreddits(query: query),
+            ],
+          ),
+        ),
       ),
     );
   }

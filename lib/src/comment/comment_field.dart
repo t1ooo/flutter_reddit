@@ -36,7 +36,7 @@ class CommentField extends StatelessWidget {
               ),
             );
           },
-          cursorColor: black,
+          cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'Add a comment',
             border: OutlineInputBorder(),

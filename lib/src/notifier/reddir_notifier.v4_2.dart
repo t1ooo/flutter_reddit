@@ -27,7 +27,6 @@ import '../reddit_api/vote.dart';
 //   }
 // }
 
-// TODO: _try
 class SearchNotifierQ extends ChangeNotifier with TryMixin {
   SearchNotifierQ(this._redditApi) {
     reset();
@@ -100,6 +99,47 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
+class SearchSubredditsQ extends ChangeNotifier with TryMixin {
+  SearchSubredditsQ(this._redditApi) {
+    reset();
+  }
+
+  final RedditApi _redditApi;
+  int _limit = 10;
+  static final _log = getLogger('SearchSubredditsQ');
+
+  void reset() {
+    _query = '';
+    _subreddits = null;
+    notifyListeners();
+  }
+
+  late String _query;
+
+  List<Sort> get sorts => Sort.values;
+
+  late List<SubredditNotifierQ>? _subreddits;
+  List<SubredditNotifierQ>? get subreddits => _subreddits;
+
+  Future<void> search(
+    String query, [
+    Sort sort = Sort.relevance,
+    String subredditName = 'all',
+  ]) {
+    return _try(() async {
+      if (_subreddits != null && _query == query) return;
+
+      _query = query;
+
+      _subreddits =
+          (await _redditApi.searchSubreddits(query, limit: _limit).toList())
+              .map((v) => SubredditNotifierQ(_redditApi, v))
+              .toList();
+      notifyListeners();
+    }, 'fail to search subreddits');
+  }
+}
+
 class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
   SubredditLoaderNotifierQ(this._redditApi) {
     reset();
@@ -135,7 +175,8 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class SubredditNotifierQ extends ChangeNotifier with TryMixin {
-  SubredditNotifierQ(this._redditApi, this._subreddit, [this.isUserSubreddit=false])
+  SubredditNotifierQ(this._redditApi, this._subreddit,
+      [this.isUserSubreddit = false])
       : name = _subreddit.displayName;
 
   final RedditApi _redditApi;
@@ -647,7 +688,7 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 class UserNotifierQ extends ChangeNotifier with TryMixin {
-  UserNotifierQ(this._redditApi, this._user, [this.isCurrentUser=false])
+  UserNotifierQ(this._redditApi, this._user, [this.isCurrentUser = false])
       : _name = _user.name,
         _subreddit = SubredditNotifierQ(_redditApi, _user.subreddit, true);
 
@@ -838,7 +879,8 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
 // class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
 class CurrentUserNotifierQ extends UserNotifierQ {
-  CurrentUserNotifierQ(this._redditApi, this._user) : super(_redditApi, _user, true);
+  CurrentUserNotifierQ(this._redditApi, this._user)
+      : super(_redditApi, _user, true);
 
   final RedditApi _redditApi;
   int _limit = 10;

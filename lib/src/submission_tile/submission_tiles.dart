@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import 'package:provider/provider.dart';
 
+import '../logger.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
@@ -125,13 +127,13 @@ class GSubmissionTiles<T> extends StatelessWidget {
                     // actions: <Widget>[
                     //   TextButton(
                     //       onPressed: () {
-                    //         // _dismissDialog();
+                    //         // _dismissDiauiLogger.error();
                     //       },
                     //       child: Text('Close')),
                     //   TextButton(
                     //     onPressed: () {
                     //       print('HelloWorld!');
-                    //       // _dismissDialog();
+                    //       // _dismissDiauiLogger.error();
                     //     },
                     //     child: Text('HelloWorld!'),
                     //   )
@@ -192,7 +194,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
       case 'controversial':
         return Icon(Icons.flash_on);
       default:
-        log('icon not found: $s');
+        uiLogger.error('icon not found: $s');
         return Icon(Icons.circle);
     }
   }

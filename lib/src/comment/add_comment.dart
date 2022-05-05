@@ -35,7 +35,7 @@ class _AddCommentState extends State<AddComment> {
             submit();
           },
           maxLines: 10,
-          cursorColor: black,
+          cursorColor: blackColor,
           validator: (v) {
             if (v == null || v.trim() == '') {
               return 'Please enter a message';

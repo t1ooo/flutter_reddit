@@ -1,3 +1,4 @@
+// TODO: split search to subreddit search and general search
 // TODO: hide bottom bar on some screens
 // TODO: saved comments onTap
 // TODO: add icons to submission type

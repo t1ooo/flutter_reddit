@@ -3,14 +3,18 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import 'package:provider/provider.dart';
 
+import '../logger.dart';
 import '../submission_tile/submission_tiles.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission_type.dart';
 import '../search/search_field.dart';
 import '../style/style.dart';
+import '../widget/network_image.dart';
 import '../widget/subscribe_button.dart';
+import 'subreddit_icon.dart';
 // import '../widget/subscribe_button.dart';
 
 class SubredditInfo extends StatelessWidget {
@@ -34,15 +38,26 @@ class SubredditInfo extends StatelessWidget {
             Row(
               children: [
                 SizedBox(height: 100),
-                if (subreddit.communityIcon != '')
-                  CircleAvatar(
-                    radius: 16, // Image radius
-                    foregroundImage: CachedNetworkImageProvider(
-                      subreddit.communityIcon,
-                      cacheManager: context.read<CacheManager>(),
-                    ),
-                    onForegroundImageError: (e, _) => log('$e'),
-                  ),
+                // if (subreddit.communityIcon != '')
+                // CircleAvatar(
+                //   radius: 16, // Image radius
+                //   foregroundImage: CachedNetworkImageProvider(
+                //     subreddit.communityIcon,
+                //     cacheManager: context.read<CacheManager>(),
+                //   ),
+                //   // backgroundImage:  AssetImage('communityIcon.png'),
+                //   onForegroundImageError: (e, _) => uiLogger.error('$e'),
+                //   // onBackgroundImageError: (e, _) => uiLogger.error('$e'),
+                // ),
+
+                SubredditIcon(icon: subreddit.communityIcon),
+
+                // else
+                //   CircleAvatar(
+                //     radius: 16, // Image radius
+                //     foregroundImage: AssetImage('communityIcon.png'),
+                //     onForegroundImageError: (e, _) => uiLogger.error('$e'),
+                //   ),
                 // CachedNetworkImage(
                 //   imageUrl: subreddit.communityIcon,
                 //   fit: BoxFit.fitHeight,
@@ -73,4 +88,25 @@ class SubredditInfo extends StatelessWidget {
       ),
     );
   }
+
+  // Widget _subredditIcon(context, subreddit) {
+  //   return CustomNetworkImageBuilder(subreddit.communityIcon,
+  //       builder: (_, image, error) {
+  //     Widget _icon(ImageProvider<Object> image) {
+  //       return CircleAvatar(
+  //         radius: 16, // Image radius
+  //         foregroundImage: image,
+  //         onForegroundImageError: (e, _) => uiLogger.error('$e'),
+  //       );
+  //     }
+
+  //     if (error != null) {
+  //       return _icon(AssetImage('communityIcon.png'));
+  //     }
+  //     if (image != null) {
+  //       return _icon(image);
+  //     }
+  //     return Container();
+  //   });
+  // }
 }

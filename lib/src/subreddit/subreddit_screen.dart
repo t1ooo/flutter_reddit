@@ -119,7 +119,7 @@ class SubredditScreen extends StatelessWidget {
                 // ),
                 flexibleSpace: SpaceBar(
                   leading: AppBarBackButton(),
-                  title: SearchForm(),
+                  title: SearchForm(subreddit: 'r/${notifier.name}'),
                   src: backgroundImage == '' ? null : backgroundImage,
                   backgroundColor: colorFromHex(backgroundColor) ??
                       generateColor(subreddit.id),
@@ -257,7 +257,7 @@ class SubredditScreen extends StatelessWidget {
                                 subreddit.communityIcon,
                                 cacheManager: context.read<CacheManager>(),
                               ),
-                              onForegroundImageError: (e, _) => log('$e'),
+                              onForegroundImageError: (e, _) => uiLogger.error('$e'),
                             ),
                           SizedBox(width: 10),
                           Text(subreddit.displayNamePrefixed,

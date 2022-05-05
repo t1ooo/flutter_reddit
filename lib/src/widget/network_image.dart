@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
+import '../logger.dart';
 import '../logging/logging.dart';
 
 // Widget voidError(_, __) => Container();
@@ -66,6 +67,9 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     if (src == '') {
+      return (onError ?? onErrorDefault)(context, 'src is empty');
+    }
     return CachedNetworkImage(
       imageUrl: src,
       cacheManager: context.read<CacheManager>(),
@@ -89,18 +93,18 @@ class CustomNetworkImage extends StatelessWidget {
   }
 
   Widget onErrorDefault(BuildContext context, Object error) {
-    log('$error');
+    uiLogger.error('$error');
     return Container();
   }
 }
 
 // Widget imageErrorBuilder(BuildContext context, Object error) {
-//   log('$error');
+//   uiLogger.error('$error');
 //   return Container();
 // }
 
 Widget imageErrorBuilder(BuildContext context, Object error, dynamic st) {
-  log('$error');
+  uiLogger.error('$error');
   return Container();
 }
 
@@ -129,6 +133,9 @@ class CustomNetworkImageBuilder extends StatelessWidget {
     //     return Container();
     //   },
     // );
+    if (src == '') {
+      return (builder ?? builderDefault)(context, null, 'src is empty');
+    }
     return CachedNetworkImage(
       imageUrl: src,
       // width: width,
@@ -149,14 +156,14 @@ class CustomNetworkImageBuilder extends StatelessWidget {
     Object? error,
   ) {
     if (error != null) {
-      log('$error');
+      uiLogger.error('$error');
       return Container();
     }
     if (image != null) {
       return Image(
         image: image,
         errorBuilder: (_, e, __) {
-          log('$e');
+          uiLogger.error('$e');
           return Container();
         },
       );

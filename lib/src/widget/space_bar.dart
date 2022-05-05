@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+import '../search/search_by_subreddit_screen.dart';
 import '../search/search_screen.dart';
 import '../style/style.dart';
 import 'network_image.dart';
@@ -363,7 +364,7 @@ class SearchForm extends StatelessWidget {
               context,
               MaterialPageRoute(
                 settings: RouteSettings(name: routeName),
-                builder: (_) => SearchScreen(query: query),
+                builder: (_) => subreddit != null ? SearchBySubredditScreen(query: query, subreddit : subreddit!) : SearchScreen(query: query),
               ),
             );
             // Navigator.push(
@@ -375,7 +376,7 @@ class SearchForm extends StatelessWidget {
             // );
           }
         },
-        cursorColor: black,
+        cursorColor: blackColor,
         decoration: InputDecoration(
           prefixIcon: IconTheme(data: formIconTheme, child: Icon(Icons.search)),
           suffixIcon: IconButton(

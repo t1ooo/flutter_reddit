@@ -133,7 +133,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
           //   return null;
           // },
           // expands: true,
-          cursorColor: black,
+          cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'You comment',
             border: InputBorder.none,

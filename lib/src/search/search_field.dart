@@ -116,7 +116,7 @@ class SearchField extends StatelessWidget {
     //           src!,
     //           cacheManager: context.read<CacheManager>(),
     //         ),
-    //         onError: (e, _) => log('$e'),
+    //         onError: (e, _) => uiLogger.error('$e'),
     //         fit: BoxFit.none,
     //       ),
     //     ),
@@ -137,7 +137,7 @@ class SearchField extends StatelessWidget {
         //       src!,
         //       cacheManager: context.read<CacheManager>(),
         //     ),
-        //     onError: (e, _) => log('$e'),
+        //     onError: (e, _) => uiLogger.error('$e'),
         //     fit: BoxFit.none,
         //   ),
         // ),
@@ -151,7 +151,7 @@ class SearchField extends StatelessWidget {
           //         src!,
           //         cacheManager: context.read<CacheManager>(),
           //       ),
-          //       onError: (e, _) => log('$e'),
+          //       onError: (e, _) => uiLogger.error('$e'),
           //       fit: BoxFit.none,
           //     ),
           //   ),
@@ -332,7 +332,7 @@ class SearchField extends StatelessWidget {
           );
         }
       },
-      cursorColor: black,
+      cursorColor: blackColor,
       decoration: InputDecoration(
         // icon: Icon(Icons.account_circle, size: 50),
         // label: IconButton(onPressed: () {
@@ -390,7 +390,7 @@ void navigatorPushOrReplace(context, MaterialPageRoute route) {
 //     //           src!,
 //     //           cacheManager: context.read<CacheManager>(),
 //     //         ),
-//     //         onError: (e, _) => log('$e'),
+//     //         onError: (e, _) => uiLogger.error('$e'),
 //     //         fit: BoxFit.none,
 //     //       ),
 //     //     ),

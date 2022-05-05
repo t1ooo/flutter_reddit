@@ -4,9 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:provider/provider.dart';
 
+import '../logger.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 import '../util/date_time.dart';
@@ -41,7 +43,7 @@ class UserInfo extends StatelessWidget {
                       user.iconImg,
                       cacheManager: context.read<CacheManager>(),
                     ),
-                    onForegroundImageError: (e, _) => log('$e'),
+                    onForegroundImageError: (e, _) => uiLogger.error('$e'),
                   ),
                 // CachedNetworkImage(
                 //   imageUrl: subreddit.communityIcon,

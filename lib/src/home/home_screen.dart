@@ -309,7 +309,7 @@ class HomeScreenV4 extends StatelessWidget {
               // ),
 
               SliverAppBar(
-                pinned: false,
+                pinned: true,
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
                   width: 100,

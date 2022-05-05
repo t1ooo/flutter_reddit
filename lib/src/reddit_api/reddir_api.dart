@@ -25,10 +25,12 @@ import 'vote.dart';
 
 typedef Sort = draw.Sort;
 
-void mustNameWithoutPrefix(String subredditName) {
-  if (subredditName.startsWith('r/')) {
-    throw Exception('subreddit name start with prefix: $subredditName');
+String removeSubredditPrefix(String name) {
+  const prefix = 'r/';
+  if (name.startsWith(prefix)) {
+    return name.substring(prefix.length);
   }
+  return name;
 }
 
 class UserSaved {
@@ -89,6 +91,11 @@ abstract class RedditApi {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
+  });
+
+  Stream<Subreddit> searchSubreddits(
+    String query, {
+    required int limit
   });
 
   // Future<String> userIcon(String name);
@@ -342,7 +349,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) {
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     final s = reddit.subreddit(name);
     switch (type) {
       // case SubType.best:
@@ -419,12 +426,12 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<void> subscribe(String name) {
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     return reddit.subreddit(name).subscribe();
   }
 
   Future<void> unsubscribe(String name) {
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     return reddit.subreddit(name).unsubscribe();
   }
 
@@ -440,14 +447,14 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<Subreddit> subreddit(String name) async {
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     final subRef = reddit.subreddit(name);
     final sub = await subRef.populate();
     return Subreddit.fromJson(sub.data!);
   }
 
   Future<String> subredditIcon(String name) async {
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     final subRef = reddit.subreddit(name);
     final sub = await subRef.populate();
     return Subreddit.fromJson(sub.data!).communityIcon;
@@ -573,11 +580,39 @@ class RedditApiImpl implements RedditApi {
     required Sort sort,
     String subreddit = 'all',
   }) async* {
-    mustNameWithoutPrefix(subreddit);
+    // reddit.subreddits.search();
+    subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
     await for (final v
         in reddit.subreddit(subreddit).search(query, params: params)) {
-      yield Submission.fromJson((v as draw.Submission).data!);
+      final dsub = cast<draw.Submission?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Submission: $v');
+        continue;
+      }
+      if (dsub.data == null) {
+        _log.warning('draw.Submission.data is empty: $v');
+        continue;
+      }
+      yield Submission.fromJson(dsub.data!);
+    }
+  }
+
+  Stream<Subreddit> searchSubreddits(
+    String query, {
+    required int limit
+  }) async* {
+    await for (final v in reddit.subreddits.search(query, limit:limit)) {
+       final dsub = cast<draw.Subreddit?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Subreddit: $v');
+        continue;
+      }
+      if (dsub.data == null) {
+        _log.warning('draw.Subreddit.data is empty: $v');
+        continue;
+      }
+      yield Subreddit.fromJson(dsub.data!);
     }
   }
 
@@ -673,7 +708,7 @@ class FakeRedditApi implements RedditApi {
   }) async* {
     _log.info('subredditSubmissions($name, $limit, $type)');
     _mustLoggedIn();
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
 
     final data = await File('data/subreddit.submissions.json').readAsString();
 
@@ -748,7 +783,7 @@ class FakeRedditApi implements RedditApi {
   Future<void> subscribe(String name) async {
     _log.info('subscribe($name)');
     _mustLoggedIn();
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     await Future.delayed(_delay);
     return;
   }
@@ -756,7 +791,7 @@ class FakeRedditApi implements RedditApi {
   Future<void> unsubscribe(String name) async {
     _log.info('unsubscribe($name)');
     _mustLoggedIn();
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     await Future.delayed(_delay);
     return;
   }
@@ -797,7 +832,7 @@ class FakeRedditApi implements RedditApi {
   Future<Subreddit> subreddit(String name) async {
     _log.info('subreddit($name)');
     _mustLoggedIn();
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     final data = await File('data/subreddit.json').readAsString();
     return Subreddit.fromJson(jsonDecode(data) as Map);
   }
@@ -892,7 +927,7 @@ class FakeRedditApi implements RedditApi {
   Future<String> subredditIcon(String name) async {
     _log.info('subredditIcon($name)');
     _mustLoggedIn();
-    mustNameWithoutPrefix(name);
+    name = removeSubredditPrefix(name);
     await Future.delayed(_delay);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   }
@@ -910,7 +945,7 @@ class FakeRedditApi implements RedditApi {
   }) async* {
     _log.info('search($query, $limit, $sort, $subreddit)');
     _mustLoggedIn();
-    mustNameWithoutPrefix(subreddit);
+    subreddit = removeSubredditPrefix(subreddit);
     final data = await File('data/search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
@@ -918,6 +953,27 @@ class FakeRedditApi implements RedditApi {
         .map((v) => _addType(v, sort))
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Submission.fromJson(v))
+        .take(limit);
+
+    for (final item in items) {
+      await Future.delayed(_delay);
+      yield item;
+    }
+  }
+
+  Stream<Subreddit> searchSubreddits(
+    String query, {
+    required int limit
+  }) async* {
+    _log.info('searchSubreddits($query, $limit)');
+    _mustLoggedIn();
+    final data = await File('data/subreddits.search.json').readAsString();
+
+    final items = (jsonDecode(data) as List<dynamic>)
+        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => _addType(v, sort))
+        // .map((v) => Submission.fromJson(v, type: SubType.hot))
+        .map((v) => Subreddit.fromJson(v))
         .take(limit);
 
     for (final item in items) {
@@ -979,4 +1035,6 @@ class FakeRedditApi implements RedditApi {
     _isLoggedIn = false;
     return;
   }
+
+
 }

@@ -26,16 +26,16 @@ class MyApp extends StatelessWidget {
         // textTheme: TextTheme(),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            primary: black,
+            primary: blackColor,
             // textStyle: TextStyle(fontWeight: FontWeight.normal,),
             textStyle: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         radioTheme: RadioThemeData(
-          fillColor: MaterialStateProperty.all(black),
-          overlayColor: MaterialStateProperty.all(black),
+          fillColor: MaterialStateProperty.all(blackColor),
+          overlayColor: MaterialStateProperty.all(blackColor),
         ),
-        iconTheme: IconThemeData(color: black),
+        iconTheme: IconThemeData(color: blackColor),
         appBarTheme: AppBarTheme(
           iconTheme: appBarIconThemeDark,
           elevation: 2,
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         snackBarTheme: SnackBarThemeData(
           backgroundColor: Colors.white,
           // actionTextColor: black,
-          contentTextStyle: TextStyle(color: black),
+          contentTextStyle: TextStyle(color: blackColor),
           // shape: Border(left:BorderSide(color: Colors.red, width: 5)),
           // shape: RoundedRectangleBorder(side:BorderSide(color: Colors.red, width: 5)),
           behavior: SnackBarBehavior.floating,

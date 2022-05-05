@@ -4,15 +4,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:provider/provider.dart';
 
+import '../logger.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/vote.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
+import '../subreddit/subreddit_icon.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 
@@ -83,7 +86,15 @@ class SubmissionTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: SizedBox.square(
         dimension: 40,
-        child: _subredditIcon(context, notifier),
+        child: Loader<String>(
+          load: (_) => notifier.loadIcon(),
+          data: (_) => notifier.icon,
+          onData: (_, icon) => SubredditIcon(icon: icon),
+          onError: (_, e) {
+            uiLogger.error('$e');
+            return SubredditIcon(icon: '');
+          },
+        ),
       ),
       title: GestureDetector(
         onTap: () {
@@ -176,7 +187,7 @@ class SubmissionTile extends StatelessWidget {
   //   return CircleAvatar(
   //     radius: 50,
   //     foregroundImage: image,
-  //     onForegroundImageError: (e, _) => log('$e'),
+  //     onForegroundImageError: (e, _) => uiLogger.error('$e'),
   //   );
   // }
 
@@ -191,34 +202,46 @@ class SubmissionTile extends StatelessWidget {
   //   return Container(decoration: BoxDecoration());
   // }
 
-  Widget _subredditIcon(BuildContext context, notifier) {
-    Widget _icon(ImageProvider<Object> image) {
-      return CircleAvatar(
-        radius: 20,
-        foregroundImage: image,
-        onForegroundImageError: (e, _) => log('$e'),
-      );
-    }
+  // Widget _subredditIcon(BuildContext context, SubmissionNotifierQ notifier) {
+  //   // Widget _icon(ImageProvider<Object> image) {
+  //   //   return CircleAvatar(
+  //   //     radius: 20,
+  //   //     foregroundImage: image,
+  //   //     onForegroundImageError: (e, _) => uiLogger.error('$e'),
+  //   //   );
+  //   // }
 
-    return LoaderBuilder<String?>(
-      load: (_) => notifier.loadIcon(),
-      data: (_) => notifier.icon,
-      builder: (_, icon, error) {
-        if (error != null) {
-          _icon(AssetImage('communityIcon.png'));
-        }
-        if (icon != null) {
-          return _icon(
-            CachedNetworkImageProvider(
-              icon,
-              cacheManager: context.read<CacheManager>(),
-            ),
-          );
-        }
-        return Container(decoration: BoxDecoration());
-      },
-    );
-  }
+  //   // return LoaderBuilder<String?>(
+  //   //   load: (_) => notifier.loadIcon(),
+  //   //   data: (_) => notifier.icon,
+  //   //   builder: (_, icon, error) {
+  //   //     if (error != null) {
+  //   //       // _icon(AssetImage('communityIcon.png'));
+  //   //       return SubredditIcon(icon:'');
+  //   //     }
+  //   //     if (icon != null) {
+  //   //       return SubredditIcon(icon:icon);
+  //   //       // return _icon(
+  //   //       //   CachedNetworkImageProvider(
+  //   //       //     icon,
+  //   //       //     cacheManager: context.read<CacheManager>(),
+  //   //       //   ),
+  //   //       // );
+  //   //     }
+  //   //     return Container(decoration: BoxDecoration());
+  //   //   },
+  //   // );
+
+  //   return Loader<String>(
+  //     load: (_) => notifier.loadIcon(),
+  //     data: (_) => notifier.icon,
+  //     onData: (_, icon) => SubredditIcon(icon: icon),
+  //     onError: (_, e) {
+  //       uiLogger.error('$e');
+  //       return SubredditIcon(icon: '');
+  //     },
+  //   );
+  // }
 
   Widget footer(BuildContext context, SubmissionNotifierQ notifier) {
     final submission = notifier.submission;
