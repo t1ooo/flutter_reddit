@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_reddit_prototype/src/util/color.dart';
@@ -191,20 +192,38 @@ class _SubmissionScreen extends StatelessWidget {
       // icon: Icon(Icons.more_vert),
       icon: SpaceBarIcon(Icons.more_vert),
       items: [
-        CustomPopupMenuItem(
-          icon: Icon(Icons.report),
-          label: 'Share',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.block),
-          label: 'Block user',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Share',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Hide post',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Report',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Block user',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
       ],
     );
   }

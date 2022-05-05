@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
@@ -76,15 +77,16 @@ class UserMenu extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            minLeadingWidth: 0,
-            leading: Icon(Icons.paid),
-            title: Text('Reddit coins'),
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-              Navigator.pop(context);
-            },
-          ),
+          if (kDebugMode)
+            ListTile(
+              minLeadingWidth: 0,
+              leading: Icon(Icons.paid),
+              title: Text('Reddit coins'),
+              onTap: () {
+                showTodoSnackBar(context); // TODO
+                Navigator.pop(context);
+              },
+            ),
           ListTile(
             minLeadingWidth: 0,
             leading: Icon(Icons.bookmark),
@@ -102,15 +104,16 @@ class UserMenu extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            minLeadingWidth: 0,
-            leading: Icon(Icons.history),
-            title: Text('History'),
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-              Navigator.pop(context);
-            },
-          ),
+          if (kDebugMode)
+            ListTile(
+              minLeadingWidth: 0,
+              leading: Icon(Icons.history),
+              title: Text('History'),
+              onTap: () {
+                showTodoSnackBar(context); // TODO
+                Navigator.pop(context);
+              },
+            ),
           ListTile(
             minLeadingWidth: 0,
             leading: Icon(Icons.logout),
@@ -123,15 +126,16 @@ class UserMenu extends StatelessWidget {
             },
           ),
           Spacer(),
-          ListTile(
-            minLeadingWidth: 0,
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-              Navigator.pop(context);
-            },
-          ),
+          if (kDebugMode)
+            ListTile(
+              minLeadingWidth: 0,
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                showTodoSnackBar(context); // TODO
+                Navigator.pop(context);
+              },
+            ),
         ],
       ),
     );

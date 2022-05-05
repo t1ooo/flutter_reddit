@@ -264,6 +264,7 @@ class HomeScreenV4 extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               PrimarySliverAppBar(
+                collapsed:  true,
                 // // stretch: true,
                 // pinned: true,
                 // // snap: true,
@@ -308,7 +309,7 @@ class HomeScreenV4 extends StatelessWidget {
               // ),
 
               SliverAppBar(
-                pinned: true,
+                pinned: false,
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
                   width: 100,

@@ -95,7 +95,6 @@ class AppBarTitle extends StatelessWidget {
   }
 }
 
-// TODO: rename
 class AppBarBackButton extends StatelessWidget {
   AppBarBackButton({
     Key? key,
@@ -122,6 +121,61 @@ class AppBarBackButton extends StatelessWidget {
         //   child: Icon(Icons.arrow_back),
         // ),
         icon: SpaceBarIcon(Icons.arrow_back),
+
+        // icon: Stack(
+        //   children: <Widget>[
+        //     Positioned(
+        //       // left: 1.0,
+        //       top: 0.0,
+        //       child: Icon(Icons.arrow_back, color: Colors.black54, size:35),
+        //     ),
+        //     Positioned(
+        //       // left: 1.0,
+        //       top: 2.0,
+        //       left: 2.0,
+        //       child: Icon(Icons.arrow_back, color: Colors.white, size:28),
+        //     ),
+        //     // Icon(Icons.arrow_back, color: Colors.white, size:28),
+        //   ],
+        // ),
+      ),
+    );
+    // return SearchIconButton(
+    //   onPressed: () {
+    //     Navigator.of(context).pop(); // does not work
+    //   },
+    //   iconData: Icons.arrow_back,
+    //   theme: appBarIconTheme,
+    // );
+  }
+}
+
+class AppBarCloseButton extends StatelessWidget {
+  AppBarCloseButton({
+    Key? key,
+    // this.theme = appBarIconThemeDark,
+  }) : super(key: key);
+
+  // AppBarBackButton.black({
+  //   Key? key,
+  //   this.theme = appBarIconThemeDark,
+  // });
+
+  // final IconThemeData theme;
+
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          Navigator.maybePop(context);
+        },
+        // icon: IconTheme(
+        //   data: theme,
+        //   child: Icon(Icons.arrow_back),
+        // ),
+        icon: SpaceBarIcon(Icons.close),
 
         // icon: Stack(
         //   children: <Widget>[

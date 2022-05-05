@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
@@ -261,12 +262,13 @@ class SubmissionTile extends StatelessWidget {
         //   icon:Icon(Icons.share),
         //   label:Text('Share'),
         // ),
-        TextButton(
-          onPressed: () {
-            showTodoSnackBar(context); // TODO
-          },
-          child: Icon(Icons.star_outline),
-        ),
+        if (kDebugMode)
+          TextButton(
+            onPressed: () {
+              showTodoSnackBar(context); // TODO
+            },
+            child: Icon(Icons.star_outline),
+          ),
       ],
     );
   }
@@ -299,27 +301,30 @@ class SubmissionTile extends StatelessWidget {
         //   },
         // ),
 
-        CustomPopupMenuItem(
-          icon: Icon(Icons.visibility_off),
-          label: 'Hide Post',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.report),
-          label: 'Report',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.block),
-          label: 'Block user',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.visibility_off),
+            label: 'Hide Post',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.report),
+            label: 'Report',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.block),
+            label: 'Block user',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
       ],
     );
   }

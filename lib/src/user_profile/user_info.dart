@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
@@ -60,19 +61,22 @@ class UserInfo extends StatelessWidget {
                 // ElevatedButton(onPressed: () {}, child: Icon(Icons.doorbell)),
                 // SizedBox(width: 10),
                 if (notifier.isCurrentUser)
-                  ElevatedButton(onPressed: () {
-                    showTodoSnackBar(context); // TODO
-                  }, child: Text('EDIT'))
-                else
-                  ChangeNotifierProvider<SubredditNotifierQ>.value(
-                    value: notifier.subreddit,
-                    child: SubscribeButton(),
-                  ),
+                  if (kDebugMode)
+                    ElevatedButton(
+                        onPressed: () {
+                          showTodoSnackBar(context); // TODO
+                        },
+                        child: Text('EDIT'))
+                  else
+                    ChangeNotifierProvider<SubredditNotifierQ>.value(
+                      value: notifier.subreddit,
+                      child: SubscribeButton(),
+                    ),
               ],
             ),
             // SizedBox(height: 10),
             Text(
-              '${user.totalKarma} karma • ${formatDateTime(user.created)} • ${'${user.subreddit.subscribers} followers'}'),
+                '${user.totalKarma} karma • ${formatDateTime(user.created)} • ${'${user.subreddit.subscribers} followers'}'),
             SizedBox(height: 20),
             Text(subreddit.publicDescription),
             SizedBox(height: 50),

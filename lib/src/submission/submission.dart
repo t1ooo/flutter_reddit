@@ -18,6 +18,7 @@ class SubmissionWidget extends StatelessWidget {
         SubmissionTile(
           activeLink: false,
         ),
+        SizedBox(height: 50),
         ListView(
           shrinkWrap: true,
           children: [

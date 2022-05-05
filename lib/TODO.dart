@@ -1,3 +1,4 @@
+// TODO: hide bottom bar on some screens
 // TODO: saved comments onTap
 // TODO: add icons to submission type
 // TODO: explicit wrap each widget with provider

@@ -186,8 +186,8 @@ class SubmissionComment extends StatelessWidget {
         ),
 
         // TODO
-        CustomPopupMenuItem(label: 'Report', onTap: () {}),
-        CustomPopupMenuItem(label: 'Block user', onTap: () {}),
+        CustomPopupMenuItem(icon: Icon(Icons.circle),label: 'Report', onTap: () {}),
+        CustomPopupMenuItem(icon: Icon(Icons.circle),label: 'Block user', onTap: () {}),
       ],
     );
   }

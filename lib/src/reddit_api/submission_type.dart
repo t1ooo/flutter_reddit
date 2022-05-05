@@ -1,4 +1,4 @@
-import 'package:meta/meta_meta.dart';
+// import 'package:meta/meta_meta.dart';
 
 
 // TODO: gilded
@@ -9,8 +9,8 @@ enum SubType {
   hot,
   newest,
   top,
-  rising,
   controversial,
+  rising,
 }
 
 enum FrontSubType {
@@ -18,12 +18,12 @@ enum FrontSubType {
   hot,
   newest,
   top,
-  rising,
   controversial,
+  rising,
 }
 
 
-@TargetKind.enumType
-class A {
-  static const int a = 1;
-}
+// @TargetKind.enumType
+// class A {
+//   static const int a = 1;
+// }

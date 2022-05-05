@@ -50,14 +50,34 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
-          print(innerBoxIsScrolled);
+          // print(innerBoxIsScrolled);
           return [
             PrimarySliverAppBar(
+              collapsed:  true,
               flexibleSpace: SpaceBar(
                 leading: AppBarBackButton(),
                 // leading: AppBarBackButton.black(),
                 title: SearchForm(query: query),
               ),
+            ),
+            SliverAppBar(
+              toolbarHeight: 120,
+              pinned:  true,
+              automaticallyImplyLeading: false,
+              flexibleSpace: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: ListTile(
+                  minLeadingWidth: 0,
+                  title: Text(query),
+                  subtitle: Text('Search results'),
+                ),
+              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //   Text(query),
+              //   Text('Search results'),
+              // ],)
             ),
           ];
         },

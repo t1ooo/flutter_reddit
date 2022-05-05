@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_comments.dart';
 import 'package:provider/provider.dart';
@@ -165,11 +166,12 @@ class UserProfile extends StatelessWidget {
                 //   showSearchForm: false,
                 // ),
 
-                 flexibleSpace: SpaceBar(
+                flexibleSpace: SpaceBar(
                   leading: AppBarBackButton(),
                   // title: SearchForm(subreddit: 'r/${subreddit.name}',),
                   src: backgroundImage == '' ? null : backgroundImage,
-                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(user.id),
+                  backgroundColor:
+                      colorFromHex(backgroundColor) ?? generateColor(user.id),
                   trailing: _userMenu(context),
                 ),
 
@@ -360,20 +362,22 @@ class UserProfile extends StatelessWidget {
       // icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
       icon: SpaceBarIcon(Icons.more_vert),
       items: [
-        CustomPopupMenuItem(
-          icon: Icon(Icons.report),
-          label: 'Share',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.block),
-          label: 'Block user',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.report),
+            label: 'Share',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.block),
+            label: 'Block user',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
       ],
     );
   }

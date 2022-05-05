@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 // import 'package:flutter_reddit_prototype/src/provider.dart';
@@ -120,7 +121,8 @@ class SubredditScreen extends StatelessWidget {
                   leading: AppBarBackButton(),
                   title: SearchForm(),
                   src: backgroundImage == '' ? null : backgroundImage,
-                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(subreddit.id),
+                  backgroundColor: colorFromHex(backgroundColor) ??
+                      generateColor(subreddit.id),
                   trailing: _subredditMenu(context),
                 ),
 
@@ -307,27 +309,46 @@ class SubredditScreen extends StatelessWidget {
       // icon: IconTheme(data: appBarIconTheme, child: Icon(Icons.more_vert)),
       icon: SpaceBarIcon(Icons.more_vert),
       items: [
-        CustomPopupMenuItem(
-          icon: Icon(Icons.visibility_off),
-          label: 'Hide Post',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.report),
-          label: 'Report',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
-        CustomPopupMenuItem(
-          icon: Icon(Icons.block),
-          label: 'Block user',
-          onTap: () {
-            showTodoSnackBar(context); // TODO
-          },
-        ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Add to Custom Feed',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Community info',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Change user flair',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Contact mods',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
+        if (kDebugMode)
+          CustomPopupMenuItem(
+            icon: Icon(Icons.circle),
+            label: 'Add to home screen',
+            onTap: () {
+              showTodoSnackBar(context); // TODO
+            },
+          ),
       ],
     );
   }

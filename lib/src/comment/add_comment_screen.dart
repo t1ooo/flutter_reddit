@@ -34,8 +34,9 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             PrimarySliverAppBar(
+              collapsed:  true,
               flexibleSpace: SpaceBar(
-                leading: AppBarBackButton(),
+                leading: AppBarCloseButton(),
                 title: AppBarTitle('Add comment'),
                 trailing: TextButton(
                   onPressed: _submit,
@@ -116,7 +117,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         Text(
           (widget.isComment)
               ? context.read<CommentNotifierQ>().comment.body
-              : context.read<SubmissionNotifierQ>().submission.desc,
+              : context.read<SubmissionNotifierQ>().submission.title,
         ),
         Divider(),
         TextField(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/submission_type.dart';
 import '../style/style.dart';
+import '../widget/icon_text.dart';
 import 'submission_tile.dart';
 
 class GSubmissionTiles<T> extends StatelessWidget {
@@ -83,14 +86,26 @@ class GSubmissionTiles<T> extends StatelessWidget {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return RadioList<T>(
-                      initialValue: type,
-                      onChanged: (t) {
-                        onTypeChanged(t);
-                        Navigator.pop(context);
-                      },
-                      titleBuilder: (t) => Text(_typeToString(t)),
-                      values: types,
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text('SORT POST BY'),
+                        ListTile(
+                          minLeadingWidth: 0,
+                          title: Text('SORT POST BY'),
+                        ),
+                        Divider(),
+                        RadioList<T>(
+                          initialValue: type,
+                          onChanged: (t) {
+                            onTypeChanged(t);
+                            Navigator.pop(context);
+                          },
+                          titleBuilder: (t) => Text(_typeToString(t)),
+                          iconBuilder: (t) => _typeIcon(t),
+                          values: types,
+                        ),
+                      ],
                     );
                     // return Column(
                     // children: [
@@ -130,7 +145,10 @@ class GSubmissionTiles<T> extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
-                    child: Text(_typeToString(type) + ' POSTS'),
+                    child: IconText(
+                      icon: _typeIcon(type),
+                      text: Text(_typeToString(type) + ' POSTS'),
+                    ),
                   ),
                   Icon(Icons.expand_more),
                 ],
@@ -154,6 +172,30 @@ class GSubmissionTiles<T> extends StatelessWidget {
   String _typeToString(s) {
     return s.toString().split('.').last.toUpperCase();
   }
+
+  Icon _typeIcon(s) {
+    switch (s.toString().split('.').last) {
+      case 'relevance':
+        return Icon(Icons.abc);
+      case 'comments':
+        return Icon(Icons.abc);
+      case 'best':
+        return Icon(Icons.rocket_launch);
+      case 'hot':
+        return Icon(Icons.local_fire_department);
+      case 'newest':
+        return Icon(Icons.new_releases);
+      case 'top':
+        return Icon(Icons.keyboard_double_arrow_up);
+      case 'rising':
+        return Icon(Icons.trending_up);
+      case 'controversial':
+        return Icon(Icons.flash_on);
+      default:
+        log('icon not found: $s');
+        return Icon(Icons.circle);
+    }
+  }
 }
 
 class RadioList<T> extends StatefulWidget {
@@ -162,12 +204,14 @@ class RadioList<T> extends StatefulWidget {
     required this.initialValue,
     required this.values,
     required this.titleBuilder,
+    required this.iconBuilder,
     required this.onChanged,
   }) : super(key: key);
 
   final T initialValue;
   final List<T> values;
   final Widget Function(T) titleBuilder;
+  final Widget Function(T)? iconBuilder;
   final void Function(T) onChanged;
 
   @override
@@ -190,6 +234,7 @@ class _RadioListState<T> extends State<RadioList<T>> {
         for (final value in widget.values)
           ListTile(
             minLeadingWidth: 0,
+            leading: widget.iconBuilder != null ? widget.iconBuilder!(value) : null,
             title: widget.titleBuilder(value),
             onTap: () {
               setState(() {

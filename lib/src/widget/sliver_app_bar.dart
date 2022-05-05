@@ -20,6 +20,7 @@ class PrimarySliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      elevation:  0,
       pinned: true,
       primary: true,
       automaticallyImplyLeading: false,
