@@ -169,7 +169,7 @@ class UserProfile extends StatelessWidget {
                   leading: AppBarBackButton(),
                   // title: SearchForm(subreddit: 'r/${subreddit.name}',),
                   src: backgroundImage == '' ? null : backgroundImage,
-                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(user.name),
+                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(user.id),
                   trailing: _userMenu(context),
                 ),
 

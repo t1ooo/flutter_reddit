@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:flutter_reddit_prototype/src/util/color.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
@@ -167,7 +167,10 @@ class _SubmissionScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               PrimarySliverAppBar(
+                collapsed: true,
                 flexibleSpace: SpaceBar(
+                  backgroundColor: generateColor(
+                      context.read<SubmissionNotifierQ>().submission.id),
                   leading: AppBarBackButton(),
                   trailing: _submissionMenu(context),
                   // title: Text('Saved'),

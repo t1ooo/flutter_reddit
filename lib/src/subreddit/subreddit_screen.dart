@@ -120,7 +120,7 @@ class SubredditScreen extends StatelessWidget {
                   leading: AppBarBackButton(),
                   title: SearchForm(),
                   src: backgroundImage == '' ? null : backgroundImage,
-                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(notifier.name),
+                  backgroundColor: colorFromHex(backgroundColor) ?? generateColor(subreddit.id),
                   trailing: _subredditMenu(context),
                 ),
 
