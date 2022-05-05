@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           iconTheme: appBarIconThemeDark,
           elevation: 0,
-          toolbarHeight: 150,
+          // toolbarHeight: 150,
           // foregroundColor: Colors.white,
         ),
         snackBarTheme: SnackBarThemeData(
