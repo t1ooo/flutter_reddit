@@ -17,6 +17,7 @@ import '../util/date_time.dart';
 
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
+import '../widget/icon_text.dart';
 import '../widget/network_image.dart';
 
 class SubmissionTile extends StatelessWidget {
@@ -225,24 +226,32 @@ class SubmissionTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _voteButton(context, notifier),
-        Row(
-          children: [
-            Icon(Icons.comment),
-            SizedBox(width: 5),
-            Text(submission.numComments.toString()),
-          ],
+        // Row(
+        //   children: [
+        //     Icon(Icons.comment),
+        //     SizedBox(width: 5),
+        //     Text(submission.numComments.toString()),
+        //   ],
+        // ),
+        IconText(
+          icon: Icon(Icons.comment),
+          text: Text(submission.numComments.toString()),
         ),
         TextButton(
           onPressed: () {
             notifier.share();
           },
           // TODO: replace to TextButton.icon
-          child: Row(
-            children: [
-              Icon(Icons.share),
-              SizedBox(width: 5),
-              Text('Share'),
-            ],
+          // child: Row(
+          //   children: [
+          //     Icon(Icons.share),
+          //     SizedBox(width: 5),
+          //     Text('Share'),
+          //   ],
+          // ),
+          child: IconText(
+            icon: Icon(Icons.share),
+            text: Text('Share'),
           ),
         ),
         // TextButton.icon(
