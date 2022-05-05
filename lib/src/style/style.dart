@@ -13,4 +13,6 @@ const selectedColor = Colors.blue;
 // const appBarIconTheme = IconThemeData(color: Colors.white, size: 30);
 const appBarIconThemeDark = IconThemeData(color: black, size: 30);
 const formIconTheme = IconThemeData(color: Colors.black54);
+// const toolbarHeight = 150.0;
+const appBarCollapsedHeight = 120.0;
 const appBarExpandedHeight = 200.0;
