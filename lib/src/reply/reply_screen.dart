@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../util/snackbar.dart';
 import '../widget/space_bar.dart';
-import 'add_comment.dart';
+import 'reply.dart';
 
 class AddCommentScreen extends StatefulWidget {
   AddCommentScreen({
