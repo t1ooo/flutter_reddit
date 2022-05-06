@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(color: blackColor),
         appBarTheme: AppBarTheme(
           iconTheme: appBarIconThemeDark,
-          elevation: 2,
+          elevation: 0,
           // toolbarHeight: 150,
           // foregroundColor: Colors.white,
         ),
