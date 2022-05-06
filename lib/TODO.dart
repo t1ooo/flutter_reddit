@@ -1,6 +1,12 @@
-// TODO: (un)subscrube (un)save update user saved subscribed
-//      ? move (un)subscrube (un)save update user saved subscribed to CurrentUserNotifier
-//      ? cache to small time CurrentUserNotifier saved and subscribed
+// TODO: link|image|video post submitting
+// TODO: MAYBE: wrap all model field wit notifier getter, make models mutable
+// TODO: calc comments count and change it after reply
+// TODO: merge screen with loader
+// TODO: app bar elevation
+// TODO: ((un)subscrube (un)save reply post) update user saved subscribed
+//      TODO?: move actions to CurrentUserNotifier
+//      TODO?: cache to small time CurrentUserNotifier saved and subscribed
+//      NOTE: reddit app use manual refresh
 // TODO: hide bottom bar on some screens
 // TODO: saved comments onTap
 // TODO: explicit wrap each widget with provider
@@ -20,10 +26,10 @@
 // TODO: report
 // TODO: hide/unhide submission
 // TODO: remove non-displayed fields from reddit_api models
-// TODO: subreddit notification
 // TODO: gestures
 // TODO: make padding consistent
 // TODO: design
+// TODO: subreddit notification
 // TODO: trendings (not supported by Reddit API)
 // TODO: user chat (not supported by Reddit API)
 // TODO: give award to submission (not supported by DRAW lib)
