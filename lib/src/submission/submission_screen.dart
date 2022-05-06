@@ -124,22 +124,25 @@ import 'submission.dart';
 class SubmissionScreen extends StatelessWidget {
   const SubmissionScreen({
     Key? key,
-    required this.id,
+    this.id,
   }) : super(key: key);
 
-  final String id;
+  final String? id;
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubmissionLoaderNotifierQ>();
+    if (id == null) {
+      return _SubmissionScreen();
+    }
 
+    final notifier = context.read<SubmissionLoaderNotifierQ>();
     return Loader<SubmissionNotifierQ>(
-      load: (_) => notifier.loadSubmission(id),
+      load: (_) => notifier.loadSubmission(id!),
       data: (_) => notifier.submission,
       onData: (_, submission) {
         return ChangeNotifierProvider<SubmissionNotifierQ>.value(
           value: submission,
-          child: _SubmissionScreen(id: id),
+          child: _SubmissionScreen(),
         );
       },
     );
@@ -149,15 +152,16 @@ class SubmissionScreen extends StatelessWidget {
 class _SubmissionScreen extends StatelessWidget {
   const _SubmissionScreen({
     Key? key,
-    required this.id,
+    // required this.id,
   }) : super(key: key);
 
-  final String id;
+  // final String id;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: ReplyField(id: id),
+      bottomNavigationBar:
+          ReplyField(id: context.read<SubmissionNotifierQ>().submission.id),
       // bottomNavigationBar: ChangeNotifierProvider<SubmissionNotifierQ>.value(
       //   value: context.read<SubmissionNotifierQ>(),
       //   child: CommentField(id: id),
