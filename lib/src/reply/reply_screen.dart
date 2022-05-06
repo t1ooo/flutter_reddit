@@ -9,10 +9,10 @@ import '../util/snackbar.dart';
 import '../widget/space_bar.dart';
 import 'reply.dart';
 
-class AddCommentScreen extends StatefulWidget {
-  AddCommentScreen({
+class ReplyScreen extends StatefulWidget {
+  ReplyScreen({
     Key? key,
-    required this.id,
+    required this.id, // TODO: remove
     this.isComment = false,
   }) : super(key: key);
 
@@ -21,10 +21,10 @@ class AddCommentScreen extends StatefulWidget {
   // final Function(String) onSubmit;
 
   @override
-  State<AddCommentScreen> createState() => _AddCommentScreenState();
+  State<ReplyScreen> createState() => _ReplyScreenState();
 }
 
-class _AddCommentScreenState extends State<AddCommentScreen> {
+class _ReplyScreenState extends State<ReplyScreen> {
   String _message = '';
 
   @override

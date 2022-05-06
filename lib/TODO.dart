@@ -1,3 +1,6 @@
+// TODO: (un)subscrube (un)save update user saved subscribed
+//      ? move (un)subscrube (un)save update user saved subscribed to CurrentUserNotifier
+//      ? cache to small time CurrentUserNotifier saved and subscribed
 // TODO: hide bottom bar on some screens
 // TODO: saved comments onTap
 // TODO: explicit wrap each widget with provider

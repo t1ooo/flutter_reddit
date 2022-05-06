@@ -124,7 +124,7 @@ class SubmissionComment extends StatelessWidget {
                         value: context.read<CommentNotifierQ>(),
                       ),
                     ],
-                    child: AddCommentScreen(
+                    child: ReplyScreen(
                       id: comment.id,
                       isComment: true,
                     ),

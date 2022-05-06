@@ -5,8 +5,8 @@ import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 import '../util/snackbar.dart';
 
-class AddComment extends StatefulWidget {
-  const AddComment({
+class Reply extends StatefulWidget {
+  const Reply({
     Key? key,
     required this.id,
     this.isComment = false,
@@ -17,10 +17,10 @@ class AddComment extends StatefulWidget {
   // final Function(String) onSubmit;
 
   @override
-  State<AddComment> createState() => _AddCommentState();
+  State<Reply> createState() => _ReplyState();
 }
 
-class _AddCommentState extends State<AddComment> {
+class _ReplyState extends State<Reply> {
   String _message = '';
 
   @override

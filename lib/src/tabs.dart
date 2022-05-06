@@ -5,10 +5,12 @@ import 'package:flutter_reddit_prototype/src/user_menu.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'home/home_screen.dart';
+import 'submit/submit_screen.dart';
 
 class Tabs extends StatelessWidget {
   Tabs({Key? key}) : super(key: key);
 
+  // TODO: remove
   Widget withScaffold(Widget body) {
     return body;
     // return Scaffold(
@@ -24,6 +26,7 @@ class Tabs extends StatelessWidget {
       screens: [
         HomeScreenV4(),
         SubscriptionsScreen(),
+        Container(), // custom behavior
       ].map(withScaffold).toList(),
       items: [
         PersistentBottomNavBarItem(
@@ -34,6 +37,18 @@ class Tabs extends StatelessWidget {
           icon: Icon(Icons.grid_view),
           // title: '2',
         ),
+        PersistentBottomNavBarItem(
+            icon: Icon(Icons.edit),
+            onPressed: (_) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SubmitScreen(),
+                ),
+              );
+            }
+            // title: '2',
+            ),
       ],
       confineInSafeArea: true,
       backgroundColor: Colors.white, // Default is Colors.white.

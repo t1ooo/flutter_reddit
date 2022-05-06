@@ -784,6 +784,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   List<SubmissionNotifierQ>? _savedSubmissions;
   List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
 
+  // TODO: move co CurrentUserNotifier
   Future<void> loadSaved() {
     return _try(() async {
       if (_savedComments != null && _savedSubmissions != null) return;
@@ -912,6 +913,9 @@ class CurrentUserNotifierQ extends UserNotifierQ {
 
   Future<void> loadSubreddits() {
     return _try(() async {
+      if (_subreddits != null) {
+        return;
+      }
       _subreddits = await _redditApi
           .currentUserSubreddits(limit: _limit)
           .map((v) => SubredditNotifierQ(_redditApi, v))

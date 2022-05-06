@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/trophy.dart';
+import '../widget/list.dart';
 import '../widget/loader.dart';
 import 'user_trophy.dart';
 
@@ -19,19 +20,19 @@ class UserTrophies extends StatelessWidget {
       load: (_) => notifier.loadTrophies(),
       data: (_) => notifier.trophies,
       onData: (_, trophies) {
-        return ListView(
-          shrinkWrap: true,
+        return CustomListView(
+          // shrinkWrap: true,
           children: [
-            // ListTile(title: Text('TROPHIES')),
-            Container(
-                // height: 40,
-                color: Theme.of(context).scaffoldBackgroundColor,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                child: Text(
-                  'TROPHIES',
-                  // style: Theme.of(context).textTheme.headline6,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
+            ListTitle('trophies'),
+            // Container(
+            //     // height: 40,
+            //     color: Theme.of(context).scaffoldBackgroundColor,
+            //     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            //     child: Text(
+            //       'TROPHIES',
+            //       // style: Theme.of(context).textTheme.headline6,
+            //       style: TextStyle(fontWeight: FontWeight.bold),
+            //     )),
             Container(
               color: Theme.of(context).primaryColor,
               // height: double.infinity,

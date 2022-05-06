@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../style/style.dart';
 import '../util/date_time.dart';
+import '../widget/list.dart';
 // import '../widget/stream_list_builder.dart';
 
 class UserAbout extends StatelessWidget {
@@ -15,52 +16,43 @@ class UserAbout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<UserNotifierQ>().user;
-    return Container(
-      // padding: pagePadding,
-      color: Theme.of(context).primaryColor,
+    return CustomListView(
+      // shrinkWrap: true,
+      children: [
+        // SizedBox(height: 10),
+        ListDivider(
+          height: 10,
+        ),
+        // Divider(height: 100,),
 
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          // SizedBox(height: 10),
-          Container(
-            // height: 40,
-            color: Theme.of(context).scaffoldBackgroundColor,
-            height: 10,
-          ),
-          Container(
-            // color: Theme.of(context).primaryColor,
-            // elevation: 0,
-            child: ListView(
-              shrinkWrap: true,
+        CustomListView(
+          // shrinkWrap: true,
+          children: [
+            SizedBox(height: 50),
+            Table(
               children: [
-                SizedBox(height: 50),
-                Table(
+                TableRow(
                   children: [
-                    TableRow(
-                      children: [
-                        Center(child: Text(user.totalKarma.toString())),
-                        Center(child: Text(formatDateTime(user.created))),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Center(child: Text('Karma')),
-                        Center(child: Text('Reddit age')),
-                      ],
-                    ),
+                    Center(child: Text(user.totalKarma.toString())),
+                    Center(child: Text(formatDateTime(user.created))),
                   ],
                 ),
-                SizedBox(height: 50),
-                ListTile(
-                    leading: Icon(Icons.mail), title: Text('Send a message')),
-                ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
+                TableRow(
+                  children: [
+                    Center(child: Text('Karma')),
+                    Center(child: Text('Reddit age')),
+                  ],
+                ),
               ],
             ),
-          ),
-          UserTrophies(),
-        ],
-      ),
+            SizedBox(height: 50),
+            ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
+            ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
+          ],
+        ),
+
+        UserTrophies(),
+      ],
     );
   }
 }

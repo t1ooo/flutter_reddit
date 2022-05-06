@@ -157,7 +157,7 @@ class _SubmissionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CommentField(id: id),
+      bottomNavigationBar: ReplyField(id: id),
       // bottomNavigationBar: ChangeNotifierProvider<SubmissionNotifierQ>.value(
       //   value: context.read<SubmissionNotifierQ>(),
       //   child: CommentField(id: id),

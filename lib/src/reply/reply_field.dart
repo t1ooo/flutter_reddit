@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 
-class CommentField extends StatelessWidget {
-  const CommentField({
+class ReplyField extends StatelessWidget {
+  const ReplyField({
     Key? key,
     required this.id,
   }) : super(key: key);
@@ -31,7 +31,7 @@ class CommentField extends StatelessWidget {
               MaterialPageRoute(builder: (_) => 
                 ChangeNotifierProvider<SubmissionNotifierQ>.value(
                   value: context.read<SubmissionNotifierQ>(),
-                  child: AddCommentScreen(id: id),
+                  child: ReplyScreen(id: id),
                 ),
               ),
             );
