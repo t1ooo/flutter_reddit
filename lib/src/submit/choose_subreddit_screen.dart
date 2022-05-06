@@ -5,6 +5,7 @@ import 'package:flutter_reddit_prototype/src/widget/sliver_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
+import '../reddit_api/subreddit.dart';
 import '../subreddit/subreddit_icon.dart';
 import '../util/snackbar.dart';
 import '../widget/list.dart';
@@ -14,8 +15,10 @@ import '../widget/space_bar.dart';
 class ChooseSubredditScreen extends StatelessWidget {
   ChooseSubredditScreen({
     Key? key,
-    // required this.id,
+    required this.onChanged,
   }) : super(key: key);
+
+  final void Function(SubredditNotifierQ) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,11 @@ class ChooseSubredditScreen extends StatelessWidget {
             ListTitle('JOINED'),
             for (final subreddit in subreddits)
               ListTile(
-                leading: SizedBox.square(dimension: 30, child: SubredditIcon(icon:subreddit.subreddit.communityIcon)),
+                onTap: () {
+                  onChanged(subreddit);
+                  Navigator.of(context).pop();
+                },
+                leading: SizedBox.square(dimension: 40, child: SubredditIcon(icon:subreddit.subreddit.communityIcon)),
                 title: Text(subreddit.subreddit.displayNamePrefixed),
               )
               // Text(subreddit.name)

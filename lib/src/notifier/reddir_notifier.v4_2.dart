@@ -258,6 +258,31 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to load subreddit submissions');
   }
 
+  Future<SubmissionNotifierQ> submit({
+    required String title,
+    String? selftext,
+    String? url,
+    bool resubmit = true,
+    bool sendReplies = true,
+    bool nsfw = false,
+    bool spoiler = false,
+  }) async {
+    return _try(() async {
+      final submission = await _redditApi.submit(
+        subreddit: _subreddit.displayName,
+        title: title,
+        selftext: selftext,
+        url: url,
+        resubmit: resubmit,
+        sendReplies: sendReplies,
+        nsfw: nsfw,
+        spoiler: spoiler,
+      );
+      return SubmissionNotifierQ(_redditApi, submission);
+      // notifyListeners();
+    }, 'fail to submit');
+  }
+
   // TODO
   Future<void> loadAbout() => throw UnimplementedError();
   Object? _about;
@@ -952,6 +977,32 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   //       notifyListeners();
   //     }, 'fail to load saved submissions');
   //   }
+  // }
+
+  // Future<SubmissionNotifierQ> submit({
+  //   required String subreddit,
+  //   required String title,
+  //   String? selftext,
+  //   String? url,
+  //   bool resubmit = true,
+  //   bool sendReplies = true,
+  //   bool nsfw = false,
+  //   bool spoiler = false,
+  // }) async {
+  //   return _try(() async {
+  //     final submission = await _redditApi.submit(
+  //       subreddit: subreddit,
+  //       title: title,
+  //       selftext: selftext,
+  //       url: url,
+  //       resubmit: resubmit,
+  //       sendReplies: sendReplies,
+  //       nsfw: nsfw,
+  //       spoiler: spoiler,
+  //     );
+  //     return SubmissionNotifierQ(_redditApi, submission);
+  //     // notifyListeners();
+  //   }, 'fail to submit');
   // }
 }
 

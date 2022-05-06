@@ -104,6 +104,17 @@ abstract class RedditApi {
   Future<Comment> submissionReply(String id, String body);
   Future<Comment> commentReply(String id, String body);
 
+  Future<Submission> submit({
+    required String subreddit,
+    required String title,
+    String? selftext,
+    String? url,
+    bool resubmit = true,
+    bool sendReplies = true,
+    bool nsfw = false,
+    bool spoiler = false,
+  });
+
   // Future<bool> isLoggedIn();
   bool get isLoggedIn;
   Future<bool> loginSilently();
@@ -615,9 +626,10 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Stream<Subreddit> searchSubredditsByName(String query,
-) async* {
-     for (final v in await reddit.subreddits.searchByName(query)) {
+  Stream<Subreddit> searchSubredditsByName(
+    String query,
+  ) async* {
+    for (final v in await reddit.subreddits.searchByName(query)) {
       final dsub = cast<draw.Subreddit?>(v, null);
       if (dsub == null) {
         _log.warning('not draw.Subreddit: $v');
@@ -643,6 +655,28 @@ class RedditApiImpl implements RedditApi {
     final comment = await commentRef.populate();
     final commentReply = await comment.reply(body);
     return Comment.fromJson(commentReply.data!);
+  }
+
+  Future<Submission> submit({
+    required String subreddit,
+    required String title,
+    String? selftext,
+    String? url,
+    bool resubmit = true,
+    bool sendReplies = true,
+    bool nsfw = false,
+    bool spoiler = false,
+  }) async {
+    final sub = await reddit.subreddit(subreddit).submit(
+          title,
+          selftext: selftext,
+          url: url,
+          resubmit: resubmit,
+          sendReplies: sendReplies,
+          nsfw: nsfw,
+          spoiler: spoiler,
+        );
+    return Submission.fromJson(sub.data!);
   }
 }
 
@@ -976,8 +1010,10 @@ class FakeRedditApi implements RedditApi {
     }
   }
 
-  Stream<Subreddit> searchSubreddits(String query,
-      {required int limit, }) async* {
+  Stream<Subreddit> searchSubreddits(
+    String query, {
+    required int limit,
+  }) async* {
     _log.info('searchSubreddits($query, $limit)');
     _mustLoggedIn();
     final data = await File('data/subreddits.search.json').readAsString();
@@ -998,7 +1034,8 @@ class FakeRedditApi implements RedditApi {
   Stream<Subreddit> searchSubredditsByName(String query) async* {
     _log.info('searchSubredditsByName($query)');
     _mustLoggedIn();
-    final data = await File('data/subreddits.search.by.name.json').readAsString();
+    final data =
+        await File('data/subreddits.search.by.name.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
         // .map((v) => v as Map<dynamic, dynamic>)
@@ -1064,5 +1101,26 @@ class FakeRedditApi implements RedditApi {
     await File(await _loginPath()).delete();
     _isLoggedIn = false;
     return;
+  }
+
+  Future<Submission> submit({
+    required String subreddit,
+    required String title,
+    String? selftext,
+    String? url,
+    bool resubmit = true,
+    bool sendReplies = true,
+    bool nsfw = false,
+    bool spoiler = false,
+  }) async {
+    return Submission.fromJson({
+      'subreddit': subreddit,
+      'title': title,
+      'selftext': selftext,
+      'url': url,
+      'nsfw': nsfw,
+      'spoiler': spoiler,
+      'id': '87sf456f',
+    });
   }
 }

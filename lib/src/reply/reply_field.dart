@@ -9,7 +9,7 @@ import '../style/style.dart';
 class ReplyField extends StatelessWidget {
   const ReplyField({
     Key? key,
-    required this.id,
+    required this.id, // TODO: remove
   }) : super(key: key);
 
   final String id;
