@@ -626,7 +626,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
     return _try(() async {
       if (comment.likes == vote) return;
 
-      await _redditApi.submissionVote(comment.id, vote);
+      await _redditApi.commentVote(comment.id, vote);
       _comment = comment.copyWith(
         likes: vote,
         score: calcScore(comment.score, comment.likes, vote),
