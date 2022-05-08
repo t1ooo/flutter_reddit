@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../logging/logging.dart';
+import '../reddit_api/message.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/trophy.dart';
@@ -825,6 +826,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 }
 
 // TODO: rename to AuthNotifier
+// TODO: merge with CurrentUserNotifier?
 class UserAuth extends ChangeNotifier with TryMixin {
   UserAuth(this._redditApi);
 
@@ -905,15 +907,16 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
 // class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
 class CurrentUserNotifierQ extends UserNotifierQ {
-  CurrentUserNotifierQ(this._redditApi, this._user)
-      : super(_redditApi, _user, true);
+  // CurrentUserNotifierQ(this._redditApi, this._user)
+  CurrentUserNotifierQ(this._redditApi, User user)
+      : super(_redditApi, user, true);
 
   final RedditApi _redditApi;
   int _limit = 10;
   static final _log = getLogger('CurrentUserNotifierQ');
 
-  User _user;
-  User get user => _user;
+  // User _user;
+  // User get user => _user;
 
   // Future<void> login(String name, String password) async {
   //   return _try(() async {
@@ -947,6 +950,23 @@ class CurrentUserNotifierQ extends UserNotifierQ {
           .toList();
       notifyListeners();
     }, 'fail to load subreddits');
+  }
+
+
+  List<MessageNotifierQ>? _inboxMessages;
+  List<MessageNotifierQ>? get inboxMessages => _inboxMessages;
+
+  Future<void> loadInboxMessages() {
+    return _try(() async {
+      if (_inboxMessages != null) {
+        return;
+      }
+      _inboxMessages = await _redditApi
+          .inboxMessages()
+          .map((v) => MessageNotifierQ(_redditApi, v))
+          .toList();
+      notifyListeners();
+    }, 'fail to load inbox messages');
   }
 
   // List<CommentNotifierQ>? _savedComments;
@@ -1004,6 +1024,17 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   //     // notifyListeners();
   //   }, 'fail to submit');
   // }
+}
+
+
+class MessageNotifierQ extends ChangeNotifier with TryMixin {
+  MessageNotifierQ(this._redditApi, this._message);
+
+  final RedditApi _redditApi;
+  static final _log = getLogger('MessageNotifierQ');
+
+  Message _message;
+  Message get message => _message;
 }
 
 class UIException implements Exception {

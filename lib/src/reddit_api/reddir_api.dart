@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../logging/logging.dart';
+import 'message.dart';
 import 'parse.dart';
 import 'auth.dart';
 import 'trophy.dart';
@@ -120,6 +121,9 @@ abstract class RedditApi {
   Future<bool> loginSilently();
   Future<void> login();
   Future<void> logout();
+
+
+  Stream<Message> inboxMessages();
 }
 
 class RedditApiImpl implements RedditApi {
@@ -678,6 +682,21 @@ class RedditApiImpl implements RedditApi {
         );
     return Submission.fromJson(sub.data!);
   }
+
+  Stream<Message> inboxMessages() async* {
+    await for (final v in reddit.inbox.messages()) {
+      final dsub = cast<draw.Message?>(v, null);
+      if (dsub == null) {
+        _log.warning('not draw.Subreddit: $v');
+        continue;
+      }
+      if (dsub.data == null) {
+        _log.warning('draw.Subreddit.data is empty: $v');
+        continue;
+      }
+      yield Message.fromJson(dsub.data!);
+    }
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -1122,5 +1141,22 @@ class FakeRedditApi implements RedditApi {
       'spoiler': spoiler,
       'id': '87sf456f',
     });
+  }
+
+  Stream<Message> inboxMessages() async* {
+    _log.info('inboxMessages()');
+    _mustLoggedIn();
+    final data = await File('data/inbox.messages.json').readAsString();
+
+    final items = (jsonDecode(data) as List<dynamic>)
+        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => _addType(v, sort))
+        // .map((v) => Submission.fromJson(v, type: SubType.hot))
+        .map((v) => Message.fromJson(v));
+
+    for (final item in items) {
+      await Future.delayed(_delay);
+      yield item;
+    }
   }
 }

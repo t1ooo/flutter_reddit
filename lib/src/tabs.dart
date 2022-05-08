@@ -5,6 +5,7 @@ import 'package:flutter_reddit_prototype/src/user_menu.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'home/home_screen.dart';
+import 'inbox/inbox_screen.dart';
 import 'submit/submit_screen.dart';
 
 class Tabs extends StatelessWidget {
@@ -27,28 +28,29 @@ class Tabs extends StatelessWidget {
         HomeScreenV4(),
         SubscriptionsScreen(),
         Container(), // custom behavior
+        InboxScreen(),
       ].map(withScaffold).toList(),
       items: [
         PersistentBottomNavBarItem(
           icon: Icon(Icons.home),
-          // title: '1',
         ),
         PersistentBottomNavBarItem(
           icon: Icon(Icons.grid_view),
-          // title: '2',
         ),
         PersistentBottomNavBarItem(
-            icon: Icon(Icons.edit),
-            onPressed: (_) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SubmitScreen(),
-                ),
-              );
-            }
-            // title: '2',
-            ),
+          icon: Icon(Icons.edit),
+          onPressed: (_) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SubmitScreen(),
+              ),
+            );
+          },
+        ),
+        PersistentBottomNavBarItem(
+          icon: Icon(Icons.mail),
+        ),
       ],
       confineInSafeArea: true,
       backgroundColor: Colors.white, // Default is Colors.white.

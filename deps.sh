@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    flutter_markdown
     path_provider
     alfred
     flutter_cache_manager
