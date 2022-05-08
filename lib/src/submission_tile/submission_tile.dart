@@ -264,7 +264,8 @@ class SubmissionTile extends StatelessWidget {
         // ),
         IconText(
           icon: Icon(Icons.comment),
-          text: Text(submission.numComments.toString()),
+          // text: Text(submission.numComments.toString()),
+          text: Text(notifier.numReplies.toString()),
         ),
         TextButton(
           onPressed: () {

@@ -120,6 +120,9 @@ class SubmissionComment extends StatelessWidget {
                 builder: (_) {
                   return MultiProvider(
                     providers: [
+                      ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                        value: context.read<SubmissionNotifierQ>(),
+                      ),
                       ChangeNotifierProvider<CommentNotifierQ>.value(
                         value: context.read<CommentNotifierQ>(),
                       ),
@@ -186,8 +189,10 @@ class SubmissionComment extends StatelessWidget {
         ),
 
         // TODO
-        CustomPopupMenuItem(icon: Icon(Icons.circle),label: 'Report', onTap: () {}),
-        CustomPopupMenuItem(icon: Icon(Icons.circle),label: 'Block user', onTap: () {}),
+        CustomPopupMenuItem(
+            icon: Icon(Icons.circle), label: 'Report', onTap: () {}),
+        CustomPopupMenuItem(
+            icon: Icon(Icons.circle), label: 'Block user', onTap: () {}),
       ],
     );
   }

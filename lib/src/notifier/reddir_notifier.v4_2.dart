@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -417,11 +418,20 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionNotifierQ');
 
-  List<CommentNotifierQ>? _comments;
-  List<CommentNotifierQ>? get comments => _comments;
+  late List<CommentNotifierQ> _comments;
+  List<CommentNotifierQ> get comments => _comments;
 
   Submission _submission;
   Submission get submission => _submission;
+
+  int get numReplies {
+    if (_comments.isEmpty) return _submission.numComments;
+    int num = 0;
+    for (final comment in _comments) {
+      num += 1 + comment.numReplies;
+    }
+    return num;
+  }
 
   // set submission(Submission? s) {
   //   if (_submission == s) return null;
@@ -435,8 +445,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   //   notifyListeners();
   // }
 
-  void _setComments(List<Comment>? comments) {
-    _comments = comments?.map((v) {
+  void _setComments(List<Comment> comments) {
+    _comments = comments.map((v) {
       return CommentNotifierQ(_redditApi, v);
     }).toList();
   }
@@ -484,10 +494,10 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
       final commentReply =
           await _redditApi.submissionReply(submission.id, body);
       // _comments!.add(CommentNotifierQ(_redditApi, commentReply));
-      if (_comments == null) {
-        _comments = [];
-      }
-      _comments!.insert(0, CommentNotifierQ(_redditApi, commentReply));
+      // if (_comments == null) {
+      //   _comments = [];
+      // }
+      _comments.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
     }, 'fail to reply');
   }
@@ -566,6 +576,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   //   }
   //   return _try(fn, 'fail to load icon');
   // }
+
+  void refresh() => notifyListeners();
 }
 
 class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
@@ -583,6 +595,15 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
 
   final List<CommentNotifierQ> _replies;
   List<CommentNotifierQ> get replies => _replies;
+
+  int get numReplies {
+    if (_replies.isEmpty) return _comment.numComments;
+    int num = 0;
+    for (final comment in _replies) {
+      num += 1 + comment.numReplies;
+    }
+    return num;
+  }
 
   Future<void> copyText() {
     return _try(() {
@@ -806,9 +827,11 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 
   // UserSaved? _saved;
   List<CommentNotifierQ>? _savedComments;
-  List<CommentNotifierQ>? get savedComments => _savedComments?.where((v) => v.comment.saved).toList();
+  List<CommentNotifierQ>? get savedComments =>
+      _savedComments?.where((v) => v.comment.saved).toList();
   List<SubmissionNotifierQ>? _savedSubmissions;
-  List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions?.where((v) => v.submission.saved).toList();
+  List<SubmissionNotifierQ>? get savedSubmissions =>
+      _savedSubmissions?.where((v) => v.submission.saved).toList();
 
   Future<void> loadSaved() {
     return _try(() async {
@@ -951,7 +974,6 @@ class CurrentUserNotifierQ extends UserNotifierQ {
     }, 'fail to load subreddits');
   }
 
-
   List<MessageNotifierQ>? _inboxMessages;
   List<MessageNotifierQ>? get inboxMessages => _inboxMessages;
 
@@ -1024,7 +1046,6 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   //   }, 'fail to submit');
   // }
 }
-
 
 class MessageNotifierQ extends ChangeNotifier with TryMixin {
   MessageNotifierQ(this._redditApi, this._message);

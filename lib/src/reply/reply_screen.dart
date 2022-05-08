@@ -34,7 +34,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             PrimarySliverAppBar(
-              collapsed:  true,
+              collapsed: true,
               flexibleSpace: SpaceBar(
                 leading: AppBarCloseButton(),
                 title: AppBarTitle('Add comment'),
@@ -155,15 +155,17 @@ class _ReplyScreenState extends State<ReplyScreen> {
     }
 
     if (widget.isComment) {
-      context
-          .read<CommentNotifierQ>()
-          .reply(_message)
-          .catchError((e) => showErrorSnackBar(context, e));
+      context.read<CommentNotifierQ>().reply(_message).then(
+            (_) => context.read<SubmissionNotifierQ>().refresh(),
+            onError: (e) => showErrorSnackBar(context, e),
+          );
+      // .catchError((e) => showErrorSnackBar(context, e));
     } else {
-      context
-          .read<SubmissionNotifierQ>()
-          .reply(_message)
-          .catchError((e) => showErrorSnackBar(context, e));
+      context.read<SubmissionNotifierQ>().reply(_message).then(
+            (_) => context.read<SubmissionNotifierQ>().refresh(),
+            onError: (e) => showErrorSnackBar(context, e),
+          );
+      // .catchError((e) => showErrorSnackBar(context, e));
     }
 
     Navigator.pop(context);

@@ -22,7 +22,7 @@ class SubmissionWidget extends StatelessWidget {
         ListView(
           shrinkWrap: true,
           children: [
-            for (final comment in notifier.comments ?? [])
+            for (final comment in notifier.comments)
               ChangeNotifierProvider<CommentNotifierQ>.value(
                 value: comment,
                 child: SubmissionComment(),
