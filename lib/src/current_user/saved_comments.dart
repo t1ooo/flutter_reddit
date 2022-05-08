@@ -6,6 +6,7 @@ import '../submission/submission_comment.dart';
 import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../widget/loader.dart';
+import 'saved_comment.dart';
 
 class SavedComments extends StatelessWidget {
   const SavedComments({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class SavedComments extends StatelessWidget {
             for (final comment in comments)
               ChangeNotifierProvider<CommentNotifierQ>.value(
                 value: comment,
-                child: SubmissionComment(),
+                child: SavedComment(),
               ),
           ],
         );
