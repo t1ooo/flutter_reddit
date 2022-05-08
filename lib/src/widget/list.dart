@@ -9,14 +9,17 @@ class CustomListView extends StatelessWidget {
   CustomListView({
     Key? key,
     required this.children,
+    this.padding,
   }) : super(key: key);
 
   final List<Widget> children;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).primaryColor,
+      padding: padding,
       child: ListView(
         shrinkWrap: true,
         children: children,
