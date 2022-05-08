@@ -1,3 +1,4 @@
+// TODO: replace textScaleFactor to fontSize
 // TODO: comment OP
 // TODO: inbox notifications
 // TODO: inbox mod message
