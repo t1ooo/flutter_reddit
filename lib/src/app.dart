@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             primary: blackColor,
-            // textStyle: TextStyle(fontWeight: FontWeight.normal,),
-            textStyle: Theme.of(context).textTheme.bodyLarge,
+            textStyle: TextStyle(fontWeight: FontWeight.normal,),
+            // textStyle: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         radioTheme: RadioThemeData(
