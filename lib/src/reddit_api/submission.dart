@@ -66,7 +66,7 @@ class Submission extends Equatable {
   final bool saved;
   // final SubType? type;
   // final CommentForest? comments;
-  final List<Comment> comments;
+  final List<Comment>? comments;
   // final String shortLink;
 
   // static final _log = getLogger('Submission');
@@ -90,7 +90,7 @@ class Submission extends Equatable {
     Map data, {
     // SubType? type,
     // CommentForest? comments,
-    List<Comment> comments = const [],
+    List<Comment>? comments,
   }) {
     return Submission(
       author: mapGet(data, 'author', '', _log),

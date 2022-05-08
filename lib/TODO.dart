@@ -2,13 +2,8 @@
 // TODO: inbox notifications
 // TODO: inbox mod message
 // TODO: inbox message reply
-// TODO: saved submissions remove from list when unsave
-// TODO: saved comments remove from list when unsave
-// TODO: saved comments remove menu items
-// TODO: saved comments make clickable
 // TODO: link|image|video post submitting
 // TODO: MAYBE: wrap all model field wit notifier getter, make models mutable
-// TODO: calc comments count and change it after reply
 // TODO: merge screen with loader
 // TODO: app bar elevation
 // TODO: ((un)subscrube (un)save reply post) update user saved subscribed

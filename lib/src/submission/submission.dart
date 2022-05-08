@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
+import '../widget/loader.dart';
 import 'submission_comment.dart';
 
 class SubmissionWidget extends StatelessWidget {
@@ -19,16 +20,32 @@ class SubmissionWidget extends StatelessWidget {
           activeLink: false,
         ),
         SizedBox(height: 50),
-        ListView(
-          shrinkWrap: true,
-          children: [
-            for (final comment in notifier.comments)
-              ChangeNotifierProvider<CommentNotifierQ>.value(
-                value: comment,
-                child: SubmissionComment(),
-              ),
-          ],
+        Loader<List<CommentNotifierQ>>(
+          load: (_) => notifier.loadComments(),
+          data: (_) => notifier.comments,
+          onData: (_, comments) {
+            return ListView(
+              shrinkWrap: true,
+              children: [
+                for (final comment in comments)
+                  ChangeNotifierProvider<CommentNotifierQ>.value(
+                    value: comment,
+                    child: SubmissionComment(),
+                  ),
+              ],
+            );
+          },
         ),
+        // ListView(
+        //   shrinkWrap: true,
+        //   children: [
+        //     for (final comment in notifier.comments)
+        //       ChangeNotifierProvider<CommentNotifierQ>.value(
+        //         value: comment,
+        //         child: SubmissionComment(),
+        //       ),
+        //   ],
+        // ),
         SizedBox(height: 100),
       ],
     );

@@ -131,21 +131,32 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (id == null) {
-      return _SubmissionScreen();
-    }
+    return _SubmissionScreen();
+    // if (id == null) {}
 
-    final notifier = context.read<SubmissionLoaderNotifierQ>();
-    return Loader<SubmissionNotifierQ>(
-      load: (_) => notifier.loadSubmission(id!),
-      data: (_) => notifier.submission,
-      onData: (_, submission) {
-        return ChangeNotifierProvider<SubmissionNotifierQ>.value(
-          value: submission,
-          child: _SubmissionScreen(),
-        );
-      },
-    );
+    // final notifier = context.read<SubmissionLoaderNotifierQ>();
+    // return Loader<SubmissionNotifierQ>(
+    //   load: (_) => notifier.loadSubmission(id!),
+    //   data: (_) => notifier.submission,
+    //   onData: (_, submission) {
+    //     return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+    //       value: submission,
+    //       child: _SubmissionScreen(),
+    //     );
+    //   },
+    // );
+
+    // final notifier = context.read<SubmissionNotifierQ>();
+    // return Loader<SubmissionNotifierQ>(
+    //   load: (_) => notifier.loadComments(),
+    //   data: (_) => notifier,
+    //   onData: (_, submission) {
+    //     return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+    //       value: submission,
+    //       child: _SubmissionScreen(),
+    //     );
+    //   },
+    // );
   }
 }
 

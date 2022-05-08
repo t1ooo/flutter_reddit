@@ -56,8 +56,12 @@ class SubmissionTile extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => SubmissionScreen(
-                            id: submission.id,
+                          builder: (_) =>
+                              ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                            value: notifier,
+                            child: SubmissionScreen(
+                              id: submission.id,
+                            ),
                           ),
                         ),
                       );

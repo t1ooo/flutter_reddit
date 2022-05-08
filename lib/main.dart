@@ -30,9 +30,9 @@ Future<void> main() async {
             Config('flutter_reddit_cache'),
           ),
         ),
-        ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
-          create: (context) => SubmissionLoaderNotifierQ(redditApi),
-        ),
+        // ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
+        //   create: (context) => SubmissionLoaderNotifierQ(redditApi),
+        // ),
         ChangeNotifierProvider<SearchNotifierQ>(
           create: (context) => SearchNotifierQ(redditApi),
         ),
@@ -57,7 +57,7 @@ Future<void> main() async {
             return notifier
               ..addListener(() {
                 if (notifier.user == null) {
-                  context.read<SubmissionLoaderNotifierQ>().reset();
+                  // context.read<SubmissionLoaderNotifierQ>().reset();
                   context.read<SearchNotifierQ>().reset();
                   context.read<SubredditLoaderNotifierQ>().reset();
                   context.read<UserLoaderNotifierQ>().reset();

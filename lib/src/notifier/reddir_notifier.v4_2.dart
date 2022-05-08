@@ -377,36 +377,36 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
-  SubmissionLoaderNotifierQ(this._redditApi) {
-    reset();
-  }
+// class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
+//   SubmissionLoaderNotifierQ(this._redditApi) {
+//     reset();
+//   }
 
-  final RedditApi _redditApi;
-  static final _log = getLogger('SubmissionNotifierQ');
+//   final RedditApi _redditApi;
+//   static final _log = getLogger('SubmissionNotifierQ');
 
-  void reset() {
-    _id = null;
-    _submission = null;
-    notifyListeners();
-  }
+//   void reset() {
+//     _id = null;
+//     _submission = null;
+//     notifyListeners();
+//   }
 
-  late String? _id;
+//   late String? _id;
 
-  late SubmissionNotifierQ? _submission;
-  SubmissionNotifierQ? get submission => _submission;
+//   late SubmissionNotifierQ? _submission;
+//   SubmissionNotifierQ? get submission => _submission;
 
-  Future<void> loadSubmission(String id) {
-    return _try(() async {
-      if (_submission != null && _id == id) return;
-      _id = id;
-      _submission =
-          SubmissionNotifierQ(_redditApi, await _redditApi.submission(_id!));
-      // _setComments(_submission?.comments);
-      notifyListeners();
-    }, 'fail to load submission');
-  }
-}
+//   Future<void> loadSubmission(String id) {
+//     return _try(() async {
+//       if (_submission != null && _id == id) return;
+//       _id = id;
+//       _submission =
+//           SubmissionNotifierQ(_redditApi, await _redditApi.submission(_id!));
+//       // _setComments(_submission?.comments);
+//       notifyListeners();
+//     }, 'fail to load submission');
+//   }
+// }
 
 class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   SubmissionNotifierQ(this._redditApi, this._submission) {
@@ -418,19 +418,29 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionNotifierQ');
 
-  late List<CommentNotifierQ> _comments;
-  List<CommentNotifierQ> get comments => _comments;
+  late List<CommentNotifierQ>? _comments;
+  List<CommentNotifierQ>? get comments => _comments;
 
   Submission _submission;
   Submission get submission => _submission;
 
   int get numReplies {
-    if (_comments.isEmpty) return _submission.numComments;
+    // if (_comments.isEmpty) return _submission.numComments;
+    if (_comments == null) return _submission.numComments;
     int num = 0;
-    for (final comment in _comments) {
+    for (final comment in _comments!) {
       num += 1 + comment.numReplies;
     }
     return num;
+  }
+
+  Future<void> loadComments() {
+    return _try(() async {
+      if (_comments != null) return;
+      _submission = await _redditApi.submission(_submission.id);
+      _setComments(_submission.comments);
+      notifyListeners();
+    }, 'fail to load comments');
   }
 
   // set submission(Submission? s) {
@@ -445,8 +455,12 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   //   notifyListeners();
   // }
 
-  void _setComments(List<Comment> comments) {
-    _comments = comments.map((v) {
+  void _setComments(List<Comment>? comments) {
+    // if (comments == null) {
+    //   _comments = [];
+    //   return;
+    // }
+    _comments = comments?.map((v) {
       return CommentNotifierQ(_redditApi, v);
     }).toList();
   }
@@ -494,10 +508,8 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
       final commentReply =
           await _redditApi.submissionReply(submission.id, body);
       // _comments!.add(CommentNotifierQ(_redditApi, commentReply));
-      // if (_comments == null) {
-      //   _comments = [];
-      // }
-      _comments.insert(0, CommentNotifierQ(_redditApi, commentReply));
+      _comments ??= [];
+      _comments!.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
     }, 'fail to reply');
   }
