@@ -12,6 +12,7 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/snackbar.dart';
 import '../widget/awards.dart';
 import '../widget/custom_popup_menu_button.dart';
+import '../widget/icon_text.dart';
 import 'style.dart';
 
 class SubmissionComment extends StatelessWidget {
@@ -117,26 +118,25 @@ class SubmissionComment extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) {
-                  return MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                        value: context.read<SubmissionNotifierQ>(),
-                      ),
-                      ChangeNotifierProvider<CommentNotifierQ>.value(
-                        value: context.read<CommentNotifierQ>(),
-                      ),
-                    ],
-                    child: ReplyScreen(
-                      id: comment.id,
-                      isComment: true,
+                builder: (_) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                      value: context.read<SubmissionNotifierQ>(),
                     ),
-                  );
-                },
+                    ChangeNotifierProvider<CommentNotifierQ>.value(
+                      value: context.read<CommentNotifierQ>(),
+                    ),
+                  ],
+                  child: ReplyScreen(
+                    id: comment.id,
+                    isComment: true,
+                  ),
+                ),
               ),
             );
           },
           icon: Icon(Icons.reply),
+          // icon: IconText(icon: Icon(Icons.reply), text: Text('Reply')),
         ),
         SizedBox(width: 20),
         _voteButton(context, notifier),

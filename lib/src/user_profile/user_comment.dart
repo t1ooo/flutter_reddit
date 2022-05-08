@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
 import '../submission/style.dart';
+import '../util/date_time.dart';
 
 class UserComment extends StatelessWidget {
   const UserComment({
@@ -19,7 +20,8 @@ class UserComment extends StatelessWidget {
     //     child: body(context),
     //   ),
     // );
-    return Container(color: Theme.of(context).primaryColor,child: body(context));
+    return Container(
+        color: Theme.of(context).primaryColor, child: body(context));
   }
 
   Widget body(BuildContext context) {
@@ -42,14 +44,18 @@ class UserComment extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(comment.linkTitle, textScaleFactor: 2),
+            Text(
+              comment.linkTitle,
+              textScaleFactor: 1.7,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 10),
             Row(
               children: [
                 Text(comment.subredditNamePrefixed),
                 Text(' • '),
-                Text(comment.created.toString()),
-                Text(' • '),
-                Text(comment.ups.toString()),
+                Text(formatDateTime(comment.created)),
               ],
             ),
             SizedBox(height: 10),
