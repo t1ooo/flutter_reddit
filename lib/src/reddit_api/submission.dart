@@ -71,12 +71,12 @@ class Submission extends Equatable {
 
   // static final _log = getLogger('Submission');
 
-  static const _descLen = 200;
-  String get desc {
-    final text = selftext.replaceAll(RegExp(r'\s+'), ' ');
-    // return selftext.length <= _descLen ? selftext : selftext.substring(0, _descLen);
-    return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
-  }
+  // static const _descLen = 200;
+  // String get desc {
+  //   final text = selftext.replaceAll(RegExp(r'\s+'), ' ');
+  //   // return selftext.length <= _descLen ? selftext : selftext.substring(0, _descLen);
+  //   return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
+  // }
 
   String get shortLink {
     if (id == '') {

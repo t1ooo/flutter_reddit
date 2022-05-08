@@ -70,7 +70,12 @@ class SubmissionTile extends StatelessWidget {
               // Image.network(submission.thumbnail),
               CustomNetworkImageBuilder(submission.thumbnail),
             SizedBox(height: 10),
-            Text(submission.desc),
+            // Text(submission.desc),
+            Text(
+              submission.selftext,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
             SizedBox(height: 10),
             footer(context, notifier),
           ],
