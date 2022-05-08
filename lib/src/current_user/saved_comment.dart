@@ -50,10 +50,8 @@ class SavedComment extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               header(context, notifier),
-              if (notifier.expanded) ...[
-                Text(comment.body),
-                footer(context, notifier),
-              ],
+              Text(comment.body),
+              footer(context, notifier),
             ],
           ),
         ),
@@ -67,7 +65,11 @@ class SavedComment extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(comment.linkTitle),
+        Text(
+          comment.linkTitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         SizedBox(height: 10),
         Row(
           children: [
@@ -137,19 +139,13 @@ class SavedComment extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) {
-                  return MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<CommentNotifierQ>.value(
-                        value: context.read<CommentNotifierQ>(),
-                      ),
-                    ],
-                    child: ReplyScreen(
-                      id: comment.id,
-                      isComment: true,
-                    ),
-                  );
-                },
+                builder: (_) => ChangeNotifierProvider<CommentNotifierQ>.value(
+                  value: context.read<CommentNotifierQ>(),
+                  child: ReplyScreen(
+                    id: comment.id,
+                    isComment: true,
+                  ),
+                ),
               ),
             );
           },
@@ -178,10 +174,10 @@ class SavedComment extends StatelessWidget {
           label: comment.saved ? 'Unsave' : 'Save',
           onTap: () {
             return (comment.saved ? notifier.unsave() : notifier.save())
-            .catchError((e) => showErrorSnackBar(context, e));
+                .catchError((e) => showErrorSnackBar(context, e));
             // return (comment.saved ? notifier.unsave() : notifier.save()).then(
-                // (_) => context.read<UserNotifierQ>().refresh(),
-                // onError: (e) => showErrorSnackBar(context, e));
+            // (_) => context.read<UserNotifierQ>().refresh(),
+            // onError: (e) => showErrorSnackBar(context, e));
           },
         ),
 
