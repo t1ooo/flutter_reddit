@@ -22,7 +22,15 @@ class SavedSubmissions extends StatelessWidget {
             for (final sub in submissions)
               ChangeNotifierProvider<SubmissionNotifierQ>.value(
                 value: sub,
-                child: SubmissionTile(),
+                child: Builder(
+                  builder: (context) {
+                    final submission = context.watch<SubmissionNotifierQ>().submission;
+                    if (!submission.saved) {
+                     return Container();
+                    }
+                    return SubmissionTile();
+                  }
+                ),
               ),
           ],
         );

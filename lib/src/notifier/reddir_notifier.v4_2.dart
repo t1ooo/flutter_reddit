@@ -806,11 +806,10 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 
   // UserSaved? _saved;
   List<CommentNotifierQ>? _savedComments;
-  List<CommentNotifierQ>? get savedComments => _savedComments;
+  List<CommentNotifierQ>? get savedComments => _savedComments?.where((v) => v.comment.saved).toList();
   List<SubmissionNotifierQ>? _savedSubmissions;
-  List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
+  List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions?.where((v) => v.submission.saved).toList();
 
-  // TODO: move co CurrentUserNotifier
   Future<void> loadSaved() {
     return _try(() async {
       if (_savedComments != null && _savedSubmissions != null) return;

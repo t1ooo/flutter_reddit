@@ -28,6 +28,10 @@ class SavedComment extends StatelessWidget {
     final notifier = context.watch<CommentNotifierQ>();
     final comment = notifier.comment;
 
+    if (!comment.saved) {
+      return Container();
+    }
+
     return InkWell(
       onTap: comment.submissionId == ''
           ? null
@@ -174,7 +178,10 @@ class SavedComment extends StatelessWidget {
           label: comment.saved ? 'Unsave' : 'Save',
           onTap: () {
             return (comment.saved ? notifier.unsave() : notifier.save())
-                .catchError((e) => showErrorSnackBar(context, e));
+            .catchError((e) => showErrorSnackBar(context, e));
+            // return (comment.saved ? notifier.unsave() : notifier.save()).then(
+                // (_) => context.read<UserNotifierQ>().refresh(),
+                // onError: (e) => showErrorSnackBar(context, e));
           },
         ),
 
