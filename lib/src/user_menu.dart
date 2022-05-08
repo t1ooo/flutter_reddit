@@ -68,12 +68,10 @@ class UserMenu extends StatelessWidget {
               await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) {
-                    return ChangeNotifierProvider<UserNotifierQ>.value(
-                      value: user,
-                      child: CurrentUserProfileScreen(),
-                    );
-                  },
+                  builder: (_) => ChangeNotifierProvider<UserNotifierQ>.value(
+                    value: user,
+                    child: CurrentUserProfileScreen(),
+                  ),
                 ),
               );
               Navigator.pop(context);

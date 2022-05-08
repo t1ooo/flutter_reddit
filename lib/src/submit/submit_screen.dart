@@ -152,12 +152,10 @@ class _SubmitScreenState extends State<SubmitScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) {
-              return ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                value: s,
-                child: SubmissionScreen(),
-              );
-            },
+            builder: (_) => ChangeNotifierProvider<SubmissionNotifierQ>.value(
+              value: s,
+              child: SubmissionScreen(),
+            ),
           ),
         );
       },
