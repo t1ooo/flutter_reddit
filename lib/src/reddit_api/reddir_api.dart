@@ -558,7 +558,7 @@ class RedditApiImpl implements RedditApi {
     //   return;
     // }
 
-    final redditorRef = await reddit.redditor(name);
+    final redditorRef = reddit.redditor(name);
     // final redditor = await redditorRef.populate();
     final submissions = <Submission>[];
     final comments = <Comment>[];
