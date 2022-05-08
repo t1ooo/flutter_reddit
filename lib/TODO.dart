@@ -1,3 +1,4 @@
+// TODO: comment OP
 // TODO: inbox notifications
 // TODO: inbox mod message
 // TODO: inbox message reply
@@ -15,7 +16,6 @@
 //      TODO?: cache to small time CurrentUserNotifier saved and subscribed
 //      NOTE: reddit app use manual refresh
 // TODO: hide bottom bar on some screens
-// TODO: saved comments onTap
 // TODO: explicit wrap each widget with provider
 // TODO: format likes 31000 -> 31k
 // TODO: refresh after duration

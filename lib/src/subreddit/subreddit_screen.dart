@@ -354,6 +354,7 @@ class SubredditScreen extends StatelessWidget {
   }
 }
 
+// TODO: merge with SubredditScreen
 class SubredditScreenLoader extends StatelessWidget {
   const SubredditScreenLoader({
     Key? key,
