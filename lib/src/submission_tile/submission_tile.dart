@@ -28,9 +28,11 @@ class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
     Key? key,
     this.activeLink = true,
+    this.showSubreddit = true,
   }) : super(key: key);
 
   final bool activeLink;
+  final bool showSubreddit;
 
   @override
   Widget build(BuildContext context) {
@@ -93,19 +95,29 @@ class SubmissionTile extends StatelessWidget {
 
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: SizedBox.square(
+      leading: showSubreddit ? SizedBox.square(
         dimension: 40,
-        child: Loader<String>(
-          load: (_) => notifier.loadIcon(),
-          data: (_) => notifier.icon,
-          onData: (_, icon) => SubredditIcon(icon: icon),
+        // child: Loader<String>(
+        //   load: (_) => notifier.loadIcon(),
+        //   data: (_) => notifier.icon,
+        //   onData: (_, icon) => SubredditIcon(icon: icon),
+        //   onError: (_, e) {
+        //     uiLogger.error('$e');
+        //     return SubredditIcon(icon: '');
+        //   },
+        // ),
+        child: Loader<SubredditNotifierQ>(
+          load: (_) => notifier.loadSubreddit(),
+          data: (_) => notifier.subreddit,
+          onData: (_, subreddit) =>
+              SubredditIcon(icon: subreddit.subreddit.communityIcon),
           onError: (_, e) {
             uiLogger.error('$e');
             return SubredditIcon(icon: '');
           },
         ),
-      ),
-      title: GestureDetector(
+      ) : null,
+      title: showSubreddit ? GestureDetector(
         onTap: () {
           Navigator.push(
             context,
@@ -117,7 +129,7 @@ class SubmissionTile extends StatelessWidget {
           );
         },
         child: Text(submission.subredditNamePrefixed),
-      ),
+      ) : null,
       subtitle: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -130,12 +142,39 @@ class SubmissionTile extends StatelessWidget {
           );
         },
         child: Text(
-          'Posted by ${submission.author} • ${formatDateTime(submission.created)}',
+          'u/${submission.author} • ${formatDateTime(submission.created)}',
           softWrap: true,
           // overflow: TextOverflow.clip,
         ),
       ),
-      trailing: activeLink ? _popupMenuButton(context, notifier) : null,
+      trailing: Container(
+        // width: 50,
+        // height: 50,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // activeLink ? _popupMenuButton(context, notifier) : null,
+            if (notifier.subreddit != null)
+              AnimatedBuilder(
+                animation: notifier.subreddit!,
+                builder: (_, __) {
+                  if (!notifier.subreddit!.subreddit.userIsSubscriber) {
+                    return IconButton(
+                      onPressed: () {
+                        notifier.subreddit!
+                            .subscribe()
+                            .catchError((e) => showErrorSnackBar(context, e));
+                      },
+                      icon: Icon(Icons.add_box, color: selectedColor),
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            if (activeLink) _popupMenuButton(context, notifier)
+          ],
+        ),
+      ),
     );
 
     /* return Row(

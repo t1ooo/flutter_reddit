@@ -21,6 +21,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
     required this.submissions,
     this.activeLink = true,
     this.showTypeSelector = true,
+    this.showSubreddit = true,
   }) : super(key: key);
 
   final T type;
@@ -28,6 +29,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
   final List<SubmissionNotifierQ>? submissions;
   final void Function(T) onTypeChanged;
   final bool activeLink;
+  final bool showSubreddit;
 
   final bool showTypeSelector;
 
@@ -164,7 +166,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
             value: sub,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: SubmissionTile(activeLink: activeLink),
+              child: SubmissionTile(activeLink: activeLink, showSubreddit: showSubreddit),
             ),
           ),
       ],

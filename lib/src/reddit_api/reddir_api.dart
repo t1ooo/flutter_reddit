@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:draw/draw.dart' as draw;
 import 'package:draw/src/listing/listing_generator.dart' as draw;
@@ -761,6 +762,8 @@ class FakeRedditApi implements RedditApi {
     }
   }
 
+  Random _random = Random(42);
+
   Stream<Submission> popular({
     required int limit,
     required SubType type,
@@ -896,7 +899,7 @@ class FakeRedditApi implements RedditApi {
 
   Future<void> subredditFavorite(String name) async {
     _log.info('subredditFavorite($name)');
-   return;
+    return;
   }
 
   Future<void> subredditUnfavorite(String name) async {
@@ -942,7 +945,9 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
     final data = await File('data/subreddit.json').readAsString();
-    return Subreddit.fromJson(jsonDecode(data) as Map);
+    final map = jsonDecode(data) as Map;
+    map['user_is_subscriber'] = _random.nextInt(1000) % 2 == 0;
+    return Subreddit.fromJson(map);
   }
 
   Future<void> submissionVote(String id, Vote vote) async {

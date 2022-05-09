@@ -165,7 +165,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
 
   Future<void> loadSubreddit(String name) {
     return _try(() async {
-      if (subreddit != null && _name == name) return;
+      if (_subreddit != null && _name == name) return;
       _name = name;
 
       // if (_name != name) _subreddit = null;
@@ -590,6 +590,18 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to load icon');
   }
 
+  SubredditNotifierQ? _subreddit;
+  SubredditNotifierQ? get subreddit => _subreddit;
+
+  Future<void> loadSubreddit() {
+    return _try(() async {
+      if (subreddit != null) return;
+      _subreddit = SubredditNotifierQ(
+          _redditApi, await _redditApi.subreddit(_submission.subreddit));
+      notifyListeners();
+    }, 'fail to load subreddit');
+  }
+
   // Future<void> loadIcon([String? defaultIcon]) {
   //   final fn = () async {
   //     throw Exception();
@@ -1006,7 +1018,7 @@ class CurrentUserNotifierQ extends UserNotifierQ {
     if (_all != null) {
       return;
     }
-    _all =  SubredditNotifierQ(_redditApi, await _redditApi.subreddit('all'));
+    _all = SubredditNotifierQ(_redditApi, await _redditApi.subreddit('all'));
     notifyListeners();
   }
 
