@@ -16,7 +16,19 @@ class SubscribeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<SubredditNotifierQ>();
-    if (notifier.subreddit.userIsSubscriber)
+    return FutureElevatedButton(
+      onPressed: () {
+        return (notifier.subreddit.userIsSubscriber
+                ? notifier.unsubscribe()
+                : notifier.subscribe())
+            .catchError((e) => showErrorSnackBar(context, e));
+      },
+      child: Text(notifier.subreddit.userIsSubscriber
+          ? (notifier.isUserSubreddit ? 'FOLLOWING' : 'JOINED')
+          : (notifier.isUserSubreddit ? 'FOLLOW' : '+JOIN')),
+    );
+
+    /* if (notifier.subreddit.userIsSubscriber)
       return FutureElevatedButton(
         onPressed: () {
           return notifier
@@ -33,6 +45,6 @@ class SubscribeButton extends StatelessWidget {
               .catchError((e) => showErrorSnackBar(context, e));
         },
         child: Text(notifier.isUserSubreddit ? 'FOLLOW' : '+JOIN'),
-      );
+      ); */
   }
 }
