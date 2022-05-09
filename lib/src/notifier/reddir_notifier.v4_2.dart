@@ -1,17 +1,19 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../logging/logging.dart';
+import '../reddit_api/comment.dart';
 import '../reddit_api/message.dart';
 import '../reddit_api/reddir_api.dart';
+import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
+import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
-import '../reddit_api/comment.dart';
-import '../reddit_api/submission.dart';
-import '../reddit_api/subreddit.dart';
 import '../reddit_api/vote.dart';
 
 // abstract class VoteNotifer with TryMixin {
@@ -242,6 +244,24 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to unsubscribe');
   }
 
+  Future<void> favorite() {
+    return _try(() async {
+      if (_subreddit.userHasFavorited) return;
+      await _redditApi.subredditFavorite(name);
+      _subreddit = _subreddit.copyWith(userHasFavorited: true);
+      notifyListeners();
+    }, 'fail to favorite');
+  }
+
+  Future<void> unfavorite() {
+    return _try(() async {
+      if (!(_subreddit.userHasFavorited)) return;
+      await _redditApi.subredditUnfavorite(name);
+      _subreddit = _subreddit.copyWith(userHasFavorited: false);
+      notifyListeners();
+    }, 'fail to unfavorite');
+  }
+
   SubType _subType = SubType.values.first;
   SubType get subType => _subType;
 
@@ -299,11 +319,6 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   Future<void> loadWiki() => throw UnimplementedError();
   Object? _wiki;
   get wiki => _wiki;
-
-  // TODO
-  Future<void> star() => throw UnimplementedError();
-  // TODO
-  Future<void> unstar() => throw UnimplementedError();
 }
 
 // TODO: move to current user
@@ -970,21 +985,49 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   //   return null;
   // }
 
+  SubredditNotifierQ? _all;
+  SubredditNotifierQ? get all => _all;
+
   List<SubredditNotifierQ>? _subreddits;
   List<SubredditNotifierQ>? get subreddits => _subreddits;
+  // List<SubredditNotifierQ>? get favoriteSubreddits =>
+  //     _subreddits?.where((v) => v.subreddit.userHasFavorited).toList();
+  // List<SubredditNotifierQ>? get unfavoriteSubreddits =>
+  //     _subreddits?.where((v) => !v.subreddit.userHasFavorited).toList();
 
   Future<void> loadSubreddits() {
     return _try(() async {
-      if (_subreddits != null) {
-        return;
-      }
-      _subreddits = await _redditApi
-          .currentUserSubreddits(limit: _limit)
-          .map((v) => SubredditNotifierQ(_redditApi, v))
-          .toList();
-      notifyListeners();
+      _loadSubredditAll();
+      _loadSubreddits();
     }, 'fail to load subreddits');
   }
+
+  Future<void> _loadSubredditAll() async {
+    if (_all != null) {
+      return;
+    }
+    _all =  SubredditNotifierQ(_redditApi, await _redditApi.subreddit('all'));
+    notifyListeners();
+  }
+
+  Future<void> _loadSubreddits() async {
+    if (_subreddits != null) {
+      return;
+    }
+    _subreddits = await _redditApi
+        .currentUserSubreddits(limit: _limit)
+        .map((v) => SubredditNotifierQ(_redditApi, v))
+        .toList();
+    notifyListeners();
+  }
+
+  static List<SubredditNotifierQ> filterFavorite(
+          List<SubredditNotifierQ> subreddits) =>
+      subreddits.where((v) => v.subreddit.userHasFavorited).toList();
+
+  static List<SubredditNotifierQ> filterUnfavorite(
+          List<SubredditNotifierQ> subreddits) =>
+      subreddits.where((v) => !v.subreddit.userHasFavorited).toList();
 
   List<MessageNotifierQ>? _inboxMessages;
   List<MessageNotifierQ>? get inboxMessages => _inboxMessages;
@@ -1057,6 +1100,8 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   //     // notifyListeners();
   //   }, 'fail to submit');
   // }
+
+  void refresh() => notifyListeners();
 }
 
 class MessageNotifierQ extends ChangeNotifier with TryMixin {
@@ -1194,3 +1239,16 @@ class Error extends Result {
 }
 
 class Reload extends Result {} */
+
+class ListNotifier<T extends ChangeNotifier> extends ChangeNotifier {
+  ListNotifier(this._values) {
+    for (final value in _values) {
+      value.addListener(() {
+        notifyListeners();
+      });
+    }
+  }
+
+  UnmodifiableListView<T> get values => UnmodifiableListView(_values);
+  List<T> _values;
+}

@@ -64,6 +64,10 @@ abstract class RedditApi {
   Future<void> subscribe(String name);
   Future<void> unsubscribe(String name);
 
+  Future<void> subredditFavorite(String name);
+
+  Future<void> subredditUnfavorite(String name);
+
   Future<Submission> submission(String id);
 
   Future<void> submissionVote(String id, Vote vote);
@@ -121,7 +125,6 @@ abstract class RedditApi {
   Future<bool> loginSilently();
   Future<void> login();
   Future<void> logout();
-
 
   Stream<Message> inboxMessages();
 }
@@ -441,6 +444,7 @@ class RedditApiImpl implements RedditApi {
     return trophies;
   }
 
+  // TODO: rename to subredditSubscribe
   Future<void> subscribe(String name) {
     name = removeSubredditPrefix(name);
     return reddit.subreddit(name).subscribe();
@@ -449,6 +453,32 @@ class RedditApiImpl implements RedditApi {
   Future<void> unsubscribe(String name) {
     name = removeSubredditPrefix(name);
     return reddit.subreddit(name).unsubscribe();
+  }
+
+  Future<void> subredditFavorite(String name) async {
+    name = removeSubredditPrefix(name);
+    await reddit.post(
+      '/api/favorite/',
+      {
+        'make_favorite': 'true',
+        'sr_name': name,
+        'api_type': 'json',
+      },
+      objectify: false,
+    );
+  }
+
+  Future<void> subredditUnfavorite(String name) async {
+    name = removeSubredditPrefix(name);
+    await reddit.post(
+      '/api/favorite/',
+      {
+        'make_favorite': 'false',
+        'sr_name': name,
+        'api_type': 'json',
+      },
+      objectify: false,
+    );
   }
 
   Future<Submission> submission(String id) async {
@@ -861,6 +891,16 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
     await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> subredditFavorite(String name) async {
+    _log.info('subredditFavorite($name)');
+   return;
+  }
+
+  Future<void> subredditUnfavorite(String name) async {
+    _log.info('subredditUnfavorite($name)');
     return;
   }
 
