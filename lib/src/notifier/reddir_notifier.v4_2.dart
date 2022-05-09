@@ -579,7 +579,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to share');
   }
 
-  String? _icon;
+ /*  String? _icon;
   String? get icon => _icon;
 
   Future<void> loadIcon() {
@@ -600,7 +600,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
           _redditApi, await _redditApi.subreddit(_submission.subreddit));
       notifyListeners();
     }, 'fail to load subreddit');
-  }
+  } */
 
   // Future<void> loadIcon([String? defaultIcon]) {
   //   final fn = () async {

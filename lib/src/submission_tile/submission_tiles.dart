@@ -21,7 +21,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
     required this.submissions,
     this.activeLink = true,
     this.showTypeSelector = true,
-    this.showSubreddit = true,
+    // this.showSubreddit = true,
   }) : super(key: key);
 
   final T type;
@@ -29,7 +29,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
   final List<SubmissionNotifierQ>? submissions;
   final void Function(T) onTypeChanged;
   final bool activeLink;
-  final bool showSubreddit;
+  // final bool showSubreddit;
 
   final bool showTypeSelector;
 
@@ -166,7 +166,10 @@ class GSubmissionTiles<T> extends StatelessWidget {
             value: sub,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: SubmissionTile(activeLink: activeLink, showSubreddit: showSubreddit),
+              child: SubmissionTile(
+                activeLink: activeLink,
+                // showSubreddit: showSubreddit,
+              ),
             ),
           ),
       ],
@@ -238,7 +241,8 @@ class _RadioListState<T> extends State<RadioList<T>> {
         for (final value in widget.values)
           ListTile(
             minLeadingWidth: 0,
-            leading: widget.iconBuilder != null ? widget.iconBuilder!(value) : null,
+            leading:
+                widget.iconBuilder != null ? widget.iconBuilder!(value) : null,
             title: widget.titleBuilder(value),
             onTap: () {
               setState(() {

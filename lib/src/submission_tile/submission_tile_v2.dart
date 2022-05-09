@@ -29,11 +29,11 @@ class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
     Key? key,
     this.activeLink = true,
-    // this.showSubreddit = true,
+    this.showSubreddit = true,
   }) : super(key: key);
 
   final bool activeLink;
-  // final bool showSubreddit;
+  final bool showSubreddit;
 
   @override
   Widget build(BuildContext context) {
@@ -48,30 +48,30 @@ class SubmissionTile extends StatelessWidget {
           children: [
             header(context, notifier),
             // SizedBox(height: 10),
-            Awards(
-              awardIcons: submission.awardIcons,
-              totalAwardsReceived: submission.totalAwardsReceived,
-            ),
-            SizedBox(height: 15),
-            InkWell(
-              onTap: activeLink
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                            value: notifier,
-                            child: SubmissionScreen(
-                              id: submission.id,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  : null,
-              child: Text(submission.title, textScaleFactor: 1.8),
-            ),
+            // Awards(
+            //   awardIcons: submission.awardIcons,
+            //   totalAwardsReceived: submission.totalAwardsReceived,
+            // ),
+            // SizedBox(height: 10),
+            // InkWell(
+            //   onTap: activeLink
+            //       ? () {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //               builder: (_) =>
+            //                   ChangeNotifierProvider<SubmissionNotifierQ>.value(
+            //                 value: notifier,
+            //                 child: SubmissionScreen(
+            //                   id: submission.id,
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         }
+            //       : null,
+            //   child: Text(submission.title, textScaleFactor: 2),
+            // ),
             SizedBox(height: 10),
             if (submission.thumbnail != '')
               // Image.network(submission.thumbnail),
@@ -101,194 +101,65 @@ class SubmissionTile extends StatelessWidget {
       // minLeadingWidth: 0,
       // visualDensity: VisualDensity(),
       // dense:true,
-      /* leading: showSubreddit ? SizedBox.square(
-        dimension: 40,
-        // child: Loader<String>(
-        //   load: (_) => notifier.loadIcon(),
-        //   data: (_) => notifier.icon,
-        //   onData: (_, icon) => SubredditIcon(icon: icon),
-        //   onError: (_, e) {
-        //     uiLogger.error('$e');
-        //     return SubredditIcon(icon: '');
-        //   },
-        // ),
-        child: Loader<SubredditNotifierQ>(
-          load: (_) => notifier.loadSubreddit(),
-          data: (_) => notifier.subreddit,
-          onData: (_, subreddit) =>
-              SubredditIcon(icon: subreddit.subreddit.communityIcon),
-          onError: (_, e) {
-            uiLogger.error('$e');
-            return SubredditIcon(icon: '');
-          },
-        ),
-      ) : null, */
-      title: DefaultTextStyle(
-        style: TextStyle(color: blackColor, fontSize: 14),
-        child: Row(
-          children: [
-            InkWell(
-              onTap: () {
+      title: InkWell(
+        onTap: activeLink
+            ? () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => SubredditScreenLoader(
-                      name: submission.subreddit,
+                    builder: (_) =>
+                        ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                      value: notifier,
+                      child: SubmissionScreen(
+                        id: submission.id,
+                      ),
                     ),
                   ),
                 );
-              },
-              child: Text(submission.subredditNamePrefixed),
-            ),
-            Text(' • '),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => UserProfileScreen(
-                      name: submission.author,
-                    ),
-                  ),
-                );
-              },
-              child: Text('Posted by u/${submission.author}'),
-            ),
-            Text(' • '),
-            Text(formatDateTime(submission.created)),
-          ],
-        ),
+              }
+            : null,
+        child: Text(submission.title, textScaleFactor: 1.6),
       ),
-      // title: RichText(
-      //     text: TextSpan(
-      //   // style: DefaultTextStyle.of(context).style.copyWith(color: blackColor),
-      //   style: TextStyle(color: blackColor, fontSize: 20),
-      //   children: [
-      //     TextSpan(text: submission.subredditNamePrefixed, recognizer: TapGestureRecognizer()..onTap = () {
-
-      //     }),
-      //     TextSpan(text: ' • '),
-      //     TextSpan(text: 'Posted by '),
-      //     TextSpan(text: 'u/${submission.author}'),
-      //     TextSpan(text: ' • '),
-      //     TextSpan(text: formatDateTime(submission.created)),
-      //   ],
-      // )),
-      /* title: showSubreddit
-          ? GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SubredditScreenLoader(
-                      name: submission.subreddit,
-                    ),
+      subtitle: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SubredditScreenLoader(
+                    name: submission.subreddit,
                   ),
-                );
-              },
-              child: Text(submission.subredditNamePrefixed),
-            )
-          : null,
-      subtitle: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => UserProfileScreen(
-                name: submission.author,
-              ),
-            ),
-          );
-        },
-        child: Text(
-          'Posted by u/${submission.author} • ${formatDateTime(submission.created)}',
-          softWrap: true,
-          // overflow: TextOverflow.clip,
-        ),
-      ), */
-      trailing: Container(
-        // width: 50,
-        // height: 50,
-        child: activeLink ? _popupMenuButton(context, notifier) : null,
-        /* Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // activeLink ? _popupMenuButton(context, notifier) : null,
-            if (notifier.subreddit != null)
-              AnimatedBuilder(
-                animation: notifier.subreddit!,
-                builder: (_, __) {
-                  if (!notifier.subreddit!.subreddit.userIsSubscriber) {
-                    return IconButton(
-                      onPressed: () {
-                        notifier.subreddit!
-                            .subscribe()
-                            .catchError((e) => showErrorSnackBar(context, e));
-                      },
-                      icon: Icon(Icons.add_box, color: selectedColor),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            if (activeLink) _popupMenuButton(context, notifier)
-          ],
-        ), */
+                ),
+              );
+            },
+            child: Text(submission.subredditNamePrefixed),
+          ),
+          Text(' • '),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => UserProfileScreen(
+                    name: submission.author,
+                  ),
+                ),
+              );
+            },
+            child: Text('u/${submission.author}'),
+          ),
+          Text(' • '),
+          Text(formatDateTime(submission.created)),
+          Text(' • '),
+          Awards(
+            awardIcons: submission.awardIcons,
+            totalAwardsReceived: submission.totalAwardsReceived,
+          ),
+        ],
       ),
+      trailing: activeLink ? _popupMenuButton(context, notifier) : null,
     );
-
-    /* return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Wrap(
-          clipBehavior: Clip.hardEdge,
-          children: [
-            // SizedBox(
-            //   width: iconSize,
-            //   height: iconSize,
-            //   child: _subredditIcon(context, notifier),),
-            _subredditIcon(context, notifier),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SubredditScreenLoader(
-                          name: submission.subreddit,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(submission.subredditNamePrefixed),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => UserProfileScreen(
-                          name: submission.author,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'Posted by ${submission.author} • ${formatDateTime(submission.created)}',
-                    softWrap: true,
-                    // overflow: TextOverflow.clip,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        _popupMenuButton(context, notifier),
-      ],
-    ); */
   }
 
   // Widget _subredditIcon(ImageProvider<Object> image) {
