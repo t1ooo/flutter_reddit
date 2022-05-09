@@ -27,6 +27,7 @@ class Subreddit extends Equatable {
     required this.bannerBackgroundImage,
     required this.bannerBackgroundColor,
     required this.userIsSubscriber,
+    required this.userHasFavorited,
   });
 
   final String communityIcon;
@@ -51,6 +52,7 @@ class Subreddit extends Equatable {
   final String bannerBackgroundImage;
   final String bannerBackgroundColor;
   final bool userIsSubscriber;
+  final bool userHasFavorited;
 
   // static final _log = getLogger('Subreddit');
 
@@ -80,6 +82,7 @@ class Subreddit extends Equatable {
       bannerBackgroundImage: parseUrl(data['banner_background_image'], _log),
       bannerBackgroundColor: parseColor(data['banner_background_color'], _log),
       userIsSubscriber: mapGet(data, 'user_is_subscriber', false, _log),
+      userHasFavorited: mapGet(data, 'user_has_favorited', false, _log),
     );
   }
 
@@ -147,6 +150,7 @@ class Subreddit extends Equatable {
     String? bannerBackgroundImage,
     String? bannerBackgroundColor,
     bool? userIsSubscriber,
+    bool? userHasFavorited,
   }) {
     return Subreddit(
       communityIcon: communityIcon ?? this.communityIcon,
@@ -174,6 +178,7 @@ class Subreddit extends Equatable {
       bannerBackgroundColor:
           bannerBackgroundColor ?? this.bannerBackgroundColor,
       userIsSubscriber: userIsSubscriber ?? this.userIsSubscriber,
+      userHasFavorited: userHasFavorited ?? this.userHasFavorited,
     );
   }
 
@@ -202,6 +207,7 @@ class Subreddit extends Equatable {
       bannerBackgroundImage,
       bannerBackgroundColor,
       userIsSubscriber,
+      userHasFavorited,
     ];
   }
 }
