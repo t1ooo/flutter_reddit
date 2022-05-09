@@ -154,19 +154,28 @@ class _ReplyScreenState extends State<ReplyScreen> {
       return;
     }
 
-    if (widget.isComment) {
-      context.read<CommentNotifierQ>().reply(_message).then(
-            (_) => context.read<SubmissionNotifierQ>().refresh(),
-            onError: (e) => showErrorSnackBar(context, e),
-          );
-      // .catchError((e) => showErrorSnackBar(context, e));
-    } else {
-      context.read<SubmissionNotifierQ>().reply(_message).then(
-            (_) => context.read<SubmissionNotifierQ>().refresh(),
-            onError: (e) => showErrorSnackBar(context, e),
-          );
-      // .catchError((e) => showErrorSnackBar(context, e));
-    }
+    (widget.isComment
+            ? context.read<CommentNotifierQ>().reply(_message)
+            : context.read<SubmissionNotifierQ>().reply(_message))
+        .then(
+      (_) => context.read<SubmissionNotifierQ>().refresh(),
+      onError: (e) => showErrorSnackBar(context, e),
+    );
+    // .catchError((e) => showErrorSnackBar(context, e));
+
+    // if (widget.isComment) {
+    //   context.read<CommentNotifierQ>().reply(_message).then(
+    //         (_) => context.read<SubmissionNotifierQ>().refresh(),
+    //         onError: (e) => showErrorSnackBar(context, e),
+    //       );
+    //   // .catchError((e) => showErrorSnackBar(context, e));
+    // } else {
+    //   context.read<SubmissionNotifierQ>().reply(_message).then(
+    //         (_) => context.read<SubmissionNotifierQ>().refresh(),
+    //         onError: (e) => showErrorSnackBar(context, e),
+    //       );
+    //   // .catchError((e) => showErrorSnackBar(context, e));
+    // }
 
     Navigator.pop(context);
   }
