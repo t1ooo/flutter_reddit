@@ -1,3 +1,7 @@
+// TODO: SubmissionTile add subscription button [+]
+// TODO: use ListNotifier
+// TODO: generic _voteButton button
+// TODO: draw subreddit(Favorite|Unfavorite)
 // TODO: replace textScaleFactor to fontSize
 // TODO: comment OP
 // TODO: inbox notifications
