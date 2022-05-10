@@ -1,4 +1,4 @@
-// TODO: SubmissionTile add subscription button [+]
+// TODO: video
 // TODO: use ListNotifier
 // TODO: generic _voteButton button
 // TODO: draw subreddit(Favorite|Unfavorite)
