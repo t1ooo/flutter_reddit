@@ -69,7 +69,7 @@ Vote parseLikes(dynamic data, [Logger? log]) {
 List<Comment> parseCommentReplies(dynamic data, [Logger? log]) {
   try {
     final comments = <Comment>[];
-    for (final child in (data?['data']?['children'] as List<dynamic>)) {
+    for (final child in (data as List<dynamic>)) {
       try {
         comments.add(Comment.fromJson(child?['data'] as Map));
       } on TypeError catch (e) {

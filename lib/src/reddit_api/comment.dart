@@ -67,7 +67,7 @@ class Comment {
       subreddit: mapGet(data, 'subreddit', '', _log),
       linkAuthor: mapGet(data, 'link_author', '', _log),
       likes: parseLikes(data['likes'], _log),
-      replies: parseCommentReplies(data['replies'], _log),
+      replies: parseCommentReplies(data['replies']?['data']['children'], _log),
       saved: mapGet(data, 'saved', false, _log),
       id: mapGet(data, 'id', '', _log),
       gilded: mapGet(data, 'gilded', 0, _log),
