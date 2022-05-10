@@ -10,6 +10,7 @@ import '../reddit_api/comment.dart';
 import '../reddit_api/message.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
+import '../reddit_api/submission_image.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
@@ -579,7 +580,50 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to share');
   }
 
- /*  String? _icon;
+  SizedImage? previewImage([
+    double minWidth = 0,
+    double maxWidth = double.infinity,
+  ]) {
+    final images_ = images(minWidth, maxWidth);
+    // print(images_.map((x)=>x.width).toList());
+    return images_.isEmpty ? null : images_.first;
+  }
+
+  List<SizedImage> images([
+    double minWidth = 0,
+    double maxWidth = double.infinity,
+  ]) {
+    return _submission.preview
+        .map((v) {
+          // print(v.resolutions);
+          final resolutions = v.resolutions
+              .where(
+                (r) =>
+                    r.url != '' && minWidth <= r.width && r.width <= maxWidth,
+              )
+              .toList();
+          resolutions.sort((a, b) => (b.width - a.width).toInt());
+          // print(resolutions.map((x) => x.width).toList());
+          return resolutions.isEmpty ? null : resolutions.first;
+        })
+        .whereType<SizedImage>()
+        .toList();
+
+    // final images = <String>[];
+    // for (final sImage in _submission.preview) {
+    //   for (final resolution in sImage.resolutions) {
+    //     if (resolution.url != '' &&
+    //         resolution.width >= minWidth &&
+    //         resolution.width <= maxWidth) {
+    //       images.add(resolution.url);
+    //       break;
+    //     }
+    //   }
+    // }
+    // return images;
+  }
+
+  /*  String? _icon;
   String? get icon => _icon;
 
   Future<void> loadIcon() {

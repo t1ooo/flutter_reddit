@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -73,9 +74,38 @@ class SubmissionTile extends StatelessWidget {
               child: Text(submission.title, textScaleFactor: 1.8),
             ),
             SizedBox(height: 10),
-            if (submission.thumbnail != '')
-              // Image.network(submission.thumbnail),
-              CustomNetworkImageBuilder(submission.thumbnail),
+            // if (submission.thumbnail != '')
+            // CustomNetworkImageBuilder(submission.thumbnail),
+            Builder(builder: (_) {
+              final screenWidth = MediaQuery.of(context).size.width;
+              final previewImage =
+                  // notifier.previewImage(screenWidth / 4, screenWidth);
+                  notifier.previewImage(200, screenWidth);
+              // print(image);
+              final maxScale = 5;
+              return previewImage != null
+                  // ? CustomNetworkImageBuilder(image)
+                  ? Center(
+                      child: CustomNetworkImage(
+                        previewImage.url,
+                        onData: (_, image) {
+                          return Image(
+                            image: image,
+                            // width: screenWidth,
+                            // width: previewImage.width <= screenWidth / maxScale
+                            //     ? previewImage.width
+                            //     : screenWidth,
+                            width:
+                                min(previewImage.width * maxScale, screenWidth),
+                            // height: previewImage.height,
+                            fit: BoxFit.fitWidth,
+                            errorBuilder: imageErrorBuilder,
+                          );
+                        },
+                      ),
+                    )
+                  : Container();
+            }),
             SizedBox(height: 10),
             // Text(submission.desc),
             Text(
@@ -87,6 +117,36 @@ class SubmissionTile extends StatelessWidget {
             footer(context, notifier),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget previewImage(BuildContext context, SubmissionNotifierQ notifier) {
+    final minWidth = 200.0;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final previewImage = notifier.previewImage(minWidth, screenWidth);
+    if (previewImage == null) {
+      return Container();
+    }
+
+    final maxScale = 5;
+    final width = min(previewImage.width * maxScale, screenWidth);
+    return Center(
+      child: CustomNetworkImage(
+        previewImage.url,
+        onData: (_, image) {
+          return Image(
+            image: image,
+            // width: screenWidth,
+            // width: previewImage.width <= screenWidth / maxScale
+            //     ? previewImage.width
+            //     : screenWidth,
+            width: width,
+            // height: previewImage.height,
+            fit: BoxFit.fitWidth,
+            errorBuilder: imageErrorBuilder,
+          );
+        },
       ),
     );
   }
@@ -152,7 +212,7 @@ class SubmissionTile extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Posted by u/${submission.author}'),
+              child: Text('u/${submission.author}'),
             ),
             Text(' • '),
             Text(formatDateTime(submission.created)),
@@ -206,11 +266,11 @@ class SubmissionTile extends StatelessWidget {
           // overflow: TextOverflow.clip,
         ),
       ), */
-      trailing: Container(
-        // width: 50,
-        // height: 50,
-        child: activeLink ? _popupMenuButton(context, notifier) : null,
-        /* Row(
+      trailing:
+          // width: 50,
+          // height: 50,
+          activeLink ? _popupMenuButton(context, notifier) : null,
+      /* Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             // activeLink ? _popupMenuButton(context, notifier) : null,
@@ -234,7 +294,6 @@ class SubmissionTile extends StatelessWidget {
             if (activeLink) _popupMenuButton(context, notifier)
           ],
         ), */
-      ),
     );
 
     /* return Row(

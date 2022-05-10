@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
 
 import '../logging/logging.dart';
+import 'submission_image.dart';
 import 'vote.dart';
 
 T cast<T>(dynamic v, T defaultValue, [Logger? log]) {
@@ -34,7 +35,7 @@ List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [Logger? log]) {
   }
 }
 
-final colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive:false);
+final colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive: false);
 
 String parseColor(dynamic data, [Logger? log]) {
   final text = cast<String>(data, '');
@@ -44,7 +45,6 @@ String parseColor(dynamic data, [Logger? log]) {
   log?.warning('fail to parse color: $data');
   return '';
 }
-
 
 String parseText(dynamic data) {
   final text = cast<String>(data, '');
@@ -117,6 +117,23 @@ List<String> parseAwardIcons(dynamic data, [Logger? log]) {
     }).where((v) {
       return v != '';
     }).toList();
+  } on TypeError catch (e) {
+    log?.warning(e);
+    return [];
+  }
+}
+
+List<SubmissionImage> parseSubmissionPreview(dynamic data, [Logger? log]) {
+  try {
+    final images = <SubmissionImage>[];
+    for (final v in (data as List<dynamic>)) {
+      try {
+        images.add(SubmissionImage.fromJson(v));
+      } on TypeError catch (e) {
+        log?.warning(e);
+      }
+    }
+    return images;
   } on TypeError catch (e) {
     log?.warning(e);
     return [];
