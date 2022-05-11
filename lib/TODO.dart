@@ -1,4 +1,3 @@
-// TODO: iser url for Url
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
 // TODO: youtube video
