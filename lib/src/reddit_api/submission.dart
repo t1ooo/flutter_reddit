@@ -5,6 +5,7 @@ import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
 import '../logging/logging.dart';
 import 'parse.dart';
 import 'comment.dart';
+import 'video.dart';
 import 'vote.dart';
 import 'submission_type.dart';
 
@@ -38,6 +39,7 @@ class Submission extends Equatable {
     required this.comments,
     required this.saved,
     required this.preview,
+    required this.video,
     // required this.shortLink,
   });
 
@@ -71,6 +73,7 @@ class Submission extends Equatable {
   final List<Comment>? comments;
   // final String shortLink;
   final List<PreviewImages> preview;
+  final Video? video;
 
   // static final _log = getLogger('Submission');
 
@@ -124,7 +127,8 @@ class Submission extends Equatable {
       saved: mapGet(data, 'saved', false, _log),
       // shortLink: _genShortLink(mapGet(data, 'id', '')),
       // type: type,
-      preview: parseSubmissionPreview(data['preview']?['images']),
+      preview: parseSubmissionPreview(data['preview']?['images'], _log),
+      video: parseSubmissionVideo(data['media']?['reddit_video'], _log),
       comments: comments,
     );
   }
@@ -171,6 +175,7 @@ class Submission extends Equatable {
       saved,
       shortLink,
       preview,
+      video,
     ];
   }
 
@@ -203,6 +208,7 @@ class Submission extends Equatable {
     SubType? type,
     List<Comment>? comments,
     List<PreviewImages>? preview,
+    Video? video,
   }) {
     return Submission(
       author: author ?? this.author,
@@ -234,6 +240,7 @@ class Submission extends Equatable {
       // type: type ?? this.type,
       comments: comments ?? this.comments,
       preview: preview ?? this.preview,
+      video: video ?? this.video,
     );
   }
 }

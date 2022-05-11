@@ -1,15 +1,16 @@
 import 'package:equatable/equatable.dart';
 
+import '../logging/logging.dart';
 import 'parse.dart';
 
 class PreviewImages extends Equatable {
-  final SizedImage source;
-  final List<SizedImage> resolutions;
-
   PreviewImages({
     required this.source,
     required this.resolutions,
   });
+
+  final SizedImage source;
+  final List<SizedImage> resolutions;
 
   PreviewImages copyWith({
     SizedImage? source,
@@ -34,14 +35,17 @@ class PreviewImages extends Equatable {
 }
 
 class SizedImage extends Equatable {
-  final String url;
-  final double width;
-  final double height;
   SizedImage({
     required this.url,
     required this.width,
     required this.height,
   });
+
+  final String url;
+  final double width;
+  final double height;
+
+  static final _log = getLogger('SizedImage');
 
   SizedImage copyWith({
     String? url,
@@ -57,22 +61,12 @@ class SizedImage extends Equatable {
 
   factory SizedImage.fromJson(Map<String, dynamic> map) {
     return SizedImage(
-      url: parseUrl(map['url']),
-      width: _tryParseDouble(map['width']) ?? 0,
-      height: _tryParseDouble(map['height']) ?? 0,
+      url: parseUrl(map['url'], _log),
+      width: parseDouble(map['width'], _log),
+      height: parseDouble(map['height'], _log),
     );
   }
 
   @override
   List<Object> get props => [url, width, height];
-}
-
-double? _tryParseDouble(dynamic value) {
-  if (value is num) {
-    return value.toDouble();
-  }
-  if (value is String) {
-    return double.tryParse(value);
-  }
-  return null;
 }

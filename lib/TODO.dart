@@ -1,3 +1,5 @@
+// TODO: iser url for Url
+// TODO: rewrite parsing
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
 // TODO: youtube video
