@@ -22,11 +22,11 @@ class PreviewImages extends Equatable {
     );
   }
 
-  factory PreviewImages.fromJson(Map<String, dynamic> map) {
+  factory PreviewImages.fromJson(Map<String, dynamic> m) {
     return PreviewImages(
-      source: SizedImage.fromJson(map['source']),
+      source: SizedImage.fromJson(m['source']),
       resolutions: List<SizedImage>.from(
-          map['resolutions']?.map((x) => SizedImage.fromJson(x)) ?? const []),
+          m['resolutions']?.map((x) => SizedImage.fromJson(x)) ?? const []),
     );
   }
 
@@ -45,7 +45,7 @@ class SizedImage extends Equatable {
   final double width;
   final double height;
 
-  static final _log = getLogger('SizedImage');
+  // static final _log = getLogger('SizedImage');
 
   SizedImage copyWith({
     String? url,
@@ -59,11 +59,12 @@ class SizedImage extends Equatable {
     );
   }
 
-  factory SizedImage.fromJson(Map<String, dynamic> map) {
+  factory SizedImage.fromJson(Map<String, dynamic> m) {
+    const f = 'SizedImage';
     return SizedImage(
-      url: parseUrl(map['url'], _log),
-      width: parseDouble(map['width'], _log),
-      height: parseDouble(map['height'], _log),
+      url: parseUrl(m['url'], '$f.url'),
+      width: parseDouble(m['width'], '$f.width'),
+      height: parseDouble(m['height'], '$f.height'),
     );
   }
 

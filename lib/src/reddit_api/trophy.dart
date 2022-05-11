@@ -24,20 +24,21 @@ class Trophy extends Equatable {
   final String id;
   final String description;
 
-  factory Trophy.fromJson(Map data) {
+  factory Trophy.fromJson(Map<String, dynamic> m) {
+    const f = 'Trophy';
     return Trophy(
-      icon70: mapGet(data, 'icon_70', '', _log),
-      grantedAt: parseTime(data['granted_at'], false, _log),
-      url: mapGet(data, 'url', '', _log),
-      icon40: mapGet(data, 'icon_40', '', _log),
-      name: mapGet(data, 'name', '', _log),
-      awardId: mapGet(data, 'award_id', '', _log),
-      id: mapGet(data, 'id', '', _log),
-      description: mapGet(data, 'description', '', _log),
+      icon70: parseString(m['icon_70'], '$f.icon_70'),
+      grantedAt: parseTime(m['granted_at'], '$f.granted_at'),
+      url: parseString(m['url'], '$f.url'),
+      icon40: parseString(m['icon_40'], '$f.icon_40'),
+      name: parseString(m['name'], '$f.name'),
+      awardId: parseString(m['award_id'], '$f.award_id'),
+      id: parseString(m['id'], '$f.id'),
+      description: parseString(m['description'], '$f.description'),
     );
   }
 
-  static final _log = getLogger('Trophy');
+  // static final _log = getLogger('Trophy');
 
   @override
   List<Object> get props {

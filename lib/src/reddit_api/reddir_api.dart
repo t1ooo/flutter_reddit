@@ -291,7 +291,7 @@ class RedditApiImpl implements RedditApi {
         continue;
       }
       // final sub = Submission.fromJson(dsub.data!, type: type);
-      final sub = Submission.fromJson(dsub.data!);
+      final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
       yield sub;
     }
   }
@@ -359,7 +359,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Subreddit.data is empty: $v');
         continue;
       }
-      final sub = Subreddit.fromJson(v.data!);
+      final sub = Subreddit.fromJson(v.data! as Map<String, dynamic>);
       yield sub;
     }
   }
@@ -391,7 +391,7 @@ class RedditApiImpl implements RedditApi {
   Future<User> user(String name) async {
     final redditorRef = await reddit.redditor(name);
     final redditor = await redditorRef.populate();
-    return User.fromJson(redditor.data!);
+    return User.fromJson(redditor.data! as Map<String, dynamic>);
   }
 
   // TODO: MAYBE: add type support
@@ -409,7 +409,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      final sub = Comment.fromJson(dsub.data!);
+      final sub = Comment.fromJson(dsub.data! as Map<String, dynamic>);
       yield sub;
     }
   }
@@ -427,7 +427,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      final sub = Submission.fromJson(dsub.data!);
+      final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
       yield sub;
     }
   }
@@ -440,7 +440,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Trophy.data is empty: $trophy');
         continue;
       }
-      trophies.add(Trophy.fromJson(trophy.data!));
+      trophies.add(Trophy.fromJson(trophy.data! as Map<String, dynamic>));
     }
     return trophies;
   }
@@ -486,7 +486,7 @@ class RedditApiImpl implements RedditApi {
     final subRef = reddit.submission(id: id);
     final sub = await subRef.populate();
     final comments = (sub.comments!.comments)
-        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
         .toList();
     // return Submission.fromJson(sub.data!, comments: sub.comments!.comments);
@@ -497,20 +497,20 @@ class RedditApiImpl implements RedditApi {
     name = removeSubredditPrefix(name);
     final subRef = reddit.subreddit(name);
     final sub = await subRef.populate();
-    return Subreddit.fromJson(sub.data!);
+    return Subreddit.fromJson(sub.data! as Map<String, dynamic>);
   }
 
   Future<String> subredditIcon(String name) async {
     name = removeSubredditPrefix(name);
     final subRef = reddit.subreddit(name);
     final sub = await subRef.populate();
-    return Subreddit.fromJson(sub.data!).communityIcon;
+    return Subreddit.fromJson(sub.data! as Map<String, dynamic>).communityIcon;
   }
 
   // Future<String> userIcon(String name) async {
   //   final redditorRef = await reddit.redditor(name);
   //   final redditor = await redditorRef.populate();
-  //   return User.fromJson(redditor.data!).iconImg;
+  //   return User.fromJson(redditor.data! as Map<String, dynamic>).iconImg;
   // }
 
   // TODO: use draw.Submission instead id for optimisation
@@ -576,7 +576,7 @@ class RedditApiImpl implements RedditApi {
     if (redditor == null) {
       return null;
     }
-    return User.fromJson(redditor.data!);
+    return User.fromJson(redditor.data! as Map<String, dynamic>);
   }
 
   Future<UserSaved> userSaved(String name, {required int limit}) async {
@@ -596,9 +596,9 @@ class RedditApiImpl implements RedditApi {
     await for (final v in redditorRef.saved(limit: limit)) {
       try {
         if (v is draw.Submission)
-          submissions.add(Submission.fromJson(v.data!));
+          submissions.add(Submission.fromJson(v.data! as Map<String, dynamic>));
         else if (v is draw.Comment)
-          comments.add(Comment.fromJson(v.data!));
+          comments.add(Comment.fromJson(v.data! as Map<String, dynamic>));
         else
           _log.warning('undefined type');
       } on Exception catch (e, st) {
@@ -641,7 +641,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      yield Submission.fromJson(dsub.data!);
+      yield Submission.fromJson(dsub.data! as Map<String, dynamic>);
     }
   }
 
@@ -657,7 +657,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Subreddit.data is empty: $v');
         continue;
       }
-      yield Subreddit.fromJson(dsub.data!);
+      yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
     }
   }
 
@@ -674,7 +674,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Subreddit.data is empty: $v');
         continue;
       }
-      yield Subreddit.fromJson(dsub.data!);
+      yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
     }
   }
 
@@ -682,14 +682,14 @@ class RedditApiImpl implements RedditApi {
     final subRef = reddit.submission(id: id);
     final sub = await subRef.populate();
     final comment = await sub.reply(body);
-    return Comment.fromJson(comment.data!);
+    return Comment.fromJson(comment.data! as Map<String, dynamic>);
   }
 
   Future<Comment> commentReply(String id, String body) async {
     final commentRef = reddit.comment(id: id);
     final comment = await commentRef.populate();
     final commentReply = await comment.reply(body);
-    return Comment.fromJson(commentReply.data!);
+    return Comment.fromJson(commentReply.data! as Map<String, dynamic>);
   }
 
   Future<Submission> submit({
@@ -711,7 +711,7 @@ class RedditApiImpl implements RedditApi {
           nsfw: nsfw,
           spoiler: spoiler,
         );
-    return Submission.fromJson(sub.data!);
+    return Submission.fromJson(sub.data! as Map<String, dynamic>);
   }
 
   Stream<Message> inboxMessages() async* {
@@ -725,7 +725,7 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Subreddit.data is empty: $v');
         continue;
       }
-      yield Message.fromJson(dsub.data!);
+      yield Message.fromJson(dsub.data! as Map<String, dynamic>);
     }
   }
 }
@@ -751,7 +751,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.front.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -773,7 +773,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/popular.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -792,7 +792,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.subreddits.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .take(limit);
 
@@ -814,7 +814,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/subreddit.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -839,7 +839,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.comments.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
         .take(limit);
 
@@ -856,7 +856,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -875,7 +875,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.trophies.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Trophy.fromJson(v));
 
     return items.toList();
@@ -917,7 +917,7 @@ class FakeRedditApi implements RedditApi {
 
     // try {
     final comments = (jsonDecode(comData) as List<dynamic>)
-        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
         .toList();
 
@@ -936,7 +936,7 @@ class FakeRedditApi implements RedditApi {
     //     .map((v) => Trophy.fromJson(v));
 
     // final items = (jsonDecode(data) as List<dynamic>)
-    //     .map((v) => v as Map<dynamic, dynamic>)
+    //     .map((v) => v as Map<String, dynamic>)
     //     .map((v) => Trophy.fromJson(v));
   }
 
@@ -947,7 +947,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/subreddit.json').readAsString();
     final map = jsonDecode(data) as Map;
     map['user_is_subscriber'] = _random.nextInt(1000) % 2 == 0;
-    return Subreddit.fromJson(map);
+    return Subreddit.fromJson(map as Map<String, dynamic>);
   }
 
   Future<void> submissionVote(String id, Vote vote) async {
@@ -1009,7 +1009,7 @@ class FakeRedditApi implements RedditApi {
 
     final items = (jsonDecode(data) as List<dynamic>)
         .take(limit)
-        .map((v) => v as Map<dynamic, dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .forEach((v) {
       if (v['name']?.contains('t1_'))
         comments.add(Comment.fromJson(v));
@@ -1062,7 +1062,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, sort))
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Submission.fromJson(v))
@@ -1083,7 +1083,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/subreddits.search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         // .map((v) => _addType(v, sort))
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Subreddit.fromJson(v))
@@ -1102,7 +1102,7 @@ class FakeRedditApi implements RedditApi {
         await File('data/subreddits.search.by.name.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         // .map((v) => _addType(v, sort))
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Subreddit.fromJson(v));
@@ -1194,7 +1194,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/inbox.messages.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<dynamic, dynamic>)
+        // .map((v) => v as Map<String, dynamic>)
         // .map((v) => _addType(v, sort))
         // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Message.fromJson(v));

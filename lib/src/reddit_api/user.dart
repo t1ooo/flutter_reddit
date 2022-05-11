@@ -55,35 +55,36 @@ class User extends Equatable {
   final bool hasSubscribed;
   final Subreddit subreddit;
 
-  factory User.fromJson(Map data) {
+  factory User.fromJson(Map<String, dynamic> m) {
+    const f = 'User';
     return User(
-      isEmployee: mapGet(data, 'is_employee', false, _log),
-      isFriend: mapGet(data, 'is_friend', false, _log),
-      awardeeKarma: mapGet(data, 'awardee_karma', 0, _log),
-      id: mapGet(data, 'id', '', _log),
-      verified: mapGet(data, 'verified', false, _log),
-      isGold: mapGet(data, 'is_gold', false, _log),
-      isMod: mapGet(data, 'is_mod', false, _log),
-      awarderKarma: mapGet(data, 'awarder_karma', 0, _log),
-      hasVerifiedEmail: mapGet(data, 'has_verified_email', false, _log),
-      iconImg: parseUrl(data['icon_img'], _log),
-      linkKarma: mapGet(data, 'link_karma', 0, _log),
-      isBlocked: mapGet(data, 'is_blocked', false, _log),
-      totalKarma: mapGet(data, 'total_karma', 0, _log),
-      acceptChats: mapGet(data, 'accept_chats', false, _log),
-      name: mapGet(data, 'name', '', _log),
-      // displayNamePrefixed: mapGetNested(data, ['subreddit','display_name_prefixed'], '', _log),
-      created: parseTime(data['created'], false, _log),
-      createdUtc: parseTime(data['created_utc'], true, _log),
-      snoovatarImg: mapGet(data, 'snoovatar_img', '', _log),
-      commentKarma: mapGet(data, 'comment_karma', 0, _log),
-      acceptFollowers: mapGet(data, 'accept_followers', false, _log),
-      hasSubscribed: mapGet(data, 'has_subscribed', false, _log),
-      subreddit: Subreddit.fromJson(cast(data['subreddit'], {})),
+      isEmployee: parseBool(m['is_employee'], '$f.is_employee'),
+      isFriend: parseBool(m['is_friend'], '$f.is_friend'),
+      awardeeKarma: parseInt(m['awardee_karma'], '$f.awardee_karma'),
+      id: parseString(m['id'], '$f.id'),
+      verified: parseBool(m['verified'], '$f.verified'),
+      isGold: parseBool(m['is_gold'], '$f.is_gold'),
+      isMod: parseBool(m['is_mod'], '$f.is_mod'),
+      awarderKarma: parseInt(m['awarder_karma'], '$f.awarder_karma'),
+      hasVerifiedEmail: parseBool(m['has_verified_email'], '$f.has_verified_email'),
+      iconImg: parseUrl(m['icon_img'], '$f.icon_img'),
+      linkKarma: parseInt(m['link_karma'], '$f.link_karma'),
+      isBlocked: parseBool(m['is_blocked'], '$f.is_blocked'),
+      totalKarma: parseInt(m['total_karma'], '$f.total_karma'),
+      acceptChats: parseBool(m['accept_chats'], '$f.accept_chats'),
+      name: parseString(m['name'], '$f.name'),
+      // displayNamePrefixed: mapGetNested(m, ['subreddit','display_name_prefixed'], '', _log),
+      created: parseTime(m['created'], '$f.created'),
+      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+      snoovatarImg: parseString(m['snoovatar_img'], '$f.snoovatar_img'),
+      commentKarma: parseInt(m['comment_karma'], '$f.comment_karma'),
+      acceptFollowers: parseBool(m['accept_followers'], '$f.accept_followers'),
+      hasSubscribed: parseBool(m['has_subscribed'], '$f.has_subscribed'),
+      subreddit: Subreddit.fromJson(cast(m['subreddit'], {}, '$f.subreddit')),
     );
   }
 
-  static final _log = getLogger('User');
+  // static final _log = getLogger('User');
 
   @override
   List<Object> get props {

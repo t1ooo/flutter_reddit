@@ -93,47 +93,48 @@ class Submission extends Equatable {
 
   // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
   factory Submission.fromJson(
-    Map data, {
+    Map m, {
     // SubType? type,
     // CommentForest? comments,
     List<Comment>? comments,
   }) {
+    const f = 'Submission';
     return Submission(
-      author: mapGet(data, 'author', '', _log),
-      authorFlairText: mapGet(data, 'author_flair_text', '', _log),
-      awardIcons: parseAwardIcons(data['all_awardings'], _log),
-      created: parseTime(data['created'], false, _log),
-      createdUtc: parseTime(data['created_utc'], true, _log),
-      domain: mapGet(data, 'domain', '', _log),
-      downs: mapGet(data, 'downs', 0, _log),
-      // edited: mapGet(data, 'edited', 0, _log),
-      hidden: mapGet(data, 'hidden', false, _log),
-      id: mapGet(data, 'id', '', _log),
-      isVideo: mapGet(data, 'is_video', false, _log),
-      linkFlairText: mapGet(data, 'link_flair_text', '', _log),
-      totalAwardsReceived: mapGet(data, 'total_awards_received', 0, _log),
-      numComments: mapGet(data, 'num_comments', 0, _log),
-      over18: mapGet(data, 'over_18', false, _log),
-      pinned: mapGet(data, 'pinned', false, _log),
-      score: mapGet(data, 'score', 0, _log),
-      selftext: mapGet(data, 'selftext', '', _log),
-      subreddit: mapGet(data, 'subreddit', '', _log),
-      subredditNamePrefixed: mapGet(data, 'subreddit_name_prefixed', '', _log),
-      thumbnail: parseUrl(data['thumbnail'], _log),
-      title: mapGet(data, 'title', '', _log),
-      upvotes: mapGet(data, 'ups', 0, _log),
-      url: parseUrl(data['url'], _log),
-      likes: parseLikes(data['likes'], _log),
-      saved: mapGet(data, 'saved', false, _log),
-      // shortLink: _genShortLink(mapGet(data, 'id', '')),
+      author: parseString(m['author'], '$f.author'),
+      authorFlairText: parseString(m['author_flair_text'], '$f.author_flair_text'),
+      awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
+      created: parseTime(m['created'], '$f.created'),
+      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+      domain: parseString(m['domain'], '$f.domain'),
+      downs: parseInt(m['downs'], '$f.downs'),
+      // edited: parseInt(m['edited'], '$f.edited'),
+      hidden: parseBool(m['hidden'], '$f.hidden'),
+      id: parseString(m['id'], '$f.id'),
+      isVideo: parseBool(m['is_video'], '$f.is_video'),
+      linkFlairText: parseString(m['link_flair_text'], '$f.link_flair_text'),
+      totalAwardsReceived: parseInt(m['total_awards_received'], '$f.total_awards_received'),
+      numComments: parseInt(m['num_comments'], '$f.num_comments'),
+      over18: parseBool(m['over_18'], '$f.over_18'),
+      pinned: parseBool(m['pinned'], '$f.pinned'),
+      score: parseInt(m['score'], '$f.score'),
+      selftext: parseString(m['selftext'], '$f.selftext'),
+      subreddit: parseString(m['subreddit'], '$f.subreddit'),
+      subredditNamePrefixed: parseString(m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
+      thumbnail: parseUrl(m['thumbnail'], '$f.thumbnail'),
+      title: parseString(m['title'], '$f.title'),
+      upvotes: parseInt(m['ups'], '$f.ups'),
+      url: parseUrl(m['url'], '$f.url'),
+      likes: parseLikes(m['likes'], '$f.likes'),
+      saved: parseBool(m['saved'], '$f.saved'),
+      // shortLink: _genShortLink(mapGet(m, 'id', '')),
       // type: type,
-      preview: parseSubmissionPreview(data['preview']?['images'], _log),
-      video: parseSubmissionVideo(data['media']?['reddit_video'], _log),
+      preview: parsePreview(m['preview'], '$f.preview'),
+      video: parseVideo(m['media'], '$f.media'),
       comments: comments,
     );
   }
 
-  static final _log = getLogger('Submission');
+  // static final _log = getLogger('Submission');
 
   // static String _genShortLink(String id) {
   //   if (id == '') {

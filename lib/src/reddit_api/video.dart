@@ -22,7 +22,7 @@ class Video extends Equatable {
   final int duration;
   final bool isGif;
 
-  static final _log = getLogger('Video');
+  // static final _log = getLogger('Video');
 
   Video copyWith({
     int? bitrate_kbps,
@@ -44,15 +44,16 @@ class Video extends Equatable {
     );
   }
 
-  factory Video.fromJson(Map map) {
+  factory Video.fromJson(Map<String, dynamic> m) {
+    const f = 'Video';
     return Video(
-      bitrateKbps: parseInt(map['bitrate_kbps'], _log),
-      fallbackUrl: parseUrl(map['fallback_url'], _log),
-      height: parseInt(map['height'], _log),
-      width: parseInt(map['width'], _log),
-      scrubberMediaUrl: parseUrl(map['scrubber_media_url']),
-      duration: parseInt(map['duration']),
-      isGif: cast(map['is_gif'], false, _log),
+      bitrateKbps: parseInt(m['bitrate_kbps'], '$f.bitrate_kbps'),
+      fallbackUrl: parseUrl(m['fallback_url'], '$f.fallback_url'),
+      height: parseInt(m['height'], '$f.height'),
+      width: parseInt(m['width'], '$f.width'),
+      scrubberMediaUrl: parseUrl(m['scrubber_media_url'], '$f.scrubber_media_url'),
+      duration: parseInt(m['duration'], '$f.duration'),
+      isGif: parseBool(m['is_gif'], '$f.is_gif'),
     );
   }
 

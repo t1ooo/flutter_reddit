@@ -55,7 +55,7 @@ class Comment {
     required this.awardIcons,
   });
 
-  factory Comment.fromJson(Map data) {
+  factory Comment.fromJson(Map<String, dynamic> data) {
     return Comment(
       subredditId: parseString(data['subreddit_id'], _log),
       authorIsBlocked: parseBool(data['author_is_blocked'], _log),

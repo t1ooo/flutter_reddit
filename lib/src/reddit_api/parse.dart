@@ -6,86 +6,86 @@ import 'preview_images.dart';
 import 'video.dart';
 import 'vote.dart';
 
-T cast<T>(dynamic v, T defaultValue, [Logger? log]) {
+final _parserLog = getLogger('parse');
+
+void _log(Object message, [String? name, StackTrace? st]) {
+  name != null
+      ? _parserLog.warning('$name: $message', null, st)
+      : _parserLog.warning(message, null, st);
+}
+
+T cast<T>(dynamic data, T defaultValue, [String? name]) {
   try {
-    if (v == null) {
+    if (data == null) {
       return defaultValue;
     }
 
-    return v as T;
+    return data as T;
   } on TypeError catch (_) {
-    log?.warning('fail to cast: $v to <$T>');
+    _log('fail to cast: $data to <$T>', name);
     return defaultValue;
   }
 }
 
-List<T> castList<T>(dynamic v, List<T> defaultValue, [Logger? log]) {
-  try {
-    if (v == null) {
-      return defaultValue;
-    }
+// List<T> castList<T>(dynamic data, List<T> defaultValue, [String? name]) {
+//   try {
+//     if (data == null) {
+//       return defaultValue;
+//     }
 
-    return (v as List).cast<T>();
-  } on TypeError catch (_) {
-    log?.warning('fail to cast: $v to <$T>');
-    return defaultValue;
-  }
-}
+//     return (data as List).cast<T>();
+//   } on TypeError catch (_) {
+//     _log('fail to cast: $data to <$T>', name);
+//     return defaultValue;
+//   }
+// }
 
-T mapGet<T>(Map m, String key, T defaultValue, [Logger? log]) {
-  final val = m[key];
-  try {
-    if (val == null) {
-      return defaultValue;
-    }
+// T mapGet<T>(Map m, String key, T defaultValue, [String? name]) {
+//   final val = m[key];
+//   try {
+//     if (val == null) {
+//       return defaultValue;
+//     }
 
-    return val as T;
-  } on TypeError catch (_) {
-    log?.warning('fail to cast: {$key: $val} to <$T>');
-    return defaultValue;
-  }
-}
+//     return val as T;
+//   } on TypeError catch (_) {
+//     _log('fail to cast: {$key: $val} to <$T>', name);
+//     return defaultValue;
+//   }
+// }
 
-List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [Logger? log]) {
-  final val = m[key];
-  try {
-    if (val == null) {
-      return defaultValue;
-    }
+// List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [String? name]) {
+//   final val = m[key];
+//   try {
+//     if (val == null) {
+//       return defaultValue;
+//     }
 
-    return (val as List).cast<T>();
-  } on TypeError catch (_) {
-    // _log.warning(e);
-    log?.warning('fail to cast: {$key: $val} to List<$T>');
-    return defaultValue;
-  }
-}
+//     return (val as List).cast<T>();
+//   } on TypeError catch (_) {
+//     // _log.warning(e);
+//     _log('fail to cast: {$key: $val} to List<$T>', name);
+//     return defaultValue;
+//   }
+// }
 
 final colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive: false);
 
-String parseColor(dynamic data, [Logger? log]) {
-  if (data == null || data == '') {
-    return '';
-  }
-
-  final text = cast<String>(data, '');
+String parseColor(dynamic data, [String? name]) {
+  final text = parseString(data, name);
   if (colorRegExp.hasMatch(text)) {
     return text;
   }
-  log?.warning('fail to parse color: $data');
+  _log('fail to parse color: $data', name);
   return '';
 }
 
-String parseText(dynamic data) {
-  if (data == null || data == '') {
-    return '';
-  }
-
-  final text = cast<String>(data, '');
+String parseBody(dynamic data, [String? name]) {
+  final text = parseString(data, name);
   return text.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
 }
 
-Vote parseLikes(dynamic data, [Logger? log]) {
+Vote parseLikes(dynamic data, [String? name]) {
   if (data == null) {
     return Vote.none;
   }
@@ -96,53 +96,65 @@ Vote parseLikes(dynamic data, [Logger? log]) {
     return Vote.up;
   }
 
-  log?.warning('fail to parse likes: $data');
+  _log('fail to parse likes: $data', name);
   return Vote.none;
 }
 
-List<Comment> parseCommentReplies(dynamic data, [Logger? log]) {
+List<Comment> parseReplies(dynamic data, [String? name]) {
   try {
-    if (data == null) {
+    if (data == null || data == '') {
       return [];
     }
 
     final comments = <Comment>[];
-    for (final child in (data as List<dynamic>)) {
+    for (final v in (data['data']?['children'] as List<dynamic>)) {
       try {
-        comments.add(Comment.fromJson(child?['data'] as Map));
+        comments.add(Comment.fromJson(v['data']));
       } on TypeError catch (e) {
-        log?.warning(e);
+        _log('$e: $v', name);
       }
     }
     return comments;
   } on TypeError catch (e) {
-    log?.warning(e);
+    _log('$e: $data', name);
     return [];
   }
 }
 
-String parseUrl(dynamic data, [Logger? log]) {
-  if (data == null || data == '' || data == 'self' || data == 'default') {
+String parseUrl(dynamic data, [String? name]) {
+  if (data == null ||
+      data == '' ||
+      data == 'self' ||
+      data == 'default' ||
+      data == 'image') {
     return '';
   }
 
-  final s = cast<String>(data, '');
-  if (s == '') {
-    log?.warning('fail to parse uri: $data');
-    return '';
-  }
-  if (!s.startsWith('http')) {
-    log?.warning('fail to parse uri: $data');
+  // final s = cast<String>(data, '');
+  // if (s == '') {
+  //   _log('fail to parse uri: $data', name);
+  //   return '';
+  // }
+  if (!data.startsWith('http')) {
+    _log('fail to parse uri: $data', name);
     return '';
   }
 
-  return s.replaceAll('&amp;', '&');
+  return data.replaceAll('&amp;', '&');
 }
 
-DateTime parseTime(dynamic data, bool isUtc, [Logger? log]) {
-  final num = cast<double>(data, 0);
+DateTime parseTime(dynamic data, [String? name]) {
+  return _parseTime(data, false, name);
+}
+
+DateTime parseTimeUtc(dynamic data, [String? name]) {
+  return _parseTime(data, true, name);
+}
+
+DateTime _parseTime(dynamic data, bool isUtc, [String? name]) {
+  final num = parseDouble(data, name);
   if (num == 0) {
-    log?.warning('fail to parse time: $data');
+    _log('fail to parse time: $data', name);
     return DateTime.now();
   }
 
@@ -152,13 +164,12 @@ DateTime parseTime(dynamic data, bool isUtc, [Logger? log]) {
   );
 }
 
-String parseSubmissionId(dynamic data, [Logger? log]) {
-  final s = parseString(data, log).split('_');
+String parseSubmissionId(dynamic data, [String? name]) {
+  final s = parseString(data, name).split('_');
   return s.isEmpty ? '' : s.last;
 }
 
-
-List<String> parseAwardIcons(dynamic data, [Logger? log]) {
+List<String> parseAwardIcons(dynamic data, [String? name]) {
   try {
     if (data == null) {
       return [];
@@ -170,53 +181,54 @@ List<String> parseAwardIcons(dynamic data, [Logger? log]) {
       return v != '';
     }).toList();
   } on TypeError catch (e) {
-    log?.warning(e);
+    _log('$e: $data', name);
     return [];
   }
 }
 
-List<PreviewImages> parseSubmissionPreview(dynamic data, [Logger? log]) {
+List<PreviewImages> parsePreview(dynamic data, [String? name]) {
   try {
     if (data == null) {
       return [];
     }
 
     final images = <PreviewImages>[];
-    for (final v in (data as List<dynamic>)) {
+    for (final v in (data['images'] as List<dynamic>)) {
       try {
         images.add(PreviewImages.fromJson(v));
       } on TypeError catch (e) {
-        log?.warning(e);
+        _log('$e: $v', name);
       }
     }
     return images;
   } on TypeError catch (e) {
-    log?.warning(e);
+    _log('$e: $data', name);
     return [];
   }
 }
 
-Video? parseSubmissionVideo(dynamic data, [Logger? log]) {
+Video? parseVideo(dynamic data, [String? name]) {
   try {
-    if (data == null) {
+    final video = data?['reddit_video'];
+    if (video == null) {
       return null;
     }
-    return Video.fromJson(data);
+    return Video.fromJson(video);
   } on TypeError catch (e) {
-    log?.warning(e);
+    _log('$e: $data', name);
     return null;
   }
 }
 
-double parsePositiveDouble(dynamic data, [Logger? log]) {
-  final d = parseDouble(data, log);
+double parsePositiveDouble(dynamic data, [String? name]) {
+  final d = parseDouble(data, name);
   if (d < 0) {
     return 0;
   }
   return d;
 }
 
-double parseDouble(dynamic data, [Logger? log]) {
+double parseDouble(dynamic data, [String? name]) {
   const defaultValue = 0.0;
 
   if (data == null) {
@@ -231,19 +243,19 @@ double parseDouble(dynamic data, [Logger? log]) {
   if (data is String) {
     return double.tryParse(data) ?? defaultValue;
   }
-  log?.warning('fail to parse double: $data');
+  _log('fail to parse double: $data', name);
   return defaultValue;
 }
 
-int parsePositiveInt(dynamic data, [Logger? log]) {
-  final d = parseInt(data, log);
+int parsePositiveInt(dynamic data, [String? name]) {
+  final d = parseInt(data, name);
   if (d < 0) {
     return 0;
   }
   return d;
 }
 
-int parseInt(dynamic data, [Logger? log]) {
+int parseInt(dynamic data, [String? name]) {
   const defaultValue = 0;
 
   if (data == null) {
@@ -258,11 +270,11 @@ int parseInt(dynamic data, [Logger? log]) {
   if (data is String) {
     return int.tryParse(data) ?? defaultValue;
   }
-  log?.warning('fail to parse int: $data');
+  _log('fail to parse int: $data', name);
   return defaultValue;
 }
 
-String parseString(dynamic data, [Logger? log]) {
+String parseString(dynamic data, [String? name]) {
   const defaultValue = '';
 
   if (data == null) {
@@ -271,11 +283,11 @@ String parseString(dynamic data, [Logger? log]) {
   if (data is String) {
     return data;
   }
-  log?.warning('fail to parse string: $data');
+  _log('fail to parse string: $data', name);
   return defaultValue;
 }
 
-bool parseBool(dynamic data, [Logger? log]) {
+bool parseBool(dynamic data, [String? name]) {
   const defaultValue = false;
 
   if (data == null) {
@@ -284,6 +296,13 @@ bool parseBool(dynamic data, [Logger? log]) {
   if (data is bool) {
     return data;
   }
-  log?.warning('fail to parse bool: $data');
+  _log('fail to parse bool: $data', name);
   return defaultValue;
+}
+
+List<String> parseListString(dynamic data, [String? name]) {
+  if (!(data is List)) {
+    return [];
+  }
+  return data.map((v) => parseString(v, name)).where((v) => v != '').toList();
 }

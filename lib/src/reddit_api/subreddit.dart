@@ -57,67 +57,67 @@ class Subreddit extends Equatable {
   // static final _log = getLogger('Subreddit');
 
   // factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
-  factory Subreddit.fromJson(Map data) {
-    // final data = sub.data!;
+  factory Subreddit.fromJson(Map<String, dynamic> m) {
+    const f = 'Subreddit';
     return Subreddit(
-      communityIcon: parseUrl(data['community_icon'], _log),
-      created: parseTime(data['created'], false, _log),
-      createdUtc: parseTime(data['created_utc'], true, _log),
-      description: mapGet(data, 'description', '', _log),
-      descriptionHtml: mapGet(data, 'description_html', '', _log),
-      displayName: mapGet(data, 'display_name', '', _log),
-      displayNamePrefixed: mapGet(data, 'display_name_prefixed', '', _log),
-      id: mapGet(data, 'id', '', _log),
-      lang: mapGet(data, 'lang', '', _log),
-      name: mapGet(data, 'name', '', _log),
-      publicDescription: mapGet(data, 'public_description', '', _log),
-      publicDescriptionHtml: mapGet(data, 'public_description_html', '', _log),
-      submitTextHtml: mapGet(data, 'submit_text_html', '', _log),
-      submitText: mapGet(data, 'submit_text', '', _log),
-      subredditType: mapGet(data, 'subreddit_type', '', _log),
-      subscribers: mapGet(data, 'subscribers', 0, _log),
-      title: mapGet(data, 'title', '', _log),
-      url: mapGet(data, 'url', '', _log),
-      headerImg: parseUrl(data['header_img'], _log),
-      bannerBackgroundImage: parseUrl(data['banner_background_image'], _log),
-      bannerBackgroundColor: parseColor(data['banner_background_color'], _log),
-      userIsSubscriber: mapGet(data, 'user_is_subscriber', false, _log),
-      userHasFavorited: mapGet(data, 'user_has_favorited', false, _log),
+      communityIcon: parseUrl(m['community_icon'], '$f.community_icon'),
+      created: parseTime(m['created'], '$f.created'),
+      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+      description: parseString(m['description'], '$f.description'),
+      descriptionHtml: parseString(m['description_html'], '$f.description_html'),
+      displayName: parseString(m['display_name'], '$f.display_name'),
+      displayNamePrefixed: parseString(m['display_name_prefixed'], '$f.display_name_prefixed'),
+      id: parseString(m['id'], '$f.id'),
+      lang: parseString(m['lang'], '$f.lang'),
+      name: parseString(m['name'], '$f.name'),
+      publicDescription: parseString(m['public_description'], '$f.public_description'),
+      publicDescriptionHtml: parseString(m['public_description_html'], '$f.public_description_html'),
+      submitTextHtml: parseString(m['submit_text_html'], '$f.submit_text_html'),
+      submitText: parseString(m['submit_text'], '$f.submit_text'),
+      subredditType: parseString(m['subreddit_type'], '$f.subreddit_type'),
+      subscribers: parseInt(m['subscribers'], '$f.subscribers'),
+      title: parseString(m['title'], '$f.title'),
+      url: parseString(m['url'], '$f.url'),
+      headerImg: parseUrl(m['header_img'], '$f.header_img'),
+      bannerBackgroundImage: parseUrl(m['banner_background_image'], '$f.banner_background_image'),
+      bannerBackgroundColor: parseColor(m['banner_background_color'], '$f.banner_background_color'),
+      userIsSubscriber: parseBool(m['user_is_subscriber'], '$f.user_is_subscriber'),
+      userHasFavorited: parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
     );
   }
 
-  static final _log = getLogger('Subreddit');
+  // static final _log = getLogger('Subreddit');
 
-  // static String _parseIcon(dynamic data) {
-  //   final s = cast<String>(data, '');
+  // static String _parseIcon(dynamic m) {
+  //   final s = cast<String>(m, '');
   //   if (s == '') {
-  //     _log.warning('fail to parse icon: $data');
+  //     _log.warning('fail to parse icon: $m');
   //     return '';
   //   }
   //   if (!s.startsWith('http')) {
-  //     _log.warning('fail to parse icon: $data');
+  //     _log.warning('fail to parse icon: $m');
   //     return '';
   //   }
   //   final uri = Uri.tryParse(s);
   //   if (uri == null) {
-  //     _log.warning('fail to parse icon: $data');
+  //     _log.warning('fail to parse icon: $m');
   //     return '';
   //   }
   //   return uri.scheme + ':' + '//' + uri.authority + uri.path;
   // }
 
-  // static DateTime _parseTime(dynamic data) {
-  //   final num = double.tryParse(data);
+  // static DateTime _parseTime(dynamic m) {
+  //   final num = double.tryParse(m);
   //   if (num == null) {
-  //     _log.warning('fail to parse time: $data');
+  //     _log.warning('fail to parse time: $m');
   //     return DateTime.now();
   //   }
   //   return DateTime(num.toInt());
   // }
-  // static DateTime _parseTime(dynamic data, {bool isUtc = false}) {
-  //   final num = cast<double>(data, 0.0);
+  // static DateTime _parseTime(dynamic m, {bool isUtc = false}) {
+  //   final num = cast<double>(m, 0.0);
   //   if (num == 0.0) {
-  //     _log.warning('fail to parse time: $data');
+  //     _log.warning('fail to parse time: $m');
   //     return DateTime.now();
   //   }
   //   // return DateTime(num.toInt());

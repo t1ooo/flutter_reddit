@@ -25,7 +25,7 @@ class Message extends Equatable {
   final DateTime createdUtc;
   final String distinguished;
 
-  static final _log = getLogger('Message');
+  // static final _log = getLogger('Message');
 
   Message({
     required this.subreddit,
@@ -97,26 +97,29 @@ class Message extends Equatable {
     );
   }
 
-  factory Message.fromJson(Map data) {
+  factory Message.fromJson(Map<String, dynamic> m) {
+    const f = 'message';
     return Message(
-      subreddit: mapGet(data, 'subreddit_id', '', _log),
-      // replies: List<dynamic>.from(data['replies'] ?? const []),
-      authorFullname: mapGet(data, 'authorFullname', '', _log),
-      id: mapGet(data, 'id', '', _log),
-      subject: mapGet(data, 'subject', '', _log),
-      author: mapGet(data, 'author', '', _log),
-      numComments: mapGet(data, 'numComments', 0, _log),
-      parentId: mapGet(data, 'parentId', 0, _log),
-      subredditNamePrefixed: mapGet(data, 'subredditNamePrefixed', '', _log),
-      new_: mapGet(data, 'new', false, _log),
-      body: mapGet(data, 'body', '', _log),
-      dest: mapGet(data, 'dest', '', _log),
-      wasComment: mapGet(data, 'wasComment', false, _log),
-      bodyHtml: mapGet(data, 'bodyHtml', '', _log),
-      name: mapGet(data, 'name', '', _log),
-      created: parseTime(data['created'], false, _log),
-      createdUtc: parseTime(data['createdUtc'], true, _log),
-      distinguished: mapGet(data, 'distinguished', '', _log),
+      subreddit: parseString(m['subreddit_id'], '$f.subreddit_id'),
+      // replies: List<dynamic>.from(m['replies'] ?? const []),
+      authorFullname:
+          parseString(m['author_fullname'], '$f.author_fullname'),
+      id: parseString(m['id'], '$f.id'),
+      subject: parseString(m['subject'], '$f.subject'),
+      author: parseString(m['author'], '$f.author'),
+      numComments: parseInt(m['num_comments'], '$f.num_comments'),
+      parentId: parseInt(m['parent_Id'], '$f.parent_Id'),
+      subredditNamePrefixed: parseString(
+          m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
+      new_: parseBool(m['new'], '$f.new'),
+      body: parseString(m['body'], '$f.body'),
+      dest: parseString(m['dest'], '$f.dest'),
+      wasComment: parseBool(m['was_comment'], '$f.wasComment'),
+      bodyHtml: parseString(m['body_html'], '$f.bodyHtml'),
+      name: parseString(m['name'], '$f.name'),
+      created: parseTime(m['created'], '$f.created'),
+      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+      distinguished: parseString(m['distinguished'], '$f.distinguished'),
     );
   }
 
