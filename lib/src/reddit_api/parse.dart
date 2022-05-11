@@ -143,6 +143,18 @@ String parseUrl(dynamic data, [String? name]) {
   return data.replaceAll('&amp;', '&');
 }
 
+// Uri? parseUrl(dynamic data, [String? name]) {
+//   if (data == null ||
+//       data == '' ||
+//       data == 'self' ||
+//       data == 'default' ||
+//       data == 'image') {
+//     return null;
+//   }
+
+//   return Uri.tryParse(data.replaceAll('&amp;', '&'));
+// }
+
 DateTime parseTime(dynamic data, [String? name]) {
   return _parseTime(data, false, name);
 }
