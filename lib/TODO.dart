@@ -1,5 +1,7 @@
-// TODO: action submission url (to external resource)
-// TODO: video
+// TODO: submission tile show domain
+// TODO: active submission url (to external resource)
+// TODO: youtube video
+// TODO: reddit video
 // TODO: use ListNotifier
 // TODO: generic _voteButton button
 // TODO: draw subreddit(Favorite|Unfavorite)
