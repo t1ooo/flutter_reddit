@@ -8,7 +8,24 @@ import 'vote.dart';
 
 T cast<T>(dynamic v, T defaultValue, [Logger? log]) {
   try {
+    if (v == null) {
+      return defaultValue;
+    }
+
     return v as T;
+  } on TypeError catch (_) {
+    log?.warning('fail to cast: $v to <$T>');
+    return defaultValue;
+  }
+}
+
+List<T> castList<T>(dynamic v, List<T> defaultValue, [Logger? log]) {
+  try {
+    if (v == null) {
+      return defaultValue;
+    }
+
+    return (v as List).cast<T>();
   } on TypeError catch (_) {
     log?.warning('fail to cast: $v to <$T>');
     return defaultValue;
@@ -18,6 +35,10 @@ T cast<T>(dynamic v, T defaultValue, [Logger? log]) {
 T mapGet<T>(Map m, String key, T defaultValue, [Logger? log]) {
   final val = m[key];
   try {
+    if (val == null) {
+      return defaultValue;
+    }
+
     return val as T;
   } on TypeError catch (_) {
     log?.warning('fail to cast: {$key: $val} to <$T>');
@@ -28,6 +49,10 @@ T mapGet<T>(Map m, String key, T defaultValue, [Logger? log]) {
 List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [Logger? log]) {
   final val = m[key];
   try {
+    if (val == null) {
+      return defaultValue;
+    }
+
     return (val as List).cast<T>();
   } on TypeError catch (_) {
     // _log.warning(e);
@@ -230,7 +255,6 @@ int parseInt(dynamic data, [Logger? log]) {
   log?.warning('fail to parse int: $data');
   return defaultValue;
 }
-
 
 String parseString(dynamic data, [Logger? log]) {
   const defaultValue = '';
