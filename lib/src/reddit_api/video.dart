@@ -25,22 +25,22 @@ class Video extends Equatable {
   // static final _log = getLogger('Video');
 
   Video copyWith({
-    int? bitrate_kbps,
-    String? fallback_url,
+    int? bitrateKbps,
+    String? fallbackUrl,
     int? height,
     int? width,
-    String? scrubber_media_url,
+    String? scrubberMediaUrl,
     int? duration,
-    bool? is_gif,
+    bool? isGif,
   }) {
     return Video(
-      bitrateKbps: bitrate_kbps ?? this.bitrateKbps,
-      fallbackUrl: fallback_url ?? this.fallbackUrl,
+      bitrateKbps: bitrateKbps ?? this.bitrateKbps,
+      fallbackUrl: fallbackUrl ?? this.fallbackUrl,
       height: height ?? this.height,
       width: width ?? this.width,
-      scrubberMediaUrl: scrubber_media_url ?? this.scrubberMediaUrl,
+      scrubberMediaUrl: scrubberMediaUrl ?? this.scrubberMediaUrl,
       duration: duration ?? this.duration,
-      isGif: is_gif ?? this.isGif,
+      isGif: isGif ?? this.isGif,
     );
   }
 

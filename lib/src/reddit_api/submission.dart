@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
 
 import '../logging/logging.dart';
+import 'nullable.dart';
 import 'parse.dart';
 import 'comment.dart';
 import 'video.dart';
@@ -209,7 +210,7 @@ class Submission extends Equatable {
     SubType? type,
     List<Comment>? comments,
     List<PreviewImages>? preview,
-    Video? video,
+    Video? Function()? video,
   }) {
     return Submission(
       author: author ?? this.author,
@@ -241,7 +242,8 @@ class Submission extends Equatable {
       // type: type ?? this.type,
       comments: comments ?? this.comments,
       preview: preview ?? this.preview,
-      video: video ?? this.video,
+      // video: video != null ? video.value : this.video,
+      video: video != null ? video() : this.video,
     );
   }
 }
