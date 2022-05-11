@@ -2,27 +2,27 @@ import 'package:equatable/equatable.dart';
 
 import 'parse.dart';
 
-class SubmissionImage extends Equatable {
+class PreviewImages extends Equatable {
   final SizedImage source;
   final List<SizedImage> resolutions;
 
-  SubmissionImage({
+  PreviewImages({
     required this.source,
     required this.resolutions,
   });
 
-  SubmissionImage copyWith({
+  PreviewImages copyWith({
     SizedImage? source,
     List<SizedImage>? resolutions,
   }) {
-    return SubmissionImage(
+    return PreviewImages(
       source: source ?? this.source,
       resolutions: resolutions ?? this.resolutions,
     );
   }
 
-  factory SubmissionImage.fromJson(Map<String, dynamic> map) {
-    return SubmissionImage(
+  factory PreviewImages.fromJson(Map<String, dynamic> map) {
+    return PreviewImages(
       source: SizedImage.fromJson(map['source']),
       resolutions: List<SizedImage>.from(
           map['resolutions']?.map((x) => SizedImage.fromJson(x)) ?? const []),
@@ -66,7 +66,6 @@ class SizedImage extends Equatable {
   @override
   List<Object> get props => [url, width, height];
 }
-
 
 double? _tryParseDouble(dynamic value) {
   if (value is num) {

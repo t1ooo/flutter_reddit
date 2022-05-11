@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
 
 import '../logging/logging.dart';
-import 'submission_image.dart';
+import 'preview_images.dart';
 import 'vote.dart';
 
 T cast<T>(dynamic v, T defaultValue, [Logger? log]) {
@@ -123,12 +123,12 @@ List<String> parseAwardIcons(dynamic data, [Logger? log]) {
   }
 }
 
-List<SubmissionImage> parseSubmissionPreview(dynamic data, [Logger? log]) {
+List<PreviewImages> parseSubmissionPreview(dynamic data, [Logger? log]) {
   try {
-    final images = <SubmissionImage>[];
+    final images = <PreviewImages>[];
     for (final v in (data as List<dynamic>)) {
       try {
-        images.add(SubmissionImage.fromJson(v));
+        images.add(PreviewImages.fromJson(v));
       } on TypeError catch (e) {
         log?.warning(e);
       }

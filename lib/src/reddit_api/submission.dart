@@ -1,6 +1,6 @@
 import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/submission_image.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
 
 import '../logging/logging.dart';
 import 'parse.dart';
@@ -70,7 +70,7 @@ class Submission extends Equatable {
   // final CommentForest? comments;
   final List<Comment>? comments;
   // final String shortLink;
-  final List<SubmissionImage> preview;
+  final List<PreviewImages> preview;
 
   // static final _log = getLogger('Submission');
 
@@ -202,7 +202,7 @@ class Submission extends Equatable {
     bool? saved,
     SubType? type,
     List<Comment>? comments,
-    List<SubmissionImage>? preview,
+    List<PreviewImages>? preview,
   }) {
     return Submission(
       author: author ?? this.author,

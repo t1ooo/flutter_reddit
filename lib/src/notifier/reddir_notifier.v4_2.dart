@@ -10,7 +10,7 @@ import '../reddit_api/comment.dart';
 import '../reddit_api/message.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
-import '../reddit_api/submission_image.dart';
+import '../reddit_api/preview_images.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
