@@ -39,7 +39,6 @@ class Trophy extends Equatable {
 
   static final _log = getLogger('Trophy');
 
-
   @override
   List<Object> get props {
     return [

@@ -67,7 +67,7 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     if (src == '') {
+    if (src == '') {
       return (onError ?? onErrorDefault)(context, 'src is empty');
     }
     return CachedNetworkImage(

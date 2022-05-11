@@ -1,6 +1,5 @@
 // import 'package:meta/meta_meta.dart';
 
-
 // TODO: gilded
 
 /// submission type
@@ -21,7 +20,6 @@ enum FrontSubType {
   controversial,
   rising,
 }
-
 
 // @TargetKind.enumType
 // class A {

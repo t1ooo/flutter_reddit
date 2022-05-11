@@ -35,7 +35,7 @@ class ChooseSubredditScreen extends StatelessWidget {
             ),
           ];
         },
-        body:  _body(context),
+        body: _body(context),
       ),
     );
   }
@@ -57,10 +57,13 @@ class ChooseSubredditScreen extends StatelessWidget {
                   onChanged(subreddit);
                   Navigator.of(context).pop();
                 },
-                leading: SizedBox.square(dimension: 40, child: SubredditIcon(icon:subreddit.subreddit.communityIcon)),
+                leading: SizedBox.square(
+                    dimension: 40,
+                    child:
+                        SubredditIcon(icon: subreddit.subreddit.communityIcon)),
                 title: Text(subreddit.subreddit.displayNamePrefixed),
               )
-              // Text(subreddit.name)
+            // Text(subreddit.name)
           ],
         );
       },

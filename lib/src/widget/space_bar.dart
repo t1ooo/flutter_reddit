@@ -364,7 +364,10 @@ class SearchForm extends StatelessWidget {
               context,
               MaterialPageRoute(
                 settings: RouteSettings(name: routeName),
-                builder: (_) => subreddit != null ? SearchBySubredditScreen(query: query, subreddit : subreddit!) : SearchScreen(query: query),
+                builder: (_) => subreddit != null
+                    ? SearchBySubredditScreen(
+                        query: query, subreddit: subreddit!)
+                    : SearchScreen(query: query),
               ),
             );
             // Navigator.push(

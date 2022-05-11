@@ -53,7 +53,6 @@ class SearchBySubredditScreen extends StatelessWidget {
                 //   Text('Search results'),
                 // ],)
               ),
-             
             ];
           },
           // body: Expanded(child: Search(query: query)),

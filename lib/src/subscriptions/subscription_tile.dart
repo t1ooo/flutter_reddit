@@ -12,10 +12,7 @@ import '../widget/loader.dart';
 import '../widget/network_image.dart';
 
 class SubscriptionTile extends StatelessWidget {
-  const SubscriptionTile({
-    Key? key,
-    this.favorite=true
-  }) : super(key: key);
+  const SubscriptionTile({Key? key, this.favorite = true}) : super(key: key);
 
   final bool favorite;
 
@@ -33,19 +30,21 @@ class SubscriptionTile extends StatelessWidget {
         // : Image.asset('communityIcon.png'),
       ),
       title: Text(subreddit.displayNamePrefixed),
-      trailing: favorite ? IconButton(
-        onPressed: () {
-          (subreddit.userHasFavorited
-                  ? notifier.unfavorite()
-                  : notifier.favorite())
-              .then(
-            (_) => context.read<CurrentUserNotifierQ>().refresh(),
-            onError: (e) => showErrorSnackBar(context, e),
-          );
-        } ,
-        icon: Icon(Icons.star,
-            color: subreddit.userHasFavorited ? selectedColor : null),
-      ): null,
+      trailing: favorite
+          ? IconButton(
+              onPressed: () {
+                (subreddit.userHasFavorited
+                        ? notifier.unfavorite()
+                        : notifier.favorite())
+                    .then(
+                  (_) => context.read<CurrentUserNotifierQ>().refresh(),
+                  onError: (e) => showErrorSnackBar(context, e),
+                );
+              },
+              icon: Icon(Icons.star,
+                  color: subreddit.userHasFavorited ? selectedColor : null),
+            )
+          : null,
       onTap: () {
         Navigator.push(
           context,

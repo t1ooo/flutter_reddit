@@ -35,13 +35,12 @@ setLevel(Level level) => _root.level = level;
 // }
 
 void setLevelByName(String name, Level level) {
-  // A local, top-level, or class variable that’s declared as final 
+  // A local, top-level, or class variable that’s declared as final
   // is initialized the first time it’s used.
-  // Therefore, we try to set the level, otherwise we set the level 
+  // Therefore, we try to set the level, otherwise we set the level
   // during initialization in [getLogger].
   _loggers[name]?.level = level;
-  _levels[name] = level; 
-
+  _levels[name] = level;
 }
 
 final _levels = <String, Level>{};

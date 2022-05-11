@@ -155,8 +155,6 @@ class Comment {
   final String submissionId;
   final List<String> awardIcons;
 
-  
-
   String get shortLink {
     if (submissionId == '' || id == '') {
       return '';

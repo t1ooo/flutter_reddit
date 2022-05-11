@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             primary: blackColor,
-            textStyle: TextStyle(fontWeight: FontWeight.normal,),
+            textStyle: TextStyle(
+              fontWeight: FontWeight.normal,
+            ),
             // textStyle: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
           behavior: SnackBarBehavior.floating,
         ),
         // popupMenuTheme: PopupMenuThemeData(
-            // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
+        // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
       ),
       // home: Tabs(),
       home: StartScreen(),

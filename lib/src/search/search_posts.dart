@@ -26,8 +26,8 @@ class SearchPosts extends StatelessWidget {
       submissions: notifier.submissions,
       onTypeChanged: (subType) {
         subreddit != null
-          ? notifier.search(query, subType, subreddit!)
-          : notifier.search(query, subType);
+            ? notifier.search(query, subType, subreddit!)
+            : notifier.search(query, subType);
       },
     );
   }

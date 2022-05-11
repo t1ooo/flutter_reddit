@@ -17,12 +17,12 @@ import '../widget/subscribe_button.dart';
 // import '../widget/subscribe_button.dart';
 
 class SubredditIcon extends StatelessWidget {
-  const SubredditIcon({
-    Key? key,
-    required this.icon,
-    this.fallbackIcon = 'communityIcon.png',
-    this.radius = 20
-  }) : super(key: key);
+  const SubredditIcon(
+      {Key? key,
+      required this.icon,
+      this.fallbackIcon = 'communityIcon.png',
+      this.radius = 20})
+      : super(key: key);
 
   final String icon;
   final String fallbackIcon;

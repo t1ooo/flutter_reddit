@@ -52,7 +52,7 @@ class MessageScreen extends StatelessWidget {
             Row(
               children: [
                 InkWell(
-                  onTap:() {
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -83,7 +83,8 @@ class Message extends Equatable {
       author: author ?? this.author,
       numComments: numComments ?? this.numComments,
       parentId: parentId ?? this.parentId,
-      subredditNamePrefixed: subredditNamePrefixed ?? this.subredditNamePrefixed,
+      subredditNamePrefixed:
+          subredditNamePrefixed ?? this.subredditNamePrefixed,
       new_: new_ ?? this.new_,
       body: body ?? this.body,
       dest: dest ?? this.dest,

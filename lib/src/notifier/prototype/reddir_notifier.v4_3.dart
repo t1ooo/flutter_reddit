@@ -79,7 +79,7 @@ abstract class SubredditNotifier extends ChangeNotifier {
   get subType;
   Future<List<SubmissionNotifier>> submissions();
   Future<String?> resetSubmissions();
-  
+
   Future<Object> about();
   Future<Object> menu();
 
@@ -132,7 +132,6 @@ abstract class UserNotifier extends ChangeNotifier {
 
   Future<User> user();
   Future<String?> resetSearch();
-  
 
   Future<String?> subscribe();
   Future<String?> unsubscribe();
@@ -140,14 +139,11 @@ abstract class UserNotifier extends ChangeNotifier {
   Future<List<SubmissionNotifier>> submissions();
   Future<String?> resetSubmissions();
 
-
   Future<List<CommentNotifier>> comments();
   Future<String?> resetComments();
 
-
   Future<List<Trophy>> trophies();
   Future<String?> resetTrophies();
-
 }
 
 abstract class CurrentUserNotifier extends ChangeNotifier {
