@@ -122,7 +122,7 @@ List<Comment> parseCommentReplies(dynamic data, [Logger? log]) {
 }
 
 String parseUrl(dynamic data, [Logger? log]) {
-  if (data == null || data == '') {
+  if (data == null || data == '' || data == 'self' || data == 'default') {
     return '';
   }
 
@@ -141,7 +141,7 @@ String parseUrl(dynamic data, [Logger? log]) {
 
 DateTime parseTime(dynamic data, bool isUtc, [Logger? log]) {
   final num = cast<double>(data, 0);
-  if (num == 0.0) {
+  if (num == 0) {
     log?.warning('fail to parse time: $data');
     return DateTime.now();
   }
@@ -151,6 +151,12 @@ DateTime parseTime(dynamic data, bool isUtc, [Logger? log]) {
     isUtc: isUtc,
   );
 }
+
+String parseSubmissionId(dynamic data, [Logger? log]) {
+  final s = parseString(data, log).split('_');
+  return s.isEmpty ? '' : s.last;
+}
+
 
 List<String> parseAwardIcons(dynamic data, [Logger? log]) {
   try {
