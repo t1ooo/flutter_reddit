@@ -580,7 +580,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to share');
   }
 
-  SizedImage? previewImage([
+  SizedPreview? previewImage([
     double minWidth = 0,
     double maxWidth = double.infinity,
   ]) {
@@ -590,7 +590,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   // TODO: add height
-  List<SizedImage> images([
+  List<SizedPreview> images([
     double minWidth = 0,
     double maxWidth = double.infinity,
   ]) {
@@ -605,9 +605,28 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
           // : [v.source, ...v.resolutions]
           // ;
 
-          final resolutions = (v.gifs != null
-                  ? [v.gifs!.source, ...v.gifs!.resolutions]
-                  : [v.source, ...v.resolutions])
+          // final items =
+              // v.gifs != null ? v.gifs : (v.images != null ? v.images : null);
+
+          // var items = v.gifs;
+          // if (items == null) {
+          //   items = v.images;
+          // }
+          // if (items == null) {
+          //   return [];
+          // }
+
+          PreviewItem items;
+          if (v.gifs != null) {
+            items = v.gifs!;
+          } else if (v.images != null) {
+            items = v.images!;
+          } else {
+            return [];
+          }
+          print(items.source);
+
+          final resolutions = [items.source, ...items.resolutions]
               .where(
                 (r) =>
                     r.url != '' && minWidth <= r.width && r.width <= maxWidth,
@@ -617,7 +636,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
           // print(resolutions.map((x) => x.width).toList());
           return resolutions.isEmpty ? null : resolutions.first;
         })
-        .whereType<SizedImage>()
+        .whereType<SizedPreview>()
         .toList();
 
     // final images = <String>[];

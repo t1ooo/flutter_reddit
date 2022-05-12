@@ -1,60 +1,88 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
 import 'parse.dart';
 
-// class Preview extends Equatable {
-//   PreviewImages images;
-//   PreviewImages gifs;
+class Preview extends Equatable {
+  PreviewItem? images;
+  PreviewItem? gifs;
+  PreviewItem? mp4;
 
-//   @override
-//   // TODO: implement props
-//   List<Object?> get props => [images. gifs];
-// }
-
-
-class PreviewImages extends Equatable {
-  PreviewImages({
-    required this.source,
-    required this.resolutions,
+  Preview({
+    required this.images,
     required this.gifs,
+    required this.mp4,
   });
 
-  final SizedImage source;
-  final List<SizedImage> resolutions;
-  final PreviewImages? gifs;
+  @override
+  // TODO: implement props
+  List<Object?> get props => [images, gifs, mp4];
 
-  PreviewImages copyWith({
-    SizedImage? source,
-    List<SizedImage>? resolutions,
-    PreviewImages? Function()? gifs,
+  Preview copyWith({
+    PreviewItem? Function()? images,
+    PreviewItem? Function()? gifs,
+    PreviewItem? Function()? mp4,
   }) {
-    return PreviewImages(
+    return Preview(
+      images: images != null ? images() : this.images,
+      gifs: gifs != null ? gifs() : this.gifs,
+      mp4: mp4 != null ? mp4() : this.mp4,
+    );
+  }
+
+  factory Preview.fromJson(Map<String, dynamic> map) {
+    return Preview(
+      images: PreviewItem.fromJsonN(map),
+      gifs: PreviewItem.fromJsonN(map['variants']?['gif']),
+      mp4: PreviewItem.fromJsonN(map['variants']?['mp4']),
+    );
+  }
+}
+
+class PreviewItem extends Equatable {
+  PreviewItem({
+    required this.source,
+    required this.resolutions,
+    // required this.gifs,
+  });
+
+  final SizedPreview source;
+  final List<SizedPreview> resolutions;
+  // final PreviewImages? gifs;
+
+  PreviewItem copyWith({
+    SizedPreview? source,
+    List<SizedPreview>? resolutions,
+    // PreviewImages? Function()? gifs,
+  }) {
+    return PreviewItem(
       source: source ?? this.source,
       resolutions: resolutions ?? this.resolutions,
-      gifs: gifs != null ? gifs() : this.gifs,
+      // gifs: gifs != null ? gifs() : this.gifs,
     );
   }
 
-  factory PreviewImages.fromJson(Map<String, dynamic> m) {
-    return PreviewImages(
-      source: SizedImage.fromJson(m['source']),
-      resolutions: List<SizedImage>.from(
-          m['resolutions']?.map((x) => SizedImage.fromJson(x))),
-      gifs: fromJsonN(m['variants']?['gif']),
+  factory PreviewItem.fromJson(Map<String, dynamic> m) {
+    return PreviewItem(
+      source: SizedPreview.fromJson(m['source']),
+      resolutions: List<SizedPreview>.from(
+          m['resolutions']?.map((x) => SizedPreview.fromJson(x))),
+      // gifs: fromJsonN(m['variants']?['gif']),
     );
   }
 
-  static PreviewImages? fromJsonN(m) {
-    return (m is Map<String, dynamic>) ? PreviewImages.fromJson(m) : null;
+  static PreviewItem? fromJsonN(m) {
+    return (m is Map<String, dynamic>) ? PreviewItem.fromJson(m) : null;
   }
 
   @override
   List<Object> get props => [source, resolutions];
 }
 
-class SizedImage extends Equatable {
-  SizedImage({
+class SizedPreview extends Equatable {
+  SizedPreview({
     required this.url,
     required this.width,
     required this.height,
@@ -66,21 +94,21 @@ class SizedImage extends Equatable {
 
   // static final _log = getLogger('SizedImage');
 
-  SizedImage copyWith({
+  SizedPreview copyWith({
     String? url,
     double? width,
     double? height,
   }) {
-    return SizedImage(
+    return SizedPreview(
       url: url ?? this.url,
       width: width ?? this.width,
       height: height ?? this.height,
     );
   }
 
-  factory SizedImage.fromJson(Map<String, dynamic> m) {
+  factory SizedPreview.fromJson(Map<String, dynamic> m) {
     const f = 'SizedImage';
-    return SizedImage(
+    return SizedPreview(
       url: parseUrl(m['url'], '$f.url'),
       width: parseDouble(m['width'], '$f.width'),
       height: parseDouble(m['height'], '$f.height'),
