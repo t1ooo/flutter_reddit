@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    dart_vlc
     flutter_markdown
     path_provider
     alfred

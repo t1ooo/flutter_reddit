@@ -8,10 +8,12 @@ import 'package:provider/provider.dart';
 import 'src/app.dart';
 import 'src/notifier/reddir_notifier.v4_2.dart';
 import 'src/reddit_api/reddir_api.dart';
+import 'src/widget/video_player.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
+  initVideoPlayer();
 
   // TODO: move to env
   // final credentials = Credentials(

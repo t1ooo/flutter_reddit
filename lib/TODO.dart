@@ -1,7 +1,10 @@
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
 // TODO: youtube video
-// TODO: reddit video
+// "media": {
+//  "type": "youtube.com",
+//  "oembed": ...
+// }
 // TODO: use ListNotifier
 // TODO: generic _voteButton button
 // TODO: draw subreddit(Favorite|Unfavorite)

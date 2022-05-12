@@ -16,8 +16,8 @@ class Video extends Equatable {
 
   final int bitrateKbps;
   final String fallbackUrl;
-  final int height;
-  final int width;
+  final double height;
+  final double width;
   final String scrubberMediaUrl;
   final int duration;
   final bool isGif;
@@ -27,8 +27,8 @@ class Video extends Equatable {
   Video copyWith({
     int? bitrateKbps,
     String? fallbackUrl,
-    int? height,
-    int? width,
+    double? height,
+    double? width,
     String? scrubberMediaUrl,
     int? duration,
     bool? isGif,
@@ -49,8 +49,8 @@ class Video extends Equatable {
     return Video(
       bitrateKbps: parseInt(m['bitrate_kbps'], '$f.bitrate_kbps'),
       fallbackUrl: parseUrl(m['fallback_url'], '$f.fallback_url'),
-      height: parseInt(m['height'], '$f.height'),
-      width: parseInt(m['width'], '$f.width'),
+      height: parseDouble(m['height'], '$f.height'),
+      width: parseDouble(m['width'], '$f.width'),
       scrubberMediaUrl: parseUrl(m['scrubber_media_url'], '$f.scrubber_media_url'),
       duration: parseInt(m['duration'], '$f.duration'),
       isGif: parseBool(m['is_gif'], '$f.is_gif'),
