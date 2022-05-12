@@ -3,22 +3,36 @@ import 'package:equatable/equatable.dart';
 import '../logging/logging.dart';
 import 'parse.dart';
 
+// class Preview extends Equatable {
+//   PreviewImages images;
+//   PreviewImages gifs;
+
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [images. gifs];
+// }
+
+
 class PreviewImages extends Equatable {
   PreviewImages({
     required this.source,
     required this.resolutions,
+    required this.gifs,
   });
 
   final SizedImage source;
   final List<SizedImage> resolutions;
+  final PreviewImages? gifs;
 
   PreviewImages copyWith({
     SizedImage? source,
     List<SizedImage>? resolutions,
+    PreviewImages? Function()? gifs,
   }) {
     return PreviewImages(
       source: source ?? this.source,
       resolutions: resolutions ?? this.resolutions,
+      gifs: gifs != null ? gifs() : this.gifs,
     );
   }
 
@@ -26,8 +40,13 @@ class PreviewImages extends Equatable {
     return PreviewImages(
       source: SizedImage.fromJson(m['source']),
       resolutions: List<SizedImage>.from(
-          m['resolutions']?.map((x) => SizedImage.fromJson(x)) ?? const []),
+          m['resolutions']?.map((x) => SizedImage.fromJson(x))),
+      gifs: fromJsonN(m['variants']?['gif']),
     );
+  }
+
+  static PreviewImages? fromJsonN(m) {
+    return (m is Map<String, dynamic>) ? PreviewImages.fromJson(m) : null;
   }
 
   @override

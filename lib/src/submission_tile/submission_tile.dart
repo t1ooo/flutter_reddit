@@ -1,32 +1,28 @@
-import 'dart:developer';
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_reddit_prototype/src/logging/logging.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
 import 'package:flutter_reddit_prototype/src/widget/debug.dart';
-import 'package:flutter_reddit_prototype/src/widget/loader.dart';
-import 'package:flutter_reddit_prototype/src/widget/video_player.dart';
-import 'package:provider/provider.dart';
 
-import '../logger.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/vote.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
-import '../subreddit/subreddit_icon.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/icon_text.dart';
+
 import '../widget/network_image.dart';
+import 'media.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
@@ -52,6 +48,7 @@ class SubmissionTile extends StatelessWidget {
             header(context, notifier),
             // SizedBox(height: 10),
             whenDebug(() => Text(submission.postHint.toString())),
+            whenDebug(() => Text(submission.url)),
             Awards(
               awardIcons: submission.awardIcons,
               totalAwardsReceived: submission.totalAwardsReceived,
@@ -98,11 +95,13 @@ class SubmissionTile extends StatelessWidget {
   }
 
   Widget _media(BuildContext context, SubmissionNotifierQ notifier) {
+    final submission = notifier.submission;
+
     final minWidth = 200.0;
     final previewImage = notifier.previewImage(minWidth, _maxWidth(context));
 
-    if (notifier.submission.isVideo) {
-      final video = notifier.submission.video;
+    if (submission.postHint == PostHint.hostedVideo) {
+      final video = submission.video;
       if (video == null || video.fallbackUrl == '') {
         return Container();
       }
@@ -116,7 +115,7 @@ class SubmissionTile extends StatelessWidget {
         width: width,
         height: height,
         // scale: scale,
-        previewImage: previewImage,
+        previewImageUrl: previewImage?.url,
       );
     }
 
@@ -128,20 +127,40 @@ class SubmissionTile extends StatelessWidget {
     final width = size[0];
     final height = size[1];
 
-    return Center(
-      child: CustomNetworkImage(
-        previewImage.url,
-        onData: (_, image) {
-          return Image(
-            image: image,
-            width: width,
-            height: height,
-            fit: BoxFit.fitWidth,
-            errorBuilder: imageErrorBuilder,
-          );
+    if (submission.postHint == PostHint.richVideo) {
+      return TapableImage(
+        width: width,
+        height: height,
+        // url: notifier.submission.url,
+        imageUrl: previewImage.url,
+        icon: Icons.open_in_new,
+        onTap: () {
+          launch(notifier.submission.url);
         },
-      ),
+      );
+    }
+
+    return SizedImageWidget(
+      width: width,
+      height: height,
+      imageUrl: previewImage.url,
     );
+
+    // return Center(
+    //   child: CustomNetworkImage(
+    //     previewImage.url,
+    //     onData: (_, image) {
+    //       return Image(
+    //         image: image,
+    //         width: width,
+    //         height: height,
+    //         // fit: BoxFit.fitWidth,
+    //         fit: BoxFit.contain,
+    //         errorBuilder: imageErrorBuilder,
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   Widget _video(BuildContext context, SubmissionNotifierQ notifier) {
@@ -167,7 +186,7 @@ class SubmissionTile extends StatelessWidget {
       width: width,
       height: height,
       // scale: scale,
-      previewImage: previewImage,
+      previewImageUrl: previewImage?.url,
     );
   }
 
@@ -194,7 +213,9 @@ class SubmissionTile extends StatelessWidget {
     final widthScale = maxWidth / width;
 
     final maxScale = 5.0;
+    print([maxScale, heightScale, widthScale]);
     final scale = min(maxScale, min(heightScale, widthScale));
+    // final scale = min(maxScale, max(heightScale, widthScale));
 
     return [width * scale, height * scale];
   }

@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'network_image.dart';
+
+class ImageLink extends StatelessWidget {
+  ImageLink({
+    Key? key,
+    required this.width,
+    required this.height,
+    required this.url,
+    required this.imageUrl,
+  }) : super(key: key);
+
+  final String url;
+  final String imageUrl;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    // const iconSize = 100.0;
+
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          launch(url);
+        },
+        child: Stack(
+          children: [
+            CustomNetworkImage(
+              imageUrl,
+              onData: (_, image) {
+                return Image(
+                  image: image,
+                  width: width,
+                  height: height,
+                  fit: BoxFit.contain,
+                  errorBuilder: imageErrorBuilder,
+                );
+              },
+            ),
+            // Positioned(
+            //   top: (height - iconSize) / 2,
+            //   left: (width - iconSize) / 2,
+            //   child: Icon(
+            //     Icons.open_in_new,
+            //     color: Colors.white,
+            //     size: iconSize,
+            //   ),
+            // ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.open_in_new,
+                  color: Colors.white,
+                  size: 100,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

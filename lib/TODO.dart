@@ -1,3 +1,4 @@
+// TODO: show comment link_url image
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
 // TODO: youtube video

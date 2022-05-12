@@ -597,7 +597,17 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     return _submission.preview
         .map((v) {
           // print(v.resolutions);
-          final resolutions = [v.source, ...v.resolutions]
+          // if (v.source.url.contains('.gif?') || v.source.url.contains('.gifv?')) {
+          //   return v.source.copyWith(url:submission.url);
+          // }
+          // var resolutions = v.gifs != null
+          // ?  [v.gifs!.source, ...v.gifs!.resolutions]
+          // : [v.source, ...v.resolutions]
+          // ;
+
+          final resolutions = (v.gifs != null
+                  ? [v.gifs!.source, ...v.gifs!.resolutions]
+                  : [v.source, ...v.resolutions])
               .where(
                 (r) =>
                     r.url != '' && minWidth <= r.width && r.width <= maxWidth,

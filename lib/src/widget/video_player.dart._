@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/widget/media_image.dart';
 
 import '../reddit_api/preview_images.dart';
 import 'network_image.dart';
@@ -20,14 +21,15 @@ class VideoPlayer extends StatefulWidget {
     required this.width,
     required this.height,
     this.scale = 1.0,
-    this.previewImage,
+    this.previewImageUrl,
   }) : super(key: key);
 
   final String videoUrl;
   final double width;
   final double height;
   final double scale;
-  final SizedImage? previewImage;
+  // final SizedImage? previewImage;
+  final String? previewImageUrl;
 
   @override
   State<VideoPlayer> createState() => _VideoPlayerState();
@@ -82,14 +84,14 @@ class _VideoPlayerState extends State<VideoPlayer> {
         volumeActiveColor: Colors.blue,
         fillColor: Colors.white,
         showControls: true,
-        fit: BoxFit.none,
+        fit: BoxFit.contain,
       ),
     );
   }
 
   Widget? _previewImage(BuildContext context) {
-    final previewImage = widget.previewImage;
-    if (_showPlayer || previewImage == null) {
+    final previewImageUrl = widget.previewImageUrl;
+    if (_showPlayer || previewImageUrl == null) {
       return null;
     }
 
@@ -99,41 +101,54 @@ class _VideoPlayerState extends State<VideoPlayer> {
     // final maxScale = 5;
     // final width = min(previewImage.width * maxScale, screenWidth);
 
-    final iconSize = 100.0;
-    return Center(
-      child: GestureDetector(
-        onTap: () {
+    return MediaImage(
+      width: widget.width,
+      height: widget.height,
+      imageUrl: previewImageUrl,
+      icon: Icons.play_circle,
+      onTap: () {
           setState(() {
             _showPlayer = true;
             _player.play();
           });
         },
-        child: Stack(
-          children: [
-            CustomNetworkImage(
-              previewImage.url,
-              onData: (_, image) {
-                return Image(
-                  image: image,
-                  width: widget.width,
-                  height: widget.height,
-                  fit: BoxFit.none,
-                  errorBuilder: imageErrorBuilder,
-                );
-              },
-            ),
-            Positioned(
-              top: (widget.height - iconSize) / 2,
-              left: (widget.width - iconSize) / 2,
-              child: Icon(
-                Icons.play_circle,
-                color: Colors.white,
-                size: iconSize,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
+
+    // final iconSize = 100.0;
+    // return Center(
+    //   child: GestureDetector(
+    //     onTap: () {
+    //       setState(() {
+    //         _showPlayer = true;
+    //         _player.play();
+    //       });
+    //     },
+    //     child: Stack(
+    //       children: [
+    //         CustomNetworkImage(
+    //           previewImage.url,
+    //           onData: (_, image) {
+    //             return Image(
+    //               image: image,
+    //               width: widget.width,
+    //               height: widget.height,
+    //               fit: BoxFit.none,
+    //               errorBuilder: imageErrorBuilder,
+    //             );
+    //           },
+    //         ),
+    //         Positioned(
+    //           top: (widget.height - iconSize) / 2,
+    //           left: (widget.width - iconSize) / 2,
+    //           child: Icon(
+    //             Icons.play_circle,
+    //             color: Colors.white,
+    //             size: iconSize,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
