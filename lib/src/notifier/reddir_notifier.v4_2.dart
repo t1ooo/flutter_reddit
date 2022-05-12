@@ -589,6 +589,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     return images_.isEmpty ? null : images_.first;
   }
 
+  // TODO: add height
   List<SizedImage> images([
     double minWidth = 0,
     double maxWidth = double.infinity,
@@ -596,7 +597,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     return _submission.preview
         .map((v) {
           // print(v.resolutions);
-          final resolutions = v.resolutions
+          final resolutions = [v.source, ...v.resolutions]
               .where(
                 (r) =>
                     r.url != '' && minWidth <= r.width && r.width <= maxWidth,
