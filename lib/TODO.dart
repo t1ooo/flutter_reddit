@@ -2,7 +2,7 @@
 // TODO: active submission url (to external resource)
 // TODO: youtube video
 // "media": {
-//  "type": "youtube.com",
+//  "type": "youtube.com", | "twitter.com",
 //  "oembed": ...
 // }
 // TODO: use ListNotifier
