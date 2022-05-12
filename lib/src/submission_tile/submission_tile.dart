@@ -9,6 +9,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
 import 'package:flutter_reddit_prototype/src/widget/awards.dart';
+import 'package:flutter_reddit_prototype/src/widget/debug.dart';
 import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:flutter_reddit_prototype/src/widget/video_player.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ class SubmissionTile extends StatelessWidget {
           children: [
             header(context, notifier),
             // SizedBox(height: 10),
+            whenDebug(() => Text(submission.postHint.toString())),
             Awards(
               awardIcons: submission.awardIcons,
               totalAwardsReceived: submission.totalAwardsReceived,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 
 import '../logging/logging.dart';
 import 'preview_images.dart';
@@ -313,8 +314,34 @@ bool parseBool(dynamic data, [String? name]) {
 }
 
 List<String> parseListString(dynamic data, [String? name]) {
+  if (data == null) {
+    return [];
+  }
   if (!(data is List)) {
+    _log('fail to parse List<string>: $data', name);
     return [];
   }
   return data.map((v) => parseString(v, name)).where((v) => v != '').toList();
+}
+
+PostHint parsePostHint(dynamic data, [String? name]) {
+  if (data == null) {
+    return PostHint.none;
+  }
+
+  switch (data) {
+    case 'hosted:video':
+      return PostHint.hostedVideo;
+    case 'image':
+      return PostHint.image;
+    case 'link':
+      return PostHint.link;
+    case 'rich:video':
+      return PostHint.richVideo;
+    case 'self':
+      return PostHint.self;
+  }
+
+  _log('fail to parse post hint: $data', name);
+  return PostHint.none;
 }

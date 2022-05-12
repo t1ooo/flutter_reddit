@@ -1,5 +1,6 @@
 import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
 
 import '../logging/logging.dart';
@@ -41,6 +42,7 @@ class Submission extends Equatable {
     required this.saved,
     required this.preview,
     required this.video,
+    required this.postHint,
     // required this.shortLink,
   });
 
@@ -75,6 +77,7 @@ class Submission extends Equatable {
   // final String shortLink;
   final List<PreviewImages> preview;
   final Video? video;
+  final PostHint postHint;
 
   // static final _log = getLogger('Submission');
 
@@ -131,6 +134,7 @@ class Submission extends Equatable {
       // type: type,
       preview: parsePreview(m['preview'], '$f.preview'),
       video: parseVideo(m['media'], '$f.media'),
+      postHint: parsePostHint(m['post_hint'], '$f.post_hint'),
       comments: comments,
     );
   }
@@ -178,6 +182,7 @@ class Submission extends Equatable {
       shortLink,
       preview,
       video,
+      postHint,
     ];
   }
 
@@ -211,6 +216,7 @@ class Submission extends Equatable {
     List<Comment>? comments,
     List<PreviewImages>? preview,
     Video? Function()? video,
+    PostHint? postHint,
   }) {
     return Submission(
       author: author ?? this.author,
@@ -244,6 +250,7 @@ class Submission extends Equatable {
       preview: preview ?? this.preview,
       // video: video != null ? video.value : this.video,
       video: video != null ? video() : this.video,
+      postHint: postHint ?? this.postHint,
     );
   }
 }
