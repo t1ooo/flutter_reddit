@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    carousel_slider
     dart_vlc
     flutter_markdown
     path_provider

@@ -113,8 +113,28 @@ class SubmissionTile extends StatelessWidget {
     // final maxHeight = constraints.maxHeight;
     // final maxWidth = MediaQuery.of(context).size.width * 0.9;
     final maxWidth = constraints.maxWidth;
-
     final minWidth = 200.0;
+
+    if (submission.postHint == PostHint.image) {
+      final images = notifier.images(minWidth, maxWidth);
+      if (images == []) {
+        return null;
+      }
+      final size = _calcSize(
+        maxWidth: maxWidth,
+        maxHeight: maxHeight,
+        width: images[0].width,
+        height: images[0].height,
+      );
+      return ImageSlider(
+        imageUrls: [...images, ...images].map((v)=>v.url).toList(),
+        width: size.width,
+        height: size.height,
+      );
+    }
+
+
+    
     final previewImage = notifier.previewImage(minWidth, maxWidth);
 
     if (submission.postHint == PostHint.hostedVideo) {

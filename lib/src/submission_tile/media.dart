@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -460,6 +461,126 @@ class ExternalLink extends StatelessWidget {
         SizedBox(width: 5),
         Icon(Icons.open_in_new),
       ]),
+    );
+  }
+}
+
+class ImageSlider extends StatefulWidget {
+  const ImageSlider({
+    Key? key,
+    required this.imageUrls,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
+
+  final List<String> imageUrls;
+  final double width;
+  final double height;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ImageSliderState();
+  }
+}
+
+class _ImageSliderState extends State<ImageSlider> {
+  final _controller = CarouselController();
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    // _controller.jumpToPage(0);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CarouselSlider(
+          // items: imageSliders,
+          items: [
+            for (final imageUrl in widget.imageUrls)
+              SizedNetworkImage(
+                imageUrl: imageUrl,
+                width: widget.width,
+                height: widget.height,
+              ),
+          ],
+          options: CarouselOptions(
+            enlargeCenterPage: false,
+            height: widget.height,
+            viewportFraction: 1.0,
+            enableInfiniteScroll: false,
+          ),
+          carouselController: _controller,
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Row(
+              children: [
+                if (_currentPage > 0)
+                  // if (_controller.hasPrevious)
+                  IconButton(
+                    onPressed: () {
+                      _controller.previousPage();
+                      setState(() {
+                        _currentPage -= 1;
+                      });
+                      // print(_currentPage);
+                    },
+                    icon: Container(
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      ),
+                      decoration: ShapeDecoration(
+                        shadows: [
+                          BoxShadow(
+                            color: Colors.white,
+                            blurRadius: 15,
+                            spreadRadius: 15,
+                          )
+                        ],
+                        shape: CircleBorder(),
+                      ),
+                    ),
+                  ),
+                Spacer(),
+                if (_currentPage + 1 < widget.imageUrls.length)
+                  // if (_controller.hasNext)
+                  IconButton(
+                    onPressed: () {
+                      _controller.nextPage();
+                      setState(() {
+                        _currentPage += 1;
+                      });
+                      // print(_currentPage);
+                    },
+                    icon: Container(
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.black87,
+                      ),
+                      decoration: ShapeDecoration(
+                        shadows: [
+                          BoxShadow(
+                            color: Colors.white,
+                            blurRadius: 15,
+                            spreadRadius: 15,
+                          )
+                        ],
+                        // shape: CircleBorder(side: BorderSide()),
+                        shape: CircleBorder(),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
