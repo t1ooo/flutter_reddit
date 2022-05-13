@@ -2,8 +2,9 @@ import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 
 import '../logger.dart';
 import '../style/style.dart';
@@ -299,7 +300,10 @@ class ImageLink extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
-                        Text(host, style: TextStyle(color: Colors.white)),
+                        Text(
+                          host,
+                          style: TextStyle(color: Colors.white),
+                        ),
                         Spacer(),
                         Icon(
                           Icons.open_in_new,
@@ -372,23 +376,25 @@ class SizedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNetworkImageBuilder(
-      imageUrl,
-      builder: (_, image, error) {
-        if (image != null) {
-          return Image(
-            image: image,
-            width: width,
-            height: height,
-            fit: _fit,
-            errorBuilder: errorBuilder,
-          );
-        }
-        if (error != null) {
-          return errorBuilder(context, error);
-        }
-        return Container(width: width, height: height);
-      },
+    return Center(
+      child: CustomNetworkImageBuilder(
+        imageUrl,
+        builder: (_, image, error) {
+          if (image != null) {
+            return Image(
+              image: image,
+              width: width,
+              height: height,
+              fit: _fit,
+              errorBuilder: errorBuilder,
+            );
+          }
+          if (error != null) {
+            return errorBuilder(context, error);
+          }
+          return Container(width: width, height: height);
+        },
+      ),
     );
   }
 
@@ -429,3 +435,31 @@ class SizedNetworkImage extends StatelessWidget {
 //     ),
 //   );
 // }
+
+class ExternalLink extends StatelessWidget {
+  ExternalLink({
+    Key? key,
+    required this.url,
+  }) : super(key: key);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        launch(url);
+      },
+      child: Row(children: [
+        Flexible(
+          child: Text(
+            url,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        SizedBox(width: 5),
+        Icon(Icons.open_in_new),
+      ]),
+    );
+  }
+}

@@ -73,13 +73,19 @@ class SubmissionTile extends StatelessWidget {
                   : null,
               child: Text(submission.title, textScaleFactor: 1.8),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
+            // if (submission.postHint == PostHint.link) ...[
+            //   ExternalLink(
+            //     url: submission.url,
+            //   ),
+            //   SizedBox(height: 15),
+            // ],
             // if (submission.thumbnail != '')
             // CustomNetworkImageBuilder(submission.thumbnail),
             // _video(context, notifier),
             // _previewImage(context, notifier),
             LayoutBuilder(builder: (context, constraints) {
-              return _media(context, constraints, notifier);
+              return _media(context, constraints, notifier) ?? Container();
             }),
             SizedBox(height: 10),
             // Text(submission.desc),
@@ -96,7 +102,7 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  Widget _media(
+  Widget? _media(
     BuildContext context,
     BoxConstraints constraints,
     SubmissionNotifierQ notifier,
@@ -114,7 +120,7 @@ class SubmissionTile extends StatelessWidget {
     if (submission.postHint == PostHint.hostedVideo) {
       final video = submission.video;
       if (video == null || video.fallbackUrl == '') {
-        return Container();
+        return null;
       }
 
       final size = _calcSize(
@@ -134,7 +140,10 @@ class SubmissionTile extends StatelessWidget {
     }
 
     if (previewImage == null) {
-      return Container();
+      if (submission.postHint == PostHint.link) {
+        return ExternalLink(url: submission.url);
+      }
+      return null;
     }
 
     final size = _calcSize(
@@ -166,12 +175,10 @@ class SubmissionTile extends StatelessWidget {
       );
     }
 
-    return Center(
-      child: SizedNetworkImage(
-        width: size.width,
-        height: size.height,
-        imageUrl: previewImage.url,
-      ),
+    return SizedNetworkImage(
+      width: size.width,
+      height: size.height,
+      imageUrl: previewImage.url,
     );
 
     // return Center(
