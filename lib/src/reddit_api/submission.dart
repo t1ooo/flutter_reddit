@@ -134,7 +134,7 @@ class Submission extends Equatable {
       // type: type,
       preview: parsePreview(m['preview'], '$f.preview'),
       video: parseVideo(m['media'], '$f.media'),
-      postHint: parsePostHint(m['post_hint'], '$f.post_hint'),
+      postHint: parsePostHint(m['post_hint'], m['url'], '$f.post_hint'),
       comments: comments,
     );
   }

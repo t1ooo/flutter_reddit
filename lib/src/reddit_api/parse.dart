@@ -136,7 +136,7 @@ String parseUrl(dynamic data, [String? name]) {
   //   _log('fail to parse uri: $data', name);
   //   return '';
   // }
-  if (!data.startsWith('http')) {
+  if (!(data.startsWith('http://') || data.startsWith('https://'))) {
     _log('fail to parse uri: $data', name);
     return '';
   }
@@ -324,7 +324,7 @@ List<String> parseListString(dynamic data, [String? name]) {
   return data.map((v) => parseString(v, name)).where((v) => v != '').toList();
 }
 
-PostHint parsePostHint(dynamic data, [String? name]) {
+PostHint parsePostHint(dynamic data, dynamic url, [String? name]) {
   if (data == null) {
     return PostHint.none;
   }
@@ -335,7 +335,7 @@ PostHint parsePostHint(dynamic data, [String? name]) {
     case 'image':
       return PostHint.image;
     case 'link':
-      return PostHint.link;
+      return (parseUrl(url) != '') ? PostHint.link : PostHint.self;
     case 'rich:video':
       return PostHint.richVideo;
     case 'self':
