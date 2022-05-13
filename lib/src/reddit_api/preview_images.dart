@@ -73,7 +73,7 @@ class PreviewItem extends Equatable {
     );
   }
 
-  static PreviewItem? fromJsonN(m) {
+  static PreviewItem? fromJsonN(dynamic m) {
     return (m is Map<String, dynamic>) ? PreviewItem.fromJson(m) : null;
   }
 

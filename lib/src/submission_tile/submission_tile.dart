@@ -78,7 +78,9 @@ class SubmissionTile extends StatelessWidget {
             // CustomNetworkImageBuilder(submission.thumbnail),
             // _video(context, notifier),
             // _previewImage(context, notifier),
-            _media(context, notifier),
+            LayoutBuilder(builder: (context, constraints) {
+              return _media(context, constraints, notifier);
+            }),
             SizedBox(height: 10),
             // Text(submission.desc),
             Text(
@@ -94,11 +96,20 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  Widget _media(BuildContext context, SubmissionNotifierQ notifier) {
+  Widget _media(
+    BuildContext context,
+    BoxConstraints constraints,
+    SubmissionNotifierQ notifier,
+  ) {
     final submission = notifier.submission;
 
+    final maxHeight = MediaQuery.of(context).size.height * 0.7;
+    // final maxHeight = constraints.maxHeight;
+    // final maxWidth = MediaQuery.of(context).size.width * 0.9;
+    final maxWidth = constraints.maxWidth;
+
     final minWidth = 200.0;
-    final previewImage = notifier.previewImage(minWidth, _maxWidth(context));
+    final previewImage = notifier.previewImage(minWidth, maxWidth);
 
     if (submission.postHint == PostHint.hostedVideo) {
       final video = submission.video;
@@ -106,14 +117,17 @@ class SubmissionTile extends StatelessWidget {
         return Container();
       }
 
-      final size = _calcSize(context, video.width, video.height);
-      final width = size[0];
-      final height = size[1];
+      final size = _calcSize(
+        maxWidth: maxWidth,
+        maxHeight: maxHeight,
+        width: video.width,
+        height: video.height,
+      );
 
       return VideoPlayer(
         videoUrl: video.fallbackUrl,
-        width: width,
-        height: height,
+        width: size.width,
+        height: size.height,
         // scale: scale,
         previewImageUrl: previewImage?.url,
       );
@@ -123,27 +137,41 @@ class SubmissionTile extends StatelessWidget {
       return Container();
     }
 
-    final size = _calcSize(context, previewImage.width, previewImage.height);
-    final width = size[0];
-    final height = size[1];
+    final size = _calcSize(
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      width: previewImage.width,
+      height: previewImage.height,
+    );
 
-    if (submission.postHint == PostHint.richVideo) {
-      return TapableImage(
-        width: width,
-        height: height,
+    if (submission.postHint == PostHint.richVideo ||
+        submission.postHint == PostHint.link) {
+      // return TapableImage(
+      //   width: width,
+      //   height: height,
+      //   // url: notifier.submission.url,
+      //   imageUrl: previewImage.url,
+      //   icon: Icons.open_in_new,
+      //   onTap: () {
+      //     launch(notifier.submission.url);
+      //   },
+      // );
+
+      return ImageLink(
+        width: size.width,
+        height: size.height,
         // url: notifier.submission.url,
         imageUrl: previewImage.url,
-        icon: Icons.open_in_new,
-        onTap: () {
-          launch(notifier.submission.url);
-        },
+        url: notifier.submission.url,
       );
     }
 
-    return SizedImageWidget(
-      width: width,
-      height: height,
-      imageUrl: previewImage.url,
+    return Center(
+      child: SizedNetworkImage(
+        width: size.width,
+        height: size.height,
+        imageUrl: previewImage.url,
+      ),
     );
 
     // return Center(
@@ -163,7 +191,7 @@ class SubmissionTile extends StatelessWidget {
     // );
   }
 
-  Widget _video(BuildContext context, SubmissionNotifierQ notifier) {
+  /* Widget _video(BuildContext context, SubmissionNotifierQ notifier) {
     final video = notifier.submission.video;
     if (video == null) {
       return Container();
@@ -188,13 +216,19 @@ class SubmissionTile extends StatelessWidget {
       // scale: scale,
       previewImageUrl: previewImage?.url,
     );
-  }
+  } */
 
-  double _maxHeight(BuildContext context) =>
-      MediaQuery.of(context).size.height * 0.8;
-  double _maxWidth(BuildContext context) => MediaQuery.of(context).size.width;
+  // double _maxHeight(BuildContext context) =>
+  //     MediaQuery.of(context).size.height * 0.8;
+  // double _maxWidth(BuildContext context) =>
+  //     MediaQuery.of(context).size.width * 0.9;
 
-  List<double> _calcSize(BuildContext context, double width, double height) {
+  Size _calcSize({
+    required double maxHeight,
+    required double maxWidth,
+    required double width,
+    required double height,
+  }) {
     /* final screenWidth = MediaQuery.of(context).size.width;
     
     final maxScale = 5;
@@ -206,21 +240,24 @@ class SubmissionTile extends StatelessWidget {
     final minWidth = 200.0;
     final previewImage = notifier.previewImage(minWidth, screenWidth); */
 
-    final maxHeight = _maxHeight(context);
-    final maxWidth = _maxWidth(context);
+    // final maxHeight = _maxHeight(context);
+    // final maxWidth = _maxWidth(context);
 
     final heightScale = maxHeight / height;
     final widthScale = maxWidth / width;
 
     final maxScale = 5.0;
-    print([maxScale, heightScale, widthScale]);
+    // print([maxScale, heightScale, widthScale]);
     final scale = min(maxScale, min(heightScale, widthScale));
     // final scale = min(maxScale, max(heightScale, widthScale));
 
-    return [width * scale, height * scale];
+    // print([width, width * scale, height * scale, height]);
+
+    // return [width * scale, height * scale];
+    return Size(width * scale, height * scale);
   }
 
-  Widget _previewImage(BuildContext context, SubmissionNotifierQ notifier) {
+  /* Widget _previewImage(BuildContext context, SubmissionNotifierQ notifier) {
     final minWidth = 200.0;
     final screenWidth = MediaQuery.of(context).size.width;
     final previewImage = notifier.previewImage(minWidth, screenWidth);
@@ -248,7 +285,7 @@ class SubmissionTile extends StatelessWidget {
         },
       ),
     );
-  }
+  } */
 
   Widget header(BuildContext context, SubmissionNotifierQ notifier) {
     final submission = notifier.submission;

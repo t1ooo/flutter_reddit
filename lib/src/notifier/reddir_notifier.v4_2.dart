@@ -624,7 +624,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
           } else {
             return [];
           }
-          print(items.source);
+          // print(items.source);
 
           final resolutions = [items.source, ...items.resolutions]
               .where(
