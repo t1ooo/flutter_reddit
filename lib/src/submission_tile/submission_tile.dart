@@ -115,7 +115,101 @@ class SubmissionTile extends StatelessWidget {
     final maxWidth = constraints.maxWidth;
     final minWidth = 200.0;
 
-    if (submission.postHint == PostHint.image) {
+    switch (submission.postHint) {
+      case PostHint.none:
+        return null;
+
+      case PostHint.hostedVideo:
+        final video = submission.video;
+        if (video == null || video.fallbackUrl == '') {
+          return null;
+        }
+
+        final size = _calcSize(
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          width: video.width,
+          height: video.height,
+        );
+
+        final previewImage = notifier.previewImage(minWidth, maxWidth);
+
+        return VideoPlayer(
+          videoUrl: video.fallbackUrl,
+          width: size.width,
+          height: size.height,
+          // scale: scale,
+          previewImageUrl: previewImage?.url,
+        );
+
+      case PostHint.image:
+        // final images = notifier.images(minWidth, maxWidth);
+        // if (images == []) {
+        //   return null;
+        // }
+        // final size = _calcSize(
+        //   maxWidth: maxWidth,
+        //   maxHeight: maxHeight,
+        //   width: images[0].width,
+        //   height: images[0].height,
+        // );
+        final images = notifier.images(minWidth, maxWidth).map((img) {
+          final size = _calcSize(
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            width: img.width,
+            height: img.height,
+          );
+          return img.copyWith(width: size.width, height: size.height);
+        }).toList();
+        if (images.isEmpty) {
+          return null;
+        }
+        final height = images.map((v) => v.height).reduce(max);
+        return ImageSlider(
+          // imageUrls: [...images, ...images].map((v) => v.url).toList(),
+          items: [
+            for (final image in images)
+              SizedNetworkImage(
+                imageUrl: image.url,
+                width: image.width,
+                height: image.height,
+              ),
+          ],
+          // width: size.width,
+          height: height,
+        );
+
+      case PostHint.link:
+      case PostHint.richVideo:
+        final previewImage = notifier.previewImage(minWidth, maxWidth);
+        if (previewImage == null) {
+          if (submission.postHint == PostHint.link) {
+            return ExternalLink(url: submission.url);
+          }
+          return null;
+        }
+
+        final size = _calcSize(
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          width: previewImage.width,
+          height: previewImage.height,
+        );
+
+        return ImageLink(
+          width: size.width,
+          height: size.height,
+          // url: notifier.submission.url,
+          imageUrl: previewImage.url,
+          url: notifier.submission.url,
+        );
+
+      case PostHint.self:
+        return null;
+    }
+
+    /* if (submission.postHint == PostHint.image) {
       final images = notifier.images(minWidth, maxWidth);
       if (images == []) {
         return null;
@@ -127,14 +221,12 @@ class SubmissionTile extends StatelessWidget {
         height: images[0].height,
       );
       return ImageSlider(
-        imageUrls: [...images, ...images].map((v)=>v.url).toList(),
+        imageUrls: [...images, ...images].map((v) => v.url).toList(),
         width: size.width,
         height: size.height,
       );
     }
 
-
-    
     final previewImage = notifier.previewImage(minWidth, maxWidth);
 
     if (submission.postHint == PostHint.hostedVideo) {
@@ -199,7 +291,7 @@ class SubmissionTile extends StatelessWidget {
       width: size.width,
       height: size.height,
       imageUrl: previewImage.url,
-    );
+    ); */
 
     // return Center(
     //   child: CustomNetworkImage(

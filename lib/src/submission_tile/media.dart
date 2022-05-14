@@ -468,13 +468,15 @@ class ExternalLink extends StatelessWidget {
 class ImageSlider extends StatefulWidget {
   const ImageSlider({
     Key? key,
-    required this.imageUrls,
-    required this.width,
+    // required this.imageUrls,
+    required this.items,
+    // required this.width,
     required this.height,
   }) : super(key: key);
 
-  final List<String> imageUrls;
-  final double width;
+  // final List<String> imageUrls;
+  final List<Widget> items;
+  // final double width;
   final double height;
 
   @override
@@ -499,14 +501,15 @@ class _ImageSliderState extends State<ImageSlider> {
       children: [
         CarouselSlider(
           // items: imageSliders,
-          items: [
-            for (final imageUrl in widget.imageUrls)
-              SizedNetworkImage(
-                imageUrl: imageUrl,
-                width: widget.width,
-                height: widget.height,
-              ),
-          ],
+          // items: [
+          //   for (final imageUrl in widget.imageUrls)
+          //     SizedNetworkImage(
+          //       imageUrl: imageUrl,
+          //       width: widget.width,
+          //       height: widget.height,
+          //     ),
+          // ],
+          items: widget.items,
           options: CarouselOptions(
             enlargeCenterPage: false,
             height: widget.height,
@@ -548,7 +551,7 @@ class _ImageSliderState extends State<ImageSlider> {
                     ),
                   ),
                 Spacer(),
-                if (_currentPage + 1 < widget.imageUrls.length)
+                if (_currentPage + 1 < widget.items.length)
                   // if (_controller.hasNext)
                   IconButton(
                     onPressed: () {
