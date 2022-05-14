@@ -115,7 +115,7 @@ class SubmissionTile extends StatelessWidget {
     final minWidth = 200.0;
 
     final images = notifier.images(minWidth, maxWidth);
-    final previewImage = images.isEmpty ? null : images.first;
+    final previewImage = images.isEmpty ? null : images.first.preview;
 
     Size _adjustSize(double width, double height) => adjustSize(
           maxWidth: maxWidth,
@@ -142,16 +142,18 @@ class SubmissionTile extends StatelessWidget {
           return null;
         }
 
-        final sizes =
-            images.map((v) => _adjustSize(v.width, v.height)).toList();
+        final sizes = images
+            .map((v) => _adjustSize(v.preview.width, v.preview.height))
+            .toList();
         final maxHeight = sizes.map((v) => v.height).reduce(max);
 
         return ImageSlider(
           items: [
             for (int i = 0; i < images.length; i++)
               FullScreenImage(
-                imageUrl: images[i].url,
-                size: sizes[i],
+                imageUrl: images[i].image.url,
+                previewImageUrl: images[i].preview.url,
+                previewSize: sizes[i],
               ),
           ],
           height: maxHeight,

@@ -8,9 +8,9 @@ import 'package:share_plus/share_plus.dart';
 import '../logging/logging.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/message.dart';
+import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
-import '../reddit_api/preview_images.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
@@ -424,6 +424,12 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 //   }
 // }
 
+class PreviewImage {
+  final PreviewItem image;
+  final PreviewItem preview;
+  PreviewImage(this.image, this.preview);
+}
+
 class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
@@ -591,67 +597,48 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   } */
 
   // TODO: add height
-  List<PreviewItem> images([
+  List<PreviewImage> images([
     double minWidth = 0,
     double maxWidth = double.infinity,
   ]) {
     return _submission.preview
-        .map((v) {
-          // print(v.resolutions);
-          // if (v.source.url.contains('.gif?') || v.source.url.contains('.gifv?')) {
-          //   return v.source.copyWith(url:submission.url);
-          // }
-          // var resolutions = v.gifs != null
-          // ?  [v.gifs!.source, ...v.gifs!.resolutions]
-          // : [v.source, ...v.resolutions]
-          // ;
+        .map(
+          (v) {
+            Preview items;
+            if (v.gifs != null) {
+              items = v.gifs!;
+            } else if (v.images != null) {
+              items = v.images!;
+            } else {
+              return [];
+            }
 
-          // final items =
-              // v.gifs != null ? v.gifs : (v.images != null ? v.images : null);
+            final resolutions = [items.source, ...items.resolutions.reversed];
+            resolutions.sort((a, b) => (b.width - a.width).toInt());
 
-          // var items = v.gifs;
-          // if (items == null) {
-          //   items = v.images;
-          // }
-          // if (items == null) {
-          //   return [];
-          // }
+            for(final img in resolutions) {
+              if (minWidth <= img.width && img.width <= maxWidth) {
+                  return PreviewImage(items.source, img);
+              }
+            }
 
-          Preview items;
-          if (v.gifs != null) {
-            items = v.gifs!;
-          } else if (v.images != null) {
-            items = v.images!;
-          } else {
-            return [];
-          }
-          // print(items.source);
+            return PreviewImage(items.source, items.source);
 
-          final resolutions = [items.source, ...items.resolutions]
-              .where(
-                (r) =>
-                    r.url != '' && minWidth <= r.width && r.width <= maxWidth,
-              )
-              .toList();
-          resolutions.sort((a, b) => (b.width - a.width).toInt());
-          // print(resolutions.map((x) => x.width).toList());
-          return resolutions.isEmpty ? null : resolutions.first;
-        })
-        .whereType<PreviewItem>()
+            // final resolutions = [items.source, ...items.resolutions]
+            //     .where(
+            //       (r) =>
+            //           r.url != '' && minWidth <= r.width && r.width <= maxWidth,
+            //     )
+            //     .toList();
+            // if (resolutions.isEmpty) {
+            //   return null;
+            // }
+            // resolutions.sort((a, b) => (b.width - a.width).toInt());
+            // return PreviewImage(items.source, resolutions.first);
+          },
+        )
+        .whereType<PreviewImage>()
         .toList();
-
-    // final images = <String>[];
-    // for (final sImage in _submission.preview) {
-    //   for (final resolution in sImage.resolutions) {
-    //     if (resolution.url != '' &&
-    //         resolution.width >= minWidth &&
-    //         resolution.width <= maxWidth) {
-    //       images.add(resolution.url);
-    //       break;
-    //     }
-    //   }
-    // }
-    // return images;
   }
 
   /*  String? _icon;
