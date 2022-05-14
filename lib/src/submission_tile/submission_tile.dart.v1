@@ -109,14 +109,11 @@ class SubmissionTile extends StatelessWidget {
   ) {
     final submission = notifier.submission;
 
-    // final maxHeight = MediaQuery.of(context).size.height * 0.7;
+    final maxHeight = MediaQuery.of(context).size.height * 0.7;
+    // final maxHeight = constraints.maxHeight;
+    // final maxWidth = MediaQuery.of(context).size.width * 0.9;
     final maxWidth = constraints.maxWidth;
-    // final maxHeight = min(1000.0, MediaQuery.of(context).size.height * 0.7);
-    // final maxWidth = min(1000.0, constraints.maxWidth);
     final minWidth = 200.0;
-
-    final images = notifier.images(minWidth, maxWidth);
-    final previewImage = images.isEmpty ? null : images.first;
 
     switch (submission.postHint) {
       case PostHint.none:
@@ -127,38 +124,190 @@ class SubmissionTile extends StatelessWidget {
         if (video == null || video.fallbackUrl == '') {
           return null;
         }
-        return VideoPlayer(
-          videoUrl: video.fallbackUrl,
-          previewImageUrl: previewImage?.url,
+
+        final size = _calcSize(
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
           width: video.width,
           height: video.height,
         );
 
+        final previewImage = notifier.previewImage(minWidth, maxWidth);
+
+        return VideoPlayer(
+          videoUrl: video.fallbackUrl,
+          width: size.width,
+          height: size.height,
+          // scale: scale,
+          previewImageUrl: previewImage?.url,
+        );
+
       case PostHint.image:
+        // final images = notifier.images(minWidth, maxWidth);
+        // if (images == []) {
+        //   return null;
+        // }
+        // final size = _calcSize(
+        //   maxWidth: maxWidth,
+        //   maxHeight: maxHeight,
+        //   width: images[0].width,
+        //   height: images[0].height,
+        // );
+        final images = notifier.images(minWidth, maxWidth).map((img) {
+          final size = _calcSize(
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            width: img.width,
+            height: img.height,
+          );
+          return img.copyWith(width: size.width, height: size.height);
+        }).toList();
         if (images.isEmpty) {
           return null;
         }
+        final height = images.map((v) => v.height).reduce(max);
         return ImageSlider(
-          imageUrls: images.map((i) => i.url).toList(),
-          width: images.map((v) => v.width).reduce(max),
-          height: images.map((v) => v.height).reduce(max),
+          // imageUrls: [...images, ...images].map((v) => v.url).toList(),
+          items: [
+            for (final image in images)
+              SizedNetworkImage(
+                imageUrl: image.url,
+                width: image.width,
+                height: image.height,
+              ),
+          ],
+          // width: size.width,
+          height: height,
         );
 
       case PostHint.link:
       case PostHint.richVideo:
+        final previewImage = notifier.previewImage(minWidth, maxWidth);
         if (previewImage == null) {
-          return ExternalLink(url: submission.url);
+          if (submission.postHint == PostHint.link) {
+            return ExternalLink(url: submission.url);
+          }
+          return null;
         }
-        return ImageLink(
-          imageUrl: previewImage.url,
-          url: notifier.submission.url,
+
+        final size = _calcSize(
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
           width: previewImage.width,
           height: previewImage.height,
+        );
+
+        return ImageLink(
+          width: size.width,
+          height: size.height,
+          // url: notifier.submission.url,
+          imageUrl: previewImage.url,
+          url: notifier.submission.url,
         );
 
       case PostHint.self:
         return null;
     }
+
+    /* if (submission.postHint == PostHint.image) {
+      final images = notifier.images(minWidth, maxWidth);
+      if (images == []) {
+        return null;
+      }
+      final size = _calcSize(
+        maxWidth: maxWidth,
+        maxHeight: maxHeight,
+        width: images[0].width,
+        height: images[0].height,
+      );
+      return ImageSlider(
+        imageUrls: [...images, ...images].map((v) => v.url).toList(),
+        width: size.width,
+        height: size.height,
+      );
+    }
+
+    final previewImage = notifier.previewImage(minWidth, maxWidth);
+
+    if (submission.postHint == PostHint.hostedVideo) {
+      final video = submission.video;
+      if (video == null || video.fallbackUrl == '') {
+        return null;
+      }
+
+      final size = _calcSize(
+        maxWidth: maxWidth,
+        maxHeight: maxHeight,
+        width: video.width,
+        height: video.height,
+      );
+
+      return VideoPlayer(
+        videoUrl: video.fallbackUrl,
+        width: size.width,
+        height: size.height,
+        // scale: scale,
+        previewImageUrl: previewImage?.url,
+      );
+    }
+
+    if (previewImage == null) {
+      if (submission.postHint == PostHint.link) {
+        return ExternalLink(url: submission.url);
+      }
+      return null;
+    }
+
+    final size = _calcSize(
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      width: previewImage.width,
+      height: previewImage.height,
+    );
+
+    if (submission.postHint == PostHint.richVideo ||
+        submission.postHint == PostHint.link) {
+      // return TapableImage(
+      //   width: width,
+      //   height: height,
+      //   // url: notifier.submission.url,
+      //   imageUrl: previewImage.url,
+      //   icon: Icons.open_in_new,
+      //   onTap: () {
+      //     launch(notifier.submission.url);
+      //   },
+      // );
+
+      return ImageLink(
+        width: size.width,
+        height: size.height,
+        // url: notifier.submission.url,
+        imageUrl: previewImage.url,
+        url: notifier.submission.url,
+      );
+    }
+
+    return SizedNetworkImage(
+      width: size.width,
+      height: size.height,
+      imageUrl: previewImage.url,
+    ); */
+
+    // return Center(
+    //   child: CustomNetworkImage(
+    //     previewImage.url,
+    //     onData: (_, image) {
+    //       return Image(
+    //         image: image,
+    //         width: width,
+    //         height: height,
+    //         // fit: BoxFit.fitWidth,
+    //         fit: BoxFit.contain,
+    //         errorBuilder: imageErrorBuilder,
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   /* Widget _video(BuildContext context, SubmissionNotifierQ notifier) {
