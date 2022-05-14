@@ -21,7 +21,7 @@
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: load on screen on widget ?
 // TODO: add top padding to page padding
-// TODO: save/unsave, like, share interfaces for generic widget implementation
+// TODO: share interfaces for generic widget implementation
 // TODO: MEAYBE: use controller instead watch
 // TODO: retry, undo, reload
 // TODO: user inbox
