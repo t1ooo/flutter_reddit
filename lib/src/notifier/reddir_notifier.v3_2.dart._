@@ -344,11 +344,11 @@ mixin SubmissionsMixinX {
     }
   }
 
-  Future<String?> likeUpSubmissions(String submissionId) {
+  Future<String?> likeSubmissions(String submissionId) {
     return _updateSubmissionsLike(submissionId, Like.up);
   }
 
-  Future<String?> likeDownSubmissions(String submissionId) {
+  Future<String?> dislikeSubmissions(String submissionId) {
     return _updateSubmissionsLike(submissionId, Like.down);
   }
 

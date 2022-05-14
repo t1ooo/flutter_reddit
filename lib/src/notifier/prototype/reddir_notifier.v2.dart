@@ -44,8 +44,8 @@ mixin SubmissionMixin {
   Future<Submission> submission();
   Future<String?> saveSubmission(String id);
   Future<String?> unsaveSubmission(String id);
-  Future<String?> likeUpSubmission(String id);
-  Future<String?> likeDownSubmission(String id);
+  Future<String?> likeSubmission(String id);
+  Future<String?> dislikeSubmission(String id);
   Future<String?> shareSubmission(String id);
   Future<String?> reply(String id);
 }
@@ -53,8 +53,8 @@ mixin SubmissionMixin {
 mixin CommentMixin {
   Future<String?> saveComment(String commentId);
   Future<String?> unsaveComment(String commentId);
-  Future<String?> likeUpComment(String commentId);
-  Future<String?> likeDownComment(String commentId);
+  Future<String?> likeComment(String commentId);
+  Future<String?> dislikeComment(String commentId);
   Future<String?> shareComment(String commentId);
   Future<String?> replyToComment(String commentId);
 }
@@ -93,8 +93,8 @@ abstract class SubredditSubmissionsNotifier extends ChangeNotifier {
 
   Future<String?> saveSubmission(String id);
   Future<String?> unsaveSubmission(String id);
-  Future<String?> likeUpSubmission(String id);
-  Future<String?> likeDownSubmission(String id);
+  Future<String?> likeSubmission(String id);
+  Future<String?> dislikeSubmission(String id);
   Future<String?> shareSubmission(String id);
 }
 
@@ -116,8 +116,8 @@ abstract class HomeFrontNotifier extends ChangeNotifier {
 
   Future<String?> saveSubmission(String id);
   Future<String?> unsaveSubmission(String id);
-  Future<String?> likeUpSubmission(String id);
-  Future<String?> likeDownSubmission(String id);
+  Future<String?> likeSubmission(String id);
+  Future<String?> dislikeSubmission(String id);
   Future<String?> shareSubmission(String id);
 }
 
@@ -127,8 +127,8 @@ abstract class HomePopularNotifier extends ChangeNotifier {
   get subType;
   Future<String?> saveSubmission(String id);
   Future<String?> unsaveSubmission(String id);
-  Future<String?> likeUpSubmission(String id);
-  Future<String?> likeDownSubmission(String id);
+  Future<String?> likeSubmission(String id);
+  Future<String?> dislikeSubmission(String id);
   Future<String?> shareSubmission(String id);
 }
 
@@ -137,16 +137,16 @@ abstract class HomePopularNotifier extends ChangeNotifier {
   Future<Submission> submission();
   Future<String?> save();
   Future<String?> unsave();
-  Future<String?> likeUp();
-  Future<String?> likeDown();
+  Future<String?> like();
+  Future<String?> dislike();
   Future<String?> share();
 }
 
 abstract class CommentsNotifier extends ChangeNotifier {
   Future<String?> saveSubmission(String id);
   Future<String?> unsaveSubmission(String id);
-  Future<String?> likeUpSubmission(String id);
-  Future<String?> likeDownSubmission(String id);
+  Future<String?> likeSubmission(String id);
+  Future<String?> dislikeSubmission(String id);
   Future<String?> shareSubmission(String id);
   Future<String?> reply(String submissionId);
   Future<String?> replyTo(String id);
@@ -158,15 +158,15 @@ abstract class SubmissionNotifier extends ChangeNotifier {
   Future<Submission> submission();
   Future<String?> saveSubmission(String id);
   Future<String?> unsaveSubmission(String id);
-  Future<String?> likeUpSubmission(String id);
-  Future<String?> likeDownSubmission(String id);
+  Future<String?> likeSubmission(String id);
+  Future<String?> dislikeSubmission(String id);
   Future<String?> shareSubmission(String id);
   Future<String?> reply(String id);
 
   Future<String?> saveComment(String commentId);
   Future<String?> unsaveComment(String commentId);
-  Future<String?> likeUpComment(String commentId);
-  Future<String?> likeDownComment(String commentId);
+  Future<String?> likeComment(String commentId);
+  Future<String?> dislikeComment(String commentId);
   Future<String?> shareComment(String commentId);
   Future<String?> replyToComment(String commentId);
 }
@@ -186,8 +186,8 @@ abstract class UserSubmissionsNotifier extends ChangeNotifier {
 
   Future<String?> save();
   Future<String?> unsave();
-  Future<String?> likeUp();
-  Future<String?> likeDown();
+  Future<String?> like();
+  Future<String?> dislike();
   Future<String?> share();
   Future<String?> reply();
 }
@@ -198,8 +198,8 @@ abstract class UserCommentsNotifier extends ChangeNotifier {
 
   Future<String?> saveComment(String commentId);
   Future<String?> unsaveComment(String commentId);
-  Future<String?> likeUpComment(String commentId);
-  Future<String?> likeDownComment(String commentId);
+  Future<String?> likeComment(String commentId);
+  Future<String?> dislikeComment(String commentId);
   Future<String?> shareComment(String commentId);
   Future<String?> replyToComment(String commentId);
 }
@@ -214,8 +214,8 @@ abstract class CurrentUserSavedCommentsNotifier extends ChangeNotifier {
 
   // Future<String?> saveComment(String commentId);
   Future<String?> unsaveComment(String commentId);
-  Future<String?> likeUpComment(String commentId);
-  Future<String?> likeDownComment(String commentId);
+  Future<String?> likeComment(String commentId);
+  Future<String?> dislikeComment(String commentId);
   Future<String?> shareComment(String commentId);
   Future<String?> replyToComment(String commentId);
 }
@@ -225,8 +225,8 @@ abstract class CurrentUserSavedSubmissionsNotifier extends ChangeNotifier {
 
   Future<String?> save();
   Future<String?> unsave();
-  Future<String?> likeUp();
-  Future<String?> likeDown();
+  Future<String?> like();
+  Future<String?> dislike();
   Future<String?> share();
   Future<String?> reply();
 }

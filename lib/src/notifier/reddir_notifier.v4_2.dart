@@ -557,11 +557,11 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to unsave');
   }
 
-  Future<void> likeUp() {
+  Future<void> like() {
     return _updateSubmissionsLike(Like.up);
   }
 
-  Future<void> likeDown() {
+  Future<void> dislike() {
     return _updateSubmissionsLike(Like.down);
   }
 

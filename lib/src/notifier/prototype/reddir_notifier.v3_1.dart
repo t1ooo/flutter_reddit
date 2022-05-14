@@ -146,8 +146,8 @@ abstract class CurrentUserNotifier with CommentsMixin, SubmissionsMixin {
 mixin SubmissionsMixin {
   Future<String?> saveSubmissions(String submissionId);
   Future<String?> unsaveSubmissions(String submissionId);
-  Future<String?> likeUpSubmissions(String submissionId);
-  Future<String?> likeDownSubmissions(String submissionId);
+  Future<String?> likeSubmissions(String submissionId);
+  Future<String?> dislikeSubmissions(String submissionId);
   Future<String?> shareSubmissions(String submissionId);
   Future<String?> replySubmissions(String submissionId);
 }
@@ -155,8 +155,8 @@ mixin SubmissionsMixin {
 mixin CommentsMixin {
   Future<String?> saveComment(String commentId);
   Future<String?> unsaveComment(String commentId);
-  Future<String?> likeUpComment(String commentId);
-  Future<String?> likeDownComment(String commentId);
+  Future<String?> likeComment(String commentId);
+  Future<String?> dislikeComment(String commentId);
   Future<String?> shareComment(String commentId);
   Future<String?> replyToComment(String commentId);
 }

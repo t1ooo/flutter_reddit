@@ -616,7 +616,7 @@ class SubmissionTile extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
-            notifier.likeUp().catchError((e) => showErrorSnackBar(context, e));
+            notifier.like().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
@@ -627,7 +627,7 @@ class SubmissionTile extends StatelessWidget {
         IconButton(
           onPressed: () {
             notifier
-                .likeDown()
+                .dislike()
                 .catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
