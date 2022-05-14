@@ -22,6 +22,7 @@ import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/icon_text.dart';
 
+import '../widget/like.dart';
 import '../widget/network_image.dart';
 import 'media.dart';
 
@@ -505,7 +506,8 @@ class SubmissionTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _likeButton(context, notifier),
+        // _likeButton(context, notifier),
+        LikeButton(likable:notifier),
         // Row(
         //   children: [
         //     Icon(Icons.comment),
@@ -609,33 +611,33 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  Widget _likeButton(BuildContext context, SubmissionNotifierQ notifier) {
-    final submission = notifier.submission;
+  // Widget _likeButton(BuildContext context, SubmissionNotifierQ notifier) {
+  //   final submission = notifier.submission;
 
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () {
-            notifier.like().catchError((e) => showErrorSnackBar(context, e));
-          },
-          icon: Icon(
-            Icons.expand_less,
-            color: submission.likes == Like.up ? Colors.green : null,
-          ),
-        ),
-        Text(submission.score.toString()),
-        IconButton(
-          onPressed: () {
-            notifier
-                .dislike()
-                .catchError((e) => showErrorSnackBar(context, e));
-          },
-          icon: Icon(
-            Icons.expand_more,
-            color: submission.likes == Like.down ? Colors.red : null,
-          ),
-        ),
-      ],
-    );
-  }
+  //   return Row(
+  //     children: [
+  //       IconButton(
+  //         onPressed: () {
+  //           notifier.like().catchError((e) => showErrorSnackBar(context, e));
+  //         },
+  //         icon: Icon(
+  //           Icons.expand_less,
+  //           color: submission.likes == Like.up ? Colors.green : null,
+  //         ),
+  //       ),
+  //       Text(submission.score.toString()),
+  //       IconButton(
+  //         onPressed: () {
+  //           notifier
+  //               .dislike()
+  //               .catchError((e) => showErrorSnackBar(context, e));
+  //         },
+  //         icon: Icon(
+  //           Icons.expand_more,
+  //           color: submission.likes == Like.down ? Colors.red : null,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

@@ -2,7 +2,6 @@
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
 // TODO: use ListNotifier
-// TODO: generic _likeButton button
 // TODO: replace textScaleFactor to fontSize
 // TODO: inbox notifications
 // TODO: inbox mod message

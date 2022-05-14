@@ -17,6 +17,7 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/snackbar.dart';
 import '../widget/awards.dart';
 import '../widget/custom_popup_menu_button.dart';
+import '../widget/like.dart';
 
 class SavedComment extends StatelessWidget {
   const SavedComment({
@@ -153,7 +154,8 @@ class SavedComment extends StatelessWidget {
           label: Text('Reply'),
         ),
         SizedBox(width: 20),
-        _likeButton(context, notifier),
+        // _likeButton(context, notifier),
+        LikeButton(likable:notifier),
       ],
     );
   }
@@ -204,34 +206,34 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  Widget _likeButton(BuildContext context, CommentNotifierQ notifier) {
-    final comment = notifier.comment;
+  // Widget _likeButton(BuildContext context, CommentNotifierQ notifier) {
+  //   final comment = notifier.comment;
 
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () {
-            notifier.like().catchError((e) => showErrorSnackBar(context, e));
-          },
-          icon: Icon(
-            Icons.expand_less,
-            color: comment.likes == Like.up ? Colors.green : null,
-          ),
-        ),
-        Text(comment.score.toString()),
-        // TODO: disable on progress
-        IconButton(
-          onPressed: () {
-            notifier
-                .dislike()
-                .catchError((e) => showErrorSnackBar(context, e));
-          },
-          icon: Icon(
-            Icons.expand_more,
-            color: comment.likes == Like.down ? Colors.red : null,
-          ),
-        ),
-      ],
-    );
-  }
+  //   return Row(
+  //     children: [
+  //       IconButton(
+  //         onPressed: () {
+  //           notifier.like().catchError((e) => showErrorSnackBar(context, e));
+  //         },
+  //         icon: Icon(
+  //           Icons.expand_less,
+  //           color: comment.likes == Like.up ? Colors.green : null,
+  //         ),
+  //       ),
+  //       Text(comment.score.toString()),
+  //       // TODO: disable on progress
+  //       IconButton(
+  //         onPressed: () {
+  //           notifier
+  //               .dislike()
+  //               .catchError((e) => showErrorSnackBar(context, e));
+  //         },
+  //         icon: Icon(
+  //           Icons.expand_more,
+  //           color: comment.likes == Like.down ? Colors.red : null,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }
