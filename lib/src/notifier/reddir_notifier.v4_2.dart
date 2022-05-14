@@ -37,17 +37,17 @@ abstract class Savable {
     if (saved) {
       return;
     }
-    return _updateSaved(true);
+    return _updateSave(true);
   }
 
   Future<void> unsave() async {
     if (!saved) {
       return;
     }
-    return _updateSaved(false);
+    return _updateSave(false);
   }
 
-  Future<void> _updateSaved(bool saved);
+  Future<void> _updateSave(bool saved);
 
   bool get saved;
 }
@@ -581,16 +581,16 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, Likable, Savable
 
   // // TODO: save unsave
   // Future<void> save() {
-  //   return _updateSaved(true);
+  //   return _updateSave(true);
   // }
 
   // Future<void> unsave() {
-  //   return _updateSaved(false);
+  //   return _updateSave(false);
   // }
 
   bool get saved => _submission.saved;
 
-  Future<void> _updateSaved(bool saved) {
+  Future<void> _updateSave(bool saved) {
     return _try(() async {
       await (saved
           ? _redditApi.submissionSave
@@ -772,16 +772,16 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable, Sa
   }
 
   // Future<void> save() {
-  //   return _updateSaved(true);
+  //   return _updateSave(true);
   // }
 
   // Future<void> unsave() {
-  //   return _updateSaved(false);
+  //   return _updateSave(false);
   // }
 
   bool get saved => _comment.saved;
 
-  Future<void> _updateSaved(bool saved) {
+  Future<void> _updateSave(bool saved) {
     return _try(() async {
       await (saved
           ? _redditApi.commentSave
