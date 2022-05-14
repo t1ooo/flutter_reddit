@@ -17,7 +17,7 @@ import 'comment.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
-import 'vote.dart';
+import 'likes.dart';
 
 // abstract class RedditApi {
 //   Future<List<Submission>> front({required int limit});
@@ -71,8 +71,8 @@ abstract class RedditApi {
 
   Future<Submission> submission(String id);
 
-  Future<void> submissionVote(String id, Vote vote);
-  Future<void> commentVote(String id, Vote vote);
+  Future<void> submissionVote(String id, Likes vote);
+  Future<void> commentVote(String id, Likes vote);
 
   Future<void> submissionSave(String id);
   Future<void> submissionUnsave(String id);
@@ -514,23 +514,23 @@ class RedditApiImpl implements RedditApi {
   // }
 
   // TODO: use draw.Submission instead id for optimisation
-  Future<void> submissionVote(String id, Vote vote) async {
+  Future<void> submissionVote(String id, Likes vote) async {
     final s = await reddit.submission(id: id).populate();
     return _vote(s, vote);
   }
 
-  Future<void> commentVote(String id, Vote vote) async {
+  Future<void> commentVote(String id, Likes vote) async {
     final s = await reddit.comment(id: id).populate();
     return _vote(s, vote);
   }
 
-  Future<void> _vote(draw.VoteableMixin s, Vote vote) async {
+  Future<void> _vote(draw.VoteableMixin s, Likes vote) async {
     switch (vote) {
-      case Vote.none:
+      case Likes.none:
         return s.clearVote();
-      case Vote.up:
+      case Likes.up:
         return s.upvote();
-      case Vote.down:
+      case Likes.down:
         return s.downvote();
     }
   }
@@ -950,7 +950,7 @@ class FakeRedditApi implements RedditApi {
     return Subreddit.fromJson(map as Map<String, dynamic>);
   }
 
-  Future<void> submissionVote(String id, Vote vote) async {
+  Future<void> submissionVote(String id, Likes vote) async {
     _log.info('submissionVote($id, $vote)');
     _mustLoggedIn();
     await Future.delayed(_delay);
@@ -958,7 +958,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   @override
-  Future<void> commentVote(String id, Vote vote) async {
+  Future<void> commentVote(String id, Likes vote) async {
     _log.info('commentVote($id, $vote)');
     _mustLoggedIn();
     await Future.delayed(_delay);

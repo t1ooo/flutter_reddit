@@ -15,7 +15,7 @@ import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
-import '../reddit_api/vote.dart';
+import '../reddit_api/likes.dart';
 
 // abstract class VoteNotifer with TryMixin {
 //   Future<void> updateVote(Vote vote) async {
@@ -558,17 +558,17 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   Future<void> voteUp() {
-    return _updateSubmissionsVote(Vote.up);
+    return _updateSubmissionsVote(Likes.up);
   }
 
   Future<void> voteDown() {
-    return _updateSubmissionsVote(Vote.down);
+    return _updateSubmissionsVote(Likes.down);
   }
 
-  Future<void> _updateSubmissionsVote(Vote vote) {
+  Future<void> _updateSubmissionsVote(Likes vote) {
     return _try(() async {
       if (submission.likes == vote) {
-        vote = Vote.none;
+        vote = Likes.none;
       }
 
       await _redditApi.submissionVote(submission.id, vote);
@@ -733,20 +733,20 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
   }
 
   Future<void> upVote() async {
-    if (_comment.likes == Vote.up) {
-      return _updateVote(Vote.none);
+    if (_comment.likes == Likes.up) {
+      return _updateVote(Likes.none);
     }
-    return await _updateVote(Vote.up);
+    return await _updateVote(Likes.up);
   }
 
   Future<void> downVote() async {
-    if (_comment.likes == Vote.down) {
-      return _updateVote(Vote.none);
+    if (_comment.likes == Likes.down) {
+      return _updateVote(Likes.none);
     }
-    return await _updateVote(Vote.down);
+    return await _updateVote(Likes.down);
   }
 
-  Future<void> _updateVote(Vote vote) {
+  Future<void> _updateVote(Likes vote) {
     return _try(() async {
       if (comment.likes == vote) return;
 
@@ -1275,23 +1275,23 @@ mixin CollapseMixin {
 //   return 'fail to $op';
 // }
 
-int calcScore(int score, Vote oldVote, Vote newVote) {
-  if (oldVote == Vote.up) {
-    if (newVote == Vote.down) {
+int calcScore(int score, Likes oldVote, Likes newVote) {
+  if (oldVote == Likes.up) {
+    if (newVote == Likes.down) {
       return score - 2;
-    } else if (newVote == Vote.none) {
+    } else if (newVote == Likes.none) {
       return score - 1;
     }
-  } else if (oldVote == Vote.none) {
-    if (newVote == Vote.down) {
+  } else if (oldVote == Likes.none) {
+    if (newVote == Likes.down) {
       return score - 1;
-    } else if (newVote == Vote.up) {
+    } else if (newVote == Likes.up) {
       return score + 1;
     }
-  } else if (oldVote == Vote.down) {
-    if (newVote == Vote.up) {
+  } else if (oldVote == Likes.down) {
+    if (newVote == Likes.up) {
       return score + 2;
-    } else if (newVote == Vote.none) {
+    } else if (newVote == Likes.none) {
       return score + 1;
     }
   }

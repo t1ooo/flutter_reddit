@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../reply/reply_screen.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/comment.dart';
-import '../reddit_api/vote.dart';
+import '../reddit_api/likes.dart';
 import '../style/style.dart';
 import '../submission/style.dart';
 import '../submission/submission_screen.dart';
@@ -215,7 +215,7 @@ class SavedComment extends StatelessWidget {
           },
           icon: Icon(
             Icons.expand_less,
-            color: comment.likes == Vote.up ? Colors.green : null,
+            color: comment.likes == Likes.up ? Colors.green : null,
           ),
         ),
         Text(comment.score.toString()),
@@ -228,7 +228,7 @@ class SavedComment extends StatelessWidget {
           },
           icon: Icon(
             Icons.expand_more,
-            color: comment.likes == Vote.down ? Colors.red : null,
+            color: comment.likes == Likes.down ? Colors.red : null,
           ),
         ),
       ],

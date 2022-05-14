@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/vote.dart';
+import '../reddit_api/likes.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
@@ -620,7 +620,7 @@ class SubmissionTile extends StatelessWidget {
           },
           icon: Icon(
             Icons.expand_less,
-            color: submission.likes == Vote.up ? Colors.green : null,
+            color: submission.likes == Likes.up ? Colors.green : null,
           ),
         ),
         Text(submission.score.toString()),
@@ -632,7 +632,7 @@ class SubmissionTile extends StatelessWidget {
           },
           icon: Icon(
             Icons.expand_more,
-            color: submission.likes == Vote.down ? Colors.red : null,
+            color: submission.likes == Likes.down ? Colors.red : null,
           ),
         ),
       ],

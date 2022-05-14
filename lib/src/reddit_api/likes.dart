@@ -1,4 +1,4 @@
-enum Vote {
+enum Likes {
   none,
   up,
   down,
