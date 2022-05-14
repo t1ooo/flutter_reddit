@@ -15,29 +15,36 @@ class LikeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-    children: [
-      IconButton(
-        onPressed: () {
-          likable.like().catchError((e) => showErrorSnackBar(context, e));
-        },
-        icon: Icon(
-          Icons.expand_less,
-          color: likable.likes == Like.up ? Colors.green : null,
+      children: [
+        IconButton(
+          onPressed: () {
+            likable.like().catchError((e) => showErrorSnackBar(context, e));
+          },
+          icon: Icon(
+            Icons.expand_less,
+            color: likable.likes == Like.up ? Colors.green : null,
+          ),
         ),
-      ),
-      Text(likable.score.toString()),
-      // TODO: disable on progress
-      IconButton(
-        onPressed: () {
-          likable.dislike().catchError((e) => showErrorSnackBar(context, e));
-        },
-        icon: Icon(
-          Icons.expand_more,
-          color: likable.likes == Like.down ? Colors.red : null,
+        Text(_formatScore(likable.score)),
+        // TODO: disable on progress
+        IconButton(
+          onPressed: () {
+            likable.dislike().catchError((e) => showErrorSnackBar(context, e));
+          },
+          icon: Icon(
+            Icons.expand_more,
+            color: likable.likes == Like.down ? Colors.red : null,
+          ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
+
+  String _formatScore(int score) {
+    if (score < 1000) {
+      return score.toString();
+    }
+    return ((score * 10 / 1000).ceil() / 10).toString() + 'k';
   }
 }
 

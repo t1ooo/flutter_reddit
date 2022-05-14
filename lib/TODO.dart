@@ -1,5 +1,4 @@
 // TODO: listview save croll position
-// TODO: format likes 31000 -> 31k
 // TODO: use ListNotifier
 
 // TODO: show comment link_url image
