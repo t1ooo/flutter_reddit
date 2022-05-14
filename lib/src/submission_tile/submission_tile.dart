@@ -117,7 +117,7 @@ class SubmissionTile extends StatelessWidget {
     final images = notifier.images(minWidth, maxWidth);
     final previewImage = images.isEmpty ? null : images.first;
 
-    Size _calcSize(double width, double height) => calcSize(
+    Size _adjustSize(double width, double height) => adjustSize(
           maxWidth: maxWidth,
           maxHeight: maxHeight,
           width: width,
@@ -137,7 +137,7 @@ class SubmissionTile extends StatelessWidget {
         return VideoPlayer(
           videoUrl: video.fallbackUrl,
           previewImageUrl: previewImage?.url,
-          size: _calcSize(video.width, video.height),
+          size: _adjustSize(video.width, video.height),
         );
 
       case PostHint.image:
@@ -145,7 +145,7 @@ class SubmissionTile extends StatelessWidget {
           return null;
         }
 
-        final sizes = images.map((v) => _calcSize(v.width, v.height)).toList();
+        final sizes = images.map((v) => _adjustSize(v.width, v.height)).toList();
         final maxHeight = sizes.map((v) => v.height).reduce(max);
 
         return ImageSlider(
@@ -168,7 +168,7 @@ class SubmissionTile extends StatelessWidget {
         return ImageLink(
           imageUrl: previewImage.url,
           url: notifier.submission.url,
-          size: _calcSize(previewImage.width, previewImage.height),
+          size: _adjustSize(previewImage.width, previewImage.height),
         );
 
       case PostHint.self:
@@ -186,7 +186,7 @@ class SubmissionTile extends StatelessWidget {
       return Container();
     }
 
-    final size = _calcSize(context, video.width, video.height);
+    final size = _adjustSize(context, video.width, video.height);
     final width = size[0];
     final height = size[1];
 

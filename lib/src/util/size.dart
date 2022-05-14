@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-Size calcSize({
+Size adjustSize({
   required double maxHeight,
   required double maxWidth,
   required double width,

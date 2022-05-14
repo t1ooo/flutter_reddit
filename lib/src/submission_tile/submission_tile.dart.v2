@@ -171,7 +171,7 @@ class SubmissionTile extends StatelessWidget {
       return Container();
     }
 
-    final size = _calcSize(context, video.width, video.height);
+    final size = _adjustSize(context, video.width, video.height);
     final width = size[0];
     final height = size[1];
 
@@ -193,7 +193,7 @@ class SubmissionTile extends StatelessWidget {
   // double _maxWidth(BuildContext context) =>
   //     MediaQuery.of(context).size.width * 0.9;
 
-  Size _calcSize({
+  Size _adjustSize({
     required double maxHeight,
     required double maxWidth,
     required double width,
