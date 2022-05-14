@@ -281,7 +281,7 @@ class SubmissionTile extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => SubredditScreenLoader(
+                    builder: (_) => SubredditScreen(
                       name: submission.subreddit,
                     ),
                   ),
@@ -329,7 +329,7 @@ class SubmissionTile extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => SubredditScreenLoader(
+                    builder: (_) => SubredditScreen(
                       name: submission.subreddit,
                     ),
                   ),
@@ -405,7 +405,7 @@ class SubmissionTile extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => SubredditScreenLoader(
+                        builder: (_) => SubredditScreen(
                           name: submission.subreddit,
                         ),
                       ),

@@ -9,7 +9,6 @@
 // TODO: inbox message reply
 // TODO: link|image|video post submitting
 // TODO: MAYBE: wrap all model field wit notifier getter, make models mutable
-// TODO: merge screen with loader
 // TODO: app bar elevation
 // TODO: ((un)subscrube (un)save reply post) update user saved subscribed
 //      TODO?: move actions to CurrentUserNotifier

@@ -104,7 +104,7 @@ class SavedComment extends StatelessWidget {
             //       context,
             //       MaterialPageRoute(
             //         builder: (_) =>
-            //             SubredditScreenLoader(name: comment.subreddit),
+            //             SubredditScreen(name: comment.subreddit),
             //       ),
             //     );
             //   },

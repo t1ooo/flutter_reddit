@@ -75,7 +75,11 @@ import 'subreddit_info.dart';
 //   }
 // }
 
-class SubredditScreen extends StatelessWidget {
+class _SubredditScreen extends StatelessWidget {
+  _SubredditScreen({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<SubredditNotifierQ>();
@@ -355,25 +359,29 @@ class SubredditScreen extends StatelessWidget {
 }
 
 // TODO: merge with SubredditScreen
-class SubredditScreenLoader extends StatelessWidget {
-  const SubredditScreenLoader({
+class SubredditScreen extends StatelessWidget {
+  const SubredditScreen({
     Key? key,
-    required this.name,
+    this.name,
   }) : super(key: key);
 
-  final String name;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
+    if (name != null) {
+      return _SubredditScreen();
+    }
+
     final notifier = context.read<SubredditLoaderNotifierQ>();
 
     return Loader<SubredditNotifierQ>(
-      load: (_) => notifier.loadSubreddit(name),
+      load: (_) => notifier.loadSubreddit(name!),
       data: (_) => notifier.subreddit,
       onData: (_, subreddit) {
         return ChangeNotifierProvider<SubredditNotifierQ>.value(
           value: subreddit,
-          child: SubredditScreen(),
+          child: _SubredditScreen(),
         );
       },
     );
