@@ -19,8 +19,6 @@ Future<void> initVideoPlayer() async {
 }
 
 const _fit = BoxFit.contain;
-// const _fit = BoxFit.fitWidth;
-// const _fit = BoxFit.cover;
 // const _fit =  BoxFit.fill;
 
 class VideoPlayer extends StatefulWidget {
@@ -84,7 +82,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     return Center(
       child: Video(
         player: _player,
-        // scale: widget.scale,
+        scale: widget.scale,
         width: widget.width,
         height: widget.height,
         // width: MediaQuery.of(context).size.width,
@@ -470,15 +468,15 @@ class ExternalLink extends StatelessWidget {
 class ImageSlider extends StatefulWidget {
   const ImageSlider({
     Key? key,
-    required this.imageUrls,
-    // required this.items,
-    required this.width,
+    // required this.imageUrls,
+    required this.items,
+    // required this.width,
     required this.height,
   }) : super(key: key);
 
-  final List<String> imageUrls;
-  // final List<Widget> items;
-  final double width;
+  // final List<String> imageUrls;
+  final List<Widget> items;
+  // final double width;
   final double height;
 
   @override
@@ -503,15 +501,15 @@ class _ImageSliderState extends State<ImageSlider> {
       children: [
         CarouselSlider(
           // items: imageSliders,
-          items: [
-            for (final imageUrl in widget.imageUrls)
-              SizedNetworkImage(
-                imageUrl: imageUrl,
-                width: widget.width,
-                height: widget.height,
-              ),
-          ],
-          // items: widget.items,
+          // items: [
+          //   for (final imageUrl in widget.imageUrls)
+          //     SizedNetworkImage(
+          //       imageUrl: imageUrl,
+          //       width: widget.width,
+          //       height: widget.height,
+          //     ),
+          // ],
+          items: widget.items,
           options: CarouselOptions(
             enlargeCenterPage: false,
             height: widget.height,
@@ -553,7 +551,7 @@ class _ImageSliderState extends State<ImageSlider> {
                     ),
                   ),
                 Spacer(),
-                if (_currentPage + 1 < widget.imageUrls.length)
+                if (_currentPage + 1 < widget.items.length)
                   // if (_controller.hasNext)
                   IconButton(
                     onPressed: () {

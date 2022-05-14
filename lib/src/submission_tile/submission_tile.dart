@@ -17,6 +17,7 @@ import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 
+import '../util/size.dart';
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/icon_text.dart';
@@ -109,14 +110,21 @@ class SubmissionTile extends StatelessWidget {
   ) {
     final submission = notifier.submission;
 
-    // final maxHeight = MediaQuery.of(context).size.height * 0.7;
+    final maxHeight = MediaQuery.of(context).size.height * 0.7;
+    // final maxHeight = constraints.maxHeight;
+    // final maxWidth = MediaQuery.of(context).size.width * 0.9;
     final maxWidth = constraints.maxWidth;
-    // final maxHeight = min(1000.0, MediaQuery.of(context).size.height * 0.7);
-    // final maxWidth = min(1000.0, constraints.maxWidth);
     final minWidth = 200.0;
 
     final images = notifier.images(minWidth, maxWidth);
     final previewImage = images.isEmpty ? null : images.first;
+
+    Size _calcSize(double width, double height) => calcSize(
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          width: width,
+          height: height,
+        );
 
     switch (submission.postHint) {
       case PostHint.none:
@@ -127,20 +135,32 @@ class SubmissionTile extends StatelessWidget {
         if (video == null || video.fallbackUrl == '') {
           return null;
         }
+
+        final size = _calcSize(video.width, video.height);
         return VideoPlayer(
           videoUrl: video.fallbackUrl,
           previewImageUrl: previewImage?.url,
-          width: video.width,
-          height: video.height,
+          width: size.width,
+          height: size.height,
         );
 
       case PostHint.image:
-        if (images.isEmpty) {
+        if (images == []) {
           return null;
         }
+
         return ImageSlider(
-          imageUrls: images.map((i) => i.url).toList(),
-          width: images.map((v) => v.width).reduce(max),
+          items: [
+            for (final image in images)
+              Builder(builder: (context) {
+                final size = _calcSize(image.width, image.height);
+                return SizedNetworkImage(
+                  imageUrl: image.url,
+                  width: size.width,
+                  height: size.height,
+                );
+              }),
+          ],
           height: images.map((v) => v.height).reduce(max),
         );
 
@@ -149,11 +169,13 @@ class SubmissionTile extends StatelessWidget {
         if (previewImage == null) {
           return ExternalLink(url: submission.url);
         }
+
+        final size = _calcSize(previewImage.width, previewImage.height);
         return ImageLink(
+          width: size.width,
+          height: size.height,
           imageUrl: previewImage.url,
           url: notifier.submission.url,
-          width: previewImage.width,
-          height: previewImage.height,
         );
 
       case PostHint.self:
@@ -192,40 +214,6 @@ class SubmissionTile extends StatelessWidget {
   //     MediaQuery.of(context).size.height * 0.8;
   // double _maxWidth(BuildContext context) =>
   //     MediaQuery.of(context).size.width * 0.9;
-
-  Size _calcSize({
-    required double maxHeight,
-    required double maxWidth,
-    required double width,
-    required double height,
-  }) {
-    /* final screenWidth = MediaQuery.of(context).size.width;
-    
-    final maxScale = 5;
-    final width = min(video.width * maxScale, screenWidth);
-
-    final scale = width / video.width;
-    final height = video.height * scale;
-
-    final minWidth = 200.0;
-    final previewImage = notifier.previewImage(minWidth, screenWidth); */
-
-    // final maxHeight = _maxHeight(context);
-    // final maxWidth = _maxWidth(context);
-
-    final heightScale = maxHeight / height;
-    final widthScale = maxWidth / width;
-
-    final maxScale = 5.0;
-    // print([maxScale, heightScale, widthScale]);
-    final scale = min(maxScale, min(heightScale, widthScale));
-    // final scale = min(maxScale, max(heightScale, widthScale));
-
-    // print([width, width * scale, height * scale, height]);
-
-    // return [width * scale, height * scale];
-    return Size(width * scale, height * scale);
-  }
 
   /* Widget _previewImage(BuildContext context, SubmissionNotifierQ notifier) {
     final minWidth = 200.0;
