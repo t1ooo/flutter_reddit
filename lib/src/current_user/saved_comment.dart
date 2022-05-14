@@ -76,11 +76,11 @@ class SavedComment extends StatelessWidget {
             Text(comment.author),
             Text(' • '),
             Text(comment.subredditNamePrefixed),
-            if (comment.isSubmitter) ...[
-              Text(' • '),
-              Text('OP'),
-            ],
             Text(' • '),
+            if (comment.isSubmitter) ...[
+              Text('OP'),
+              Text(' • '),
+            ],
 
             Text(formatDateTime(comment.created)),
             // InkWell(

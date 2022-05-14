@@ -94,6 +94,10 @@ class SubmissionComment extends StatelessWidget {
           child: Text(comment.author),
         ),
         Text(' • '),
+        if (comment.isSubmitter) ...[
+          Text('OP'),
+          Text(' • '),
+        ],
         Text(formatDateTime(comment.created)),
         Awards(
           awardIcons: comment.awardIcons,

@@ -1,17 +1,9 @@
-// TODO: image open to full size
 // TODO: show comment link_url image
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
-// TODO: youtube video
-// "media": {
-//  "type": "youtube.com", | "twitter.com",
-//  "oembed": ...
-// }
 // TODO: use ListNotifier
 // TODO: generic _voteButton button
-// TODO: draw subreddit(Favorite|Unfavorite)
 // TODO: replace textScaleFactor to fontSize
-// TODO: comment OP
 // TODO: inbox notifications
 // TODO: inbox mod message
 // TODO: inbox message reply
