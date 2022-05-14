@@ -32,7 +32,7 @@ class Submission extends Equatable {
     required this.subredditNamePrefixed,
     required this.thumbnail,
     required this.title,
-    required this.upvotes,
+    required this.ups,
     required this.url,
     required this.awardIcons,
     required this.totalAwardsReceived,
@@ -65,7 +65,7 @@ class Submission extends Equatable {
   final String subredditNamePrefixed;
   final String thumbnail;
   final String title;
-  final int upvotes;
+  final int ups;
   final String url;
   final List<String> awardIcons;
   final int totalAwardsReceived;
@@ -127,7 +127,7 @@ class Submission extends Equatable {
       subredditNamePrefixed: parseString(m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
       thumbnail: parseUrl(m['thumbnail'], '$f.thumbnail'),
       title: parseString(m['title'], '$f.title'),
-      upvotes: parseInt(m['ups'], '$f.ups'),
+      ups: parseInt(m['ups'], '$f.ups'),
       url: parseUrl(m['url'], '$f.url'),
       likes: parseLikes(m['likes'], '$f.likes'),
       saved: parseBool(m['saved'], '$f.saved'),
@@ -173,7 +173,7 @@ class Submission extends Equatable {
       subredditNamePrefixed,
       thumbnail,
       title,
-      upvotes,
+      ups,
       url,
       awardIcons,
       totalAwardsReceived,
@@ -208,7 +208,7 @@ class Submission extends Equatable {
     String? subredditNamePrefixed,
     String? thumbnail,
     String? title,
-    int? upvotes,
+    int? ups,
     String? url,
     List<String>? awardIcons,
     int? totalAwardsReceived,
@@ -241,7 +241,7 @@ class Submission extends Equatable {
           subredditNamePrefixed ?? this.subredditNamePrefixed,
       thumbnail: thumbnail ?? this.thumbnail,
       title: title ?? this.title,
-      upvotes: upvotes ?? this.upvotes,
+      ups: ups ?? this.ups,
       url: url ?? this.url,
       awardIcons: awardIcons ?? this.awardIcons,
       totalAwardsReceived: totalAwardsReceived ?? this.totalAwardsReceived,
