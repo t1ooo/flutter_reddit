@@ -1,4 +1,3 @@
-// TODO: submission show images gallery
 // TODO: image open to full size
 // TODO: show comment link_url image
 // TODO: submission tile show domain
