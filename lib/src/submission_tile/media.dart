@@ -108,7 +108,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
           height: widget.size.height,
           child: Stack(
             children: [
-              SizedNetworkImage(
+              _SizedNetworkImage(
                 imageUrl: previewImageUrl,
                 size: widget.size,
                 showErrorText: false,
@@ -161,7 +161,7 @@ class ImageLink extends StatelessWidget {
           height: size.height,
           child: Stack(
             children: [
-              SizedNetworkImage(
+              _SizedNetworkImage(
                 imageUrl: imageUrl,
                 size: size,
               ),
@@ -223,7 +223,7 @@ class FullScreenImage extends StatelessWidget {
           ),
         );
       },
-      child: SizedNetworkImage(
+      child: _SizedNetworkImage(
         imageUrl: previewImageUrl,
         size: previewSize,
       ),
@@ -245,7 +245,7 @@ class ImageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SizedNetworkImage(
+      body: _SizedNetworkImage(
         imageUrl: imageUrl,
         size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
       ),
@@ -253,8 +253,8 @@ class ImageScreen extends StatelessWidget {
   }
 }
 
-class SizedNetworkImage extends StatelessWidget {
-  const SizedNetworkImage({
+class _SizedNetworkImage extends StatelessWidget {
+  const _SizedNetworkImage({
     Key? key,
     required this.imageUrl,
     required this.size,
