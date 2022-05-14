@@ -8,7 +8,7 @@ import 'nullable.dart';
 import 'parse.dart';
 import 'comment.dart';
 import 'video.dart';
-import 'likes.dart';
+import 'like.dart';
 import 'submission_type.dart';
 
 class Submission extends Equatable {
@@ -69,7 +69,7 @@ class Submission extends Equatable {
   final String url;
   final List<String> awardIcons;
   final int totalAwardsReceived;
-  final Likes likes;
+  final Like likes;
   final bool saved;
   // final SubType? type;
   // final CommentForest? comments;
@@ -212,7 +212,7 @@ class Submission extends Equatable {
     String? url,
     List<String>? awardIcons,
     int? totalAwardsReceived,
-    Likes? likes,
+    Like? likes,
     bool? saved,
     SubType? type,
     List<Comment>? comments,
@@ -279,11 +279,11 @@ class Submission extends Equatable {
 //     subredditNamePrefixed: 'subredditNamePrefixed',
 //     thumbnail: 'thumbnail',
 //     title: 'title',
-//     upvotes: 0,
+//     likes: 0,
 //     url: 'https://example.com',
 //     awardIcons: [],
 //     totalAwardsReceived: 0,
-//     likes: Vote.none,
+//     likes: Like.none,
 //     type: SubType.best,
 //     comments: [],
 //     saved: false,

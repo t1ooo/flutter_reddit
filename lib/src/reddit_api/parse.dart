@@ -5,7 +5,7 @@ import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 import '../logging/logging.dart';
 import 'preview_images.dart';
 import 'video.dart';
-import 'likes.dart';
+import 'like.dart';
 
 final _parserLog = getLogger('parse');
 
@@ -86,19 +86,19 @@ String parseBody(dynamic data, [String? name]) {
   return text.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
 }
 
-Likes parseLikes(dynamic data, [String? name]) {
+Like parseLikes(dynamic data, [String? name]) {
   if (data == null) {
-    return Likes.none;
+    return Like.none;
   }
   if (data == true) {
-    return Likes.up;
+    return Like.up;
   }
   if (data == false) {
-    return Likes.up;
+    return Like.up;
   }
 
   _log('fail to parse likes: $data', name);
-  return Likes.none;
+  return Like.none;
 }
 
 List<Comment> parseReplies(dynamic data, [String? name]) {

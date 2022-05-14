@@ -2,7 +2,7 @@
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
 // TODO: use ListNotifier
-// TODO: generic _voteButton button
+// TODO: generic _likeButton button
 // TODO: replace textScaleFactor to fontSize
 // TODO: inbox notifications
 // TODO: inbox mod message
@@ -22,7 +22,7 @@
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: load on screen on widget ?
 // TODO: add top padding to page padding
-// TODO: save/unsave, vote, share interfaces for generic widget implementation
+// TODO: save/unsave, like, share interfaces for generic widget implementation
 // TODO: MEAYBE: use controller instead watch
 // TODO: retry, undo, reload
 // TODO: user inbox

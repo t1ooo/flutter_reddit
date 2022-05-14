@@ -11,7 +11,7 @@ import '../reddit_api/submission.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
-import '../reddit_api/vote.dart';
+import '../reddit_api/like.dart';
 
 // TODO: comments to list
 
@@ -344,36 +344,36 @@ mixin SubmissionsMixinX {
     }
   }
 
-  Future<String?> voteUpSubmissions(String submissionId) {
-    return _updateSubmissionsVote(submissionId, Vote.up);
+  Future<String?> likeUpSubmissions(String submissionId) {
+    return _updateSubmissionsLike(submissionId, Like.up);
   }
 
-  Future<String?> voteDownSubmissions(String submissionId) {
-    return _updateSubmissionsVote(submissionId, Vote.down);
+  Future<String?> likeDownSubmissions(String submissionId) {
+    return _updateSubmissionsLike(submissionId, Like.down);
   }
 
-  Future<String?> _updateSubmissionsVote(String submissionId, Vote vote) async {
+  Future<String?> _updateSubmissionsLike(String submissionId, Like like) async {
     final submission = _submissions[submissionId];
     if (submission == null) {
       _log.error('submission not found: $submissionId');
       return null;
     }
 
-    if (submission.likes == vote) {
-      vote = Vote.none;
+    if (submission.likes == like) {
+      like = Like.none;
     }
 
     try {
-      await _redditApi.submissionVote(submission.id, vote);
+      await _redditApi.submissionLike(submission.id, like);
       _submissions[submissionId] = submission.copyWith(
-        likes: vote,
-        score: calcScore(submission.score, submission.likes, vote),
+        likes: like,
+        score: calcScore(submission.score, submission.likes, like),
       );
       notifyListeners();
       return null;
     } on Exception catch (e, st) {
       _log.error('', e, st);
-      return _formatError('vote');
+      return _formatError('like');
     }
   }
 
@@ -461,36 +461,36 @@ mixin CommentsMixin {
     }
   }
 
-  Future<String?> upvoteComment(String commentId) async {
-    return await _updateCommentVote(commentId, Vote.up);
+  Future<String?> likeComment(String commentId) async {
+    return await _updateCommentLike(commentId, Like.up);
   }
 
-  Future<String?> downvoteComment(String commentId) async {
-    return await _updateCommentVote(commentId, Vote.down);
+  Future<String?> dislikeComment(String commentId) async {
+    return await _updateCommentLike(commentId, Like.down);
   }
 
-  Future<String?> _updateCommentVote(String commentId, Vote vote) async {
+  Future<String?> _updateCommentLike(String commentId, Like like) async {
     final comment = _comments[commentId];
     if (comment == null) {
       _log.error('comment not found: $commentId');
       return null;
     }
 
-    if (comment.likes == vote) {
-      vote = Vote.none;
+    if (comment.likes == like) {
+      like = Like.none;
     }
 
     try {
-      await _redditApi.commentVote(comment.id, vote);
+      await _redditApi.commentLike(comment.id, like);
       _comments[commentId] = comment.copyWith(
-        likes: vote,
-        score: calcScore(comment.score, comment.likes, vote),
+        likes: like,
+        score: calcScore(comment.score, comment.likes, like),
       );
       notifyListeners();
       return null;
     } on Exception catch (e, st) {
       _log.error('', e, st);
-      return _formatError('vote');
+      return _formatError('like');
     }
   }
 
@@ -556,23 +556,23 @@ String _formatError(String op) {
   return 'Error: fail to $op';
 }
 
-int calcScore(int score, Vote oldVote, Vote newVote) {
-  if (oldVote == Vote.up) {
-    if (newVote == Vote.down) {
+int calcScore(int score, Like oldLike, Like newLike) {
+  if (oldLike == Like.up) {
+    if (newLike == Like.down) {
       return score - 2;
-    } else if (newVote == Vote.none) {
+    } else if (newLike == Like.none) {
       return score - 1;
     }
-  } else if (oldVote == Vote.none) {
-    if (newVote == Vote.down) {
+  } else if (oldLike == Like.none) {
+    if (newLike == Like.down) {
       return score - 1;
-    } else if (newVote == Vote.up) {
+    } else if (newLike == Like.up) {
       return score + 1;
     }
-  } else if (oldVote == Vote.down) {
-    if (newVote == Vote.up) {
+  } else if (oldLike == Like.down) {
+    if (newLike == Like.up) {
       return score + 2;
-    } else if (newVote == Vote.none) {
+    } else if (newLike == Like.none) {
       return score + 1;
     }
   }

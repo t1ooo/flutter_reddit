@@ -15,20 +15,20 @@ import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
-import '../reddit_api/likes.dart';
+import '../reddit_api/like.dart';
 
-// abstract class VoteNotifer with TryMixin {
-//   Future<void> updateVote(Vote vote) async {
+// abstract class LikeNotifer with TryMixin {
+//   Future<void> updateLike(Like like) async {
 //     return _try(() async {
-//       if (likes == vote) return null;
+//       if (likes == like) return null;
 
-//       await _vote(vote);
+//       await _like(like);
 //       comment = comment.copyWith(
-//         likes: vote,
-//         score: calcScore(comment.score, comment.likes, vote),
+//         likes: like,
+//         score: calcScore(comment.score, comment.likes, like),
 //       );
 //       notifyListeners();
-//     }, 'fail to vote');
+//     }, 'fail to like');
 //   }
 // }
 
@@ -557,27 +557,27 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to unsave');
   }
 
-  Future<void> voteUp() {
-    return _updateSubmissionsVote(Likes.up);
+  Future<void> likeUp() {
+    return _updateSubmissionsLike(Like.up);
   }
 
-  Future<void> voteDown() {
-    return _updateSubmissionsVote(Likes.down);
+  Future<void> likeDown() {
+    return _updateSubmissionsLike(Like.down);
   }
 
-  Future<void> _updateSubmissionsVote(Likes vote) {
+  Future<void> _updateSubmissionsLike(Like like) {
     return _try(() async {
-      if (submission.likes == vote) {
-        vote = Likes.none;
+      if (submission.likes == like) {
+        like = Like.none;
       }
 
-      await _redditApi.submissionVote(submission.id, vote);
+      await _redditApi.submissionLike(submission.id, like);
       _submission = submission.copyWith(
-        likes: vote,
-        score: calcScore(submission.score, submission.likes, vote),
+        likes: like,
+        score: calcScore(submission.score, submission.likes, like),
       );
       notifyListeners();
-    }, 'fail to vote');
+    }, 'fail to like');
   }
 
   Future<void> share() {
@@ -732,31 +732,31 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
     }, 'fail to unsave');
   }
 
-  Future<void> upVote() async {
-    if (_comment.likes == Likes.up) {
-      return _updateVote(Likes.none);
+  Future<void> like() async {
+    if (_comment.likes == Like.up) {
+      return _updateLike(Like.none);
     }
-    return await _updateVote(Likes.up);
+    return await _updateLike(Like.up);
   }
 
-  Future<void> downVote() async {
-    if (_comment.likes == Likes.down) {
-      return _updateVote(Likes.none);
+  Future<void> dislike() async {
+    if (_comment.likes == Like.down) {
+      return _updateLike(Like.none);
     }
-    return await _updateVote(Likes.down);
+    return await _updateLike(Like.down);
   }
 
-  Future<void> _updateVote(Likes vote) {
+  Future<void> _updateLike(Like like) {
     return _try(() async {
-      if (comment.likes == vote) return;
+      if (comment.likes == like) return;
 
-      await _redditApi.commentVote(comment.id, vote);
+      await _redditApi.commentLike(comment.id, like);
       _comment = comment.copyWith(
-        likes: vote,
-        score: calcScore(comment.score, comment.likes, vote),
+        likes: like,
+        score: calcScore(comment.score, comment.likes, like),
       );
       notifyListeners();
-    }, 'fail to vote');
+    }, 'fail to like');
   }
 
   Future<void> share() {
@@ -1275,23 +1275,23 @@ mixin CollapseMixin {
 //   return 'fail to $op';
 // }
 
-int calcScore(int score, Likes oldVote, Likes newVote) {
-  if (oldVote == Likes.up) {
-    if (newVote == Likes.down) {
+int calcScore(int score, Like oldLike, Like newLike) {
+  if (oldLike == Like.up) {
+    if (newLike == Like.down) {
       return score - 2;
-    } else if (newVote == Likes.none) {
+    } else if (newLike == Like.none) {
       return score - 1;
     }
-  } else if (oldVote == Likes.none) {
-    if (newVote == Likes.down) {
+  } else if (oldLike == Like.none) {
+    if (newLike == Like.down) {
       return score - 1;
-    } else if (newVote == Likes.up) {
+    } else if (newLike == Like.up) {
       return score + 1;
     }
-  } else if (oldVote == Likes.down) {
-    if (newVote == Likes.up) {
+  } else if (oldLike == Like.down) {
+    if (newLike == Like.up) {
       return score + 2;
-    } else if (newVote == Likes.none) {
+    } else if (newLike == Like.none) {
       return score + 1;
     }
   }

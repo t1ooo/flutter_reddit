@@ -112,8 +112,8 @@ abstract class SubmissionNotifier extends ChangeNotifier {
 
   Future<String?> save();
   Future<String?> unsave();
-  Future<String?> voteUp();
-  Future<String?> voteDown();
+  Future<String?> likeUp();
+  Future<String?> likeDown();
   Future<String?> share();
   Future<String?> reply();
 }
@@ -121,8 +121,8 @@ abstract class SubmissionNotifier extends ChangeNotifier {
 abstract class CommentNotifier extends ChangeNotifier {
   Future<String?> save(String commentId);
   Future<String?> unsave();
-  Future<String?> voteUp();
-  Future<String?> voteDown();
+  Future<String?> likeUp();
+  Future<String?> likeDown();
   Future<String?> share();
   Future<String?> replyTo();
 }

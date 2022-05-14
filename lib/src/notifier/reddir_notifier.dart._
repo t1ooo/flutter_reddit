@@ -11,7 +11,7 @@ import '../reddit_api/reddir_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
-import '../reddit_api/vote.dart';
+import '../reddit_api/like.dart';
 import '../util/result.dart';
 
 // class RedditNotifier extends ChangeNotifier {
@@ -131,8 +131,8 @@ class RedditNotifier extends ChangeNotifier {
     return redditApi.subreddit(name);
   }
 
-  // Future<void> submissionVote(String id, Vote vote) async {
-  //   return redditApi.submissionVote(id, vote);
+  // Future<void> submissionLike(String id, Like like) async {
+  //   return redditApi.submissionLike(id, like);
   // }
 
   // Future<void> submissionSave(String id) async {
@@ -710,16 +710,16 @@ class SubscriptionNotifier extends ChangeNotifier /* with Error<Object> */ {
 
 // TODO: add LoadingMixin, disable/enable button
 // TODO: replace to ErrorMixin
-abstract class VoteNotifier extends ChangeNotifier /* with Error<Object> */ {
-  VoteNotifier(this.redditApi, Vote vote, int score)
-      : _vote = vote,
+abstract class LikeNotifier extends ChangeNotifier /* with Error<Object> */ {
+  LikeNotifier(this.redditApi, Like like, int score)
+      : _like = like,
         _score = score;
 
   int _score;
   int get score => _score;
 
   final RedditApi redditApi;
-  static final _log = getLogger('VoteNotifier');
+  static final _log = getLogger('LikeNotifier');
 
   // Object? _error;
   // Object? get error {
@@ -728,79 +728,79 @@ abstract class VoteNotifier extends ChangeNotifier /* with Error<Object> */ {
   //   return tmp;
   // }
 
-  Vote _vote;
-  Vote get vote => _vote;
+  Like _like;
+  Like get like => _like;
 
-  Future<String?> upVote(String id) async {
-    await _updateVote(id, Vote.up);
+  Future<String?> like(String id) async {
+    await _updateLike(id, Like.up);
   }
 
-  Future<String?> downVote(String id) async {
-    await _updateVote(id, Vote.down);
+  Future<String?> dislike(String id) async {
+    await _updateLike(id, Like.down);
   }
 
-  Future<String?> clearVote(String id) async {
-    await _updateVote(id, Vote.none);
+  Future<String?> clearLike(String id) async {
+    await _updateLike(id, Like.none);
   }
 
-  Future<String?> _updateVote(String id, Vote vote) async {
-    if (_vote == vote) return null;
+  Future<String?> _updateLike(String id, Like like) async {
+    if (_like == like) return null;
 
     try {
-      // await redditApi.submissionVote(id, vote);
-      await _doVote(id, vote);
-      _updateScore(vote);
-      _vote = vote;
+      // await redditApi.submissionLike(id, like);
+      await _doLike(id, like);
+      _updateScore(like);
+      _like = like;
       notifyListeners();
     } on Exception catch (e) {
       _log.error(e);
       // _error = e;
-      return 'Error: fail to vote';
+      return 'Error: fail to like';
     }
   }
 
-  void _updateScore(Vote newVote) {
-    if (_vote == Vote.up) {
-      if (newVote == Vote.down) {
+  void _updateScore(Like newLike) {
+    if (_like == Like.up) {
+      if (newLike == Like.down) {
         _score = _score - 2;
-      } else if (newVote == Vote.none) {
+      } else if (newLike == Like.none) {
         _score = _score - 1;
       }
-    } else if (_vote == Vote.none) {
-      if (newVote == Vote.down) {
+    } else if (_like == Like.none) {
+      if (newLike == Like.down) {
         _score = _score - 1;
-      } else if (newVote == Vote.up) {
+      } else if (newLike == Like.up) {
         _score = _score + 1;
       }
-    } else if (_vote == Vote.down) {
-      if (newVote == Vote.up) {
+    } else if (_like == Like.down) {
+      if (newLike == Like.up) {
         _score = _score + 2;
-      } else if (newVote == Vote.none) {
+      } else if (newLike == Like.none) {
         _score = _score + 1;
       }
     }
   }
 
-  Future<void> _doVote(String id, Vote vote);
+  Future<void> _doLike(String id, Like like);
 }
 
-class SubmissionVoteNotifier extends VoteNotifier {
-  SubmissionVoteNotifier(RedditApi redditApi, Submission submission)
+class SubmissionLikeNotifier extends LikeNotifier {
+  SubmissionLikeNotifier(RedditApi redditApi, Submission submission)
       : super(redditApi, submission.likes, submission.score);
 
   @override
-  Future<void> _doVote(String id, Vote vote) {
-    return redditApi.submissionVote(id, vote);
+  Future<void> _doLike(String id, Like like) {
+    return redditApi.submissionLike(id, like);
   }
 }
 
-class CommentVoteNotifier extends VoteNotifier {
-  CommentVoteNotifier(RedditApi redditApi, Comment comment)
+class CommentLikeNotifier extends LikeNotifier {
+  CommentLikeNotifier(RedditApi redditApi, Comment comment)
       : super(redditApi, comment.likes, comment.score);
 
   @override
-  Future<void> _doVote(String id, Vote vote) {
-    return redditApi.commentVote(id, vote);
+  Future<void> _doLike(String id, Like like) {
+    return redditApi.commentLike(id, like);
   }
 }
 
@@ -1083,39 +1083,39 @@ class SubmissionNotifier extends ChangeNotifier {
     }
   }
 
-  Future<String?> upVote() async {
-    if (submission.likes == Vote.up) {
-      return _updateVote(Vote.none);
+  Future<String?> like() async {
+    if (submission.likes == Like.up) {
+      return _updateLike(Like.none);
     }
-    return await _updateVote(Vote.up);
+    return await _updateLike(Like.up);
   }
 
-  Future<String?> downVote() async {
-    if (submission.likes == Vote.down) {
-      return _updateVote(Vote.none);
+  Future<String?> dislike() async {
+    if (submission.likes == Like.down) {
+      return _updateLike(Like.none);
     }
-    return await _updateVote(Vote.down);
+    return await _updateLike(Like.down);
   }
 
-  // Future<String?> clearVote() async {
-  //   return await _updateVote(Vote.none);
+  // Future<String?> clearLike() async {
+  //   return await _updateLike(Like.none);
   // }
 
-  Future<String?> _updateVote(Vote vote) async {
-    if (submission.likes == vote) return null;
+  Future<String?> _updateLike(Like like) async {
+    if (submission.likes == like) return null;
 
     try {
-      await redditApi.submissionVote(submission.id, vote);
+      await redditApi.submissionLike(submission.id, like);
       submission = submission.copyWith(
-        likes: vote,
-        score: calcScore(submission.score, submission.likes, vote),
+        likes: like,
+        score: calcScore(submission.score, submission.likes, like),
       );
       notifyListeners();
       return null;
     } on Exception catch (e) {
       _log.error(e);
       // _error = e;
-      return 'Error: fail to vote';
+      return 'Error: fail to like';
     }
   }
 
@@ -1174,66 +1174,66 @@ mixin CollapseMixin {
   }
 }
 
-mixin VoteMixin {
+mixin LikeMixin {
   static late final Logger _log;
 
   late int _score;
   int get score => _score;
 
-  late Vote _vote;
-  Vote get vote => _vote;
+  late Like _like;
+  Like get like => _like;
 
-  Future<String?> upVote(String id) async {
-    await _updateVote(id, Vote.up);
+  Future<String?> like(String id) async {
+    await _updateLike(id, Like.up);
   }
 
-  Future<String?> downVote(String id) async {
-    await _updateVote(id, Vote.down);
+  Future<String?> dislike(String id) async {
+    await _updateLike(id, Like.down);
   }
 
-  Future<String?> clearVote(String id) async {
-    await _updateVote(id, Vote.none);
+  Future<String?> clearLike(String id) async {
+    await _updateLike(id, Like.none);
   }
 
-  Future<String?> _updateVote(String id, Vote vote) async {
-    if (_vote == vote) return null;
+  Future<String?> _updateLike(String id, Like like) async {
+    if (_like == like) return null;
 
     try {
-      // await redditApi.submissionVote(id, vote);
-      await _doVote(id, vote);
-      _updateScore(vote);
-      _vote = vote;
+      // await redditApi.submissionLike(id, like);
+      await _doLike(id, like);
+      _updateScore(like);
+      _like = like;
       notifyListeners();
     } on Exception catch (e) {
       _log.error(e);
       // _error = e;
-      return 'Error: fail to vote';
+      return 'Error: fail to like';
     }
   }
 
-  void _updateScore(Vote newVote) {
-    if (_vote == Vote.up) {
-      if (newVote == Vote.down) {
+  void _updateScore(Like newLike) {
+    if (_like == Like.up) {
+      if (newLike == Like.down) {
         _score = _score - 2;
-      } else if (newVote == Vote.none) {
+      } else if (newLike == Like.none) {
         _score = _score - 1;
       }
-    } else if (_vote == Vote.none) {
-      if (newVote == Vote.down) {
+    } else if (_like == Like.none) {
+      if (newLike == Like.down) {
         _score = _score - 1;
-      } else if (newVote == Vote.up) {
+      } else if (newLike == Like.up) {
         _score = _score + 1;
       }
-    } else if (_vote == Vote.down) {
-      if (newVote == Vote.up) {
+    } else if (_like == Like.down) {
+      if (newLike == Like.up) {
         _score = _score + 2;
-      } else if (newVote == Vote.none) {
+      } else if (newLike == Like.none) {
         _score = _score + 1;
       }
     }
   }
 
-  Future<void> _doVote(String id, Vote vote);
+  Future<void> _doLike(String id, Like like);
   void notifyListeners();
 }
 
@@ -1277,11 +1277,11 @@ mixin SaveMixin {
 }
 
 /* class CommentNotifier extends ChangeNotifier
-    with CollapseMixin, VoteMixin, SaveMixin {
+    with CollapseMixin, LikeMixin, SaveMixin {
   CommentNotifier(this.redditApi, this.comment) {
     _saved = comment.saved;
     _score = comment.score;
-    _vote = comment.likes;
+    _like = comment.likes;
   }
 
   final RedditApi redditApi;
@@ -1290,8 +1290,8 @@ mixin SaveMixin {
   static final _log = getLogger('CommentNotifier');
 
   @override
-  Future<void> _doVote(String id, Vote vote) {
-    return redditApi.commentVote(id, vote);
+  Future<void> _doLike(String id, Like like) {
+    return redditApi.commentLike(id, like);
   }
 
   @override
@@ -1360,72 +1360,72 @@ class CommentNotifier with CollapseMixin, ChangeNotifier {
     }
   }
 
-  // Future<String?> upVote() async {
-  //   return await _updateVote(Vote.up);
+  // Future<String?> like() async {
+  //   return await _updateLike(Like.up);
   // }
 
-  // Future<String?> downVote() async {
-  //   return await _updateVote(Vote.down);
+  // Future<String?> dislike() async {
+  //   return await _updateLike(Like.down);
   // }
 
-  // Future<String?> clearVote() async {
-  //   return await _updateVote(Vote.none);
+  // Future<String?> clearLike() async {
+  //   return await _updateLike(Like.none);
   // }
 
-  Future<String?> upVote() async {
-    if (comment.likes == Vote.up) {
-      return _updateVote(Vote.none);
+  Future<String?> like() async {
+    if (comment.likes == Like.up) {
+      return _updateLike(Like.none);
     }
-    return await _updateVote(Vote.up);
+    return await _updateLike(Like.up);
   }
 
-  Future<String?> downVote() async {
-    if (comment.likes == Vote.down) {
-      return _updateVote(Vote.none);
+  Future<String?> dislike() async {
+    if (comment.likes == Like.down) {
+      return _updateLike(Like.none);
     }
-    return await _updateVote(Vote.down);
+    return await _updateLike(Like.down);
   }
 
-  // Future<String?> clearVote() async {
-  //   return await _updateVote(Vote.none);
+  // Future<String?> clearLike() async {
+  //   return await _updateLike(Like.none);
   // }
 
-  Future<String?> _updateVote(Vote vote) async {
-    if (comment.likes == vote) return null;
+  Future<String?> _updateLike(Like like) async {
+    if (comment.likes == like) return null;
 
     try {
-      await redditApi.submissionVote(comment.id, vote);
+      await redditApi.submissionLike(comment.id, like);
       comment = comment.copyWith(
-        likes: vote,
-        score: calcScore(comment.score, comment.likes, vote),
+        likes: like,
+        score: calcScore(comment.score, comment.likes, like),
       );
       notifyListeners();
       return null;
     } on Exception catch (e) {
       _log.error(e);
       // _error = e;
-      return 'Error: fail to vote';
+      return 'Error: fail to like';
     }
   }
 }
 
-int calcScore(int score, Vote oldVote, Vote newVote) {
-  if (oldVote == Vote.up) {
-    if (newVote == Vote.down) {
+int calcScore(int score, Like oldLike, Like newLike) {
+  if (oldLike == Like.up) {
+    if (newLike == Like.down) {
       return score - 2;
-    } else if (newVote == Vote.none) {
+    } else if (newLike == Like.none) {
       return score - 1;
     }
-  } else if (oldVote == Vote.none) {
-    if (newVote == Vote.down) {
+  } else if (oldLike == Like.none) {
+    if (newLike == Like.down) {
       return score - 1;
-    } else if (newVote == Vote.up) {
+    } else if (newLike == Like.up) {
       return score + 1;
     }
-  } else if (oldVote == Vote.down) {
-    if (newVote == Vote.up) {
+  } else if (oldLike == Like.down) {
+    if (newLike == Like.up) {
       return score + 2;
-    } else if (newVote == Vote.none) {
+    } else if (newLike == Like.none) {
       return score + 1;
     }
   }

@@ -17,7 +17,7 @@ import 'comment.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
-import 'likes.dart';
+import 'like.dart';
 
 // abstract class RedditApi {
 //   Future<List<Submission>> front({required int limit});
@@ -71,8 +71,8 @@ abstract class RedditApi {
 
   Future<Submission> submission(String id);
 
-  Future<void> submissionVote(String id, Likes vote);
-  Future<void> commentVote(String id, Likes vote);
+  Future<void> submissionLike(String id, Like like);
+  Future<void> commentLike(String id, Like like);
 
   Future<void> submissionSave(String id);
   Future<void> submissionUnsave(String id);
@@ -514,23 +514,23 @@ class RedditApiImpl implements RedditApi {
   // }
 
   // TODO: use draw.Submission instead id for optimisation
-  Future<void> submissionVote(String id, Likes vote) async {
+  Future<void> submissionLike(String id, Like like) async {
     final s = await reddit.submission(id: id).populate();
-    return _vote(s, vote);
+    return _like(s, like);
   }
 
-  Future<void> commentVote(String id, Likes vote) async {
+  Future<void> commentLike(String id, Like like) async {
     final s = await reddit.comment(id: id).populate();
-    return _vote(s, vote);
+    return _like(s, like);
   }
 
-  Future<void> _vote(draw.VoteableMixin s, Likes vote) async {
-    switch (vote) {
-      case Likes.none:
+  Future<void> _like(draw.VoteableMixin s, Like like) async {
+    switch (like) {
+      case Like.none:
         return s.clearVote();
-      case Likes.up:
+      case Like.up:
         return s.upvote();
-      case Likes.down:
+      case Like.down:
         return s.downvote();
     }
   }
@@ -555,20 +555,20 @@ class RedditApiImpl implements RedditApi {
     return s.unsave();
   }
 
-  // Future<void> submissionUpvote(String id) async {
-  //   return (await reddit.submission(id: id).populate()).upvote();
+  // Future<void> submissionlike(String id) async {
+  //   return (await reddit.submission(id: id).populate()).like();
   // }
 
-  // Future<void> submissionDownvote(String id) async {
-  //   return (await reddit.submission(id: id).populate()).downvote();
+  // Future<void> submissiondislike(String id) async {
+  //   return (await reddit.submission(id: id).populate()).dislike();
   // }
 
-  // Future<void> commentUpvote(String id) async {
-  //   return (await reddit.comment(id: id).populate()).upvote();
+  // Future<void> commentlike(String id) async {
+  //   return (await reddit.comment(id: id).populate()).like();
   // }
 
-  // Future<void> commentDownvote(String id) async {
-  //   return (await reddit.comment(id: id).populate()).downvote();
+  // Future<void> commentdislike(String id) async {
+  //   return (await reddit.comment(id: id).populate()).dislike();
   // }
 
   Future<User?> currentUser() async {
@@ -950,16 +950,16 @@ class FakeRedditApi implements RedditApi {
     return Subreddit.fromJson(map as Map<String, dynamic>);
   }
 
-  Future<void> submissionVote(String id, Likes vote) async {
-    _log.info('submissionVote($id, $vote)');
+  Future<void> submissionLike(String id, Like like) async {
+    _log.info('submissionLike($id, $like)');
     _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
   @override
-  Future<void> commentVote(String id, Likes vote) async {
-    _log.info('commentVote($id, $vote)');
+  Future<void> commentLike(String id, Like like) async {
+    _log.info('commentLike($id, $like)');
     _mustLoggedIn();
     await Future.delayed(_delay);
     return;

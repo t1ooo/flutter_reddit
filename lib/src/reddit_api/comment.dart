@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../logging/logging.dart';
 import 'parse.dart';
-import 'likes.dart';
+import 'like.dart';
 
 // class Comment extends Equatable {
 class Comment {
@@ -123,7 +123,7 @@ class Comment {
   final int totalAwardsReceived;
   final String subreddit;
   final String linkAuthor;
-  final Likes likes;
+  final Like likes;
   final List<Comment> replies;
   final bool saved;
   final String id;
@@ -230,7 +230,7 @@ class Comment {
     int? totalAwardsReceived,
     String? subreddit,
     String? linkAuthor,
-    Likes? likes,
+    Like? likes,
     List<Comment>? replies,
     bool? saved,
     String? id,

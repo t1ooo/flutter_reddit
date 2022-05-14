@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/likes.dart';
+import '../reddit_api/like.dart';
 import '../style/style.dart';
 import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
@@ -505,7 +505,7 @@ class SubmissionTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _voteButton(context, notifier),
+        _likeButton(context, notifier),
         // Row(
         //   children: [
         //     Icon(Icons.comment),
@@ -609,30 +609,30 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  Widget _voteButton(BuildContext context, SubmissionNotifierQ notifier) {
+  Widget _likeButton(BuildContext context, SubmissionNotifierQ notifier) {
     final submission = notifier.submission;
 
     return Row(
       children: [
         IconButton(
           onPressed: () {
-            notifier.voteUp().catchError((e) => showErrorSnackBar(context, e));
+            notifier.likeUp().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
-            color: submission.likes == Likes.up ? Colors.green : null,
+            color: submission.likes == Like.up ? Colors.green : null,
           ),
         ),
         Text(submission.score.toString()),
         IconButton(
           onPressed: () {
             notifier
-                .voteDown()
+                .likeDown()
                 .catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_more,
-            color: submission.likes == Likes.down ? Colors.red : null,
+            color: submission.likes == Like.down ? Colors.red : null,
           ),
         ),
       ],

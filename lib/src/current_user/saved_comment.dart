@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../reply/reply_screen.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/comment.dart';
-import '../reddit_api/likes.dart';
+import '../reddit_api/like.dart';
 import '../style/style.dart';
 import '../submission/style.dart';
 import '../submission/submission_screen.dart';
@@ -153,7 +153,7 @@ class SavedComment extends StatelessWidget {
           label: Text('Reply'),
         ),
         SizedBox(width: 20),
-        _voteButton(context, notifier),
+        _likeButton(context, notifier),
       ],
     );
   }
@@ -204,18 +204,18 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  Widget _voteButton(BuildContext context, CommentNotifierQ notifier) {
+  Widget _likeButton(BuildContext context, CommentNotifierQ notifier) {
     final comment = notifier.comment;
 
     return Row(
       children: [
         IconButton(
           onPressed: () {
-            notifier.upVote().catchError((e) => showErrorSnackBar(context, e));
+            notifier.like().catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_less,
-            color: comment.likes == Likes.up ? Colors.green : null,
+            color: comment.likes == Like.up ? Colors.green : null,
           ),
         ),
         Text(comment.score.toString()),
@@ -223,12 +223,12 @@ class SavedComment extends StatelessWidget {
         IconButton(
           onPressed: () {
             notifier
-                .downVote()
+                .dislike()
                 .catchError((e) => showErrorSnackBar(context, e));
           },
           icon: Icon(
             Icons.expand_more,
-            color: comment.likes == Likes.down ? Colors.red : null,
+            color: comment.likes == Like.down ? Colors.red : null,
           ),
         ),
       ],

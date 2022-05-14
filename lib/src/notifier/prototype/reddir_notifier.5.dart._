@@ -10,7 +10,7 @@ import '../../reddit_api/reddir_api.dart';
 import '../../reddit_api/submission.dart';
 import '../../reddit_api/submission_type.dart';
 import '../../reddit_api/subreddit.dart';
-import '../../reddit_api/vote.dart';
+import '../../reddit_api/like.dart';
 import '../../util/result.dart';
 
 abstract class RedditNotifier extends ChangeNotifier {
@@ -70,8 +70,8 @@ abstract class RedditNotifier extends ChangeNotifier {
     return redditApi.subreddit(name);
   }
 
-  Future<void> submissionVote(String id, Vote vote) async {
-    return redditApi.submissionVote(id, vote);
+  Future<void> submissionLike(String id, Like like) async {
+    return redditApi.submissionLike(id, like);
   }
 
   Future<void> submissionSave(String id) async {
