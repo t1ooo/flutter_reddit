@@ -605,26 +605,26 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     return _submission.preview
         .map(
           (v) {
-            Preview items;
-            if (v.gifs != null) {
-              items = v.gifs!;
-            } else if (v.images != null) {
-              items = v.images!;
-            } else {
-              return [];
-            }
+            // Preview items;
+            // if (v.gifs != null) {
+            //   items = v.gifs!;
+            // } else if (v.images != null) {
+            //   items = v.images!;
+            // } else {
+            //   return [];
+            // }
 
-            final resolutions = [items.source, ...items.resolutions.reversed];
+            final resolutions = [v.source, ...v.resolutions.reversed];
             resolutions.sort((a, b) => (b.width - a.width).toInt());
 
             for (final img in resolutions) {
               // if (minWidth <= img.width && img.width <= maxWidth) {
               if (img.width <= maxWidth && img.width <= maxHeight) {
-                return PreviewImage(items.source, img);
+                return PreviewImage(v.source, img);
               }
             }
 
-            return PreviewImage(items.source, items.source);
+            return PreviewImage(v.source, v.source);
 
             // final resolutions = [items.source, ...items.resolutions]
             //     .where(

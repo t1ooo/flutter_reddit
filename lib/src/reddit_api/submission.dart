@@ -75,7 +75,8 @@ class Submission extends Equatable {
   // final CommentForest? comments;
   final List<Comment>? comments;
   // final String shortLink;
-  final List<Previews> preview;
+  // final List<Previews> preview;
+  final List<Preview> preview;
   final Video? video;
   final PostHint postHint;
 
@@ -132,6 +133,7 @@ class Submission extends Equatable {
       saved: parseBool(m['saved'], '$f.saved'),
       // shortLink: _genShortLink(mapGet(m, 'id', '')),
       // type: type,
+      // preview: parsePreview(m['preview'], '$f.preview'),
       preview: parsePreview(m['preview'], '$f.preview'),
       video: parseVideo(m['media'], '$f.media'),
       postHint: parsePostHint(m['post_hint'], m['url'], '$f.post_hint'),
@@ -214,7 +216,7 @@ class Submission extends Equatable {
     bool? saved,
     SubType? type,
     List<Comment>? comments,
-    List<Previews>? preview,
+    List<Preview>? preview,
     Video? Function()? video,
     PostHint? postHint,
   }) {

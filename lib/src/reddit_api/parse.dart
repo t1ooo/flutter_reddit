@@ -199,7 +199,7 @@ List<String> parseAwardIcons(dynamic data, [String? name]) {
   }
 }
 
-List<Previews> parsePreview(dynamic data, [String? name]) {
+List<Previews> parsePreviews(dynamic data, [String? name]) {
   try {
     if (data == null) {
       return [];
@@ -209,6 +209,28 @@ List<Previews> parsePreview(dynamic data, [String? name]) {
     for (final v in (data['images'] as List<dynamic>)) {
       try {
         images.add(Previews.fromJson(v));
+      } on TypeError catch (e) {
+        _log('$e: $v', name);
+      }
+    }
+    return images;
+  } on TypeError catch (e) {
+    _log('$e: $data', name);
+    return [];
+  }
+}
+
+List<Preview> parsePreview(dynamic data, [String? name]) {
+  try {
+    if (data == null) {
+      return [];
+    }
+
+    final images = <Preview>[];
+
+    for (final v in (data['images'] as List<dynamic>)) {
+      try {
+        images.add(Preview.fromJson(v['variants']?['gif'] ?? v));
       } on TypeError catch (e) {
         _log('$e: $v', name);
       }
