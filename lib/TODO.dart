@@ -1,4 +1,3 @@
-// TODO: listview save croll position
 // TODO: use ListNotifier
 
 // TODO: show comment link_url image
