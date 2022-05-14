@@ -581,14 +581,14 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   // TODO: remove
-  SizedPreview? previewImage([
+  /* SizedPreview? previewImage([
     double minWidth = 0,
     double maxWidth = double.infinity,
   ]) {
     final images_ = images(minWidth, maxWidth);
     // print(images_.map((x)=>x.width).toList());
     return images_.isEmpty ? null : images_.first;
-  }
+  } */
 
   // TODO: add height
   List<SizedPreview> images([

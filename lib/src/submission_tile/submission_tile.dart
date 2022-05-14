@@ -125,9 +125,6 @@ class SubmissionTile extends StatelessWidget {
         );
 
     switch (submission.postHint) {
-      case PostHint.none:
-        return null;
-
       case PostHint.hostedVideo:
         final video = submission.video;
         if (video == null || video.fallbackUrl == '') {
@@ -145,13 +142,14 @@ class SubmissionTile extends StatelessWidget {
           return null;
         }
 
-        final sizes = images.map((v) => _adjustSize(v.width, v.height)).toList();
+        final sizes =
+            images.map((v) => _adjustSize(v.width, v.height)).toList();
         final maxHeight = sizes.map((v) => v.height).reduce(max);
 
         return ImageSlider(
           items: [
             for (int i = 0; i < images.length; i++)
-              SizedNetworkImage(
+              FullScreenImage(
                 imageUrl: images[i].url,
                 size: sizes[i],
               ),
@@ -171,6 +169,7 @@ class SubmissionTile extends StatelessWidget {
           size: _adjustSize(previewImage.width, previewImage.height),
         );
 
+      case PostHint.none:
       case PostHint.self:
         return null;
     }

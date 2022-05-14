@@ -198,6 +198,59 @@ class ImageLink extends StatelessWidget {
   }
 }
 
+class FullScreenImage extends StatelessWidget {
+  FullScreenImage({
+    Key? key,
+    required this.imageUrl,
+    required this.size,
+  }) : super(key: key);
+
+  final String imageUrl;
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ImageScreen(
+              imageUrl: imageUrl,
+            ),
+          ),
+        );
+      },
+      child: SizedNetworkImage(
+        imageUrl: imageUrl,
+        size: size,
+      ),
+    );
+  }
+}
+
+class ImageScreen extends StatelessWidget {
+  ImageScreen({
+    Key? key,
+    required this.imageUrl,
+    // required this.size,
+  }) : super(key: key);
+
+  final String imageUrl;
+  // final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SizedNetworkImage(
+        imageUrl: imageUrl,
+        size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
+      ),
+    );
+  }
+}
+
 class SizedNetworkImage extends StatelessWidget {
   const SizedNetworkImage({
     Key? key,
