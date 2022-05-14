@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_reddit_prototype/src/util/date_time.dart';
+import 'package:flutter_reddit_prototype/src/widget/save.dart';
 import 'package:provider/provider.dart';
 
 import '../reply/reply_screen.dart';
@@ -169,19 +170,20 @@ class SavedComment extends StatelessWidget {
     return CustomPopupMenuButton(
       icon: Icon(Icons.more_vert),
       items: [
-        CustomPopupMenuItem(
-          icon: Icon(
-            comment.saved ? Icons.bookmark : Icons.bookmark_border,
-          ),
-          label: comment.saved ? 'Unsave' : 'Save',
-          onTap: () {
-            return (comment.saved ? notifier.unsave() : notifier.save())
-                .catchError((e) => showErrorSnackBar(context, e));
-            // return (comment.saved ? notifier.unsave() : notifier.save()).then(
-            // (_) => context.read<UserNotifierQ>().refresh(),
-            // onError: (e) => showErrorSnackBar(context, e));
-          },
-        ),
+        // CustomPopupMenuItem(
+        //   icon: Icon(
+        //     comment.saved ? Icons.bookmark : Icons.bookmark_border,
+        //   ),
+        //   label: comment.saved ? 'Unsave' : 'Save',
+        //   onTap: () {
+        //     return (comment.saved ? notifier.unsave() : notifier.save())
+        //         .catchError((e) => showErrorSnackBar(context, e));
+        //     // return (comment.saved ? notifier.unsave() : notifier.save()).then(
+        //     // (_) => context.read<UserNotifierQ>().refresh(),
+        //     // onError: (e) => showErrorSnackBar(context, e));
+        //   },
+        // ),
+        savePopupMenuItem(context, notifier),
 
         CustomPopupMenuItem(
           icon: Icon(Icons.share),

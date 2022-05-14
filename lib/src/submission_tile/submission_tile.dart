@@ -24,6 +24,7 @@ import '../widget/icon_text.dart';
 
 import '../widget/like.dart';
 import '../widget/network_image.dart';
+import '../widget/save.dart';
 import 'media.dart';
 
 class SubmissionTile extends StatelessWidget {
@@ -564,16 +565,17 @@ class SubmissionTile extends StatelessWidget {
     return CustomPopupMenuButton(
       icon: Icon(Icons.more_vert),
       items: [
-        CustomPopupMenuItem(
-          icon: Icon(
-            submission.saved ? Icons.bookmark : Icons.bookmark_border,
-          ),
-          label: submission.saved ? 'Unsave' : 'Save',
-          onTap: () {
-            return (submission.saved ? notifier.unsave() : notifier.save())
-                .catchError((e) => showErrorSnackBar(context, e));
-          },
-        ),
+        // CustomPopupMenuItem(
+        //   icon: Icon(
+        //     submission.saved ? Icons.bookmark : Icons.bookmark_border,
+        //   ),
+        //   label: submission.saved ? 'Unsave' : 'Save',
+        //   onTap: () {
+        //     return (submission.saved ? notifier.unsave() : notifier.save())
+        //         .catchError((e) => showErrorSnackBar(context, e));
+        //   },
+        // ),
+        savePopupMenuItem(context, notifier),
 
         // CustomPopupMenuItem(
         //   icon: Icon(Icons.share),

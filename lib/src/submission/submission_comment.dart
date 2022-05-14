@@ -14,6 +14,7 @@ import '../widget/awards.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/icon_text.dart';
 import '../widget/like.dart';
+import '../widget/save.dart';
 import 'style.dart';
 
 class SubmissionComment extends StatelessWidget {
@@ -159,16 +160,17 @@ class SubmissionComment extends StatelessWidget {
     return CustomPopupMenuButton(
       icon: Icon(Icons.more_vert),
       items: [
-        CustomPopupMenuItem(
-          icon: Icon(
-            comment.saved ? Icons.bookmark : Icons.bookmark_border,
-          ),
-          label: comment.saved ? 'Unsave' : 'Save',
-          onTap: () {
-            return (comment.saved ? notifier.unsave() : notifier.save())
-                .catchError((e) => showErrorSnackBar(context, e));
-          },
-        ),
+        // CustomPopupMenuItem(
+        //   icon: Icon(
+        //     comment.saved ? Icons.bookmark : Icons.bookmark_border,
+        //   ),
+        //   label: comment.saved ? 'Unsave' : 'Save',
+        //   onTap: () {
+        //     return (comment.saved ? notifier.unsave() : notifier.save())
+        //         .catchError((e) => showErrorSnackBar(context, e));
+        //   },
+        // ),
+        savePopupMenuItem(context, notifier),
 
         CustomPopupMenuItem(
           icon: Icon(Icons.share),
