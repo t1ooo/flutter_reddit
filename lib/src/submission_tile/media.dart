@@ -19,25 +19,19 @@ Future<void> initVideoPlayer() async {
 }
 
 const _fit = BoxFit.contain;
-// const _fit =  BoxFit.fill;
 
 class VideoPlayer extends StatefulWidget {
   VideoPlayer({
     Key? key,
     required this.videoUrl,
-    // required this.width,
-    // required this.height,
     required this.size,
     this.scale = 1.0,
     this.previewImageUrl,
   }) : super(key: key);
 
   final String videoUrl;
-  // final double width;
-  // final double height;
   final Size size;
   final double scale;
-  // final SizedImage? previewImage;
   final String? previewImageUrl;
 
   @override
@@ -53,7 +47,6 @@ class _VideoPlayerState extends State<VideoPlayer> {
     _player = Player(
       id: Random().nextInt(1000 * 1000),
       registerTexture: true,
-      // videoDimensions: VideoDimensions(widget.width.toInt(), widget.height.toInt()),
     );
     _player.open(
       Playlist(
@@ -72,23 +65,17 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.backgroundImage != null) {
-    //   return GestureDetector(child: Image(image: widget.backgroundImage!));
-    // }
     final image = _previewImage(context);
     if (image != null) {
       return image;
     }
 
-    // final screenWidth = MediaQuery.of(context).size.width;
     return Center(
       child: Video(
         player: _player,
         scale: widget.scale,
         width: widget.size.width,
         height: widget.size.height,
-        // width: MediaQuery.of(context).size.width,
-        // height: MediaQuery.of(context).size.height,
         volumeThumbColor: Colors.blue,
         volumeActiveColor: Colors.blue,
         fillColor: Colors.white,
@@ -98,46 +85,24 @@ class _VideoPlayerState extends State<VideoPlayer> {
     );
   }
 
+  void _play() {
+    setState(
+      () {
+        _showPlayer = true;
+        _player.play();
+      },
+    );
+  }
+
   Widget? _previewImage(BuildContext context) {
     final previewImageUrl = widget.previewImageUrl;
     if (_showPlayer || previewImageUrl == null) {
       return null;
     }
 
-    // final minWidth = 200.0;
-    // final screenWidth = MediaQuery.of(context).size.width;
-
-    // final maxScale = 5;
-    // final width = min(previewImage.width * maxScale, screenWidth);
-
-    // return Center(
-    //   child: TapableImage(
-    //     width: widget.width,
-    //     height: widget.height,
-    //     imageUrl: previewImageUrl,
-    //     icon: Icons.play_circle,
-    //     onTap: () {
-    //       setState(
-    //         () {
-    //           _showPlayer = true;
-    //           _player.play();
-    //         },
-    //       );
-    //     },
-    //   ),
-    // );
-
     return Center(
-      // child: InkWell(
       child: GestureDetector(
-        onTap: () {
-          setState(
-            () {
-              _showPlayer = true;
-              _player.play();
-            },
-          );
-        },
+        onTap: _play,
         child: SizedBox(
           width: widget.size.width,
           height: widget.size.height,
@@ -166,113 +131,21 @@ class _VideoPlayerState extends State<VideoPlayer> {
         ),
       ),
     );
-
-    // final iconSize = 100.0;
-    // return Center(
-    //   child: GestureDetector(
-    //     onTap: () {
-    //       setState(() {
-    //         _showPlayer = true;
-    //         _player.play();
-    //       });
-    //     },
-    //     child: Stack(
-    //       children: [
-    //         CustomNetworkImage(
-    //           previewImage.url,
-    //           onData: (_, image) {
-    //             return Image(
-    //               image: image,
-    //               width: widget.width,
-    //               height: widget.height,
-    //               fit: BoxFit.none,
-    //               errorBuilder: imageErrorBuilder,
-    //             );
-    //           },
-    //         ),
-    //         Positioned(
-    //           top: (widget.height - iconSize) / 2,
-    //           left: (widget.width - iconSize) / 2,
-    //           child: Icon(
-    //             Icons.play_circle,
-    //             color: Colors.white,
-    //             size: iconSize,
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
-
-// class TapableImage extends StatelessWidget {
-//   TapableImage({
-//     Key? key,
-//     required this.width,
-//     required this.height,
-//     required this.imageUrl,
-//     required this.icon,
-//     required this.onTap,
-//   }) : super(key: key);
-
-//   final String imageUrl;
-//   final double width;
-//   final double height;
-//   final IconData icon;
-//   final void Function() onTap;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       // child: InkWell(
-//       child: GestureDetector(
-//         onTap: onTap,
-//         child: Stack(
-//           children: [
-//             SizedImageWidget(
-//               imageUrl: imageUrl,
-//               width: width,
-//               height: height,
-//             ),
-//             Positioned.fill(
-//               child: Align(
-//                 alignment: Alignment.center,
-//                 child: Container(
-//                   color: Colors.black54,
-//                   child: Icon(
-//                     icon,
-//                     color: Colors.white,
-//                     size: 100,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class ImageLink extends StatelessWidget {
   ImageLink({
     Key? key,
-    // required this.width,
-    // required this.height,
     required this.size,
-    // required this.icon,
     required this.imageUrl,
     required this.url,
   }) : super(key: key);
 
   final String imageUrl;
   final String url;
-  // final double width;
-  // final double height;
+
   final Size size;
-  // final IconData icon;
-  // final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +153,6 @@ class ImageLink extends StatelessWidget {
 
     return Center(
       child: InkWell(
-        // child: GestureDetector(
         onTap: () {
           launch(url);
         },
@@ -326,43 +198,6 @@ class ImageLink extends StatelessWidget {
   }
 }
 
-// class SizedImageWidget extends StatelessWidget {
-//   SizedImageWidget({
-//     Key? key,
-//     required this.width,
-//     required this.height,
-//     required this.imageUrl,
-//   }) : super(key: key);
-
-//   final String imageUrl;
-//   final double width;
-//   final double height;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Container(
-//         decoration: BoxDecoration(
-//           border: Border.all(color: Colors.red),
-//         ),
-//         child: CustomNetworkImage(
-//           imageUrl,
-//           onData: (_, image) {
-//             return Image(
-//               // alignment:Alignment.topLeft,
-//               image: image,
-//               width: width,
-//               height: height,
-//               fit: _fit,
-//               errorBuilder: imageErrorBuilder,
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class SizedNetworkImage extends StatelessWidget {
   const SizedNetworkImage({
     Key? key,
@@ -407,36 +242,11 @@ class SizedNetworkImage extends StatelessWidget {
       width: size.width,
       height: size.height,
       child: showErrorText
-          ? Center(
-              heightFactor: 0.5,
-              child: Text('fail to load image :('),
-            )
+          ? Center(heightFactor: 0.5, child: Text('fail to load image :('))
           : null,
     );
   }
 }
-
-// Widget _sizedPlaceholder(double width, double height) {
-//   return Center(
-//     child: Container(
-//       width: width,
-//       height: height,
-//     ),
-//   );
-// }
-
-// Widget _sizedError(double width, double height) {
-//   return Center(
-//     child: Container(
-//       decoration: BoxDecoration(
-//         border: Border.all(color: blackColor),
-//       ),
-//       width: width,
-//       height: height,
-//       child: Center(heightFactor: 0.5, child: Text('fail to load image :(')),
-//     ),
-//   );
-// }
 
 class ExternalLink extends StatelessWidget {
   ExternalLink({
