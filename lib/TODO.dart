@@ -1,7 +1,10 @@
+// TODO: listview save croll position
+// TODO: format likes 31000 -> 31k
+// TODO: use ListNotifier
+
 // TODO: show comment link_url image
 // TODO: submission tile show domain
 // TODO: active submission url (to external resource)
-// TODO: use ListNotifier
 // TODO: replace textScaleFactor to fontSize
 // TODO: inbox notifications
 // TODO: inbox mod message
@@ -15,9 +18,7 @@
 //      NOTE: reddit app use manual refresh
 // TODO: hide bottom bar on some screens
 // TODO: explicit wrap each widget with provider
-// TODO: format likes 31000 -> 31k
 // TODO: refresh after duration
-// TODO: listview save croll position
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: load on screen on widget ?
 // TODO: add top padding to page padding
