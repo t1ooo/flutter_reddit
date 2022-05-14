@@ -32,6 +32,29 @@ import '../reddit_api/like.dart';
 //   }
 // }
 
+abstract class Likable {
+  // Future<void> like();
+  // Future<void> dislike();
+  Like get likes;
+  int get score;
+
+  Future<void> like() async {
+    if (likes == Like.up) {
+      return _updateLike(Like.none);
+    }
+    return await _updateLike(Like.up);
+  }
+
+  Future<void> dislike() async {
+    if (likes == Like.down) {
+      return _updateLike(Like.none);
+    }
+    return await _updateLike(Like.down);
+  }
+
+  Future<void> _updateLike(Like like);
+}
+
 class SearchNotifierQ extends ChangeNotifier with TryMixin {
   SearchNotifierQ(this._redditApi) {
     reset();
@@ -430,7 +453,8 @@ class PreviewImage {
   PreviewImage(this.image, this.preview);
 }
 
-class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
+class SubmissionNotifierQ extends ChangeNotifier
+    with TryMixin, Likable {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -557,15 +581,29 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
     }, 'fail to unsave');
   }
 
-  Future<void> like() {
-    return _updateSubmissionsLike(Like.up);
-  }
+  @override
+  Like get likes => _submission.likes;
 
-  Future<void> dislike() {
-    return _updateSubmissionsLike(Like.down);
-  }
+  @override
+  int get score => _submission.score;
 
-  Future<void> _updateSubmissionsLike(Like like) {
+  // @override
+  // Future<void> like() async {
+  //   if (_submission.likes == Like.up) {
+  //     return _updateLike(Like.none);
+  //   }
+  //   return await _updateLike(Like.up);
+  // }
+
+  // @override
+  // Future<void> dislike() async {
+  //   if (_submission.likes == Like.down) {
+  //     return _updateLike(Like.none);
+  //   }
+  //   return await _updateLike(Like.down);
+  // }
+
+  Future<void> _updateLike(Like like) {
     return _try(() async {
       if (submission.likes == like) {
         like = Like.none;
@@ -683,7 +721,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   void refresh() => notifyListeners();
 }
 
-class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
+class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable {
   CommentNotifierQ(this._redditApi, this._comment)
       : _replies = _comment.replies
             .map((v) => CommentNotifierQ(_redditApi, v))
@@ -732,6 +770,13 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
     }, 'fail to unsave');
   }
 
+  @override
+  Like get likes => _comment.likes;
+
+  @override
+  int get score => _comment.score;
+
+  @override
   Future<void> like() async {
     if (_comment.likes == Like.up) {
       return _updateLike(Like.none);
@@ -739,6 +784,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier {
     return await _updateLike(Like.up);
   }
 
+  @override
   Future<void> dislike() async {
     if (_comment.likes == Like.down) {
       return _updateLike(Like.none);
