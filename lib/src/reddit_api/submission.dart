@@ -75,7 +75,7 @@ class Submission extends Equatable {
   // final CommentForest? comments;
   final List<Comment>? comments;
   // final String shortLink;
-  final List<Preview> preview;
+  final List<Previews> preview;
   final Video? video;
   final PostHint postHint;
 
@@ -214,7 +214,7 @@ class Submission extends Equatable {
     bool? saved,
     SubType? type,
     List<Comment>? comments,
-    List<Preview>? preview,
+    List<Previews>? preview,
     Video? Function()? video,
     PostHint? postHint,
   }) {

@@ -591,7 +591,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
   } */
 
   // TODO: add height
-  List<SizedPreview> images([
+  List<PreviewItem> images([
     double minWidth = 0,
     double maxWidth = double.infinity,
   ]) {
@@ -617,7 +617,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
           //   return [];
           // }
 
-          PreviewItem items;
+          Preview items;
           if (v.gifs != null) {
             items = v.gifs!;
           } else if (v.images != null) {
@@ -637,7 +637,7 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin {
           // print(resolutions.map((x) => x.width).toList());
           return resolutions.isEmpty ? null : resolutions.first;
         })
-        .whereType<SizedPreview>()
+        .whereType<PreviewItem>()
         .toList();
 
     // final images = <String>[];
