@@ -202,11 +202,13 @@ class FullScreenImage extends StatelessWidget {
   FullScreenImage({
     Key? key,
     required this.imageUrl,
-    required this.size,
+    required this.previewImageUrl,
+    required this.previewSize,
   }) : super(key: key);
 
   final String imageUrl;
-  final Size size;
+  final String previewImageUrl;
+  final Size previewSize;
 
   @override
   Widget build(BuildContext context) {
@@ -222,8 +224,8 @@ class FullScreenImage extends StatelessWidget {
         );
       },
       child: SizedNetworkImage(
-        imageUrl: imageUrl,
-        size: size,
+        imageUrl: previewImageUrl,
+        size: previewSize,
       ),
     );
   }
