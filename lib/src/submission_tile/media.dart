@@ -25,15 +25,17 @@ class VideoPlayer extends StatefulWidget {
   VideoPlayer({
     Key? key,
     required this.videoUrl,
-    required this.width,
-    required this.height,
+    // required this.width,
+    // required this.height,
+    required this.size,
     this.scale = 1.0,
     this.previewImageUrl,
   }) : super(key: key);
 
   final String videoUrl;
-  final double width;
-  final double height;
+  // final double width;
+  // final double height;
+  final Size size;
   final double scale;
   // final SizedImage? previewImage;
   final String? previewImageUrl;
@@ -83,8 +85,8 @@ class _VideoPlayerState extends State<VideoPlayer> {
       child: Video(
         player: _player,
         scale: widget.scale,
-        width: widget.width,
-        height: widget.height,
+        width: widget.size.width,
+        height: widget.size.height,
         // width: MediaQuery.of(context).size.width,
         // height: MediaQuery.of(context).size.height,
         volumeThumbColor: Colors.blue,
@@ -137,14 +139,13 @@ class _VideoPlayerState extends State<VideoPlayer> {
           );
         },
         child: SizedBox(
-          width: widget.width,
-          height: widget.height,
+          width: widget.size.width,
+          height: widget.size.height,
           child: Stack(
             children: [
               SizedNetworkImage(
                 imageUrl: previewImageUrl,
-                width: widget.width,
-                height: widget.height,
+                size: widget.size,
                 showErrorText: false,
               ),
               Positioned.fill(
@@ -257,8 +258,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
 class ImageLink extends StatelessWidget {
   ImageLink({
     Key? key,
-    required this.width,
-    required this.height,
+    // required this.width,
+    // required this.height,
+    required this.size,
     // required this.icon,
     required this.imageUrl,
     required this.url,
@@ -266,8 +268,9 @@ class ImageLink extends StatelessWidget {
 
   final String imageUrl;
   final String url;
-  final double width;
-  final double height;
+  // final double width;
+  // final double height;
+  final Size size;
   // final IconData icon;
   // final void Function() onTap;
 
@@ -282,14 +285,13 @@ class ImageLink extends StatelessWidget {
           launch(url);
         },
         child: SizedBox(
-          width: width,
-          height: height,
+          width: size.width,
+          height: size.height,
           child: Stack(
             children: [
               SizedNetworkImage(
                 imageUrl: imageUrl,
-                width: width,
-                height: height,
+                size: size,
               ),
               Positioned.fill(
                 child: Align(
@@ -297,7 +299,7 @@ class ImageLink extends StatelessWidget {
                   child: Container(
                     color: Colors.black54,
                     height: 100,
-                    width: width,
+                    width: size.width,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
@@ -365,14 +367,13 @@ class SizedNetworkImage extends StatelessWidget {
   const SizedNetworkImage({
     Key? key,
     required this.imageUrl,
-    required this.width,
-    required this.height,
+    required this.size,
     this.showErrorText = true,
   }) : super(key: key);
 
   final String imageUrl;
-  final double width;
-  final double height;
+
+  final Size size;
   final bool showErrorText;
 
   @override
@@ -384,8 +385,8 @@ class SizedNetworkImage extends StatelessWidget {
           if (image != null) {
             return Image(
               image: image,
-              width: width,
-              height: height,
+              width: size.width,
+              height: size.height,
               fit: _fit,
               errorBuilder: errorBuilder,
             );
@@ -393,7 +394,7 @@ class SizedNetworkImage extends StatelessWidget {
           if (error != null) {
             return errorBuilder(context, error);
           }
-          return Container(width: width, height: height);
+          return Container(width: size.width, height: size.height);
         },
       ),
     );
@@ -403,8 +404,8 @@ class SizedNetworkImage extends StatelessWidget {
     uiLogger.error('$error');
     return Container(
       decoration: BoxDecoration(border: Border.all(color: blackColor)),
-      width: width,
-      height: height,
+      width: size.width,
+      height: size.height,
       child: showErrorText
           ? Center(
               heightFactor: 0.5,
@@ -468,15 +469,11 @@ class ExternalLink extends StatelessWidget {
 class ImageSlider extends StatefulWidget {
   const ImageSlider({
     Key? key,
-    // required this.imageUrls,
     required this.items,
-    // required this.width,
     required this.height,
   }) : super(key: key);
 
-  // final List<String> imageUrls;
   final List<Widget> items;
-  // final double width;
   final double height;
 
   @override
@@ -491,24 +488,35 @@ class _ImageSliderState extends State<ImageSlider> {
 
   @override
   void initState() {
-    // _controller.jumpToPage(0);
     super.initState();
+  }
+
+  bool get _hasNext => _currentPage + 1 < widget.items.length;
+  bool get _hasPrev => _currentPage > 0;
+
+  void _next() {
+    _controller.nextPage();
+    setState(() {
+      _currentPage += 1;
+    });
+  }
+
+  void _prev() {
+    _controller.previousPage();
+    setState(() {
+      _currentPage -= 1;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.items.length == 1) {
+      return widget.items.first;
+    }
+
     return Stack(
       children: [
         CarouselSlider(
-          // items: imageSliders,
-          // items: [
-          //   for (final imageUrl in widget.imageUrls)
-          //     SizedNetworkImage(
-          //       imageUrl: imageUrl,
-          //       width: widget.width,
-          //       height: widget.height,
-          //     ),
-          // ],
           items: widget.items,
           options: CarouselOptions(
             enlargeCenterPage: false,
@@ -523,67 +531,42 @@ class _ImageSliderState extends State<ImageSlider> {
             alignment: Alignment.center,
             child: Row(
               children: [
-                if (_currentPage > 0)
-                  // if (_controller.hasPrevious)
+                if (_hasPrev)
                   IconButton(
-                    onPressed: () {
-                      _controller.previousPage();
-                      setState(() {
-                        _currentPage -= 1;
-                      });
-                      // print(_currentPage);
-                    },
-                    icon: Container(
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black,
-                      ),
-                      decoration: ShapeDecoration(
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.white,
-                            blurRadius: 15,
-                            spreadRadius: 15,
-                          )
-                        ],
-                        shape: CircleBorder(),
-                      ),
-                    ),
+                    onPressed: _prev,
+                    icon: _icon(Icons.arrow_back_ios),
                   ),
                 Spacer(),
-                if (_currentPage + 1 < widget.items.length)
-                  // if (_controller.hasNext)
+                if (_hasNext)
                   IconButton(
-                    onPressed: () {
-                      _controller.nextPage();
-                      setState(() {
-                        _currentPage += 1;
-                      });
-                      // print(_currentPage);
-                    },
-                    icon: Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black87,
-                      ),
-                      decoration: ShapeDecoration(
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.white,
-                            blurRadius: 15,
-                            spreadRadius: 15,
-                          )
-                        ],
-                        // shape: CircleBorder(side: BorderSide()),
-                        shape: CircleBorder(),
-                      ),
-                    ),
+                    onPressed: _next,
+                    icon: _icon(Icons.arrow_forward_ios),
                   ),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _icon(IconData icon) {
+    return Container(
+      child: Icon(
+        Icons.arrow_forward_ios,
+        color: Colors.black87,
+      ),
+      decoration: ShapeDecoration(
+        shadows: [
+          BoxShadow(
+            color: Colors.white,
+            blurRadius: 15,
+            spreadRadius: 15,
+          )
+        ],
+        // shape: CircleBorder(side: BorderSide()),
+        shape: CircleBorder(),
+      ),
     );
   }
 }

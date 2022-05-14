@@ -111,8 +111,6 @@ class SubmissionTile extends StatelessWidget {
     final submission = notifier.submission;
 
     final maxHeight = MediaQuery.of(context).size.height * 0.7;
-    // final maxHeight = constraints.maxHeight;
-    // final maxWidth = MediaQuery.of(context).size.width * 0.9;
     final maxWidth = constraints.maxWidth;
     final minWidth = 200.0;
 
@@ -136,12 +134,10 @@ class SubmissionTile extends StatelessWidget {
           return null;
         }
 
-        final size = _calcSize(video.width, video.height);
         return VideoPlayer(
           videoUrl: video.fallbackUrl,
           previewImageUrl: previewImage?.url,
-          width: size.width,
-          height: size.height,
+          size: _calcSize(video.width, video.height),
         );
 
       case PostHint.image:
@@ -149,19 +145,18 @@ class SubmissionTile extends StatelessWidget {
           return null;
         }
 
+        final sizes = images.map((v) => _calcSize(v.width, v.height)).toList();
+        final maxHeight = sizes.map((v) => v.height).reduce(max);
+
         return ImageSlider(
           items: [
-            for (final image in images)
-              Builder(builder: (context) {
-                final size = _calcSize(image.width, image.height);
-                return SizedNetworkImage(
-                  imageUrl: image.url,
-                  width: size.width,
-                  height: size.height,
-                );
-              }),
+            for (int i = 0; i < images.length; i++)
+              SizedNetworkImage(
+                imageUrl: images[i].url,
+                size: sizes[i],
+              ),
           ],
-          height: images.map((v) => v.height).reduce(max),
+          height: maxHeight,
         );
 
       case PostHint.link:
@@ -170,12 +165,10 @@ class SubmissionTile extends StatelessWidget {
           return ExternalLink(url: submission.url);
         }
 
-        final size = _calcSize(previewImage.width, previewImage.height);
         return ImageLink(
-          width: size.width,
-          height: size.height,
           imageUrl: previewImage.url,
           url: notifier.submission.url,
+          size: _calcSize(previewImage.width, previewImage.height),
         );
 
       case PostHint.self:
