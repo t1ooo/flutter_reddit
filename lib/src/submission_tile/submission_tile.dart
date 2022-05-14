@@ -114,7 +114,8 @@ class SubmissionTile extends StatelessWidget {
     final maxWidth = constraints.maxWidth;
     final minWidth = 200.0;
 
-    final images = notifier.images(minWidth, maxWidth);
+    // final images = notifier.images(minWidth, maxWidth);
+    final images = notifier.images(maxWidth, maxHeight);
     final previewImage = images.isEmpty ? null : images.first.preview;
 
     Size _adjustSize(double width, double height) => adjustSize(
