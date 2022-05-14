@@ -32,6 +32,26 @@ import '../reddit_api/like.dart';
 //   }
 // }
 
+abstract class Savable {
+  Future<void> save() async {
+    if (saved) {
+      return;
+    }
+    return _updateSaved(true);
+  }
+
+  Future<void> unsave() async {
+    if (!saved) {
+      return;
+    }
+    return _updateSaved(false);
+  }
+
+  Future<void> _updateSaved(bool saved);
+
+  bool get saved;
+}
+
 abstract class Likable {
   // Future<void> like();
   // Future<void> dislike();
@@ -453,8 +473,7 @@ class PreviewImage {
   PreviewImage(this.image, this.preview);
 }
 
-class SubmissionNotifierQ extends ChangeNotifier
-    with TryMixin, Likable {
+class SubmissionNotifierQ extends ChangeNotifier with TryMixin, Likable, Savable {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -560,25 +579,25 @@ class SubmissionNotifierQ extends ChangeNotifier
     }, 'fail to reply');
   }
 
-  // TODO: save unsave
-  Future<void> save() {
+  // // TODO: save unsave
+  // Future<void> save() {
+  //   return _updateSaved(true);
+  // }
+
+  // Future<void> unsave() {
+  //   return _updateSaved(false);
+  // }
+
+  bool get saved => _submission.saved;
+
+  Future<void> _updateSaved(bool saved) {
     return _try(() async {
-      if (submission.saved) return;
-
-      await _redditApi.submissionSave(submission.id);
-      _submission = submission.copyWith(saved: true);
+      await (saved
+          ? _redditApi.submissionSave
+          : _redditApi.submissionUnsave)(submission.id);
+      _submission = submission.copyWith(saved: saved);
       notifyListeners();
-    }, 'fail to save');
-  }
-
-  Future<void> unsave() {
-    return _try(() async {
-      if (!submission.saved) return;
-
-      await _redditApi.submissionSave(submission.id);
-      _submission = submission.copyWith(saved: false);
-      notifyListeners();
-    }, 'fail to unsave');
+    }, 'fail to' + (saved ? 'save' : 'unsave'));
   }
 
   @override
@@ -721,7 +740,7 @@ class SubmissionNotifierQ extends ChangeNotifier
   void refresh() => notifyListeners();
 }
 
-class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable {
+class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable, Savable {
   CommentNotifierQ(this._redditApi, this._comment)
       : _replies = _comment.replies
             .map((v) => CommentNotifierQ(_redditApi, v))
@@ -752,22 +771,24 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable {
     }, 'fail to copy');
   }
 
-  Future<void> save() {
-    return _try(() async {
-      if (_comment.saved) return;
-      await _redditApi.commentSave(_comment.id);
-      _comment = comment.copyWith(saved: true);
-      notifyListeners();
-    }, 'fail to save');
-  }
+  // Future<void> save() {
+  //   return _updateSaved(true);
+  // }
 
-  Future<void> unsave() {
+  // Future<void> unsave() {
+  //   return _updateSaved(false);
+  // }
+
+  bool get saved => _comment.saved;
+
+  Future<void> _updateSaved(bool saved) {
     return _try(() async {
-      if (!_comment.saved) return;
-      await _redditApi.commentUnsave(comment.id);
-      _comment = comment.copyWith(saved: false);
+      await (saved
+          ? _redditApi.commentSave
+          : _redditApi.commentUnsave)(comment.id);
+      _comment = comment.copyWith(saved: saved);
       notifyListeners();
-    }, 'fail to unsave');
+    }, 'fail to ' + (saved ? 'save' : 'unsave'));
   }
 
   @override
