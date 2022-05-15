@@ -1,4 +1,3 @@
-// TODO: GSubmissionTiles use loader, rename onTypeChanged -> load
 // TODO: refresh after duration
 // TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
 // TODO: SearchSubredditsQ remove sort, subreddit

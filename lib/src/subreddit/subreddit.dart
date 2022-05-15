@@ -44,7 +44,7 @@ class SubredditWidget extends StatelessWidget {
             type: notifier.subType,
             types: SubType.values,
             submissions: notifier.submissions,
-            onTypeChanged: notifier.loadSubmissions,
+            load:  notifier.loadSubmissions,
             // showSubreddit: false,
           ),
         ),

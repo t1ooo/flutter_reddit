@@ -22,9 +22,7 @@ class Popular extends StatelessWidget {
         type: notifier.subType,
         types: SubType.values,
         submissions: notifier.submissions,
-        onTypeChanged: (type) => notifier
-            .loadSubmissions(type)
-            .catchError((e) => showErrorSnackBar(context, e)),
+        load: notifier.loadSubmissions,
       ),
     );
   }

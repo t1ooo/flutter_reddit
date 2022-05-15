@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/logging/logging.dart';
+import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:provider/provider.dart';
 
 import '../logger.dart';
@@ -17,7 +18,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
     Key? key,
     required this.type,
     required this.types,
-    required this.onTypeChanged,
+    required this.load,
     required this.submissions,
     this.activeLink = true,
     this.showTypeSelector = true,
@@ -27,7 +28,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
   final T type;
   final List<T> types;
   final List<SubmissionNotifierQ>? submissions;
-  final void Function(T) onTypeChanged;
+  final Future<void> Function(T) load;
   final bool activeLink;
   // final bool showSubreddit;
 
@@ -35,144 +36,143 @@ class GSubmissionTiles<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      onTypeChanged(type);
-    });
-    if (submissions == null) {
-      return Center(child: CircularProgressIndicator());
-    }
+    return Loader<List<SubmissionNotifierQ>>(
+      load: (_) => load(type),
+      data: (_) => submissions,
+      onData: (context, submissions) {
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            // Padding(
+            //   // width: 100,
+            //   padding: const EdgeInsets.only(left: 20),
+            //   child: // alignedDropdown: false,
+            //       DropdownButton<T>(
+            //     // isExpanded: true,
+            //     // selectedItemBuilder: (ctx) => [Text(_typeToString(type))],
+            //     // hint: Text('123'),
+            //     // disabledHint: Text('123'),
+            //     // menuMaxHeight: 100,
+            //     onTap: () {
 
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        // Padding(
-        //   // width: 100,
-        //   padding: const EdgeInsets.only(left: 20),
-        //   child: // alignedDropdown: false,
-        //       DropdownButton<T>(
-        //     // isExpanded: true,
-        //     // selectedItemBuilder: (ctx) => [Text(_typeToString(type))],
-        //     // hint: Text('123'),
-        //     // disabledHint: Text('123'),
-        //     // menuMaxHeight: 100,
-        //     onTap: () {
+            //     },
+            //     underline: Container(),
+            //     value: type,
+            //     onChanged: (v) {
+            //       if (v != null) onTypeChanged(v);
+            //     },
+            //     items: [
+            //       for (final type in types)
+            //         DropdownMenuItem(
+            //           value: type,
+            //           child: Text(_typeToString(type) + ' POSTS'),
+            //         )
+            //     ],
+            //   ),
+            // ),
 
-        //     },
-        //     underline: Container(),
-        //     value: type,
-        //     onChanged: (v) {
-        //       if (v != null) onTypeChanged(v);
-        //     },
-        //     items: [
-        //       for (final type in types)
-        //         DropdownMenuItem(
-        //           value: type,
-        //           child: Text(_typeToString(type) + ' POSTS'),
-        //         )
-        //     ],
-        //   ),
-        // ),
-
-        Align(
-          alignment: Alignment.centerLeft,
-          // width: 100,
-          // padding: const EdgeInsets.only(left: 20),
-          // TODO: add icon
-          child: ButtonTheme(
-            height: 200,
-            child: TextButton(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(
-                  EdgeInsets.symmetric(vertical: 30),
-                ),
-              ),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text('SORT POST BY'),
-                        ListTile(
-                          minLeadingWidth: 0,
-                          title: Text('SORT POST BY'),
-                        ),
-                        Divider(),
-                        RadioList<T>(
-                          initialValue: type,
-                          onChanged: (t) {
-                            onTypeChanged(t);
-                            Navigator.pop(context);
-                          },
-                          titleBuilder: (t) => Text(_typeToString(t)),
-                          iconBuilder: (t) => _typeIcon(t),
-                          values: types,
-                        ),
-                      ],
-                    );
-                    // return Column(
-                    // children: [
-                    //   for (final type in types)
-                    //     RadioListTile<T>(
-                    //       controlAffinity: ListTileControlAffinity.trailing,
-                    //       value: type,
-                    //       secondary: Icon(Icons.check),
-                    //       groupValue: type,
-                    //       title: Text(_typeToString(type) + ' POSTS'),
-                    //       onChanged: (_) {},
-                    //     )
-                    // ],
-
-                    // title: Text('Material Dialog'),
-                    // content: Text('Hey! I am Coflutter!'),
-                    // actions: <Widget>[
-                    //   TextButton(
-                    //       onPressed: () {
-                    //         // _dismissDiauiLogger.error();
-                    //       },
-                    //       child: Text('Close')),
-                    //   TextButton(
-                    //     onPressed: () {
-                    //       print('HelloWorld!');
-                    //       // _dismissDiauiLogger.error();
-                    //     },
-                    //     child: Text('HelloWorld!'),
-                    //   )
-                    // ],
-                    // );
-                  },
-                );
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: IconText(
-                      icon: _typeIcon(type),
-                      text: Text(_typeToString(type) + ' POSTS'),
+            Align(
+              alignment: Alignment.centerLeft,
+              // width: 100,
+              // padding: const EdgeInsets.only(left: 20),
+              // TODO: add icon
+              child: ButtonTheme(
+                height: 200,
+                child: TextButton(
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 30),
                     ),
                   ),
-                  Icon(Icons.expand_more),
-                ],
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Text('SORT POST BY'),
+                            ListTile(
+                              minLeadingWidth: 0,
+                              title: Text('SORT POST BY'),
+                            ),
+                            Divider(),
+                            RadioList<T>(
+                              initialValue: type,
+                              onChanged: (t) {
+                                load(t);
+                                Navigator.pop(context);
+                              },
+                              titleBuilder: (t) => Text(_typeToString(t)),
+                              iconBuilder: (t) => _typeIcon(t),
+                              values: types,
+                            ),
+                          ],
+                        );
+                        // return Column(
+                        // children: [
+                        //   for (final type in types)
+                        //     RadioListTile<T>(
+                        //       controlAffinity: ListTileControlAffinity.trailing,
+                        //       value: type,
+                        //       secondary: Icon(Icons.check),
+                        //       groupValue: type,
+                        //       title: Text(_typeToString(type) + ' POSTS'),
+                        //       onChanged: (_) {},
+                        //     )
+                        // ],
+
+                        // title: Text('Material Dialog'),
+                        // content: Text('Hey! I am Coflutter!'),
+                        // actions: <Widget>[
+                        //   TextButton(
+                        //       onPressed: () {
+                        //         // _dismissDiauiLogger.error();
+                        //       },
+                        //       child: Text('Close')),
+                        //   TextButton(
+                        //     onPressed: () {
+                        //       print('HelloWorld!');
+                        //       // _dismissDiauiLogger.error();
+                        //     },
+                        //     child: Text('HelloWorld!'),
+                        //   )
+                        // ],
+                        // );
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: IconText(
+                          icon: _typeIcon(type),
+                          text: Text(_typeToString(type) + ' POSTS'),
+                        ),
+                      ),
+                      Icon(Icons.expand_more),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        // SizedBox(height: 50),
-        for (final sub in submissions ?? [])
-          ChangeNotifierProvider<SubmissionNotifierQ>.value(
-            value: sub,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: SubmissionTile(
-                activeLink: activeLink,
-                // showSubreddit: showSubreddit,
+            // SizedBox(height: 50),
+            for (final sub in submissions)
+              ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                value: sub,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: SubmissionTile(
+                    activeLink: activeLink,
+                    // showSubreddit: showSubreddit,
+                  ),
+                ),
               ),
-            ),
-          ),
-      ],
+          ],
+        );
+      },
     );
   }
 

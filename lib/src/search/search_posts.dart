@@ -24,18 +24,16 @@ class SearchPosts extends StatelessWidget {
     final notifier = context.watch<SearchNotifierQ>();
 
     return SwipeToRefresh(
-       onRefresh: () => notifier
+      onRefresh: () => notifier
           .reloadSearch()
           .catchError((e) => showErrorSnackBar(context, e)),
       child: GSubmissionTiles<Sort>(
         type: notifier.sort,
         types: Sort.values,
         submissions: notifier.submissions,
-        onTypeChanged: (subType) {
-          subreddit != null
-              ? notifier.search(query, subType, subreddit!)
-              : notifier.search(query, subType);
-        },
+        load: (subType) => subreddit != null
+            ? notifier.search(query, subType, subreddit!)
+            : notifier.search(query, subType),
       ),
     );
   }

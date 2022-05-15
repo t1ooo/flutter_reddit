@@ -23,9 +23,7 @@ class Home extends StatelessWidget {
         type: notifier.subType,
         types: FrontSubType.values,
         submissions: notifier.submissions,
-        onTypeChanged: (type) => notifier
-            .loadSubmissions(type)
-            .catchError((e) => showErrorSnackBar(context, e)),
+        load: notifier.loadSubmissions,
       ),
     );
   }
