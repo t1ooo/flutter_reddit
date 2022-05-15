@@ -36,10 +36,11 @@ class SubscriptionTile extends StatelessWidget {
                 (subreddit.userHasFavorited
                         ? notifier.unfavorite()
                         : notifier.favorite())
-                    .then(
-                  (_) => context.read<CurrentUserNotifierQ>().refresh(),
-                  onError: (e) => showErrorSnackBar(context, e),
-                );
+                //     .then(
+                //   (_) => context.read<CurrentUserNotifierQ>().refresh(),
+                //   onError: (e) => showErrorSnackBar(context, e),
+                // );
+                .catchError((e) => showErrorSnackBar(context, e));
               },
               icon: Icon(Icons.star,
                   color: subreddit.userHasFavorited ? selectedColor : null),

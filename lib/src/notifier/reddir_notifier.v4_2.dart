@@ -473,7 +473,8 @@ class PreviewImage {
   PreviewImage(this.image, this.preview);
 }
 
-class SubmissionNotifierQ extends ChangeNotifier with TryMixin, Likable, Savable {
+class SubmissionNotifierQ extends ChangeNotifier
+    with TryMixin, Likable, Savable {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -525,8 +526,18 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, Likable, Savable
     //   _comments = [];
     //   return;
     // }
+    // CommentNotifierQ _addListenerRecursive(CommentNotifierQ cn) {
+    //   _addListener(cn);
+    //   cn.replies.forEach(_addListenerRecursive);
+    //   return cn;
+    // }
+
+    // _comments = comments?.map((v) {
+    //   return  _addListenerRecursive(CommentNotifierQ(_redditApi, v));
+    // }).toList();
+
     _comments = comments?.map((v) {
-      return CommentNotifierQ(_redditApi, v);
+      return _addListener(CommentNotifierQ(_redditApi, v));
     }).toList();
   }
 
@@ -574,9 +585,14 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, Likable, Savable
           await _redditApi.submissionReply(submission.id, body);
       // _comments!.add(CommentNotifierQ(_redditApi, commentReply));
       _comments ??= [];
-      _comments!.insert(0, CommentNotifierQ(_redditApi, commentReply));
+      _comments!
+          .insert(0, _addListener(CommentNotifierQ(_redditApi, commentReply)));
       notifyListeners();
     }, 'fail to reply');
+  }
+
+  T _addListener<T extends ChangeNotifier>(T t) {
+    return t..addListener(notifyListeners);
   }
 
   // // TODO: save unsave
@@ -737,14 +753,16 @@ class SubmissionNotifierQ extends ChangeNotifier with TryMixin, Likable, Savable
   //   return _try(fn, 'fail to load icon');
   // }
 
-  void refresh() => notifyListeners();
+  // void refresh() => notifyListeners();
 }
 
-class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable, Savable {
-  CommentNotifierQ(this._redditApi, this._comment)
-      : _replies = _comment.replies
-            .map((v) => CommentNotifierQ(_redditApi, v))
-            .toList();
+class CommentNotifierQ
+    with TryMixin, CollapseMixin, ChangeNotifier, Likable, Savable {
+  CommentNotifierQ(this._redditApi, this._comment) {
+    _replies = _comment.replies
+        .map((v) => _addListener(CommentNotifierQ(_redditApi, v)))
+        .toList();
+  }
 
   final RedditApi _redditApi;
   // Comment comment;
@@ -753,7 +771,7 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable, Sa
   Comment _comment;
   Comment get comment => _comment;
 
-  final List<CommentNotifierQ> _replies;
+  late final List<CommentNotifierQ> _replies;
   List<CommentNotifierQ> get replies => _replies;
 
   int get numReplies {
@@ -854,6 +872,10 @@ class CommentNotifierQ with TryMixin, CollapseMixin, ChangeNotifier, Likable, Sa
       _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
       notifyListeners();
     }, 'fail to reply');
+  }
+
+  T _addListener<T extends ChangeNotifier>(T t) {
+    return t..addListener(notifyListeners);
   }
 }
 
@@ -1149,7 +1171,8 @@ class CurrentUserNotifierQ extends UserNotifierQ {
     if (_all != null) {
       return;
     }
-    _all = SubredditNotifierQ(_redditApi, await _redditApi.subreddit('all'));
+    _all = _addListener(
+        SubredditNotifierQ(_redditApi, await _redditApi.subreddit('all')));
     notifyListeners();
   }
 
@@ -1159,9 +1182,13 @@ class CurrentUserNotifierQ extends UserNotifierQ {
     }
     _subreddits = await _redditApi
         .currentUserSubreddits(limit: _limit)
-        .map((v) => SubredditNotifierQ(_redditApi, v))
+        .map((v) => _addListener(SubredditNotifierQ(_redditApi, v)))
         .toList();
     notifyListeners();
+  }
+
+  T _addListener<T extends ChangeNotifier>(T t) {
+    return t..addListener(notifyListeners);
   }
 
   static List<SubredditNotifierQ> filterFavorite(
@@ -1244,7 +1271,7 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   //   }, 'fail to submit');
   // }
 
-  void refresh() => notifyListeners();
+  // void refresh() => notifyListeners();
 }
 
 class MessageNotifierQ extends ChangeNotifier with TryMixin {
