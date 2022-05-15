@@ -10,6 +10,8 @@ import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 import '../logger.dart';
 import '../style/style.dart';
 import '../widget/network_image.dart';
+import '../widget/sliver_app_bar.dart';
+import '../widget/space_bar.dart';
 
 Future<void> initVideoPlayer() async {
   // dispose and clear players after hot restart
@@ -244,11 +246,22 @@ class ImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: _SizedNetworkImage(
-        imageUrl: imageUrl,
-        size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
-      ),
+      body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              PrimarySliverAppBar(
+                collapsed: true,
+                flexibleSpace: SpaceBar(
+                  leading: AppBarCloseButton(),
+                ),
+              ),
+            ];
+          },
+          body: _SizedNetworkImage(
+            imageUrl: imageUrl,
+            size: Size(MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height),
+          )),
     );
   }
 }
