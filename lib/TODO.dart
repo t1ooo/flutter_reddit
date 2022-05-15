@@ -1,5 +1,10 @@
-// TODO: swipe to refresh
+// TODO: GSubmissionTiles use loader, rename onTypeChanged -> load
 // TODO: refresh after duration
+// TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
+// TODO: SearchSubredditsQ remove sort, subreddit
+// TODO: merge screen with widgets (how about header screen?)
+// TODO: use catchFutureError
+// TODO: remove unused code
 
 // TODO: show comment link_url image
 // TODO: submission tile show domain
@@ -16,7 +21,6 @@
 //      NOTE: reddit app use manual refresh
 // TODO: hide bottom bar on some screens
 // TODO: explicit wrap each widget with provider
-// TODO: merge screen with widgets (how about header screen?)
 // TODO: load on screen on widget ?
 // TODO: add top padding to page padding
 // TODO: share interfaces for generic widget implementation
