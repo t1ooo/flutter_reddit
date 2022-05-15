@@ -145,6 +145,12 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to search');
   }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 class SearchSubredditsQ extends ChangeNotifier with TryMixin {
@@ -186,6 +192,12 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to search subreddits');
   }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
@@ -220,9 +232,16 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to load subreddit');
   }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
-class SubredditNotifierQ extends ChangeNotifier with TryMixin {
+class SubredditNotifierQ extends ChangeNotifier
+    with TryMixin, PropertyListener {
   SubredditNotifierQ(this._redditApi, this._subreddit,
       [this.isUserSubreddit = false])
       : name = _subreddit.displayName;
@@ -363,6 +382,12 @@ class SubredditNotifierQ extends ChangeNotifier with TryMixin {
   Future<void> loadWiki() => throw UnimplementedError();
   Object? _wiki;
   get wiki => _wiki;
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 // TODO: move to current user
@@ -399,6 +424,12 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to search');
   }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
@@ -433,6 +464,12 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
               .toList();
       notifyListeners();
     }, 'fail to search');
+  }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
   }
 }
 
@@ -474,7 +511,7 @@ class PreviewImage {
 }
 
 class SubmissionNotifierQ extends ChangeNotifier
-    with TryMixin, Likable, Savable {
+    with TryMixin, Likable, Savable, PropertyListener {
   SubmissionNotifierQ(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -491,13 +528,16 @@ class SubmissionNotifierQ extends ChangeNotifier
   Submission get submission => _submission;
 
   int get numReplies {
-    // if (_comments.isEmpty) return _submission.numComments;
-    if (_comments == null) return _submission.numComments;
-    int num = 0;
-    for (final comment in _comments!) {
-      num += 1 + comment.numReplies;
-    }
-    return num;
+    return (_comments == null)
+        ? _submission.numComments
+        : _comments!.map((v) => 1 + v.numReplies).sum();
+
+    // if (_comments == null) return _submission.numComments;
+    // int num = 0;
+    // for (final comment in _comments!) {
+    //   num += 1 + comment.numReplies;
+    // }
+    // return num;
   }
 
   Future<void> loadComments() {
@@ -591,14 +631,22 @@ class SubmissionNotifierQ extends ChangeNotifier
     }, 'fail to reply');
   }
 
-  T _addListener<T extends ChangeNotifier>(T t) {
-    return t..addListener(notifyListeners);
+  // T _addListener<T extends ChangeNotifier>(T t) {
+  //   return t..addListener(() {
+  //     print('update');
+  //     notifyListeners();
+  //   });
+  // }
+
+  CommentNotifierQ _addListener(CommentNotifierQ t) {
+    // return t..addListener(notifyListeners);
+    return t..addPropertyListener<int>(() => t.numReplies, notifyListeners);
   }
 
-  // // TODO: save unsave
-  // Future<void> save() {
-  //   return _updateSave(true);
-  // }
+  // TODO: save unsave
+  Future<void> save() {
+    return _updateSave(true);
+  }
 
   // Future<void> unsave() {
   //   return _updateSave(false);
@@ -639,10 +687,12 @@ class SubmissionNotifierQ extends ChangeNotifier
   // }
 
   Future<void> _updateLike(Like like) {
+    _log.info('_updateLike($like)');
+
     return _try(() async {
-      if (submission.likes == like) {
-        like = Like.none;
-      }
+      // if (submission.likes == like) {
+      // like = Like.none;
+      // }
 
       await _redditApi.submissionLike(submission.id, like);
       _submission = submission.copyWith(
@@ -754,10 +804,22 @@ class SubmissionNotifierQ extends ChangeNotifier
   // }
 
   // void refresh() => notifyListeners();
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 class CommentNotifierQ
-    with TryMixin, CollapseMixin, ChangeNotifier, Likable, Savable {
+    with
+        TryMixin,
+        CollapseMixin,
+        ChangeNotifier,
+        Likable,
+        Savable,
+        PropertyListener {
   CommentNotifierQ(this._redditApi, this._comment) {
     _replies = _comment.replies
         .map((v) => _addListener(CommentNotifierQ(_redditApi, v)))
@@ -766,7 +828,7 @@ class CommentNotifierQ
 
   final RedditApi _redditApi;
   // Comment comment;
-  static final _log = getLogger('SubmissionNotifierQ');
+  static final _log = getLogger('CommentNotifierQ');
 
   Comment _comment;
   Comment get comment => _comment;
@@ -775,12 +837,16 @@ class CommentNotifierQ
   List<CommentNotifierQ> get replies => _replies;
 
   int get numReplies {
-    if (_replies.isEmpty) return _comment.numComments;
-    int num = 0;
-    for (final comment in _replies) {
-      num += 1 + comment.numReplies;
-    }
-    return num;
+    return (_replies.isEmpty)
+        ? _comment.numComments
+        : _replies.map((v) => 1 + v.numReplies).sum();
+
+    // if (_replies.isEmpty) return _comment.numComments;
+    // int num = 0;
+    // for (final comment in _replies) {
+    //   num += 1 + comment.numReplies;
+    // }
+    // return num;
   }
 
   Future<void> copyText() {
@@ -815,26 +881,26 @@ class CommentNotifierQ
   @override
   int get score => _comment.score;
 
-  @override
-  Future<void> like() async {
-    if (_comment.likes == Like.up) {
-      return _updateLike(Like.none);
-    }
-    return await _updateLike(Like.up);
-  }
+  // @override
+  // Future<void> like() async {
+  //   if (_comment.likes == Like.up) {
+  //     return _updateLike(Like.none);
+  //   }
+  //   return await _updateLike(Like.up);
+  // }
 
-  @override
-  Future<void> dislike() async {
-    if (_comment.likes == Like.down) {
-      return _updateLike(Like.none);
-    }
-    return await _updateLike(Like.down);
-  }
+  // @override
+  // Future<void> dislike() async {
+  //   if (_comment.likes == Like.down) {
+  //     return _updateLike(Like.none);
+  //   }
+  //   return await _updateLike(Like.down);
+  // }
 
   Future<void> _updateLike(Like like) {
+    _log.info('_updateLike($like)');
     return _try(() async {
-      if (comment.likes == like) return;
-
+      // if (comment.likes == like) return;
       await _redditApi.commentLike(comment.id, like);
       _comment = comment.copyWith(
         likes: like,
@@ -874,8 +940,24 @@ class CommentNotifierQ
     }, 'fail to reply');
   }
 
-  T _addListener<T extends ChangeNotifier>(T t) {
-    return t..addListener(notifyListeners);
+  // T _addListener<T extends ChangeNotifier>(T t) {
+  //   return t..addListener(notifyListeners);
+  // }
+
+  CommentNotifierQ _addListener(CommentNotifierQ t) {
+    // return t..addListener(notifyListeners);
+    return t
+      ..addPropertyListener<int>(() => t.numReplies, () {
+        print('update');
+        notifyListeners();
+      });
+    // return t;
+  }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
   }
 }
 
@@ -923,6 +1005,12 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
       // _subreddit = SubredditNotifierQ(_redditApi, user.subreddit);
       notifyListeners();
     }, 'fail to load user');
+  }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
   }
 }
 
@@ -1037,6 +1125,12 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to load saved');
   }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 // TODO: rename to AuthNotifier
@@ -1117,10 +1211,16 @@ class UserAuth extends ChangeNotifier with TryMixin {
       notifyListeners();
     }, 'fail to logout');
   }
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 // class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
-class CurrentUserNotifierQ extends UserNotifierQ {
+class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
   // CurrentUserNotifierQ(this._redditApi, this._user)
   CurrentUserNotifierQ(this._redditApi, User user)
       : super(_redditApi, user, true);
@@ -1187,8 +1287,18 @@ class CurrentUserNotifierQ extends UserNotifierQ {
     notifyListeners();
   }
 
-  T _addListener<T extends ChangeNotifier>(T t) {
-    return t..addListener(notifyListeners);
+  // T _addListener<T extends ChangeNotifier>(T t) {
+  //   return t..addListener(notifyListeners);
+  // }
+
+  SubredditNotifierQ _addListener(SubredditNotifierQ t) {
+    // return t..addListener(notifyListeners);
+    return t
+      ..addPropertyListener<bool>(() => t.subreddit.userHasFavorited, () {
+        print('update');
+        notifyListeners();
+      });
+    // return t;
   }
 
   static List<SubredditNotifierQ> filterFavorite(
@@ -1272,6 +1382,12 @@ class CurrentUserNotifierQ extends UserNotifierQ {
   // }
 
   // void refresh() => notifyListeners();
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 class MessageNotifierQ extends ChangeNotifier with TryMixin {
@@ -1282,6 +1398,12 @@ class MessageNotifierQ extends ChangeNotifier with TryMixin {
 
   Message _message;
   Message get message => _message;
+
+  @override
+  void notifyListeners() {
+    _log.info('notifyListeners');
+    super.notifyListeners();
+  }
 }
 
 class UIException implements Exception {
@@ -1421,4 +1543,39 @@ class ListNotifier<T extends ChangeNotifier> extends ChangeNotifier {
 
   UnmodifiableListView<T> get values => UnmodifiableListView(_values);
   List<T> _values;
+}
+
+// void addPropertyListener<T>(
+//     ChangeNotifier notifier, T Function() select, void Function() listener) {
+//   T value = select();
+//   notifier.addListener(() {
+//     final newValue = select();
+//     if (value == newValue) {
+//       return;
+//     }
+//     value = newValue;
+//     listener();
+//   });
+// }
+
+mixin PropertyListener on ChangeNotifier {
+  void addPropertyListener<T>(T Function() select, void Function() listener) {
+    T value = select();
+    addListener(() {
+      final newValue = select();
+      print([value, newValue]);
+      if (value == newValue) {
+        return;
+      }
+      value = newValue;
+      listener();
+    });
+  }
+}
+
+
+extension IterableSum<T extends num> on Iterable<T> {
+  T sum() {
+    return this.reduce((r, v) => r+v as T);
+  }
 }
