@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/widget/swipe_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 // import '../widget/stream_list_builder.dart';
+import '../util/snackbar.dart';
 import '../widget/loader.dart';
 
 class UserSubmissions extends StatelessWidget {
@@ -15,21 +17,26 @@ class UserSubmissions extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifierQ>();
 
-    return Loader<List<SubmissionNotifierQ>>(
-      load: (_) => notifier.loadSubmissions(),
-      data: (_) => notifier.submissions,
-      onData: (_, submissions) {
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            for (final sub in submissions)
-              ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                value: sub,
-                child: SubmissionTile(),
-              ),
-          ],
-        );
-      },
+    return SwipeToRefresh(
+      onRefresh: () => notifier
+          .reloadSubmissions()
+          .catchError((e) => showErrorSnackBar(context, e)),
+      child: Loader<List<SubmissionNotifierQ>>(
+        load: (_) => notifier.loadSubmissions(),
+        data: (_) => notifier.submissions,
+        onData: (_, submissions) {
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              for (final sub in submissions)
+                ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                  value: sub,
+                  child: SubmissionTile(),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

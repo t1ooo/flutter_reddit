@@ -103,6 +103,11 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
   late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
+  Future<void> reloadSearch() {
+    _submissions = null;
+    return search(_query, _sort, _subredditName);
+  }
+
   Future<void> search(
     String query, [
     Sort sort = Sort.relevance,
@@ -174,6 +179,11 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
 
   late List<SubredditNotifierQ>? _subreddits;
   List<SubredditNotifierQ>? get subreddits => _subreddits;
+
+  Future<void> reloadSearch() {
+    _subreddits = null;
+    return search(_query);
+  }
 
   Future<void> search(
     String query, [
@@ -331,6 +341,11 @@ class SubredditNotifierQ extends ChangeNotifier
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
+  Future<void> reloadSubmissions() {
+    _submissions = null;
+    return loadSubmissions(_subType);
+  }
+
   Future<void> loadSubmissions(SubType subType) {
     return _try(() async {
       if (_submissions != null && _subType == subType) return;
@@ -412,6 +427,11 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
 
+  Future<void> reloadSubmissions() {
+    _submissions = null;
+    return loadSubmissions(_subType);
+  }
+
   Future<void> loadSubmissions(FrontSubType subType) {
     return _try(() async {
       if (_submissions != null && _subType == subType) return;
@@ -452,6 +472,11 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 
   late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
+
+  Future<void> reloadSubmissions() {
+    _submissions = null;
+    return loadSubmissions(_subType);
+  }
 
   Future<void> loadSubmissions(SubType subType) {
     return _try(() async {
@@ -540,13 +565,24 @@ class SubmissionNotifierQ extends ChangeNotifier
     // return num;
   }
 
-  Future<void> loadComments() {
+  
+
+  Future<void> reloadSubmission() {
+    _comments = null;
+    return _loadSubmission();
+  }
+
+  Future<void> _loadSubmission() {
     return _try(() async {
       if (_comments != null) return;
       _submission = await _redditApi.submission(_submission.id);
       _setComments(_submission.comments);
       notifyListeners();
     }, 'fail to load comments');
+  }
+
+  Future<void> loadComments() {
+    return _loadSubmission();
   }
 
   // set submission(Submission? s) {
@@ -1072,6 +1108,12 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 
   List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
+
+  Future<void> reloadSubmissions() {
+    _submissions = null;
+    return loadSubmissions();
+  }
+
   Future<void> loadSubmissions() {
     return _try(() async {
       if (_submissions != null) return;
@@ -1085,6 +1127,12 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 
   List<CommentNotifierQ>? _comments;
   List<CommentNotifierQ>? get comments => _comments;
+  
+  Future<void> reloadComments() {
+    _comments = null;
+    return loadComments();
+  }
+
   Future<void> loadComments() {
     return _try(() async {
       if (_comments != null) return;
@@ -1112,6 +1160,11 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   List<SubmissionNotifierQ>? _savedSubmissions;
   List<SubmissionNotifierQ>? get savedSubmissions =>
       _savedSubmissions?.where((v) => v.submission.saved).toList();
+
+  Future<void> reloadSaved() {
+    _savedComments = null;
+    return loadSaved();
+  }
 
   Future<void> loadSaved() {
     return _try(() async {
@@ -1260,6 +1313,12 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
   // List<SubredditNotifierQ>? get unfavoriteSubreddits =>
   //     _subreddits?.where((v) => !v.subreddit.userHasFavorited).toList();
 
+  Future<void> reloadSubreddits() {
+    _all = null;
+    _subreddits = null;
+    return loadSubreddits();
+  }
+
   Future<void> loadSubreddits() {
     return _try(() async {
       _loadSubredditAll();
@@ -1311,6 +1370,11 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
 
   List<MessageNotifierQ>? _inboxMessages;
   List<MessageNotifierQ>? get inboxMessages => _inboxMessages;
+
+  Future<void> reloadInboxMessages() {
+    _inboxMessages = null;
+    return loadInboxMessages();
+  }
 
   Future<void> loadInboxMessages() {
     return _try(() async {
@@ -1573,9 +1637,8 @@ mixin PropertyListener on ChangeNotifier {
   }
 }
 
-
 extension IterableSum<T extends num> on Iterable<T> {
   T sum() {
-    return this.reduce((r, v) => r+v as T);
+    return this.reduce((r, v) => r + v as T);
   }
 }

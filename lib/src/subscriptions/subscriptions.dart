@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../subreddit/subreddit_screen.dart';
+import '../util/snackbar.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
 import '../widget/network_image.dart';
+import '../widget/swipe_to_refresh.dart';
 import 'subscription_tile.dart';
 
 class Subscriptions extends StatelessWidget {
@@ -19,51 +21,56 @@ class Subscriptions extends StatelessWidget {
     // final notifier = context.watch<UserAuth>().user!;
     final notifier = context.watch<CurrentUserNotifierQ>();
 
-    return Loader<List<SubredditNotifierQ>>(
-      load: (_) => notifier.loadSubreddits(),
-      data: (_) => notifier.subreddits,
-      onData: (_, subreddits) {
-        final favoriteSubreddits =
-            CurrentUserNotifierQ.filterFavorite(subreddits);
-        final unfavoriteSubreddits =
-            CurrentUserNotifierQ.filterUnfavorite(subreddits);
+    return SwipeToRefresh(
+      onRefresh: () => notifier
+          .reloadSubreddits()
+          .catchError((e) => showErrorSnackBar(context, e)),
+      child: Loader<List<SubredditNotifierQ>>(
+        load: (_) => notifier.loadSubreddits(),
+        data: (_) => notifier.subreddits,
+        onData: (_, subreddits) {
+          final favoriteSubreddits =
+              CurrentUserNotifierQ.filterFavorite(subreddits);
+          final unfavoriteSubreddits =
+              CurrentUserNotifierQ.filterUnfavorite(subreddits);
 
-        return CustomListView(
-          children: [
-            // Loader<SubredditNotifierQ>(
-            //   load: (_) =>
-            //       context.read<SubredditLoaderNotifierQ>().loadSubreddit('all'),
-            //   data: (_) => context.read<SubredditLoaderNotifierQ>().subreddit,
-            //   onData: (_, subreddit) {
-            //     return ChangeNotifierProvider<SubredditNotifierQ>.value(
-            //       value: subreddit,
-            //       child: SubscriptionTile(),
-            //     );
-            //   },
-            // ),
-            ChangeNotifierProvider<SubredditNotifierQ>.value(
-              value: notifier.all!,
-              child: SubscriptionTile(favorite: false),
-            ),
-            if (favoriteSubreddits.isNotEmpty) ...[
-              ListTitle('favorited'),
-              for (final subreddit in favoriteSubreddits)
-                ChangeNotifierProvider<SubredditNotifierQ>.value(
-                  value: subreddit,
-                  child: SubscriptionTile(),
-                ),
+          return CustomListView(
+            children: [
+              // Loader<SubredditNotifierQ>(
+              //   load: (_) =>
+              //       context.read<SubredditLoaderNotifierQ>().loadSubreddit('all'),
+              //   data: (_) => context.read<SubredditLoaderNotifierQ>().subreddit,
+              //   onData: (_, subreddit) {
+              //     return ChangeNotifierProvider<SubredditNotifierQ>.value(
+              //       value: subreddit,
+              //       child: SubscriptionTile(),
+              //     );
+              //   },
+              // ),
+              ChangeNotifierProvider<SubredditNotifierQ>.value(
+                value: notifier.all!,
+                child: SubscriptionTile(favorite: false),
+              ),
+              if (favoriteSubreddits.isNotEmpty) ...[
+                ListTitle('favorited'),
+                for (final subreddit in favoriteSubreddits)
+                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                    value: subreddit,
+                    child: SubscriptionTile(),
+                  ),
+              ],
+              if (unfavoriteSubreddits.isNotEmpty) ...[
+                ListTitle('communites'),
+                for (final subreddit in unfavoriteSubreddits)
+                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                    value: subreddit,
+                    child: SubscriptionTile(),
+                  ),
+              ]
             ],
-            if (unfavoriteSubreddits.isNotEmpty) ...[
-              ListTitle('communites'),
-              for (final subreddit in unfavoriteSubreddits)
-                ChangeNotifierProvider<SubredditNotifierQ>.value(
-                  value: subreddit,
-                  child: SubscriptionTile(),
-                ),
-            ]
-          ],
-        );
-      },
+          );
+        },
+      ),
     );
 
     // return CustomListView(

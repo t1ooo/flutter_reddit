@@ -9,6 +9,7 @@ import '../search/search_field.dart';
 import '../user_menu.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/space_bar.dart';
+import '../widget/swipe_to_refresh.dart';
 import 'home.dart';
 import 'popular.dart';
 
@@ -249,6 +250,12 @@ class HomeScreen extends StatelessWidget {
 class HomeScreenV4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // return SwipeToRefresh(
+    //   onRefresh: () async {
+    //     print('onRefresh');
+    //   },
+    //   child: ListView(children:[Text('1')]),
+    // );
     return Scaffold(
       // appBar: AppBar(
       //   // toolbarHeight: 85,

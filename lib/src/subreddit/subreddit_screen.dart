@@ -369,7 +369,7 @@ class SubredditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (name != null) {
+    if (name == null) {
       return _SubredditScreen();
     }
 

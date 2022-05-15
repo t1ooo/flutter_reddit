@@ -28,3 +28,28 @@ void showTodoSnackBar(BuildContext context) {
     ));
   });
 }
+
+void catchFutureError(BuildContext context, Future future) {
+  future.catchError((e) => showErrorSnackBar(context, e));
+}
+
+// class ErrorSnackBar extends StatelessWidget {
+//   const ErrorSnackBar(
+//     this.error, {
+//     Key? key,
+//   }) : super(key: key);
+
+//   final Object error;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     WidgetsBinding.instance?.addPostFrameCallback((_) {
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//         margin: _margin,
+//         backgroundColor: Colors.red[100],
+//         content: Text(error.toString()),
+//       ));
+//     });
+//     return Container();
+//   }
+// }

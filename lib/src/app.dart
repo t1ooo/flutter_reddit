@@ -8,6 +8,7 @@ import 'notifier/reddir_notifier.v4_2.dart';
 import 'start_screen.dart';
 import 'style/style.dart';
 import 'tabs.dart';
+import 'widget/custom_scroll.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
         // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
       ),
       // home: Tabs(),
-      home: StartScreen(),
+      home: CustomScroll(child: StartScreen()),
     );
   }
 }

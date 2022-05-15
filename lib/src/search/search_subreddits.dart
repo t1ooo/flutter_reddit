@@ -13,8 +13,10 @@ import '../submission_tile/submission_tiles.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/reddir_api.dart';
 import '../subreddit/subreddit_icon.dart';
+import '../util/snackbar.dart';
 import '../widget/loader.dart';
 import '../widget/network_image.dart';
+import '../widget/swipe_to_refresh.dart';
 import 'search_subreddit.dart';
 
 class SearchSubreddits extends StatelessWidget {
@@ -29,24 +31,29 @@ class SearchSubreddits extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<SearchSubredditsQ>();
 
-    return Loader<List<SubredditNotifierQ>>(
-      load: (_) => notifier.search(query),
-      data: (_) => notifier.subreddits,
-      onData: (_, subreddits) {
-        return Container(
-          color: Theme.of(context).primaryColor,
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              for (final subreddit in subreddits)
-                ChangeNotifierProvider<SubredditNotifierQ>.value(
-                  value: subreddit,
-                  child: SearchSubreddit(),
-                )
-            ],
-          ),
-        );
-      },
+    return SwipeToRefresh(
+      onRefresh: () => notifier
+          .reloadSearch()
+          .catchError((e) => showErrorSnackBar(context, e)),
+      child: Loader<List<SubredditNotifierQ>>(
+        load: (_) => notifier.search(query),
+        data: (_) => notifier.subreddits,
+        onData: (_, subreddits) {
+          return Container(
+            color: Theme.of(context).primaryColor,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                for (final subreddit in subreddits)
+                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                    value: subreddit,
+                    child: SearchSubreddit(),
+                  )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
