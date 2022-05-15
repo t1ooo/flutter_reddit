@@ -1,4 +1,4 @@
-// TODO: use ListNotifier
+// TODO: use ListNotifier|remove context.read<CurrentUserNotifierQ>().refresh()
 
 // TODO: show comment link_url image
 // TODO: submission tile show domain
