@@ -1,20 +1,21 @@
+// TODO: swipe to refresh
+// TODO: refresh after duration
+
 // TODO: show comment link_url image
 // TODO: submission tile show domain
-// TODO: active submission url (to external resource)
 // TODO: replace textScaleFactor to fontSize
 // TODO: inbox notifications
 // TODO: inbox mod message
 // TODO: inbox message reply
 // TODO: link|image|video post submitting
 // TODO: MAYBE: wrap all model field wit notifier getter, make models mutable
-// TODO: app bar elevation
+// TODO: configure app bar elevation
 // TODO: ((un)subscrube (un)save reply post) update user saved subscribed
 //      TODO?: move actions to CurrentUserNotifier
 //      TODO?: cache to small time CurrentUserNotifier saved and subscribed
 //      NOTE: reddit app use manual refresh
 // TODO: hide bottom bar on some screens
 // TODO: explicit wrap each widget with provider
-// TODO: refresh after duration
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: load on screen on widget ?
 // TODO: add top padding to page padding
