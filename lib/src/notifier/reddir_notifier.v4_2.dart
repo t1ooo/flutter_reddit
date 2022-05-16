@@ -93,15 +93,15 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
     notifyListeners();
   }
 
-  late String _subredditName;
-  late String _query;
+  String _subredditName = '';
+  String _query = '';
 
-  late Sort _sort;
+  Sort _sort = Sort.relevance;
   Sort get sort => _sort;
 
   List<Sort> get sorts => Sort.values;
 
-  late List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? _submissions;
   List<SubmissionNotifier>? get submissions => _submissions;
 
   Future<void> reloadSearch() {
@@ -175,9 +175,9 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
     notifyListeners();
   }
 
-  late String _query;
+  String _query = '';
 
-  late List<SubredditNotifier>? _subreddits;
+  List<SubredditNotifier>? _subreddits;
   List<SubredditNotifier>? get subreddits => _subreddits;
 
   Future<void> reloadSearch() {
@@ -219,9 +219,9 @@ class SubredditLoaderNotifier extends ChangeNotifier with TryMixin {
     notifyListeners();
   }
 
-  late String? _name;
+  String? _name;
 
-  late SubredditNotifier? _subreddit;
+  SubredditNotifier? _subreddit;
   SubredditNotifier? get subreddit => _subreddit;
 
   Future<void> loadSubreddit(String name) {
@@ -251,16 +251,15 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     this._redditApi,
     this._subreddit, [
     this.isUserSubreddit = false,
-  ]) : super(_redditApi) {
-    name = _subreddit.displayName;
+  ]) : super(_redditApi, SubType.values.first) {
     reset();
   }
 
-  void reset() {
-    _submissions = null;
-    _subType = SubType.values.first;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _submissions = null;
+  //   _subType = SubType.values.first;
+  //   notifyListeners();
+  // }
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -270,7 +269,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
 
   final bool isUserSubreddit;
 
-  late final String name;
+  String get name => _subreddit.displayName;
   Subreddit _subreddit;
   Subreddit get subreddit => _subreddit;
 
@@ -417,23 +416,25 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
 }
 
 abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
-  SubmissionsNotifier(this._redditApi);
+  SubmissionsNotifier(this._redditApi, this._initialSubType)
+      : _subType = _initialSubType;
 
-  late final RedditApi _redditApi;
+  final RedditApi _redditApi;
   // final Clock _clock;
   int _limit = 10;
   // static final _log = getLogger('HomeFrontNotifier');
 
-  // void reset() {
-  //   _subType = FrontSubType.values.first;
-  //   _submissions = null;
-  //   notifyListeners();
-  // }
+  void reset() {
+    _submissions = null;
+    _subType = _initialSubType;
+    notifyListeners();
+  }
 
-  late T _subType;
+  T _initialSubType;
+  T _subType;
   T get subType => _subType;
 
-  late List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? _submissions;
   List<SubmissionNotifier>? get submissions => _submissions;
 
   Future<void> reloadSubmissions() {
@@ -459,7 +460,7 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
 // abstract class SubmissionsNotifier<T> {
 //   // SubmissionsNotifier(this._redditApi);
 
-//   late final RedditApi _redditApi;
+//   final RedditApi _redditApi;
 //   // final Clock _clock;
 //   int _limit = 10;
 //   // static final _log = getLogger('HomeFrontNotifier');
@@ -470,10 +471,10 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
 //   //   notifyListeners();
 //   // }
 
-//   late T _subType;
+//   T _subType;
 //   T get subType => _subType;
 
-//   late List<SubmissionNotifier>? _submissions;
+//   List<SubmissionNotifier>? _submissions;
 //   List<SubmissionNotifier>? get submissions => _submissions;
 
 //   Future<void> reloadSubmissions() {
@@ -499,7 +500,8 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
 // }
 
 class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
-  HomeFrontNotifier(RedditApi redditApi) : super(redditApi) {
+  HomeFrontNotifier(RedditApi redditApi)
+      : super(redditApi, FrontSubType.values.first) {
     reset();
   }
 
@@ -510,11 +512,11 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
     return _redditApi.front(limit: _limit, type: _subType);
   }
 
-  void reset() {
-    _subType = FrontSubType.values.first;
-    _submissions = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _subType = FrontSubType.values.first;
+  //   _submissions = null;
+  //   notifyListeners();
+  // }
 
   @override
   void notifyListeners() {
@@ -524,7 +526,8 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
 }
 
 class HomePopularNotifier extends SubmissionsNotifier<SubType> {
-  HomePopularNotifier(RedditApi redditApi) : super(redditApi) {
+  HomePopularNotifier(RedditApi redditApi)
+      : super(redditApi, SubType.values.first) {
     reset();
   }
 
@@ -535,11 +538,11 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
     return _redditApi.popular(limit: _limit, type: _subType);
   }
 
-  void reset() {
-    _subType = SubType.values.first;
-    _submissions = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _subType = SubType.values.first;
+  //   _submissions = null;
+  //   notifyListeners();
+  // }
 
   @override
   void notifyListeners() {
@@ -568,10 +571,10 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 //     notifyListeners();
 //   }
 
-//   late FrontSubType _subType;
+//   FrontSubType _subType;
 //   FrontSubType get subType => _subType;
 
-//   late List<SubmissionNotifier>? _submissions;
+//   List<SubmissionNotifier>? _submissions;
 //   List<SubmissionNotifier>? get submissions => _submissions;
 
 //   DateTime lastModified = clock.now(); // TODO: remove
@@ -619,10 +622,10 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 //     notifyListeners();
 //   }
 
-//   late SubType _subType;
+//   SubType _subType;
 //   SubType get subType => _subType;
 
-//   late List<SubmissionNotifier>? _submissions;
+//   List<SubmissionNotifier>? _submissions;
 //   List<SubmissionNotifier>? get submissions => _submissions;
 
 //   Future<void> reloadSubmissions() {
@@ -664,9 +667,9 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 //     notifyListeners();
 //   }
 
-//   late String? _id;
+//   String? _id;
 
-//   late SubmissionNotifier? _submission;
+//   SubmissionNotifier? _submission;
 //   SubmissionNotifier? get submission => _submission;
 
 //   Future<void> loadSubmission(String id) {
@@ -698,7 +701,7 @@ class SubmissionNotifier extends ChangeNotifier
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionNotifier');
 
-  late List<CommentNotifier>? _comments;
+  List<CommentNotifier>? _comments;
   List<CommentNotifier>? get comments => _comments;
 
   Submission _submission;
@@ -1166,14 +1169,14 @@ class UserLoaderNotifier extends ChangeNotifier with TryMixin {
   //   _user = null;
   // }
 
-  late String? _name;
+  String? _name;
 
   // void _setName(String name) {
   //   if (_name != name) _reset();
   //   _name = name;
   // }
 
-  late UserNotifier? _user;
+  UserNotifier? _user;
   UserNotifier? get user => _user;
 
   // SubredditNotifier? _subreddit;
@@ -1348,7 +1351,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   CurrentUserNotifier? _user;
   CurrentUserNotifier? get user => _user;
 
-  // late bool _isLoggedIn;
+  // bool _isLoggedIn;
   // bool get isLoggedIn => _redditApi.isLoggedIn();
 
   // String? _authUrl;
@@ -1627,7 +1630,7 @@ class UIException implements Exception {
 }
 
 mixin TryMixin {
-  // static late final Logger _log;
+  // static final Logger _log;
   static final _log = getLogger('TryMixin');
 
   // Future<void> _try(Future<void> Function() fn, String error) async {
@@ -1668,7 +1671,7 @@ mixin TryMixin {
 }
 
 // mixin LoggedInMixin {
-//   late final RedditApi _redditApi;
+//   final RedditApi _redditApi;
 
 //   Future<void> mustLoggedIn() async {
 //     if (!(await _redditApi.isLoggedIn)) {
