@@ -1,5 +1,4 @@
 // TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
-// TODO: SearchSubredditsQ remove sort, subreddit
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: use catchFutureError
 // TODO: remove unused code
