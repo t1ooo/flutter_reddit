@@ -77,9 +77,7 @@ abstract class Likable {
 }
 
 class SearchNotifier extends ChangeNotifier with TryMixin {
-  SearchNotifier(this._redditApi) {
-    reset();
-  }
+  SearchNotifier(this._redditApi);
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -161,9 +159,7 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
 
 // TODO: rename
 class SearchSubredditsQ extends ChangeNotifier with TryMixin {
-  SearchSubredditsQ(this._redditApi) {
-    reset();
-  }
+  SearchSubredditsQ(this._redditApi);
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -206,9 +202,7 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
 }
 
 class SubredditLoaderNotifier extends ChangeNotifier with TryMixin {
-  SubredditLoaderNotifier(this._redditApi) {
-    reset();
-  }
+  SubredditLoaderNotifier(this._redditApi);
 
   final RedditApi _redditApi;
   static final _log = getLogger('SubredditNotifier');
@@ -251,9 +245,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     this._redditApi,
     this._subreddit, [
     this.isUserSubreddit = false,
-  ]) : super(_redditApi, SubType.values.first) {
-    reset();
-  }
+  ]) : super(_redditApi, SubType.values.first);
 
   // void reset() {
   //   _submissions = null;
@@ -501,9 +493,7 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
 
 class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
   HomeFrontNotifier(RedditApi redditApi)
-      : super(redditApi, FrontSubType.values.first) {
-    reset();
-  }
+      : super(redditApi, FrontSubType.values.first);
 
   static final _log = getLogger('HomeFrontNotifier');
 
@@ -527,9 +517,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
 
 class HomePopularNotifier extends SubmissionsNotifier<SubType> {
   HomePopularNotifier(RedditApi redditApi)
-      : super(redditApi, SubType.values.first) {
-    reset();
-  }
+      : super(redditApi, SubType.values.first);
 
   static final _log = getLogger('HomeFrontNotifier');
 
@@ -1151,9 +1139,7 @@ class CommentNotifier
 }
 
 class UserLoaderNotifier extends ChangeNotifier with TryMixin {
-  UserLoaderNotifier(this._redditApi) {
-    reset();
-  }
+  UserLoaderNotifier(this._redditApi);
 
   final RedditApi _redditApi;
   // int _limit = 10;
