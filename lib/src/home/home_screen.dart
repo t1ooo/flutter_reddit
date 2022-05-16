@@ -268,6 +268,7 @@ class HomeScreenV4 extends StatelessWidget {
       body: DefaultTabController(
         length: 2, // This is the number of tabs.
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               PrimarySliverAppBar(
@@ -316,11 +317,12 @@ class HomeScreenV4 extends StatelessWidget {
               // ),
 
               SliverAppBar(
-                pinned: true,
+                floating: true,
+                primary: false,
                 automaticallyImplyLeading: false,
-                flexibleSpace: Container(
+                flexibleSpace: /* Container(
                   width: 100,
-                  child: TabBar(
+                  child:  */TabBar(
                     // padding: EdgeInsets.zero,
                     // labelPadding: EdgeInsets.zero,
                     // labelPadding: EdgeInsets.only(left: 300),
@@ -373,7 +375,7 @@ class HomeScreenV4 extends StatelessWidget {
                       // ),
                     ],
                   ),
-                ),
+                /* ), */
               ),
 
               // SliverAppBar(
@@ -474,3 +476,72 @@ class HomeScreenV4 extends StatelessWidget {
     );
   }
 }
+
+// class HomeScreenV5 extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       drawer: UserMenu(),
+//       body: DefaultTabController(
+//         length: 2, // This is the number of tabs.
+//         child: CustomScrollView(
+//           slivers: [
+//             PrimarySliverAppBar(
+//               collapsed: true,
+//               flexibleSpace: SpaceBar(
+//                 leading: IconButton(
+//                   onPressed: () {
+//                     Scaffold.of(context).openDrawer();
+//                   },
+//                   icon: SpaceBarIcon(Icons.account_circle),
+//                   // iconData: Icons.account_circle,
+//                   // theme: appBarIconThemeDark,
+//                 ),
+//                 title: SearchForm(),
+//               ),
+//             ),
+//             SliverAppBar(
+//               floating: true,
+//               primary: false,
+//               pinned: false,
+//               automaticallyImplyLeading: false,
+//               flexibleSpace: TabBar(
+//                 indicatorColor: selectedColor, // TODO: config with app theme
+//                 indicatorSize: TabBarIndicatorSize.tab,
+//                 tabs: [
+//                   Tab(text: 'Home'),
+//                   Tab(text: 'Popular'),
+//                 ],
+//               ),
+//             ),
+//             // SliverAppBar(
+//             //   pinned: false,
+//             //   flexibleSpace: Text('123'),
+//             // ),
+//             SliverFillRemaining(
+//               child: TabBarView(
+//                 children: [
+//                   Home(),
+//                   Popular(),
+//                 ],
+//               ),
+//             ),
+//             // TabBarView(
+//             //   children: [
+//             //     Home(),
+//             //     Popular(),
+//             //   ],
+//             // ),
+//           ],
+//         ),
+//         // body: TabBarView(
+//         //   children: [
+//         //     Home(),
+//         //     Popular(),
+//         //   ],
+//         // ),
+//         // ),
+//       ),
+//     );
+//   }
+// }
