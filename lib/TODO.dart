@@ -4,6 +4,7 @@
 // TODO: use catchFutureError
 // TODO: remove unused code
 // TODO: rename notifiers
+// TODO: split notifiers to files
 
 // TODO: show comment link_url image
 // TODO: submission tile show domain

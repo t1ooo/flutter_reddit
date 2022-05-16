@@ -176,8 +176,6 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
 
   late String _query;
 
-  List<Sort> get sorts => Sort.values;
-
   late List<SubredditNotifierQ>? _subreddits;
   List<SubredditNotifierQ>? get subreddits => _subreddits;
 
@@ -186,14 +184,9 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
     return search(_query);
   }
 
-  Future<void> search(
-    String query, [
-    Sort sort = Sort.relevance,
-    String subredditName = 'all',
-  ]) {
+  Future<void> search(String query) {
     return _try(() async {
       if (_subreddits != null && _query == query) return;
-
       _query = query;
 
       _subreddits =
@@ -408,7 +401,10 @@ class SubredditNotifierQ extends ChangeNotifier
 
 // TODO: move to current user
 class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
-  HomeFrontNotifierQ(this._redditApi, /* [this._clock = const Clock()] */) {
+  HomeFrontNotifierQ(
+    this._redditApi,
+    /* [this._clock = const Clock()] */
+  ) {
     reset();
   }
 
@@ -428,7 +424,7 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
 
   late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
-  
+
   DateTime lastModified = clock.now();
   Duration _reloadDelay = Duration(seconds: 5);
   bool get expired => _reloadDelay <= clock.now().difference(lastModified);
@@ -571,8 +567,6 @@ class SubmissionNotifierQ extends ChangeNotifier
     // }
     // return num;
   }
-
-  
 
   Future<void> reloadSubmission() {
     _comments = null;
@@ -1134,7 +1128,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
 
   List<CommentNotifierQ>? _comments;
   List<CommentNotifierQ>? get comments => _comments;
-  
+
   Future<void> reloadComments() {
     _comments = null;
     return loadComments();
