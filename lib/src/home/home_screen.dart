@@ -322,12 +322,12 @@ class HomeScreenV4 extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 flexibleSpace: /* Container(
                   width: 100,
-                  child:  */TabBar(
+                  child:  */
+                    TabBar(
                     // padding: EdgeInsets.zero,
                     // labelPadding: EdgeInsets.zero,
                     // labelPadding: EdgeInsets.only(left: 300),
-                    indicatorColor:
-                        selectedColor, // TODO: config with app theme
+                  indicatorColor: selectedColor, // TODO: config with app theme
                     indicatorSize: TabBarIndicatorSize.tab,
                     // indicator: BoxDecoration(
                     //   border: Border(
