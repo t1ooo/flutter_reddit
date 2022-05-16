@@ -1,3 +1,7 @@
+// TODO: floating tab bar on home screen (show when scroll up)
+//  not support by flutter https://github.com/flutter/flutter/issues/17518
+//  need further investigation
+
 // TODO: replace SwipeToRefresh to RefreshIndicator
 // TODO: refresh after duration
 // TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
