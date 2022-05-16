@@ -1,4 +1,3 @@
-// TODO: replace SwipeToRefresh to RefreshIndicator
 // TODO: refresh after duration
 // TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
 // TODO: SearchSubredditsQ remove sort, subreddit
