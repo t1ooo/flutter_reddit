@@ -324,59 +324,71 @@ class HomeScreenV4 extends StatelessWidget {
                   width: 100,
                   child:  */
                     TabBar(
-                    // padding: EdgeInsets.zero,
-                    // labelPadding: EdgeInsets.zero,
-                    // labelPadding: EdgeInsets.only(left: 300),
+                  // padding: EdgeInsets.zero,
+                  // labelPadding: EdgeInsets.zero,
+                  // labelPadding: EdgeInsets.only(left: 300),
                   indicatorColor: selectedColor, // TODO: config with app theme
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    // indicator: BoxDecoration(
-                    //   border: Border(
-                    //     bottom: BorderSide(
-                    //       color: Colors.blue,
-                    //       width: 2.0,
-                    //     ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  // indicator: BoxDecoration(
+                  //   border: Border(
+                  //     bottom: BorderSide(
+                  //       color: Colors.blue,
+                  //       width: 2.0,
+                  //     ),
+                  //   ),
+                  // ),
+                  tabs: [
+                    Tab(text: 'Home'),
+                    Tab(text: 'Popular'),
+                    // Container( width: 100, child: Tab(text: 'Home')),
+                    // Container( width: 100, child: Tab(text: 'Popular')),
+
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    //   child: Container(
+                    //     width: 150,
+                    //     // decoration: BoxDecoration(
+                    //     //   border: Border(
+                    //     //     bottom: BorderSide(
+                    //     //       color: Colors.blue,
+                    //     //       width: 2.0,
+                    //     //     ),
+                    //     //   ),
+                    //     // ),
+                    //     child: Tab(text: 'Home'),
                     //   ),
                     // ),
-                    tabs: [
-                      Tab(text: 'Home'),
-                      Tab(text: 'Popular'),
-                      // Container( width: 100, child: Tab(text: 'Home')),
-                      // Container( width: 100, child: Tab(text: 'Popular')),
-
-                      // Align(
-                      //   alignment: Alignment.centerRight,
-                      //   child: Container(
-                      //     width: 150,
-                      //     // decoration: BoxDecoration(
-                      //     //   border: Border(
-                      //     //     bottom: BorderSide(
-                      //     //       color: Colors.blue,
-                      //     //       width: 2.0,
-                      //     //     ),
-                      //     //   ),
-                      //     // ),
-                      //     child: Tab(text: 'Home'),
-                      //   ),
-                      // ),
-                      // Align(
-                      //   alignment: Alignment.centerLeft,
-                      //   child: Container(
-                      //     width: 150,
-                      //     // decoration: BoxDecoration(
-                      //     //   border: Border(
-                      //     //     bottom: BorderSide(
-                      //     //       color: Colors.blue,
-                      //     //       width: 2.0,
-                      //     //     ),
-                      //     //   ),
-                      //     // ),
-                      //     child: Tab(text: 'Popular'),
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Container(
+                    //     width: 150,
+                    //     // decoration: BoxDecoration(
+                    //     //   border: Border(
+                    //     //     bottom: BorderSide(
+                    //     //       color: Colors.blue,
+                    //     //       width: 2.0,
+                    //     //     ),
+                    //     //   ),
+                    //     // ),
+                    //     child: Tab(text: 'Popular'),
+                    //   ),
+                    // ),
+                  ],
+                ),
                 /* ), */
               ),
+
+              // SliverAppBar(
+              //   // stretch: true,
+              //   // toolbarHeight: 200,
+              //   // expandedHeight: 400,
+              //   floating: true,
+              //   primary: false,
+              //   automaticallyImplyLeading: false,
+              //   flexibleSpace: Center(
+              //       child: ElevatedButton(
+              //           onPressed: () {}, child: Text('REFRESH'))),
+              // ),
 
               // SliverAppBar(
               //   floating: true,
