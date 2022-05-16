@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
           // shape: RoundedRectangleBorder(side:BorderSide(color: Colors.red, width: 5)),
           behavior: SnackBarBehavior.floating,
         ),
+        indicatorColor: selectedColor,
         // popupMenuTheme: PopupMenuThemeData(
         // color: Colors.white, textStyle: TextStyle(color: Colors.white)),
       ),
