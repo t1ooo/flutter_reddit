@@ -1,9 +1,9 @@
-// TODO: refresh after duration
 // TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
 // TODO: SearchSubredditsQ remove sort, subreddit
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: use catchFutureError
 // TODO: remove unused code
+// TODO: rename notifiers
 
 // TODO: show comment link_url image
 // TODO: submission tile show domain
@@ -41,3 +41,4 @@
 // TODO: give award to submission (not supported by DRAW lib)
 // TODO: give award to comment (not supported by DRAW lib)
 // TODO: filter subscriptions by location (not supported by Reddit API)
+// TODO: refresh after duration (use swipe to refresh instead)
