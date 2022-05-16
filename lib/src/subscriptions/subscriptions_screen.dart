@@ -93,7 +93,7 @@ class SubscriptionsScreen extends StatelessWidget {
           },
           body: TabBarView(
             children: [
-              ChangeNotifierProvider<CurrentUserNotifierQ>.value(
+              ChangeNotifierProvider<CurrentUserNotifier>.value(
                 value: context.read<UserAuth>().user!,
                 child: Subscriptions(),
               ),

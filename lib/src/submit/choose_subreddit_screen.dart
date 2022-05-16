@@ -18,7 +18,7 @@ class ChooseSubredditScreen extends StatelessWidget {
     required this.onChanged,
   }) : super(key: key);
 
-  final void Function(SubredditNotifierQ) onChanged;
+  final void Function(SubredditNotifier) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +41,9 @@ class ChooseSubredditScreen extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    final notifier = context.read<CurrentUserNotifierQ>();
+    final notifier = context.read<CurrentUserNotifier>();
 
-    return Loader<List<SubredditNotifierQ>>(
+    return Loader<List<SubredditNotifier>>(
       load: (_) => notifier.loadSubreddits(),
       data: (_) => notifier.subreddits,
       onData: (_, subreddits) {

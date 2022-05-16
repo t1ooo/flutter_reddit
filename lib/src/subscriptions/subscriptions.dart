@@ -19,42 +19,42 @@ class Subscriptions extends StatelessWidget {
 
   Widget build(BuildContext context) {
     // final notifier = context.watch<UserAuth>().user!;
-    final notifier = context.watch<CurrentUserNotifierQ>();
+    final notifier = context.watch<CurrentUserNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier
           .reloadSubreddits()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<SubredditNotifierQ>>(
+      child: Loader<List<SubredditNotifier>>(
         load: (_) => notifier.loadSubreddits(),
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
           final favoriteSubreddits =
-              CurrentUserNotifierQ.filterFavorite(subreddits);
+              CurrentUserNotifier.filterFavorite(subreddits);
           final unfavoriteSubreddits =
-              CurrentUserNotifierQ.filterUnfavorite(subreddits);
+              CurrentUserNotifier.filterUnfavorite(subreddits);
 
           return CustomListView(
             children: [
-              // Loader<SubredditNotifierQ>(
+              // Loader<SubredditNotifier>(
               //   load: (_) =>
-              //       context.read<SubredditLoaderNotifierQ>().loadSubreddit('all'),
-              //   data: (_) => context.read<SubredditLoaderNotifierQ>().subreddit,
+              //       context.read<SubredditLoaderNotifier>().loadSubreddit('all'),
+              //   data: (_) => context.read<SubredditLoaderNotifier>().subreddit,
               //   onData: (_, subreddit) {
-              //     return ChangeNotifierProvider<SubredditNotifierQ>.value(
+              //     return ChangeNotifierProvider<SubredditNotifier>.value(
               //       value: subreddit,
               //       child: SubscriptionTile(),
               //     );
               //   },
               // ),
-              ChangeNotifierProvider<SubredditNotifierQ>.value(
+              ChangeNotifierProvider<SubredditNotifier>.value(
                 value: notifier.all!,
                 child: SubscriptionTile(favorite: false),
               ),
               if (favoriteSubreddits.isNotEmpty) ...[
                 ListTitle('favorited'),
                 for (final subreddit in favoriteSubreddits)
-                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                  ChangeNotifierProvider<SubredditNotifier>.value(
                     value: subreddit,
                     child: SubscriptionTile(),
                   ),
@@ -62,7 +62,7 @@ class Subscriptions extends StatelessWidget {
               if (unfavoriteSubreddits.isNotEmpty) ...[
                 ListTitle('communites'),
                 for (final subreddit in unfavoriteSubreddits)
-                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                  ChangeNotifierProvider<SubredditNotifier>.value(
                     value: subreddit,
                     child: SubscriptionTile(),
                   ),
@@ -75,7 +75,7 @@ class Subscriptions extends StatelessWidget {
 
     // return CustomListView(
     //   children: [
-    //     Loader<List<SubredditNotifierQ>>(
+    //     Loader<List<SubredditNotifier>>(
     //       load: (_) => notifier.loadSubreddits(),
     //       data: (_) => notifier.favoriteSubreddits,
     //       onData: (_, subreddits) {
@@ -83,7 +83,7 @@ class Subscriptions extends StatelessWidget {
     //           children: [
     //             ListTitle('favorited'),
     //             for (final subreddit in subreddits)
-    //               ChangeNotifierProvider<SubredditNotifierQ>.value(
+    //               ChangeNotifierProvider<SubredditNotifier>.value(
     //                 value: subreddit,
     //                 child: SubscriptionTile(),
     //               )
@@ -91,7 +91,7 @@ class Subscriptions extends StatelessWidget {
     //         );
     //       },
     //     ),
-    //     Loader<List<SubredditNotifierQ>>(
+    //     Loader<List<SubredditNotifier>>(
     //       load: (_) => notifier.loadSubreddits(),
     //       data: (_) => notifier.unfavoriteSubreddits,
     //       onData: (_, subreddits) {
@@ -99,7 +99,7 @@ class Subscriptions extends StatelessWidget {
     //           children: [
     //             ListTitle('unfavorited'),
     //             for (final subreddit in subreddits)
-    //               ChangeNotifierProvider<SubredditNotifierQ>.value(
+    //               ChangeNotifierProvider<SubredditNotifier>.value(
     //                 value: subreddit,
     //                 child: SubscriptionTile(),
     //               )
@@ -112,7 +112,7 @@ class Subscriptions extends StatelessWidget {
 
 /* 
     // TODO: Loader
-    final notifier = context.watch<CurrentUserNotifierQ>();
+    final notifier = context.watch<CurrentUserNotifier>();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       notifier.loadSubreddits();
     });
@@ -142,7 +142,7 @@ class Subscriptions extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) =>
-                      ChangeNotifierProvider<SubredditNotifierQ>.value(
+                      ChangeNotifierProvider<SubredditNotifier>.value(
                     value: subreddit,
                     child: SubredditScreen(),
                   ),

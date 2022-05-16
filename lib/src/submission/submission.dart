@@ -13,7 +13,7 @@ class SubmissionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubmissionNotifierQ>();
+    final notifier = context.watch<SubmissionNotifier>();
 
     return /* Stack(
       children: [ */
@@ -27,7 +27,7 @@ class SubmissionWidget extends StatelessWidget {
             activeLink: false,
           ),
           SizedBox(height: 50),
-          Loader<List<CommentNotifierQ>>(
+          Loader<List<CommentNotifier>>(
             load: (_) => notifier.loadComments(),
             data: (_) => notifier.comments,
             onData: (_, comments) {
@@ -35,7 +35,7 @@ class SubmissionWidget extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   for (final comment in comments)
-                    ChangeNotifierProvider<CommentNotifierQ>.value(
+                    ChangeNotifierProvider<CommentNotifier>.value(
                       value: comment,
                       child: SubmissionComment(),
                     ),
@@ -47,7 +47,7 @@ class SubmissionWidget extends StatelessWidget {
           //   shrinkWrap: true,
           //   children: [
           //     for (final comment in notifier.comments)
-          //       ChangeNotifierProvider<CommentNotifierQ>.value(
+          //       ChangeNotifierProvider<CommentNotifier>.value(
           //         value: comment,
           //         child: SubmissionComment(),
           //       ),

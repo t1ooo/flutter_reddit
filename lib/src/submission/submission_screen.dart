@@ -33,13 +33,13 @@ import 'submission.dart';
 //   }
 
 //   Widget body(BuildContext context) {
-//     final notifier = context.watch<SubmissionLoaderNotifierQ>();
+//     final notifier = context.watch<SubmissionLoaderNotifier>();
 
-//     return Loader<SubmissionNotifierQ>(
+//     return Loader<SubmissionNotifier>(
 //       load: (_) => notifier.loadSubmission(id),
 //       data: (_) => notifier.submission,
 //       onData: (_, submission) {
-//         return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+//         return ChangeNotifierProvider<SubmissionNotifier>.value(
 //           value: submission,
 //           child: SubmissionWidget(),
 //         );
@@ -81,13 +81,13 @@ import 'submission.dart';
 //   }
 
 //   Widget body(BuildContext context) {
-//     final notifier = context.watch<SubmissionLoaderNotifierQ>();
+//     final notifier = context.watch<SubmissionLoaderNotifier>();
 
-//     return Loader<SubmissionNotifierQ>(
+//     return Loader<SubmissionNotifier>(
 //       load: (_) => notifier.loadSubmission(id),
 //       data: (_) => notifier.submission,
 //       onData: (_, submission) {
-//         return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+//         return ChangeNotifierProvider<SubmissionNotifier>.value(
 //           value: submission,
 //           child: SubmissionWidget(),
 //         );
@@ -134,24 +134,24 @@ class SubmissionScreen extends StatelessWidget {
     return _SubmissionScreen();
     // if (id == null) {}
 
-    // final notifier = context.read<SubmissionLoaderNotifierQ>();
-    // return Loader<SubmissionNotifierQ>(
+    // final notifier = context.read<SubmissionLoaderNotifier>();
+    // return Loader<SubmissionNotifier>(
     //   load: (_) => notifier.loadSubmission(id!),
     //   data: (_) => notifier.submission,
     //   onData: (_, submission) {
-    //     return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+    //     return ChangeNotifierProvider<SubmissionNotifier>.value(
     //       value: submission,
     //       child: _SubmissionScreen(),
     //     );
     //   },
     // );
 
-    // final notifier = context.read<SubmissionNotifierQ>();
-    // return Loader<SubmissionNotifierQ>(
+    // final notifier = context.read<SubmissionNotifier>();
+    // return Loader<SubmissionNotifier>(
     //   load: (_) => notifier.loadComments(),
     //   data: (_) => notifier,
     //   onData: (_, submission) {
-    //     return ChangeNotifierProvider<SubmissionNotifierQ>.value(
+    //     return ChangeNotifierProvider<SubmissionNotifier>.value(
     //       value: submission,
     //       child: _SubmissionScreen(),
     //     );
@@ -172,9 +172,9 @@ class _SubmissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar:
-          ReplyField(id: context.read<SubmissionNotifierQ>().submission.id),
-      // bottomNavigationBar: ChangeNotifierProvider<SubmissionNotifierQ>.value(
-      //   value: context.read<SubmissionNotifierQ>(),
+          ReplyField(id: context.read<SubmissionNotifier>().submission.id),
+      // bottomNavigationBar: ChangeNotifierProvider<SubmissionNotifier>.value(
+      //   value: context.read<SubmissionNotifier>(),
       //   child: CommentField(id: id),
       // ),
       body: DefaultTabController(
@@ -186,7 +186,7 @@ class _SubmissionScreen extends StatelessWidget {
                 collapsed: true,
                 flexibleSpace: SpaceBar(
                   backgroundColor: generateColor(
-                      context.read<SubmissionNotifierQ>().submission.id),
+                      context.read<SubmissionNotifier>().submission.id),
                   leading: AppBarBackButton(),
                   trailing: _submissionMenu(context),
                   // title: Text('Saved'),

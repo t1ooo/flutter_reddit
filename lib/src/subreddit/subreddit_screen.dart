@@ -31,7 +31,7 @@ import 'subreddit_info.dart';
 //     return Scaffold(
 //       appBar: AppBar(
 //         flexibleSpace: Builder(builder: (context) {
-//           final notifier = context.watch<SubredditNotifierQ>();
+//           final notifier = context.watch<SubredditNotifier>();
 //           final src = notifier.subreddit.bannerBackgroundImage;
 //           return SearchField(
 //             subreddit: 'r/${notifier.name}',
@@ -82,7 +82,7 @@ class _SubredditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubredditNotifierQ>();
+    final notifier = context.watch<SubredditNotifier>();
     final backgroundImage = notifier.subreddit.bannerBackgroundImage;
     final backgroundColor = notifier.subreddit.bannerBackgroundColor;
     final subreddit = notifier.subreddit;
@@ -373,13 +373,13 @@ class SubredditScreen extends StatelessWidget {
       return _SubredditScreen();
     }
 
-    final notifier = context.read<SubredditLoaderNotifierQ>();
+    final notifier = context.read<SubredditLoaderNotifier>();
 
-    return Loader<SubredditNotifierQ>(
+    return Loader<SubredditNotifier>(
       load: (_) => notifier.loadSubreddit(name!),
       data: (_) => notifier.subreddit,
       onData: (_, subreddit) {
-        return ChangeNotifierProvider<SubredditNotifierQ>.value(
+        return ChangeNotifierProvider<SubredditNotifier>.value(
           value: subreddit,
           child: _SubredditScreen(),
         );

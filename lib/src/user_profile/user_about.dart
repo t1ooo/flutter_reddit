@@ -15,7 +15,7 @@ class UserAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserNotifierQ>().user;
+    final user = context.read<UserNotifier>().user;
     return CustomListView(
       // shrinkWrap: true,
       children: [

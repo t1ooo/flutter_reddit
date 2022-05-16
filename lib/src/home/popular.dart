@@ -12,7 +12,7 @@ class Popular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<HomePopularNotifierQ>();
+    final notifier = context.watch<HomePopularNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier

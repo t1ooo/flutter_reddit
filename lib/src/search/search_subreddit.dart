@@ -11,7 +11,7 @@ class SearchSubreddit extends StatelessWidget {
   }) : super(key: key);
 
   Widget build(BuildContext context) {
-    final subredditN = context.watch<SubredditNotifierQ>();
+    final subredditN = context.watch<SubredditNotifier>();
     final subreddit = subredditN.subreddit;
 
     return ListTile(

@@ -17,7 +17,7 @@ class SubscriptionTile extends StatelessWidget {
   final bool favorite;
 
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubredditNotifierQ>();
+    final notifier = context.watch<SubredditNotifier>();
     final subreddit = notifier.subreddit;
 
     return ListTile(
@@ -37,7 +37,7 @@ class SubscriptionTile extends StatelessWidget {
                         ? notifier.unfavorite()
                         : notifier.favorite())
                 //     .then(
-                //   (_) => context.read<CurrentUserNotifierQ>().refresh(),
+                //   (_) => context.read<CurrentUserNotifier>().refresh(),
                 //   onError: (e) => showErrorSnackBar(context, e),
                 // );
                 .catchError((e) => showErrorSnackBar(context, e));
@@ -50,7 +50,7 @@ class SubscriptionTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ChangeNotifierProvider<SubredditNotifierQ>.value(
+            builder: (_) => ChangeNotifierProvider<SubredditNotifier>.value(
               value: notifier,
               child: SubredditScreen(),
             ),

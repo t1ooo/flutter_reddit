@@ -19,7 +19,7 @@ class MessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<MessageNotifierQ>();
+    final notifier = context.read<MessageNotifier>();
     final message = notifier.message;
 
     return Scaffold(

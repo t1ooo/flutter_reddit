@@ -32,23 +32,23 @@ Future<void> main() async {
             Config('flutter_reddit_cache'),
           ),
         ),
-        // ChangeNotifierProvider<SubmissionLoaderNotifierQ>(
-        //   create: (context) => SubmissionLoaderNotifierQ(redditApi),
+        // ChangeNotifierProvider<SubmissionLoaderNotifier>(
+        //   create: (context) => SubmissionLoaderNotifier(redditApi),
         // ),
-        ChangeNotifierProvider<SearchNotifierQ>(
-          create: (context) => SearchNotifierQ(redditApi),
+        ChangeNotifierProvider<SearchNotifier>(
+          create: (context) => SearchNotifier(redditApi),
         ),
-        ChangeNotifierProvider<SubredditLoaderNotifierQ>(
-          create: (context) => SubredditLoaderNotifierQ(redditApi),
+        ChangeNotifierProvider<SubredditLoaderNotifier>(
+          create: (context) => SubredditLoaderNotifier(redditApi),
         ),
-        ChangeNotifierProvider<UserLoaderNotifierQ>(
-          create: (context) => UserLoaderNotifierQ(redditApi),
+        ChangeNotifierProvider<UserLoaderNotifier>(
+          create: (context) => UserLoaderNotifier(redditApi),
         ),
-        ChangeNotifierProvider<HomeFrontNotifierQ>(
-          create: (context) => HomeFrontNotifierQ(redditApi),
+        ChangeNotifierProvider<HomeFrontNotifier>(
+          create: (context) => HomeFrontNotifier(redditApi),
         ),
-        ChangeNotifierProvider<HomePopularNotifierQ>(
-          create: (context) => HomePopularNotifierQ(redditApi),
+        ChangeNotifierProvider<HomePopularNotifier>(
+          create: (context) => HomePopularNotifier(redditApi),
         ),
         ChangeNotifierProvider<SearchSubredditsQ>(
           create: (context) => SearchSubredditsQ(redditApi),
@@ -59,12 +59,12 @@ Future<void> main() async {
             return notifier
               ..addListener(() {
                 if (notifier.user == null) {
-                  // context.read<SubmissionLoaderNotifierQ>().reset();
-                  context.read<SearchNotifierQ>().reset();
-                  context.read<SubredditLoaderNotifierQ>().reset();
-                  context.read<UserLoaderNotifierQ>().reset();
-                  context.read<HomeFrontNotifierQ>().reset();
-                  context.read<HomePopularNotifierQ>().reset();
+                  // context.read<SubmissionLoaderNotifier>().reset();
+                  context.read<SearchNotifier>().reset();
+                  context.read<SubredditLoaderNotifier>().reset();
+                  context.read<UserLoaderNotifier>().reset();
+                  context.read<HomeFrontNotifier>().reset();
+                  context.read<HomePopularNotifier>().reset();
                   context.read<SearchSubredditsQ>().reset();
                 }
               });

@@ -28,7 +28,7 @@ import 'user_submissions.dart';
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final notifier = context.read<UserNotifierQ>();
+//     final notifier = context.read<UserNotifier>();
 //     final user = notifier.user;
 //     return DefaultTabController(
 //       length: 3,
@@ -72,7 +72,7 @@ import 'user_submissions.dart';
 //                     children: [
 //                       ElevatedButton(onPressed: () {}, child: Text('CHAT')),
 //                       SizedBox(width: 10),
-//                       ChangeNotifierProvider<SubredditNotifierQ>.value(
+//                       ChangeNotifierProvider<SubredditNotifier>.value(
 //                         value: notifier.subreddit,
 //                         child: SubscribeButton(isUserPage: true),
 //                       ),
@@ -123,7 +123,7 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<UserNotifierQ>();
+    final notifier = context.watch<UserNotifier>();
     final user = notifier.user;
     final subreddit = notifier.subreddit;
     final backgroundImage = subreddit.subreddit.bannerBackgroundImage;
@@ -219,7 +219,7 @@ class UserProfile extends StatelessWidget {
               SliverList(
                   delegate: SliverChildListDelegate([
                 UserInfo(),
-                // ChangeNotifierProvider<SubredditNotifierQ>.value(
+                // ChangeNotifierProvider<SubredditNotifier>.value(
                 //   value: subreddit,
                 //   child: UserInfo(),
                 // ),

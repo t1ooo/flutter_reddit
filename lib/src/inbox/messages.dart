@@ -19,7 +19,7 @@ class Messages extends StatelessWidget {
       onRefresh: () => notifier
           .reloadInboxMessages()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<MessageNotifierQ>>(
+      child: Loader<List<MessageNotifier>>(
         load: (_) => notifier.loadInboxMessages(),
         data: (_) => notifier.inboxMessages,
         onData: (_, messages) {
@@ -37,7 +37,7 @@ class Messages extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              ChangeNotifierProvider<MessageNotifierQ>.value(
+                              ChangeNotifierProvider<MessageNotifier>.value(
                             value: message,
                             child: MessageScreen(),
                           ),

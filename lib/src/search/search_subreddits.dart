@@ -35,7 +35,7 @@ class SearchSubreddits extends StatelessWidget {
       onRefresh: () => notifier
           .reloadSearch()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<SubredditNotifierQ>>(
+      child: Loader<List<SubredditNotifier>>(
         load: (_) => notifier.search(query),
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
@@ -45,7 +45,7 @@ class SearchSubreddits extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 for (final subreddit in subreddits)
-                  ChangeNotifierProvider<SubredditNotifierQ>.value(
+                  ChangeNotifierProvider<SubredditNotifier>.value(
                     value: subreddit,
                     child: SearchSubreddit(),
                   )

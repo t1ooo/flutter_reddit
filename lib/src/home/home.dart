@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<HomeFrontNotifierQ>();
+    final notifier = context.watch<HomeFrontNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier

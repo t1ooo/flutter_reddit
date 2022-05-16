@@ -25,7 +25,7 @@ class UserComment extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    final notifier = context.read<CommentNotifierQ>();
+    final notifier = context.read<CommentNotifier>();
     final comment = notifier.comment;
     return InkWell(
       onTap: comment.submissionId == ''

@@ -15,20 +15,20 @@ class UserComments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<UserNotifierQ>();
+    final notifier = context.read<UserNotifier>();
     
     return SwipeToRefresh(
       onRefresh: () => notifier
           .reloadComments()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<CommentNotifierQ>>(
+      child: Loader<List<CommentNotifier>>(
         load: (_) => notifier.loadComments(),
         data: (_) => notifier.comments,
         onData: (_, comments) {
           return ListView(
             children: [
               for (final comment in comments)
-                ChangeNotifierProvider<CommentNotifierQ>.value(
+                ChangeNotifierProvider<CommentNotifier>.value(
                   value: comment,
                   child: UserComment(),
                 ),

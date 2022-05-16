@@ -12,13 +12,13 @@ class SavedSubmissions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<UserNotifierQ>();
+    final notifier = context.read<UserNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier
           .reloadSaved()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<SubmissionNotifierQ>>(
+      child: Loader<List<SubmissionNotifier>>(
         load: (_) => notifier.loadSaved(),
         data: (_) => notifier.savedSubmissions,
         onData: (_, submissions) {
@@ -26,11 +26,11 @@ class SavedSubmissions extends StatelessWidget {
             shrinkWrap: true,
             children: [
               for (final sub in submissions)
-                ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                ChangeNotifierProvider<SubmissionNotifier>.value(
                   value: sub,
                   child: Builder(builder: (context) {
                     final submission =
-                        context.watch<SubmissionNotifierQ>().submission;
+                        context.watch<SubmissionNotifier>().submission;
                     if (!submission.saved) {
                       return Container();
                     }

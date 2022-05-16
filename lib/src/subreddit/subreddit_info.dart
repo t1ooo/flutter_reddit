@@ -24,7 +24,7 @@ class SubredditInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubredditNotifierQ>();
+    final notifier = context.watch<SubredditNotifier>();
     final subreddit = notifier.subreddit;
 
     // return (

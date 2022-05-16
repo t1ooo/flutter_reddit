@@ -15,13 +15,13 @@ class SavedComments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<UserNotifierQ>();
+    final notifier = context.read<UserNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier
           .reloadSaved()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<CommentNotifierQ>>(
+      child: Loader<List<CommentNotifier>>(
         load: (_) => notifier.loadSaved(),
         data: (_) => notifier.savedComments,
         onData: (_, comments) {
@@ -29,7 +29,7 @@ class SavedComments extends StatelessWidget {
             shrinkWrap: true,
             children: [
               for (final comment in comments)
-                ChangeNotifierProvider<CommentNotifierQ>.value(
+                ChangeNotifierProvider<CommentNotifier>.value(
                   value: comment,
                   child: SavedComment(),
                 ),

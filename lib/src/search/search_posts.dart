@@ -21,7 +21,7 @@ class SearchPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SearchNotifierQ>();
+    final notifier = context.watch<SearchNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier

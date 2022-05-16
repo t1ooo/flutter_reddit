@@ -27,7 +27,7 @@ class SavedComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<CommentNotifierQ>();
+    final notifier = context.watch<CommentNotifier>();
     final comment = notifier.comment;
 
     if (!comment.saved) {
@@ -61,7 +61,7 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, CommentNotifierQ notifier) {
+  Widget header(BuildContext context, CommentNotifier notifier) {
     final comment = notifier.comment;
 
     return Column(
@@ -128,7 +128,7 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  Widget footer(BuildContext context, CommentNotifierQ notifier) {
+  Widget footer(BuildContext context, CommentNotifier notifier) {
     final comment = notifier.comment;
 
     return Row(
@@ -141,8 +141,8 @@ class SavedComment extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => ChangeNotifierProvider<CommentNotifierQ>.value(
-                  value: context.read<CommentNotifierQ>(),
+                builder: (_) => ChangeNotifierProvider<CommentNotifier>.value(
+                  value: context.read<CommentNotifier>(),
                   child: ReplyScreen(
                     id: comment.id,
                     isComment: true,
@@ -163,7 +163,7 @@ class SavedComment extends StatelessWidget {
 
   CustomPopupMenuButton _popupMenuButton(
     BuildContext context,
-    CommentNotifierQ notifier,
+    CommentNotifier notifier,
   ) {
     final comment = notifier.comment;
 
@@ -179,7 +179,7 @@ class SavedComment extends StatelessWidget {
         //     return (comment.saved ? notifier.unsave() : notifier.save())
         //         .catchError((e) => showErrorSnackBar(context, e));
         //     // return (comment.saved ? notifier.unsave() : notifier.save()).then(
-        //     // (_) => context.read<UserNotifierQ>().refresh(),
+        //     // (_) => context.read<UserNotifier>().refresh(),
         //     // onError: (e) => showErrorSnackBar(context, e));
         //   },
         // ),
@@ -208,7 +208,7 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  // Widget _likeButton(BuildContext context, CommentNotifierQ notifier) {
+  // Widget _likeButton(BuildContext context, CommentNotifier notifier) {
   //   final comment = notifier.comment;
 
   //   return Row(

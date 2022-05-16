@@ -45,7 +45,7 @@ class SubmissionComment extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    final notifier = context.watch<CommentNotifierQ>();
+    final notifier = context.watch<CommentNotifier>();
     final comment = notifier.comment;
 
     return InkWell(
@@ -65,7 +65,7 @@ class SubmissionComment extends StatelessWidget {
               footer(context, notifier),
               if (showNested)
                 for (final reply in notifier.replies)
-                  ChangeNotifierProvider<CommentNotifierQ>.value(
+                  ChangeNotifierProvider<CommentNotifier>.value(
                     value: reply,
                     child: SubmissionComment(
                       showNested: showNested,
@@ -79,7 +79,7 @@ class SubmissionComment extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, CommentNotifierQ notifier) {
+  Widget header(BuildContext context, CommentNotifier notifier) {
     final comment = notifier.comment;
 
     return Row(
@@ -109,7 +109,7 @@ class SubmissionComment extends StatelessWidget {
     );
   }
 
-  Widget footer(BuildContext context, CommentNotifierQ notifier) {
+  Widget footer(BuildContext context, CommentNotifier notifier) {
     final comment = notifier.comment;
 
     return Row(
@@ -126,11 +126,11 @@ class SubmissionComment extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => MultiProvider(
                   providers: [
-                    ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                      value: context.read<SubmissionNotifierQ>(),
+                    ChangeNotifierProvider<SubmissionNotifier>.value(
+                      value: context.read<SubmissionNotifier>(),
                     ),
-                    ChangeNotifierProvider<CommentNotifierQ>.value(
-                      value: context.read<CommentNotifierQ>(),
+                    ChangeNotifierProvider<CommentNotifier>.value(
+                      value: context.read<CommentNotifier>(),
                     ),
                   ],
                   child: ReplyScreen(
@@ -153,7 +153,7 @@ class SubmissionComment extends StatelessWidget {
 
   CustomPopupMenuButton _popupMenuButton(
     BuildContext context,
-    CommentNotifierQ notifier,
+    CommentNotifier notifier,
   ) {
     final comment = notifier.comment;
 
@@ -205,7 +205,7 @@ class SubmissionComment extends StatelessWidget {
     );
   }
 
-  // Widget _likeButton(BuildContext context, CommentNotifierQ notifier) {
+  // Widget _likeButton(BuildContext context, CommentNotifier notifier) {
   //   final comment = notifier.comment;
 
   //   return Row(

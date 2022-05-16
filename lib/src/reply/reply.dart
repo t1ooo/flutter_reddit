@@ -57,12 +57,12 @@ class _ReplyState extends State<Reply> {
 
     if (widget.isComment) {
       context
-          .read<CommentNotifierQ>()
+          .read<CommentNotifier>()
           .reply(_message)
           .catchError((e) => showErrorSnackBar(context, e));
     } else {
       context
-          .read<SubmissionNotifierQ>()
+          .read<SubmissionNotifier>()
           .reply(_message)
           .catchError((e) => showErrorSnackBar(context, e));
     }

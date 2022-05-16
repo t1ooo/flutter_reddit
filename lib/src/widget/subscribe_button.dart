@@ -15,7 +15,7 @@ class SubscribeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubredditNotifierQ>();
+    final notifier = context.watch<SubredditNotifier>();
     return FutureElevatedButton(
       onPressed: () {
         return (notifier.subreddit.userIsSubscriber

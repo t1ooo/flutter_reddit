@@ -1,8 +1,7 @@
-// TODO: merge HomeFrontNotifierQ|HomePopularNotifierQ
+// TODO: merge HomeFrontNotifier|HomePopularNotifier
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: use catchFutureError
 // TODO: remove unused code
-// TODO: rename notifiers
 // TODO: split notifiers to files
 
 // TODO: show comment link_url image

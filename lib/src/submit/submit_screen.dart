@@ -25,7 +25,7 @@ class SubmitScreen extends StatefulWidget {
 }
 
 class _SubmitScreenState extends State<SubmitScreen> {
-  SubredditNotifierQ? _subreddit;
+  SubredditNotifier? _subreddit;
   String _title = '';
   String _message = '';
 
@@ -64,8 +64,8 @@ class _SubmitScreenState extends State<SubmitScreen> {
         // SizedBox(height: topPadding),
         // Text(
         //   (widget.isComment)
-        //       ? context.read<CommentNotifierQ>().comment.body
-        //       : context.read<SubmissionNotifierQ>().submission.title,
+        //       ? context.read<CommentNotifier>().comment.body
+        //       : context.read<SubmissionNotifier>().submission.title,
         // ),
         InkWell(
           onTap: () {
@@ -73,7 +73,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
               context,
               MaterialPageRoute(
                 builder: (_) =>
-                    ChangeNotifierProvider<CurrentUserNotifierQ>.value(
+                    ChangeNotifierProvider<CurrentUserNotifier>.value(
                   value: context.read<UserAuth>().user!,
                   child: ChooseSubredditScreen(onChanged: (v) {
                     setState(() {
@@ -152,7 +152,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ChangeNotifierProvider<SubmissionNotifierQ>.value(
+            builder: (_) => ChangeNotifierProvider<SubmissionNotifier>.value(
               value: s,
               child: SubmissionScreen(),
             ),

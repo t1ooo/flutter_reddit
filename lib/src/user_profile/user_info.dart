@@ -22,7 +22,7 @@ class UserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<UserNotifierQ>();
+    final notifier = context.read<UserNotifier>();
     final subreddit = notifier.subreddit.subreddit;
     final user = notifier.user;
 
@@ -70,7 +70,7 @@ class UserInfo extends StatelessWidget {
                         },
                         child: Text('EDIT'))
                   else
-                    ChangeNotifierProvider<SubredditNotifierQ>.value(
+                    ChangeNotifierProvider<SubredditNotifier>.value(
                       value: notifier.subreddit,
                       child: SubscribeButton(),
                     ),
@@ -126,7 +126,7 @@ class UserInfo extends StatelessWidget {
     //           children: [
     //             ElevatedButton(onPressed: () {}, child: Text('CHAT')),
     //             SizedBox(width: 10),
-    //             ChangeNotifierProvider<SubredditNotifierQ>.value(
+    //             ChangeNotifierProvider<SubredditNotifier>.value(
     //               value: notifier.subreddit,
     //               child: SubscribeButton(isUserPage: true),
     //             ),

@@ -27,7 +27,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
 
   final T type;
   final List<T> types;
-  final List<SubmissionNotifierQ>? submissions;
+  final List<SubmissionNotifier>? submissions;
   final Future<void> Function(T) load;
   final bool activeLink;
   // final bool showSubreddit;
@@ -36,7 +36,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Loader<List<SubmissionNotifierQ>>(
+    return Loader<List<SubmissionNotifier>>(
       load: (_) => load(type),
       data: (_) => submissions,
       onData: (context, submissions) {
@@ -160,7 +160,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
             ),
             // SizedBox(height: 50),
             for (final sub in submissions)
-              ChangeNotifierProvider<SubmissionNotifierQ>.value(
+              ChangeNotifierProvider<SubmissionNotifier>.value(
                 value: sub,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
@@ -295,7 +295,7 @@ class _RadioListState<T> extends State<RadioList<T>> {
 
 //   // final T type;
 //   // final List<T> types;
-//   final List<SubmissionNotifierQ>? submissions;
+//   final List<SubmissionNotifier>? submissions;
 //   final Widget dropdownButton;
 //   // final Function(T) onTypeChanged;
 //   final bool activeLink;
@@ -323,7 +323,7 @@ class _RadioListState<T> extends State<RadioList<T>> {
 //         dropdownButton,
 //         SizedBox(height: 50),
 //         for (final sub in submissions ?? [])
-//           ChangeNotifierProvider<SubmissionNotifierQ>.value(
+//           ChangeNotifierProvider<SubmissionNotifier>.value(
 //             value: sub,
 //             child: SubmissionTile(activeLink: activeLink),
 //           ),
@@ -345,7 +345,7 @@ class SubmissionTiles extends StatelessWidget {
   }) : super(key: key);
 
   final SubType type;
-  final List<SubmissionNotifierQ>? submissions;
+  final List<SubmissionNotifier>? submissions;
   final Function(SubType) onTypeChanged;
   final bool activeLink;
   // final bool showTrending;
@@ -411,7 +411,7 @@ class SubmissionTiles extends StatelessWidget {
         //   SizedBox(height: 10),
         // ],
         for (final sub in submissions ?? [])
-          ChangeNotifierProvider<SubmissionNotifierQ>.value(
+          ChangeNotifierProvider<SubmissionNotifier>.value(
             value: sub,
             child: SubmissionTile(activeLink: activeLink),
           ),
@@ -433,7 +433,7 @@ class SearchSubmissionTiles extends StatelessWidget {
   }) : super(key: key);
 
   final Sort sort;
-  final List<SubmissionNotifierQ>? submissions;
+  final List<SubmissionNotifier>? submissions;
   final Function(Sort) onTypeChanged;
   final bool activeLink;
   // final bool showTrending;
@@ -497,7 +497,7 @@ class SearchSubmissionTiles extends StatelessWidget {
         //   SizedBox(height: 10),
         // ],
         for (final sub in submissions ?? [])
-          ChangeNotifierProvider<SubmissionNotifierQ>.value(
+          ChangeNotifierProvider<SubmissionNotifier>.value(
             value: sub,
             child: SubmissionTile(activeLink: activeLink),
           ),

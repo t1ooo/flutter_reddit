@@ -30,8 +30,8 @@ class ReplyField extends StatelessWidget {
               // MaterialPageRoute(builder: (_) => AddCommentScreen(id: id)),
               MaterialPageRoute(
                 builder: (_) =>
-                    ChangeNotifierProvider<SubmissionNotifierQ>.value(
-                  value: context.read<SubmissionNotifierQ>(),
+                    ChangeNotifierProvider<SubmissionNotifier>.value(
+                  value: context.read<SubmissionNotifier>(),
                   child: ReplyScreen(id: id),
                 ),
               ),

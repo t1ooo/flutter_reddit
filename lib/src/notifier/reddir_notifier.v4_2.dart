@@ -76,14 +76,14 @@ abstract class Likable {
   Future<void> _updateLike(Like like);
 }
 
-class SearchNotifierQ extends ChangeNotifier with TryMixin {
-  SearchNotifierQ(this._redditApi) {
+class SearchNotifier extends ChangeNotifier with TryMixin {
+  SearchNotifier(this._redditApi) {
     reset();
   }
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = getLogger('SearchNotifierQX');
+  static final _log = getLogger('SearchNotifierX');
 
   void reset() {
     _subredditName = '';
@@ -101,8 +101,8 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
 
   List<Sort> get sorts => Sort.values;
 
-  late List<SubmissionNotifierQ>? _submissions;
-  List<SubmissionNotifierQ>? get submissions => _submissions;
+  late List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? get submissions => _submissions;
 
   Future<void> reloadSearch() {
     _submissions = null;
@@ -123,7 +123,7 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
     // try {
     //   _submissions =
     //       (await _redditApi.search(_query, limit: _limit, sort: _sort).toList())
-    //           .map((v) => SubmissionNotifierQ(_redditApi, v))
+    //           .map((v) => SubmissionNotifier(_redditApi, v))
     //           .toList();
     //   notifyListeners();
     //   return null;
@@ -146,7 +146,7 @@ class SearchNotifierQ extends ChangeNotifier with TryMixin {
               .search(query,
                   limit: _limit, sort: _sort, subreddit: _subredditName)
               .toList())
-          .map((v) => SubmissionNotifierQ(_redditApi, v))
+          .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to search');
@@ -176,8 +176,8 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
 
   late String _query;
 
-  late List<SubredditNotifierQ>? _subreddits;
-  List<SubredditNotifierQ>? get subreddits => _subreddits;
+  late List<SubredditNotifier>? _subreddits;
+  List<SubredditNotifier>? get subreddits => _subreddits;
 
   Future<void> reloadSearch() {
     _subreddits = null;
@@ -191,7 +191,7 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
 
       _subreddits =
           (await _redditApi.searchSubreddits(query, limit: _limit).toList())
-              .map((v) => SubredditNotifierQ(_redditApi, v))
+              .map((v) => SubredditNotifier(_redditApi, v))
               .toList();
       notifyListeners();
     }, 'fail to search subreddits');
@@ -204,13 +204,13 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
-  SubredditLoaderNotifierQ(this._redditApi) {
+class SubredditLoaderNotifier extends ChangeNotifier with TryMixin {
+  SubredditLoaderNotifier(this._redditApi) {
     reset();
   }
 
   final RedditApi _redditApi;
-  static final _log = getLogger('SubredditNotifierQ');
+  static final _log = getLogger('SubredditNotifier');
 
   void reset() {
     _name = null;
@@ -220,8 +220,8 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
 
   late String? _name;
 
-  late SubredditNotifierQ? _subreddit;
-  SubredditNotifierQ? get subreddit => _subreddit;
+  late SubredditNotifier? _subreddit;
+  SubredditNotifier? get subreddit => _subreddit;
 
   Future<void> loadSubreddit(String name) {
     return _try(() async {
@@ -232,7 +232,7 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
       // _name = name;
       // if (_subreddit != null) return null;
       _subreddit =
-          SubredditNotifierQ(_redditApi, await _redditApi.subreddit(_name!));
+          SubredditNotifier(_redditApi, await _redditApi.subreddit(_name!));
       notifyListeners();
     }, 'fail to load subreddit');
   }
@@ -244,15 +244,15 @@ class SubredditLoaderNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class SubredditNotifierQ extends ChangeNotifier
+class SubredditNotifier extends ChangeNotifier
     with TryMixin, PropertyListener {
-  SubredditNotifierQ(this._redditApi, this._subreddit,
+  SubredditNotifier(this._redditApi, this._subreddit,
       [this.isUserSubreddit = false])
       : name = _subreddit.displayName;
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = getLogger('SubredditNotifierQ');
+  static final _log = getLogger('SubredditNotifier');
 
   // set name(name);
 
@@ -332,8 +332,8 @@ class SubredditNotifierQ extends ChangeNotifier
   SubType _subType = SubType.values.first;
   SubType get subType => _subType;
 
-  List<SubmissionNotifierQ>? _submissions;
-  List<SubmissionNotifierQ>? get submissions => _submissions;
+  List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? get submissions => _submissions;
 
   Future<void> reloadSubmissions() {
     _submissions = null;
@@ -346,13 +346,13 @@ class SubredditNotifierQ extends ChangeNotifier
       _subType = subType;
       _submissions = await _redditApi
           .subredditSubmissions(name, limit: _limit, type: _subType)
-          .map((v) => SubmissionNotifierQ(_redditApi, v))
+          .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to load subreddit submissions');
   }
 
-  Future<SubmissionNotifierQ> submit({
+  Future<SubmissionNotifier> submit({
     required String title,
     String? selftext,
     String? url,
@@ -372,7 +372,7 @@ class SubredditNotifierQ extends ChangeNotifier
         nsfw: nsfw,
         spoiler: spoiler,
       );
-      return SubmissionNotifierQ(_redditApi, submission);
+      return SubmissionNotifier(_redditApi, submission);
       // notifyListeners();
     }, 'fail to submit');
   }
@@ -400,8 +400,8 @@ class SubredditNotifierQ extends ChangeNotifier
 }
 
 // TODO: move to current user
-class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
-  HomeFrontNotifierQ(
+class HomeFrontNotifier extends ChangeNotifier with TryMixin {
+  HomeFrontNotifier(
     this._redditApi,
     /* [this._clock = const Clock()] */
   ) {
@@ -411,7 +411,7 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   final RedditApi _redditApi;
   // final Clock _clock;
   int _limit = 10;
-  static final _log = getLogger('HomeFrontNotifierQ');
+  static final _log = getLogger('HomeFrontNotifier');
 
   void reset() {
     _subType = FrontSubType.values.first;
@@ -422,8 +422,8 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   late FrontSubType _subType;
   FrontSubType get subType => _subType;
 
-  late List<SubmissionNotifierQ>? _submissions;
-  List<SubmissionNotifierQ>? get submissions => _submissions;
+  late List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? get submissions => _submissions;
 
   DateTime lastModified = clock.now();
   Duration _reloadDelay = Duration(seconds: 5);
@@ -441,7 +441,7 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
 
       _submissions =
           (await _redditApi.front(limit: _limit, type: _subType).toList())
-              .map((v) => SubmissionNotifierQ(_redditApi, v))
+              .map((v) => SubmissionNotifier(_redditApi, v))
               .toList();
       lastModified = clock.now();
       notifyListeners();
@@ -455,14 +455,14 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
-  HomePopularNotifierQ(this._redditApi) {
+class HomePopularNotifier extends ChangeNotifier with TryMixin {
+  HomePopularNotifier(this._redditApi) {
     reset();
   }
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = getLogger('HomePopularNotifierQ');
+  static final _log = getLogger('HomePopularNotifier');
 
   void reset() {
     _subType = SubType.values.first;
@@ -473,8 +473,8 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
   late SubType _subType;
   SubType get subType => _subType;
 
-  late List<SubmissionNotifierQ>? _submissions;
-  List<SubmissionNotifierQ>? get submissions => _submissions;
+  late List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? get submissions => _submissions;
 
   Future<void> reloadSubmissions() {
     _submissions = null;
@@ -488,7 +488,7 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 
       _submissions =
           (await _redditApi.popular(limit: _limit, type: _subType).toList())
-              .map((v) => SubmissionNotifierQ(_redditApi, v))
+              .map((v) => SubmissionNotifier(_redditApi, v))
               .toList();
       notifyListeners();
     }, 'fail to search');
@@ -501,13 +501,13 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-// class SubmissionLoaderNotifierQ extends ChangeNotifier with TryMixin {
-//   SubmissionLoaderNotifierQ(this._redditApi) {
+// class SubmissionLoaderNotifier extends ChangeNotifier with TryMixin {
+//   SubmissionLoaderNotifier(this._redditApi) {
 //     reset();
 //   }
 
 //   final RedditApi _redditApi;
-//   static final _log = getLogger('SubmissionNotifierQ');
+//   static final _log = getLogger('SubmissionNotifier');
 
 //   void reset() {
 //     _id = null;
@@ -517,15 +517,15 @@ class HomePopularNotifierQ extends ChangeNotifier with TryMixin {
 
 //   late String? _id;
 
-//   late SubmissionNotifierQ? _submission;
-//   SubmissionNotifierQ? get submission => _submission;
+//   late SubmissionNotifier? _submission;
+//   SubmissionNotifier? get submission => _submission;
 
 //   Future<void> loadSubmission(String id) {
 //     return _try(() async {
 //       if (_submission != null && _id == id) return;
 //       _id = id;
 //       _submission =
-//           SubmissionNotifierQ(_redditApi, await _redditApi.submission(_id!));
+//           SubmissionNotifier(_redditApi, await _redditApi.submission(_id!));
 //       // _setComments(_submission?.comments);
 //       notifyListeners();
 //     }, 'fail to load submission');
@@ -538,19 +538,19 @@ class PreviewImage {
   PreviewImage(this.image, this.preview);
 }
 
-class SubmissionNotifierQ extends ChangeNotifier
+class SubmissionNotifier extends ChangeNotifier
     with TryMixin, Likable, Savable, PropertyListener {
-  SubmissionNotifierQ(this._redditApi, this._submission) {
+  SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
 
   // final String _id;
 
   final RedditApi _redditApi;
-  static final _log = getLogger('SubmissionNotifierQ');
+  static final _log = getLogger('SubmissionNotifier');
 
-  late List<CommentNotifierQ>? _comments;
-  List<CommentNotifierQ>? get comments => _comments;
+  late List<CommentNotifier>? _comments;
+  List<CommentNotifier>? get comments => _comments;
 
   Submission _submission;
   Submission get submission => _submission;
@@ -592,7 +592,7 @@ class SubmissionNotifierQ extends ChangeNotifier
   //   _submission = s;
   //   _id = _submission?.id;
   //   _comments = _submission?.comments.map((v) {
-  //     return CommentNotifierQ(_redditApi, v);
+  //     return CommentNotifier(_redditApi, v);
   //   }).toList();
 
   //   notifyListeners();
@@ -603,18 +603,18 @@ class SubmissionNotifierQ extends ChangeNotifier
     //   _comments = [];
     //   return;
     // }
-    // CommentNotifierQ _addListenerRecursive(CommentNotifierQ cn) {
+    // CommentNotifier _addListenerRecursive(CommentNotifier cn) {
     //   _addListener(cn);
     //   cn.replies.forEach(_addListenerRecursive);
     //   return cn;
     // }
 
     // _comments = comments?.map((v) {
-    //   return  _addListenerRecursive(CommentNotifierQ(_redditApi, v));
+    //   return  _addListenerRecursive(CommentNotifier(_redditApi, v));
     // }).toList();
 
     _comments = comments?.map((v) {
-      return _addListener(CommentNotifierQ(_redditApi, v));
+      return _addListener(CommentNotifier(_redditApi, v));
     }).toList();
   }
 
@@ -660,10 +660,10 @@ class SubmissionNotifierQ extends ChangeNotifier
     return _try(() async {
       final commentReply =
           await _redditApi.submissionReply(submission.id, body);
-      // _comments!.add(CommentNotifierQ(_redditApi, commentReply));
+      // _comments!.add(CommentNotifier(_redditApi, commentReply));
       _comments ??= [];
       _comments!
-          .insert(0, _addListener(CommentNotifierQ(_redditApi, commentReply)));
+          .insert(0, _addListener(CommentNotifier(_redditApi, commentReply)));
       notifyListeners();
     }, 'fail to reply');
   }
@@ -675,7 +675,7 @@ class SubmissionNotifierQ extends ChangeNotifier
   //   });
   // }
 
-  CommentNotifierQ _addListener(CommentNotifierQ t) {
+  CommentNotifier _addListener(CommentNotifier t) {
     // return t..addListener(notifyListeners);
     return t..addPropertyListener<int>(() => t.numReplies, notifyListeners);
   }
@@ -814,13 +814,13 @@ class SubmissionNotifierQ extends ChangeNotifier
     }, 'fail to load icon');
   }
 
-  SubredditNotifierQ? _subreddit;
-  SubredditNotifierQ? get subreddit => _subreddit;
+  SubredditNotifier? _subreddit;
+  SubredditNotifier? get subreddit => _subreddit;
 
   Future<void> loadSubreddit() {
     return _try(() async {
       if (subreddit != null) return;
-      _subreddit = SubredditNotifierQ(
+      _subreddit = SubredditNotifier(
           _redditApi, await _redditApi.subreddit(_submission.subreddit));
       notifyListeners();
     }, 'fail to load subreddit');
@@ -849,7 +849,7 @@ class SubmissionNotifierQ extends ChangeNotifier
   }
 }
 
-class CommentNotifierQ
+class CommentNotifier
     with
         TryMixin,
         CollapseMixin,
@@ -857,21 +857,21 @@ class CommentNotifierQ
         Likable,
         Savable,
         PropertyListener {
-  CommentNotifierQ(this._redditApi, this._comment) {
+  CommentNotifier(this._redditApi, this._comment) {
     _replies = _comment.replies
-        .map((v) => _addListener(CommentNotifierQ(_redditApi, v)))
+        .map((v) => _addListener(CommentNotifier(_redditApi, v)))
         .toList();
   }
 
   final RedditApi _redditApi;
   // Comment comment;
-  static final _log = getLogger('CommentNotifierQ');
+  static final _log = getLogger('CommentNotifier');
 
   Comment _comment;
   Comment get comment => _comment;
 
-  late final List<CommentNotifierQ> _replies;
-  List<CommentNotifierQ> get replies => _replies;
+  late final List<CommentNotifier> _replies;
+  List<CommentNotifier> get replies => _replies;
 
   int get numReplies {
     return (_replies.isEmpty)
@@ -958,8 +958,8 @@ class CommentNotifierQ
     //   // throw Exception('error');
     //   final commentReply = await _redditApi.commentReply(comment.id, body);
     //   // comment = comment.copyWith(replies: [commentReply] + comment.replies);
-    //   // _replies.add(CommentNotifierQ(_redditApi, commentReply));
-    //   _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
+    //   // _replies.add(CommentNotifier(_redditApi, commentReply));
+    //   _replies.insert(0, CommentNotifier(_redditApi, commentReply));
     //   notifyListeners();
     //   return null;
     // } on Exception catch (e) {
@@ -971,8 +971,8 @@ class CommentNotifierQ
       // throw Exception('error');
       final commentReply = await _redditApi.commentReply(_comment.id, body);
       // comment = comment.copyWith(replies: [commentReply] + comment.replies);
-      // _replies.add(CommentNotifierQ(_redditApi, commentReply));
-      _replies.insert(0, CommentNotifierQ(_redditApi, commentReply));
+      // _replies.add(CommentNotifier(_redditApi, commentReply));
+      _replies.insert(0, CommentNotifier(_redditApi, commentReply));
       notifyListeners();
     }, 'fail to reply');
   }
@@ -981,7 +981,7 @@ class CommentNotifierQ
   //   return t..addListener(notifyListeners);
   // }
 
-  CommentNotifierQ _addListener(CommentNotifierQ t) {
+  CommentNotifier _addListener(CommentNotifier t) {
     // return t..addListener(notifyListeners);
     return t
       ..addPropertyListener<int>(() => t.numReplies, () {
@@ -998,14 +998,14 @@ class CommentNotifierQ
   }
 }
 
-class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
-  UserLoaderNotifierQ(this._redditApi) {
+class UserLoaderNotifier extends ChangeNotifier with TryMixin {
+  UserLoaderNotifier(this._redditApi) {
     reset();
   }
 
   final RedditApi _redditApi;
   // int _limit = 10;
-  static final _log = getLogger('UserLoaderNotifierQ');
+  static final _log = getLogger('UserLoaderNotifier');
 
   void reset() {
     _name = null;
@@ -1024,11 +1024,11 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
   //   _name = name;
   // }
 
-  late UserNotifierQ? _user;
-  UserNotifierQ? get user => _user;
+  late UserNotifier? _user;
+  UserNotifier? get user => _user;
 
-  // SubredditNotifierQ? _subreddit;
-  // SubredditNotifierQ? get subreddit => _subreddit;
+  // SubredditNotifier? _subreddit;
+  // SubredditNotifier? get subreddit => _subreddit;
 
   Future<void> loadUser(String name) {
     // print(name);
@@ -1038,8 +1038,8 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
       // _setName(name);
       // if (_user != null) return null;
       // final user = await _redditApi.user(_name!);
-      _user = UserNotifierQ(_redditApi, await _redditApi.user(_name!));
-      // _subreddit = SubredditNotifierQ(_redditApi, user.subreddit);
+      _user = UserNotifier(_redditApi, await _redditApi.user(_name!));
+      // _subreddit = SubredditNotifier(_redditApi, user.subreddit);
       notifyListeners();
     }, 'fail to load user');
   }
@@ -1051,14 +1051,14 @@ class UserLoaderNotifierQ extends ChangeNotifier with TryMixin {
   }
 }
 
-class UserNotifierQ extends ChangeNotifier with TryMixin {
-  UserNotifierQ(this._redditApi, this._user, [this.isCurrentUser = false])
+class UserNotifier extends ChangeNotifier with TryMixin {
+  UserNotifier(this._redditApi, this._user, [this.isCurrentUser = false])
       : _name = _user.name,
-        _subreddit = SubredditNotifierQ(_redditApi, _user.subreddit, true);
+        _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = getLogger('UserNotifierQ');
+  static final _log = getLogger('UserNotifier');
 
   // void _reset() {
   //   _user = null;
@@ -1076,8 +1076,8 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   //   _name = name;
   // }
 
-  final SubredditNotifierQ _subreddit;
-  SubredditNotifierQ get subreddit => _subreddit;
+  final SubredditNotifier _subreddit;
+  SubredditNotifier get subreddit => _subreddit;
 
   User _user;
   User get user => _user;
@@ -1107,8 +1107,8 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   //   }, 'fail to unsubscribe');
   // }
 
-  List<SubmissionNotifierQ>? _submissions;
-  List<SubmissionNotifierQ>? get submissions => _submissions;
+  List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? get submissions => _submissions;
 
   Future<void> reloadSubmissions() {
     _submissions = null;
@@ -1120,14 +1120,14 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
       if (_submissions != null) return;
       _submissions =
           (await _redditApi.userSubmissions(_name, limit: _limit).toList())
-              .map((v) => SubmissionNotifierQ(_redditApi, v))
+              .map((v) => SubmissionNotifier(_redditApi, v))
               .toList();
       notifyListeners();
     }, 'fail to load user submissions');
   }
 
-  List<CommentNotifierQ>? _comments;
-  List<CommentNotifierQ>? get comments => _comments;
+  List<CommentNotifier>? _comments;
+  List<CommentNotifier>? get comments => _comments;
 
   Future<void> reloadComments() {
     _comments = null;
@@ -1138,7 +1138,7 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
     return _try(() async {
       if (_comments != null) return;
       _comments = (await _redditApi.userComments(_name, limit: _limit).toList())
-          .map((v) => CommentNotifierQ(_redditApi, v))
+          .map((v) => CommentNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to load user comments');
@@ -1155,11 +1155,11 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
   }
 
   // UserSaved? _saved;
-  List<CommentNotifierQ>? _savedComments;
-  List<CommentNotifierQ>? get savedComments =>
+  List<CommentNotifier>? _savedComments;
+  List<CommentNotifier>? get savedComments =>
       _savedComments?.where((v) => v.comment.saved).toList();
-  List<SubmissionNotifierQ>? _savedSubmissions;
-  List<SubmissionNotifierQ>? get savedSubmissions =>
+  List<SubmissionNotifier>? _savedSubmissions;
+  List<SubmissionNotifier>? get savedSubmissions =>
       _savedSubmissions?.where((v) => v.submission.saved).toList();
 
   Future<void> reloadSaved() {
@@ -1172,10 +1172,10 @@ class UserNotifierQ extends ChangeNotifier with TryMixin {
       if (_savedComments != null && _savedSubmissions != null) return;
       final saved = await _redditApi.userSaved(_user.name, limit: _limit);
       _savedSubmissions = saved.submissions
-          .map((v) => SubmissionNotifierQ(_redditApi, v))
+          .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       _savedComments =
-          saved.comments.map((v) => CommentNotifierQ(_redditApi, v)).toList();
+          saved.comments.map((v) => CommentNotifier(_redditApi, v)).toList();
       notifyListeners();
     }, 'fail to load saved');
   }
@@ -1196,8 +1196,8 @@ class UserAuth extends ChangeNotifier with TryMixin {
   int _limit = 10;
   static final _log = getLogger('UserAuth');
 
-  CurrentUserNotifierQ? _user;
-  CurrentUserNotifierQ? get user => _user;
+  CurrentUserNotifier? _user;
+  CurrentUserNotifier? get user => _user;
 
   // late bool _isLoggedIn;
   // bool get isLoggedIn => _redditApi.isLoggedIn();
@@ -1236,7 +1236,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
     if (user == null) {
       throw Exception('user is null');
     }
-    _user = CurrentUserNotifierQ(_redditApi, user);
+    _user = CurrentUserNotifier(_redditApi, user);
   }
 
   // Future<void> ___login(String name, String pass) async {
@@ -1250,7 +1250,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   //     if (user == null) {
   //       throw Exception('user is null');
   //     }
-  //     _user = CurrentUserNotifierQ(_redditApi, user);
+  //     _user = CurrentUserNotifier(_redditApi, user);
   //     notifyListeners();
   //   }, 'fail to login');
   // }
@@ -1273,15 +1273,15 @@ class UserAuth extends ChangeNotifier with TryMixin {
   }
 }
 
-// class CurrentUserNotifierQ extends ChangeNotifier with TryMixin {
-class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
-  // CurrentUserNotifierQ(this._redditApi, this._user)
-  CurrentUserNotifierQ(this._redditApi, User user)
+// class CurrentUserNotifier extends ChangeNotifier with TryMixin {
+class CurrentUserNotifier extends UserNotifier with PropertyListener {
+  // CurrentUserNotifier(this._redditApi, this._user)
+  CurrentUserNotifier(this._redditApi, User user)
       : super(_redditApi, user, true);
 
   final RedditApi _redditApi;
   int _limit = 10;
-  static final _log = getLogger('CurrentUserNotifierQ');
+  static final _log = getLogger('CurrentUserNotifier');
 
   // User _user;
   // User get user => _user;
@@ -1304,14 +1304,14 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
   //   return null;
   // }
 
-  SubredditNotifierQ? _all;
-  SubredditNotifierQ? get all => _all;
+  SubredditNotifier? _all;
+  SubredditNotifier? get all => _all;
 
-  List<SubredditNotifierQ>? _subreddits;
-  List<SubredditNotifierQ>? get subreddits => _subreddits;
-  // List<SubredditNotifierQ>? get favoriteSubreddits =>
+  List<SubredditNotifier>? _subreddits;
+  List<SubredditNotifier>? get subreddits => _subreddits;
+  // List<SubredditNotifier>? get favoriteSubreddits =>
   //     _subreddits?.where((v) => v.subreddit.userHasFavorited).toList();
-  // List<SubredditNotifierQ>? get unfavoriteSubreddits =>
+  // List<SubredditNotifier>? get unfavoriteSubreddits =>
   //     _subreddits?.where((v) => !v.subreddit.userHasFavorited).toList();
 
   Future<void> reloadSubreddits() {
@@ -1332,7 +1332,7 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
       return;
     }
     _all = _addListener(
-        SubredditNotifierQ(_redditApi, await _redditApi.subreddit('all')));
+        SubredditNotifier(_redditApi, await _redditApi.subreddit('all')));
     notifyListeners();
   }
 
@@ -1342,7 +1342,7 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
     }
     _subreddits = await _redditApi
         .currentUserSubreddits(limit: _limit)
-        .map((v) => _addListener(SubredditNotifierQ(_redditApi, v)))
+        .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
         .toList();
     notifyListeners();
   }
@@ -1351,7 +1351,7 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
   //   return t..addListener(notifyListeners);
   // }
 
-  SubredditNotifierQ _addListener(SubredditNotifierQ t) {
+  SubredditNotifier _addListener(SubredditNotifier t) {
     // return t..addListener(notifyListeners);
     return t
       ..addPropertyListener<bool>(() => t.subreddit.userHasFavorited, () {
@@ -1361,16 +1361,16 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
     // return t;
   }
 
-  static List<SubredditNotifierQ> filterFavorite(
-          List<SubredditNotifierQ> subreddits) =>
+  static List<SubredditNotifier> filterFavorite(
+          List<SubredditNotifier> subreddits) =>
       subreddits.where((v) => v.subreddit.userHasFavorited).toList();
 
-  static List<SubredditNotifierQ> filterUnfavorite(
-          List<SubredditNotifierQ> subreddits) =>
+  static List<SubredditNotifier> filterUnfavorite(
+          List<SubredditNotifier> subreddits) =>
       subreddits.where((v) => !v.subreddit.userHasFavorited).toList();
 
-  List<MessageNotifierQ>? _inboxMessages;
-  List<MessageNotifierQ>? get inboxMessages => _inboxMessages;
+  List<MessageNotifier>? _inboxMessages;
+  List<MessageNotifier>? get inboxMessages => _inboxMessages;
 
   Future<void> reloadInboxMessages() {
     _inboxMessages = null;
@@ -1384,43 +1384,43 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
       }
       _inboxMessages = await _redditApi
           .inboxMessages()
-          .map((v) => MessageNotifierQ(_redditApi, v))
+          .map((v) => MessageNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to load inbox messages');
   }
 
-  // List<CommentNotifierQ>? _savedComments;
-  // List<CommentNotifierQ>? get savedComments => _savedComments;
+  // List<CommentNotifier>? _savedComments;
+  // List<CommentNotifier>? get savedComments => _savedComments;
 
   // Future<void> loadSavedComments() {
   //   {
   //     return _try(() async {
   //       _savedComments = await _redditApi
   //           .userComments(_user.name, limit: _limit)
-  //           .map((v) => CommentNotifierQ(_redditApi, v))
+  //           .map((v) => CommentNotifier(_redditApi, v))
   //           .toList();
   //       notifyListeners();
   //     }, 'fail to login');
   //   }
   // }
 
-  // List<SubmissionNotifierQ>? _savedSubmissions;
-  // List<SubmissionNotifierQ>? get savedSubmissions => _savedSubmissions;
+  // List<SubmissionNotifier>? _savedSubmissions;
+  // List<SubmissionNotifier>? get savedSubmissions => _savedSubmissions;
 
   // Future<void> loadSavedSubmissions() {
   //   {
   //     return _try(() async {
   //       _savedSubmissions = await _redditApi
   //           .userSubmissions(_user.name, limit: _limit)
-  //           .map((v) => SubmissionNotifierQ(_redditApi, v))
+  //           .map((v) => SubmissionNotifier(_redditApi, v))
   //           .toList();
   //       notifyListeners();
   //     }, 'fail to load saved submissions');
   //   }
   // }
 
-  // Future<SubmissionNotifierQ> submit({
+  // Future<SubmissionNotifier> submit({
   //   required String subreddit,
   //   required String title,
   //   String? selftext,
@@ -1441,7 +1441,7 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
   //       nsfw: nsfw,
   //       spoiler: spoiler,
   //     );
-  //     return SubmissionNotifierQ(_redditApi, submission);
+  //     return SubmissionNotifier(_redditApi, submission);
   //     // notifyListeners();
   //   }, 'fail to submit');
   // }
@@ -1455,11 +1455,11 @@ class CurrentUserNotifierQ extends UserNotifierQ with PropertyListener {
   }
 }
 
-class MessageNotifierQ extends ChangeNotifier with TryMixin {
-  MessageNotifierQ(this._redditApi, this._message);
+class MessageNotifier extends ChangeNotifier with TryMixin {
+  MessageNotifier(this._redditApi, this._message);
 
   final RedditApi _redditApi;
-  static final _log = getLogger('MessageNotifierQ');
+  static final _log = getLogger('MessageNotifier');
 
   Message _message;
   Message get message => _message;

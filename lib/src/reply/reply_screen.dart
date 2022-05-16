@@ -116,8 +116,8 @@ class _ReplyScreenState extends State<ReplyScreen> {
         // SizedBox(height: topPadding),
         Text(
           (widget.isComment)
-              ? context.read<CommentNotifierQ>().comment.body
-              : context.read<SubmissionNotifierQ>().submission.title,
+              ? context.read<CommentNotifier>().comment.body
+              : context.read<SubmissionNotifier>().submission.title,
         ),
         Divider(),
         TextField(
@@ -155,23 +155,23 @@ class _ReplyScreenState extends State<ReplyScreen> {
     }
 
     (widget.isComment
-            ? context.read<CommentNotifierQ>().reply(_message)
-            : context.read<SubmissionNotifierQ>().reply(_message))
+            ? context.read<CommentNotifier>().reply(_message)
+            : context.read<SubmissionNotifier>().reply(_message))
     //     .then(
-    //   (_) => context.read<SubmissionNotifierQ>().refresh(),
+    //   (_) => context.read<SubmissionNotifier>().refresh(),
     //   onError: (e) => showErrorSnackBar(context, e),
     // );
     .catchError((e) => showErrorSnackBar(context, e));
 
     // if (widget.isComment) {
-    //   context.read<CommentNotifierQ>().reply(_message).then(
-    //         (_) => context.read<SubmissionNotifierQ>().refresh(),
+    //   context.read<CommentNotifier>().reply(_message).then(
+    //         (_) => context.read<SubmissionNotifier>().refresh(),
     //         onError: (e) => showErrorSnackBar(context, e),
     //       );
     //   // .catchError((e) => showErrorSnackBar(context, e));
     // } else {
-    //   context.read<SubmissionNotifierQ>().reply(_message).then(
-    //         (_) => context.read<SubmissionNotifierQ>().refresh(),
+    //   context.read<SubmissionNotifier>().reply(_message).then(
+    //         (_) => context.read<SubmissionNotifier>().refresh(),
     //         onError: (e) => showErrorSnackBar(context, e),
     //       );
     //   // .catchError((e) => showErrorSnackBar(context, e));

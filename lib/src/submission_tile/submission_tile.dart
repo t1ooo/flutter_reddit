@@ -39,7 +39,7 @@ class SubmissionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<SubmissionNotifierQ>();
+    final notifier = context.watch<SubmissionNotifier>();
     final submission = notifier.submission;
 
     return Card(
@@ -64,7 +64,7 @@ class SubmissionTile extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              ChangeNotifierProvider<SubmissionNotifierQ>.value(
+                              ChangeNotifierProvider<SubmissionNotifier>.value(
                             value: notifier,
                             child: SubmissionScreen(
                               id: submission.id,
@@ -108,7 +108,7 @@ class SubmissionTile extends StatelessWidget {
   Widget? _media(
     BuildContext context,
     BoxConstraints constraints,
-    SubmissionNotifierQ notifier,
+    SubmissionNotifier notifier,
   ) {
     final submission = notifier.submission;
 
@@ -180,7 +180,7 @@ class SubmissionTile extends StatelessWidget {
     }
   }
 
-  /* Widget _video(BuildContext context, SubmissionNotifierQ notifier) {
+  /* Widget _video(BuildContext context, SubmissionNotifier notifier) {
     final video = notifier.submission.video;
     if (video == null) {
       return Container();
@@ -212,7 +212,7 @@ class SubmissionTile extends StatelessWidget {
   // double _maxWidth(BuildContext context) =>
   //     MediaQuery.of(context).size.width * 0.9;
 
-  /* Widget _previewImage(BuildContext context, SubmissionNotifierQ notifier) {
+  /* Widget _previewImage(BuildContext context, SubmissionNotifier notifier) {
     final minWidth = 200.0;
     final screenWidth = MediaQuery.of(context).size.width;
     final previewImage = notifier.previewImage(minWidth, screenWidth);
@@ -242,7 +242,7 @@ class SubmissionTile extends StatelessWidget {
     );
   } */
 
-  Widget header(BuildContext context, SubmissionNotifierQ notifier) {
+  Widget header(BuildContext context, SubmissionNotifier notifier) {
     final submission = notifier.submission;
 
     return ListTile(
@@ -263,7 +263,7 @@ class SubmissionTile extends StatelessWidget {
         //     return SubredditIcon(icon: '');
         //   },
         // ),
-        child: Loader<SubredditNotifierQ>(
+        child: Loader<SubredditNotifier>(
           load: (_) => notifier.loadSubreddit(),
           data: (_) => notifier.subreddit,
           onData: (_, subreddit) =>
@@ -460,7 +460,7 @@ class SubmissionTile extends StatelessWidget {
   //   return Container(decoration: BoxDecoration());
   // }
 
-  // Widget _subredditIcon(BuildContext context, SubmissionNotifierQ notifier) {
+  // Widget _subredditIcon(BuildContext context, SubmissionNotifier notifier) {
   //   // Widget _icon(ImageProvider<Object> image) {
   //   //   return CircleAvatar(
   //   //     radius: 20,
@@ -501,7 +501,7 @@ class SubmissionTile extends StatelessWidget {
   //   );
   // }
 
-  Widget footer(BuildContext context, SubmissionNotifierQ notifier) {
+  Widget footer(BuildContext context, SubmissionNotifier notifier) {
     final submission = notifier.submission;
 
     return Row(
@@ -558,7 +558,7 @@ class SubmissionTile extends StatelessWidget {
 
   CustomPopupMenuButton _popupMenuButton(
     BuildContext context,
-    SubmissionNotifierQ notifier,
+    SubmissionNotifier notifier,
   ) {
     final submission = notifier.submission;
 
@@ -613,7 +613,7 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  // Widget _likeButton(BuildContext context, SubmissionNotifierQ notifier) {
+  // Widget _likeButton(BuildContext context, SubmissionNotifier notifier) {
   //   final submission = notifier.submission;
 
   //   return Row(
