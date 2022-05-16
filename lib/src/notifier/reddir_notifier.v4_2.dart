@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -407,11 +408,12 @@ class SubredditNotifierQ extends ChangeNotifier
 
 // TODO: move to current user
 class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
-  HomeFrontNotifierQ(this._redditApi) {
+  HomeFrontNotifierQ(this._redditApi, /* [this._clock = const Clock()] */) {
     reset();
   }
 
   final RedditApi _redditApi;
+  // final Clock _clock;
   int _limit = 10;
   static final _log = getLogger('HomeFrontNotifierQ');
 
@@ -426,6 +428,10 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
 
   late List<SubmissionNotifierQ>? _submissions;
   List<SubmissionNotifierQ>? get submissions => _submissions;
+  
+  DateTime lastModified = clock.now();
+  Duration _reloadDelay = Duration(seconds: 5);
+  bool get expired => _reloadDelay <= clock.now().difference(lastModified);
 
   Future<void> reloadSubmissions() {
     _submissions = null;
@@ -441,6 +447,7 @@ class HomeFrontNotifierQ extends ChangeNotifier with TryMixin {
           (await _redditApi.front(limit: _limit, type: _subType).toList())
               .map((v) => SubmissionNotifierQ(_redditApi, v))
               .toList();
+      lastModified = clock.now();
       notifyListeners();
     }, 'fail to search');
   }
