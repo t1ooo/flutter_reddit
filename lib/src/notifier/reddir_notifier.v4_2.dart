@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../logging/logging.dart';
 import '../reddit_api/comment.dart';
+import '../reddit_api/like.dart';
 import '../reddit_api/message.dart';
 import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddir_api.dart';
@@ -16,7 +17,6 @@ import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
-import '../reddit_api/like.dart';
 
 // abstract class LikeNotifer with TryMixin {
 //   Future<void> updateLike(Like like) async {
@@ -159,6 +159,7 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
   }
 }
 
+// TODO: rename
 class SearchSubredditsQ extends ChangeNotifier with TryMixin {
   SearchSubredditsQ(this._redditApi) {
     reset();
@@ -244,11 +245,22 @@ class SubredditLoaderNotifier extends ChangeNotifier with TryMixin {
   }
 }
 
-class SubredditNotifier extends ChangeNotifier
-    with TryMixin, PropertyListener {
-  SubredditNotifier(this._redditApi, this._subreddit,
-      [this.isUserSubreddit = false])
-      : name = _subreddit.displayName;
+class SubredditNotifier extends SubmissionsNotifier<SubType>
+    with PropertyListener {
+  SubredditNotifier(
+    this._redditApi,
+    this._subreddit, [
+    this.isUserSubreddit = false,
+  ]) : super(_redditApi) {
+    name = _subreddit.displayName;
+    reset();
+  }
+
+  void reset() {
+    _submissions = null;
+    _subType = SubType.values.first;
+    notifyListeners();
+  }
 
   final RedditApi _redditApi;
   int _limit = 10;
@@ -258,7 +270,7 @@ class SubredditNotifier extends ChangeNotifier
 
   final bool isUserSubreddit;
 
-  final String name;
+  late final String name;
   Subreddit _subreddit;
   Subreddit get subreddit => _subreddit;
 
@@ -329,27 +341,32 @@ class SubredditNotifier extends ChangeNotifier
     }, 'fail to unfavorite');
   }
 
-  SubType _subType = SubType.values.first;
-  SubType get subType => _subType;
+  // SubType _subType = SubType.values.first;
+  // SubType get subType => _subType;
 
-  List<SubmissionNotifier>? _submissions;
-  List<SubmissionNotifier>? get submissions => _submissions;
+  // List<SubmissionNotifier>? _submissions;
+  // List<SubmissionNotifier>? get submissions => _submissions;
 
-  Future<void> reloadSubmissions() {
-    _submissions = null;
-    return loadSubmissions(_subType);
-  }
+  // Future<void> reloadSubmissions() {
+  //   _submissions = null;
+  //   return loadSubmissions(_subType);
+  // }
 
-  Future<void> loadSubmissions(SubType subType) {
-    return _try(() async {
-      if (_submissions != null && _subType == subType) return;
-      _subType = subType;
-      _submissions = await _redditApi
-          .subredditSubmissions(name, limit: _limit, type: _subType)
-          .map((v) => SubmissionNotifier(_redditApi, v))
-          .toList();
-      notifyListeners();
-    }, 'fail to load subreddit submissions');
+  // Future<void> loadSubmissions(SubType subType) {
+  //   return _try(() async {
+  //     if (_submissions != null && _subType == subType) return;
+  //     _subType = subType;
+  //     _submissions = await _redditApi
+  //         .subredditSubmissions(name, limit: _limit, type: _subType)
+  //         .map((v) => SubmissionNotifier(_redditApi, v))
+  //         .toList();
+  //     notifyListeners();
+  //   }, 'fail to load subreddit submissions');
+  // }
+
+  @override
+  Stream<Submission> _loadSubmissions() {
+    return _redditApi.subredditSubmissions(name, limit: _limit, type: _subType);
   }
 
   Future<SubmissionNotifier> submit({
@@ -399,19 +416,99 @@ class SubredditNotifier extends ChangeNotifier
   }
 }
 
-// TODO: move to current user
-class HomeFrontNotifier extends ChangeNotifier with TryMixin {
-  HomeFrontNotifier(
-    this._redditApi,
-    /* [this._clock = const Clock()] */
-  ) {
+abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
+  SubmissionsNotifier(this._redditApi);
+
+  late final RedditApi _redditApi;
+  // final Clock _clock;
+  int _limit = 10;
+  // static final _log = getLogger('HomeFrontNotifier');
+
+  // void reset() {
+  //   _subType = FrontSubType.values.first;
+  //   _submissions = null;
+  //   notifyListeners();
+  // }
+
+  late T _subType;
+  T get subType => _subType;
+
+  late List<SubmissionNotifier>? _submissions;
+  List<SubmissionNotifier>? get submissions => _submissions;
+
+  Future<void> reloadSubmissions() {
+    _submissions = null;
+    return loadSubmissions(_subType);
+  }
+
+  Future<void> loadSubmissions(T subType) {
+    return _try(() async {
+      if (_submissions != null && _subType == subType) return;
+      _subType = subType;
+
+      _submissions = (await _loadSubmissions().toList())
+          .map((v) => SubmissionNotifier(_redditApi, v))
+          .toList();
+      notifyListeners();
+    }, 'fail to search');
+  }
+
+  Stream<Submission> _loadSubmissions();
+}
+
+// abstract class SubmissionsNotifier<T> {
+//   // SubmissionsNotifier(this._redditApi);
+
+//   late final RedditApi _redditApi;
+//   // final Clock _clock;
+//   int _limit = 10;
+//   // static final _log = getLogger('HomeFrontNotifier');
+
+//   // void reset() {
+//   //   _subType = FrontSubType.values.first;
+//   //   _submissions = null;
+//   //   notifyListeners();
+//   // }
+
+//   late T _subType;
+//   T get subType => _subType;
+
+//   late List<SubmissionNotifier>? _submissions;
+//   List<SubmissionNotifier>? get submissions => _submissions;
+
+//   Future<void> reloadSubmissions() {
+//     _submissions = null;
+//     return loadSubmissions(_subType);
+//   }
+
+//   Future<void> loadSubmissions(T subType) {
+//     return _try(() async {
+//       if (_submissions != null && _subType == subType) return;
+//       _subType = subType;
+
+//       _submissions = (await _loadSubmissions().toList())
+//           .map((v) => SubmissionNotifier(_redditApi, v))
+//           .toList();
+//       notifyListeners();
+//     }, 'fail to search');
+//   }
+
+//   void notifyListeners();
+//   Stream<Submission> _loadSubmissions();
+//   Future<T> _try<T>(Future<T> Function() fn, String error);
+// }
+
+class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
+  HomeFrontNotifier(RedditApi redditApi) : super(redditApi) {
     reset();
   }
 
-  final RedditApi _redditApi;
-  // final Clock _clock;
-  int _limit = 10;
   static final _log = getLogger('HomeFrontNotifier');
+
+  @override
+  Stream<Submission> _loadSubmissions() {
+    return _redditApi.front(limit: _limit, type: _subType);
+  }
 
   void reset() {
     _subType = FrontSubType.values.first;
@@ -419,35 +516,6 @@ class HomeFrontNotifier extends ChangeNotifier with TryMixin {
     notifyListeners();
   }
 
-  late FrontSubType _subType;
-  FrontSubType get subType => _subType;
-
-  late List<SubmissionNotifier>? _submissions;
-  List<SubmissionNotifier>? get submissions => _submissions;
-
-  DateTime lastModified = clock.now();
-  Duration _reloadDelay = Duration(seconds: 5);
-  bool get expired => _reloadDelay <= clock.now().difference(lastModified);
-
-  Future<void> reloadSubmissions() {
-    _submissions = null;
-    return loadSubmissions(_subType);
-  }
-
-  Future<void> loadSubmissions(FrontSubType subType) {
-    return _try(() async {
-      if (_submissions != null && _subType == subType) return;
-      _subType = subType;
-
-      _submissions =
-          (await _redditApi.front(limit: _limit, type: _subType).toList())
-              .map((v) => SubmissionNotifier(_redditApi, v))
-              .toList();
-      lastModified = clock.now();
-      notifyListeners();
-    }, 'fail to search');
-  }
-
   @override
   void notifyListeners() {
     _log.info('notifyListeners');
@@ -455,14 +523,17 @@ class HomeFrontNotifier extends ChangeNotifier with TryMixin {
   }
 }
 
-class HomePopularNotifier extends ChangeNotifier with TryMixin {
-  HomePopularNotifier(this._redditApi) {
+class HomePopularNotifier extends SubmissionsNotifier<SubType> {
+  HomePopularNotifier(RedditApi redditApi) : super(redditApi) {
     reset();
   }
 
-  final RedditApi _redditApi;
-  int _limit = 10;
-  static final _log = getLogger('HomePopularNotifier');
+  static final _log = getLogger('HomeFrontNotifier');
+
+  @override
+  Stream<Submission> _loadSubmissions() {
+    return _redditApi.popular(limit: _limit, type: _subType);
+  }
 
   void reset() {
     _subType = SubType.values.first;
@@ -470,36 +541,114 @@ class HomePopularNotifier extends ChangeNotifier with TryMixin {
     notifyListeners();
   }
 
-  late SubType _subType;
-  SubType get subType => _subType;
-
-  late List<SubmissionNotifier>? _submissions;
-  List<SubmissionNotifier>? get submissions => _submissions;
-
-  Future<void> reloadSubmissions() {
-    _submissions = null;
-    return loadSubmissions(_subType);
-  }
-
-  Future<void> loadSubmissions(SubType subType) {
-    return _try(() async {
-      if (_submissions != null && _subType == subType) return;
-      _subType = subType;
-
-      _submissions =
-          (await _redditApi.popular(limit: _limit, type: _subType).toList())
-              .map((v) => SubmissionNotifier(_redditApi, v))
-              .toList();
-      notifyListeners();
-    }, 'fail to search');
-  }
-
   @override
   void notifyListeners() {
     _log.info('notifyListeners');
     super.notifyListeners();
   }
 }
+
+// TODO: move to current user
+// class HomeFrontNotifier extends ChangeNotifier with TryMixin {
+//   HomeFrontNotifier(
+//     this._redditApi,
+//     /* [this._clock = const Clock()] */
+//   ) {
+//     reset();
+//   }
+
+//   final RedditApi _redditApi;
+//   // final Clock _clock;
+//   int _limit = 10;
+//   static final _log = getLogger('HomeFrontNotifier');
+
+//   void reset() {
+//     _subType = FrontSubType.values.first;
+//     _submissions = null;
+//     notifyListeners();
+//   }
+
+//   late FrontSubType _subType;
+//   FrontSubType get subType => _subType;
+
+//   late List<SubmissionNotifier>? _submissions;
+//   List<SubmissionNotifier>? get submissions => _submissions;
+
+//   DateTime lastModified = clock.now(); // TODO: remove
+//   Duration _reloadDelay = Duration(seconds: 5);
+//   bool get expired => _reloadDelay <= clock.now().difference(lastModified);
+
+//   Future<void> reloadSubmissions() {
+//     _submissions = null;
+//     return loadSubmissions(_subType);
+//   }
+
+//   Future<void> loadSubmissions(FrontSubType subType) {
+//     return _try(() async {
+//       if (_submissions != null && _subType == subType) return;
+//       _subType = subType;
+
+//       _submissions =
+//           (await _redditApi.front(limit: _limit, type: _subType).toList())
+//               .map((v) => SubmissionNotifier(_redditApi, v))
+//               .toList();
+//       lastModified = clock.now();
+//       notifyListeners();
+//     }, 'fail to search');
+//   }
+
+//   @override
+//   void notifyListeners() {
+//     _log.info('notifyListeners');
+//     super.notifyListeners();
+//   }
+// }
+
+// class HomePopularNotifier extends ChangeNotifier with TryMixin {
+//   HomePopularNotifier(this._redditApi) {
+//     reset();
+//   }
+
+//   final RedditApi _redditApi;
+//   int _limit = 10;
+//   static final _log = getLogger('HomePopularNotifier');
+
+//   void reset() {
+//     _subType = SubType.values.first;
+//     _submissions = null;
+//     notifyListeners();
+//   }
+
+//   late SubType _subType;
+//   SubType get subType => _subType;
+
+//   late List<SubmissionNotifier>? _submissions;
+//   List<SubmissionNotifier>? get submissions => _submissions;
+
+//   Future<void> reloadSubmissions() {
+//     _submissions = null;
+//     return loadSubmissions(_subType);
+//   }
+
+//   Future<void> loadSubmissions(SubType subType) {
+//     return _try(() async {
+//       if (_submissions != null && _subType == subType) return;
+//       _subType = subType;
+
+//       _submissions =
+//           (await _redditApi.popular(limit: _limit, type: _subType).toList())
+//               .map((v) => SubmissionNotifier(_redditApi, v))
+//               .toList();
+//       notifyListeners();
+//     }, 'fail to search');
+//   }
+
+//   @override
+//   void notifyListeners() {
+//     _log.info('notifyListeners');
+//     super.notifyListeners();
+//   }
+// }
 
 // class SubmissionLoaderNotifier extends ChangeNotifier with TryMixin {
 //   SubmissionLoaderNotifier(this._redditApi) {

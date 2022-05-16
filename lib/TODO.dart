@@ -1,4 +1,4 @@
-// TODO: merge HomeFrontNotifier|HomePopularNotifier
+// TODO: convert stream to future<list>
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: use catchFutureError
 // TODO: remove unused code
