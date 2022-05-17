@@ -25,8 +25,6 @@ class MessageScreen extends StatelessWidget {
         headerSliverBuilder: (context, _) {
           return [
             PrimarySliverAppBar(
-              elevation: 2,
-              forceElevated: true,
               collapsed: true,
               flexibleSpace: SpaceBar(
                 leading: AppBarBackButton(),
