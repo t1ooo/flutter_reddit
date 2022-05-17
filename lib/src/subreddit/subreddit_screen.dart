@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/subreddit.dart';
-import '../style/style.dart';
 import '../util/color.dart';
 import '../widget/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
@@ -47,18 +45,6 @@ class _SubredditScreen extends StatelessWidget {
   _SubredditScreen({
     Key? key,
   }) : super(key: key);
-
-  // _backgroundImage(Subreddit subreddit) {
-  //   return subreddit.bannerBackgroundImage == ''
-  //       ? null
-  //       : subreddit.bannerBackgroundImage;
-  // }
-
-  // _backgroundColor(Subreddit subreddit) {
-  //   return subreddit.bannerBackgroundImage == ''
-  //       ? null
-  //       : subreddit.bannerBackgroundImage;
-  // }
 
   @override
   Widget build(BuildContext context) {
