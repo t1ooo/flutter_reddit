@@ -4,30 +4,16 @@ import 'package:flutter/material.dart';
 
 typedef FutureVoidCallback = Future<void> Function();
 
-// TODO: remove unnessery fields
-/// auto disabled during onPressed and onLongPress
 class FutureElevatedButton extends StatefulWidget {
   const FutureElevatedButton({
     Key? key,
     this.onPressed,
-    this.onLongPress,
-    this.onHover,
-    this.onFocusChange,
     this.style,
-    this.focusNode,
-    this.autofocus = false,
-    this.clipBehavior = Clip.none,
     this.child,
   }) : super(key: key);
 
   final FutureVoidCallback? onPressed;
-  final FutureVoidCallback? onLongPress;
-  final ValueChanged<bool>? onHover;
-  final ValueChanged<bool>? onFocusChange;
   final ButtonStyle? style;
-  final FocusNode? focusNode;
-  final bool autofocus;
-  final Clip clipBehavior;
   final Widget? child;
 
   @override
@@ -42,13 +28,7 @@ class _FutureElevatedButtonState extends State<FutureElevatedButton> {
     return ElevatedButton(
       key: widget.key,
       onPressed: _disabled ? null : () => _call(widget.onPressed),
-      onLongPress: _disabled ? null : () => _call(widget.onLongPress),
-      onHover: widget.onHover,
-      onFocusChange: widget.onFocusChange,
       style: widget.style,
-      focusNode: widget.focusNode,
-      autofocus: widget.autofocus,
-      clipBehavior: widget.clipBehavior,
       child: widget.child,
     );
   }
