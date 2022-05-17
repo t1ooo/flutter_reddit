@@ -3,8 +3,6 @@ import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart'
 import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
-import '../widget/future_elevated_button.dart';
-
 class SubscribeButton extends StatelessWidget {
   const SubscribeButton({
     Key? key,
@@ -14,9 +12,9 @@ class SubscribeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<SubredditNotifier>();
 
-    return FutureElevatedButton(
+    return ElevatedButton(
       onPressed: () {
-        return (notifier.subreddit.userIsSubscriber
+        (notifier.subreddit.userIsSubscriber
                 ? notifier.unsubscribe()
                 : notifier.subscribe())
             .catchError((e) => showErrorSnackBar(context, e));
