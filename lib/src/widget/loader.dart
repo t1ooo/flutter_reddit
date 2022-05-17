@@ -16,7 +16,7 @@ class Loader<T> extends StatelessWidget {
 
   final Future Function(BuildContext) load;
   final T? Function(BuildContext) data;
-  // final Widget Function(BuildContext, T, Object?) builder;
+
   final Widget Function(BuildContext, T) onData;
   final Widget Function(BuildContext, Object)? onError;
   final Widget Function(BuildContext)? onLoading;

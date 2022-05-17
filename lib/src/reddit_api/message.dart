@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
 import 'parse.dart';
 
 class Message extends Equatable {
   final String subreddit;
-  // final List<Message> replies;
+
   final String authorFullname;
   final String id;
   final String subject;
@@ -25,11 +22,8 @@ class Message extends Equatable {
   final DateTime createdUtc;
   final String distinguished;
 
-  // static final _log = getLogger('Message');
-
   Message({
     required this.subreddit,
-    // required this.replies,
     required this.authorFullname,
     required this.id,
     required this.subject,
@@ -47,12 +41,6 @@ class Message extends Equatable {
     required this.createdUtc,
     required this.distinguished,
   });
-
-  // static const _descLen = 150;
-  // String get desc {
-  //   final text = body.replaceAll(RegExp(r'\s+'), ' ');
-  //   return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
-  // }
 
   Message copyWith({
     String? subreddit,
@@ -76,7 +64,6 @@ class Message extends Equatable {
   }) {
     return Message(
       subreddit: subreddit ?? this.subreddit,
-      // replies: replies ?? this.replies,
       authorFullname: authorFullname ?? this.authorFullname,
       id: id ?? this.id,
       subject: subject ?? this.subject,
@@ -101,9 +88,7 @@ class Message extends Equatable {
     const f = 'message';
     return Message(
       subreddit: parseString(m['subreddit_id'], '$f.subreddit_id'),
-      // replies: List<dynamic>.from(m['replies'] ?? const []),
-      authorFullname:
-          parseString(m['author_fullname'], '$f.author_fullname'),
+      authorFullname: parseString(m['author_fullname'], '$f.author_fullname'),
       id: parseString(m['id'], '$f.id'),
       subject: parseString(m['subject'], '$f.subject'),
       author: parseString(m['author'], '$f.author'),
@@ -127,7 +112,6 @@ class Message extends Equatable {
   List<Object> get props {
     return [
       subreddit,
-      // replies,
       authorFullname,
       id,
       subject,

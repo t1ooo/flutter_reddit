@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
 import 'parse.dart';
 
 class Previews extends Equatable {
@@ -17,7 +14,6 @@ class Previews extends Equatable {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props => [images, gifs, mp4];
 
   Previews copyWith({
@@ -45,22 +41,18 @@ class Preview extends Equatable {
   Preview({
     required this.source,
     required this.resolutions,
-    // required this.gifs,
   });
 
   final PreviewItem source;
   final List<PreviewItem> resolutions;
-  // final PreviewImages? gifs;
 
   Preview copyWith({
     PreviewItem? source,
     List<PreviewItem>? resolutions,
-    // PreviewImages? Function()? gifs,
   }) {
     return Preview(
       source: source ?? this.source,
       resolutions: resolutions ?? this.resolutions,
-      // gifs: gifs != null ? gifs() : this.gifs,
     );
   }
 
@@ -69,7 +61,6 @@ class Preview extends Equatable {
       source: PreviewItem.fromJson(m['source']),
       resolutions: List<PreviewItem>.from(
           m['resolutions']?.map((x) => PreviewItem.fromJson(x))),
-      // gifs: fromJsonN(m['variants']?['gif']),
     );
   }
 
@@ -91,8 +82,6 @@ class PreviewItem extends Equatable {
   final String url;
   final double width;
   final double height;
-
-  // static final _log = getLogger('SizedImage');
 
   PreviewItem copyWith({
     String? url,

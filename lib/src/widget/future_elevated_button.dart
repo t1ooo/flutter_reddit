@@ -20,7 +20,6 @@ class FutureElevatedButton extends StatefulWidget {
     this.child,
   }) : super(key: key);
 
-  // final Key? key;
   final FutureVoidCallback? onPressed;
   final FutureVoidCallback? onLongPress;
   final ValueChanged<bool>? onHover;
@@ -60,32 +59,4 @@ class _FutureElevatedButtonState extends State<FutureElevatedButton> {
     await fn();
     setState(() => _disabled = false);
   }
-
-  // Future<void> _onPressed() async {
-  //   final fn = widget.onPressed;
-
-  //   if (fn == null) return;
-
-  //   setState(() {
-  //     _disabled = true;
-  //   });
-  //   await fn();
-  //   setState(() {
-  //     _disabled = false;
-  //   });
-  // }
-
-  // Future<void> _onLongPress() async {
-  //   final fn = widget.onLongPress;
-
-  //   if (fn == null) return;
-
-  //   setState(() {
-  //     _disabled = true;
-  //   });
-  //   await fn();
-  //   setState(() {
-  //     _disabled = false;
-  //   });
-  // }
 }

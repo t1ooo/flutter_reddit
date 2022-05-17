@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../util/snackbar.dart';
 import '../widget/space_bar.dart';
-import 'reply.dart';
 
 class ReplyScreen extends StatefulWidget {
   ReplyScreen({
@@ -18,7 +17,7 @@ class ReplyScreen extends StatefulWidget {
 
   final String id;
   final bool isComment;
-  // final Function(String) onSubmit;
+ 
 
   @override
   State<ReplyScreen> createState() => _ReplyScreenState();
@@ -54,66 +53,66 @@ class _ReplyScreenState extends State<ReplyScreen> {
       ),
     );
 
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     automaticallyImplyLeading: false,
-    //     // toolbarHeight:
-    //     // toolbarHeight: 150,
-    //     flexibleSpace: SpaceBar(
-    //       leading: AppBarBackButton(),
-    //       // title: Text('Add comment', style: TextStyle(fontSize: 18)),
-    //       // title: Text('Add comment', style: Theme.of(context).textTheme.titleLarge),
-    //       title: AppBarTitle('Add comment'),
-    //       // title: Text('Add comment'),
-    //       trailing: TextButton(
-    //         onPressed: _submit,
-    //         // style: ButtonStyle(
-    //         //   // overlayColor: MaterialStateProperty.all(Colors.transparent),
-    //         //   // padding: MaterialStateProperty.all(EdgeInsets.zero),
-    //         //   enableFeedback: false,
-    //         // ),
-    //         child: Text('POST'),
-    //       ),
-    //     ),
-    //     // title: Text('Add comment'),
-    //     // actions: [
-    //     //   // IconButton(
-    //     //   //   hoverColor: Colors.transparent,
-    //     //   //   onPressed: _submit,
-    //     //   //   icon: Icon(Icons.add),
-    //     //   //   // icon: Text('POST'),
-    //     //   // ),
-    //     //   //  ElevatedButton(onPressed: _submit,child: Text('POST'),),
-    //     //   // InkWell(onTap: _submit,child: Text('POST'),),
-    //     //   // TextButton(
-    //     //   //   onPressed: _submit,
-    //     //   //   // onFocusChange: (_) {},
-    //     //   //   style: TextButton.styleFrom(hoverColor:Colors.white),
-    //     //   //   child: Text('POST'),
-    //     //   // ),
-    //     //   TextButton(
-    //     //     onPressed: _submit,
-    //     //     style: ButtonStyle(
-    //     //       // overlayColor: MaterialStateProperty.all(Colors.transparent),
-    //     //       // padding: MaterialStateProperty.all(EdgeInsets.zero),
-    //     //       enableFeedback: false,
-    //     //     ),
-    //     //     child: Text('POST'),
-    //     //   ),
-    //     // ],
-    //   ),
-    //   body: Container(
-    //     color: Theme.of(context).primaryColor,
-    //     padding: pagePadding,
-    //     child: _form(context),
-    //   ),
-    // );
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
   }
 
   Widget _form(BuildContext context) {
     return ListView(
       children: [
-        // SizedBox(height: topPadding),
+       
         Text(
           (widget.isComment)
               ? context.read<CommentNotifier>().comment.body
@@ -125,24 +124,24 @@ class _ReplyScreenState extends State<ReplyScreen> {
           onSubmitted: (v) {
             _submit();
           },
-          // maxLines: 10,
-          // validator: (v) {
-          //   if (v == null || v.trim() == '') {
-          //     return 'Please enter a message';
-          //   }
-          //   return null;
-          // },
-          // expands: true,
+         
+         
+         
+         
+         
+         
+         
+         
           cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'You comment',
             border: InputBorder.none,
           ),
         ),
-        // ElevatedButton(
-        //   onPressed: submit,
-        //   child: Text('Post'),
-        // ),
+       
+       
+       
+       
       ],
     );
   }
@@ -157,25 +156,25 @@ class _ReplyScreenState extends State<ReplyScreen> {
     (widget.isComment
             ? context.read<CommentNotifier>().reply(_message)
             : context.read<SubmissionNotifier>().reply(_message))
-    //     .then(
-    //   (_) => context.read<SubmissionNotifier>().refresh(),
-    //   onError: (e) => showErrorSnackBar(context, e),
-    // );
+   
+   
+   
+   
     .catchError((e) => showErrorSnackBar(context, e));
 
-    // if (widget.isComment) {
-    //   context.read<CommentNotifier>().reply(_message).then(
-    //         (_) => context.read<SubmissionNotifier>().refresh(),
-    //         onError: (e) => showErrorSnackBar(context, e),
-    //       );
-    //   // .catchError((e) => showErrorSnackBar(context, e));
-    // } else {
-    //   context.read<SubmissionNotifier>().reply(_message).then(
-    //         (_) => context.read<SubmissionNotifier>().refresh(),
-    //         onError: (e) => showErrorSnackBar(context, e),
-    //       );
-    //   // .catchError((e) => showErrorSnackBar(context, e));
-    // }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 
     Navigator.pop(context);
   }

@@ -3,10 +3,8 @@ import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart'
 import 'package:flutter_reddit_prototype/src/user_profile/user_trophies.dart';
 import 'package:provider/provider.dart';
 
-import '../style/style.dart';
 import '../util/date_time.dart';
 import '../widget/list.dart';
-// import '../widget/stream_list_builder.dart';
 
 class UserAbout extends StatelessWidget {
   const UserAbout({
@@ -17,16 +15,11 @@ class UserAbout extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.read<UserNotifier>().user;
     return CustomListView(
-      // shrinkWrap: true,
       children: [
-        // SizedBox(height: 10),
         ListDivider(
           height: 10,
         ),
-        // Divider(height: 100,),
-
         CustomListView(
-          // shrinkWrap: true,
           children: [
             SizedBox(height: 50),
             Table(
@@ -50,7 +43,6 @@ class UserAbout extends StatelessWidget {
             ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
           ],
         ),
-
         UserTrophies(),
       ],
     );

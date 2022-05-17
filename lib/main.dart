@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -32,9 +31,6 @@ Future<void> main() async {
             Config('flutter_reddit_cache'),
           ),
         ),
-        // ChangeNotifierProvider<SubmissionLoaderNotifier>(
-        //   create: (context) => SubmissionLoaderNotifier(redditApi),
-        // ),
         ChangeNotifierProvider<SearchNotifier>(
           create: (context) => SearchNotifier(redditApi),
         ),
@@ -59,7 +55,6 @@ Future<void> main() async {
             return notifier
               ..addListener(() {
                 if (notifier.user == null) {
-                  // context.read<SubmissionLoaderNotifier>().reset();
                   context.read<SearchNotifier>().reset();
                   context.read<SubredditLoaderNotifier>().reset();
                   context.read<UserLoaderNotifier>().reset();
@@ -76,11 +71,10 @@ Future<void> main() async {
   );
 }
 
-
 void configureLogger(bool debugMode) {
   baseConfigure();
   setLevel(debugMode ? Level.ALL : Level.WARNING);
-  // setLevelByName('FakeRedditApi', Level.OFF);
+
   onLogRecord((LogRecord record) {
     // ignore: avoid_print
     print(

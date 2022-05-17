@@ -10,7 +10,6 @@ class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({
     Key? key,
     required this.name,
-    // this.isCurrentUser = false,
   }) : super(key: key);
 
   final String name;
@@ -18,12 +17,6 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return body(context);
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('User Profile'),
-    //   ),
-    //   body: body(context),
-    // );
   }
 
   Widget body(BuildContext context) {

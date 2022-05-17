@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-// Widget voidError(_, __) => Container();
-
 class CustomFutureBuilder<T> extends StatelessWidget {
   const CustomFutureBuilder({
     Key? key,
@@ -30,7 +28,6 @@ class CustomFutureBuilder<T> extends StatelessWidget {
 
         final data = snap.data;
         if (data != null) {
-          // print(data);
           return onData(context, data);
         }
 

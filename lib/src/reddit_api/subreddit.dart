@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
 import 'parse.dart';
 
 class Subreddit extends Equatable {
@@ -54,9 +53,6 @@ class Subreddit extends Equatable {
   final bool userIsSubscriber;
   final bool userHasFavorited;
 
-  // static final _log = getLogger('Subreddit');
-
-  // factory Subreddit.fromDrawSubreddit(draw.Subreddit sub) {
   factory Subreddit.fromJson(Map<String, dynamic> m) {
     const f = 'Subreddit';
     return Subreddit(
@@ -64,14 +60,18 @@ class Subreddit extends Equatable {
       created: parseTime(m['created'], '$f.created'),
       createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
       description: parseString(m['description'], '$f.description'),
-      descriptionHtml: parseString(m['description_html'], '$f.description_html'),
+      descriptionHtml:
+          parseString(m['description_html'], '$f.description_html'),
       displayName: parseString(m['display_name'], '$f.display_name'),
-      displayNamePrefixed: parseString(m['display_name_prefixed'], '$f.display_name_prefixed'),
+      displayNamePrefixed:
+          parseString(m['display_name_prefixed'], '$f.display_name_prefixed'),
       id: parseString(m['id'], '$f.id'),
       lang: parseString(m['lang'], '$f.lang'),
       name: parseString(m['name'], '$f.name'),
-      publicDescription: parseString(m['public_description'], '$f.public_description'),
-      publicDescriptionHtml: parseString(m['public_description_html'], '$f.public_description_html'),
+      publicDescription:
+          parseString(m['public_description'], '$f.public_description'),
+      publicDescriptionHtml: parseString(
+          m['public_description_html'], '$f.public_description_html'),
       submitTextHtml: parseString(m['submit_text_html'], '$f.submit_text_html'),
       submitText: parseString(m['submit_text'], '$f.submit_text'),
       subredditType: parseString(m['subreddit_type'], '$f.subreddit_type'),
@@ -79,53 +79,16 @@ class Subreddit extends Equatable {
       title: parseString(m['title'], '$f.title'),
       url: parseString(m['url'], '$f.url'),
       headerImg: parseUrl(m['header_img'], '$f.header_img'),
-      bannerBackgroundImage: parseUrl(m['banner_background_image'], '$f.banner_background_image'),
-      bannerBackgroundColor: parseColor(m['banner_background_color'], '$f.banner_background_color'),
-      userIsSubscriber: parseBool(m['user_is_subscriber'], '$f.user_is_subscriber'),
-      userHasFavorited: parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
+      bannerBackgroundImage:
+          parseUrl(m['banner_background_image'], '$f.banner_background_image'),
+      bannerBackgroundColor: parseColor(
+          m['banner_background_color'], '$f.banner_background_color'),
+      userIsSubscriber:
+          parseBool(m['user_is_subscriber'], '$f.user_is_subscriber'),
+      userHasFavorited:
+          parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
     );
   }
-
-  // static final _log = getLogger('Subreddit');
-
-  // static String _parseIcon(dynamic m) {
-  //   final s = cast<String>(m, '');
-  //   if (s == '') {
-  //     _log.warning('fail to parse icon: $m');
-  //     return '';
-  //   }
-  //   if (!s.startsWith('http')) {
-  //     _log.warning('fail to parse icon: $m');
-  //     return '';
-  //   }
-  //   final uri = Uri.tryParse(s);
-  //   if (uri == null) {
-  //     _log.warning('fail to parse icon: $m');
-  //     return '';
-  //   }
-  //   return uri.scheme + ':' + '//' + uri.authority + uri.path;
-  // }
-
-  // static DateTime _parseTime(dynamic m) {
-  //   final num = double.tryParse(m);
-  //   if (num == null) {
-  //     _log.warning('fail to parse time: $m');
-  //     return DateTime.now();
-  //   }
-  //   return DateTime(num.toInt());
-  // }
-  // static DateTime _parseTime(dynamic m, {bool isUtc = false}) {
-  //   final num = cast<double>(m, 0.0);
-  //   if (num == 0.0) {
-  //     _log.warning('fail to parse time: $m');
-  //     return DateTime.now();
-  //   }
-  //   // return DateTime(num.toInt());
-  //   return DateTime.fromMillisecondsSinceEpoch(
-  //     num.round() • 1000,
-  //     isUtc: isUtc,
-  //   );
-  // }
 
   Subreddit copyWith({
     String? communityIcon,

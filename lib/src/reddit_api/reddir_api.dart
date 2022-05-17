@@ -59,8 +59,6 @@ abstract class RedditApi {
   Stream<Comment> userComments(String name, {required int limit});
   Stream<Submission> userSubmissions(String name, {required int limit});
   Future<List<Trophy>> userTrophies(String name);
-  // Future<Submission> submission(String id);
-  // Stream<Comment> submissionComments(String name, {required int limit});
 
   Future<void> subscribe(String name);
   Future<void> unsubscribe(String name);
@@ -83,13 +81,6 @@ abstract class RedditApi {
   Future<User?> currentUser();
   Stream<Subreddit> currentUserSubreddits({required int limit});
 
-  /// return List<Submission|Comment>
-  // Stream<dynamic> currentUserSaved();
-  // Stream<Submission> currentUserSavedSubmissions({required int limit});
-  // Stream<Comment> currentUserSavedComments({required int limit});
-
-  // Stream<Submission> userSavedSubmissions(String name, {required int limit});
-  // Stream<Comment> userSavedComments(String name, {required int limit});
   Future<UserSaved> userSaved(String name, {required int limit});
 
   Stream<Submission> search(
@@ -99,13 +90,9 @@ abstract class RedditApi {
     String subreddit = 'all',
   });
 
-  // Search subreddits by title and description.
   Stream<Subreddit> searchSubreddits(String query, {required int limit});
 
-  // Search subreddits by title
   Stream<Subreddit> searchSubredditsByName(String query);
-
-  // Future<String> userIcon(String name);
 
   Future<Comment> submissionReply(String id, String body);
   Future<Comment> commentReply(String id, String body);
@@ -121,7 +108,6 @@ abstract class RedditApi {
     bool spoiler = false,
   });
 
-  // Future<bool> isLoggedIn();
   bool get isLoggedIn;
   Future<bool> loginSilently();
   Future<void> login();
@@ -133,42 +119,14 @@ abstract class RedditApi {
 class RedditApiImpl implements RedditApi {
   RedditApiImpl(this.clientId, this.redirectUri, this.credentials);
 
-  // final file = File('credentials.json');
   final userAgent = 'Flutter Client';
 
-  // bool _isLoggedIn = false;
-
-  // Future<bool> isLoggedIn() async => _isLoggedIn;
-  // Future<bool> isLoggedIn() async => _reddit != null;
   bool get isLoggedIn => _reddit != null;
-
-  // Future<bool> isLoggedIn() async {
-  //   try {
-  //     final redditor = await reddit.user.me();
-  //     return redditor != null;
-  //   } on Exception catch (e) {
-  //     _log.info('', e);
-  //   }
-  //   return false;
-  // }
-
-  // Future<void> login() {
-  //   return _auth();
-  // }
-
-  // Future<bool> loginSilently() {
-  //   return _authSilently();
-  // }
 
   Future<void> logout() async {
     _reddit = null;
     await credentials.delete();
   }
-
-  // Future<bool> login() async {
-  //   await loginSilently();
-  //   await loginOauth();
-  // }
 
   Future<bool> loginSilently() async {
     if (_reddit != null) {
@@ -215,57 +173,11 @@ class RedditApiImpl implements RedditApi {
     await s.close();
   }
 
-  // Future<String> _credentialsPath() async {
-  //   return (await getTemporaryDirectory()).path + '/credentials.json';
-  // }
-
-  // Future<void> _auth() async {
-  //   if (_reddit != null) {
-  //     return;
-  //   }
-
-  //   final credentialsJson =
-  //       await file.exists() ? await file.readAsString() : '';
-
-  //   draw.Reddit reddit;
-  //   if (credentialsJson == '') {
-  //     print('login');
-
-  //     final s = AuthServer(redirectUri);
-
-  //     reddit = draw.Reddit.createInstalledFlowInstance(
-  //       clientId: clientId,
-  //       userAgent: userAgent,
-  //       redirectUri: redirectUri,
-  //     );
-
-  //     final authUrl = reddit.auth.url(['*'], 'state');
-  //     launch(authUrl.toString());
-
-  //     final authCode = await s.stream.first;
-  //     await reddit.auth.authorize(authCode);
-
-  //     await file.writeAsString(reddit.auth.credentials.toJson());
-
-  //     await s.close();
-  //   } else {
-  //     print('cached');
-  //     reddit = draw.Reddit.restoreAuthenticatedInstance(
-  //       credentialsJson,
-  //       clientId: clientId,
-  //       userAgent: userAgent,
-  //       redirectUri: redirectUri,
-  //     );
-  //   }
-
-  //   _reddit = reddit;
-  // }
-
   final String clientId;
-  // final String userAgent = 'Flutter Client';
+
   final Uri redirectUri;
   final Credentials credentials;
-  // final draw.Reddit reddit;
+
   static final _log = getLogger('RedditApiImpl');
 
   draw.Reddit? _reddit;
@@ -278,7 +190,6 @@ class RedditApiImpl implements RedditApi {
 
   Stream<Submission> _submissionsStream(
     Stream<draw.UserContent> s,
-    // SubType type,
   ) async* {
     await for (final v in s) {
       final dsub = cast<draw.Submission?>(v, null);
@@ -290,29 +201,11 @@ class RedditApiImpl implements RedditApi {
         _log.warning('draw.Submission.data is empty: $v');
         continue;
       }
-      // final sub = Submission.fromJson(dsub.data!, type: type);
+
       final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
       yield sub;
     }
   }
-
-  // Stream<Submission> _submissions(draw.BaseListingMixin s, {required int limit, required SubType type}) {
-  // switch (type) {
-  //     case SubType.best:
-  //       return _submissionsStream(s.best(limit: limit), SubType.best);
-  //     case SubType.hot:
-  //       return _submissionsStream(s.hot(limit: limit), SubType.hot);
-  //     case SubType.newest:
-  //       return _submissionsStream(s.newest(limit: limit), SubType.newest);
-  //     case SubType.top:
-  //       return _submissionsStream(s.top(limit: limit), SubType.top);
-  //     case SubType.rising:
-  //       return _submissionsStream(s.rising(limit: limit), SubType.rising);
-  //     case SubType.controversial:
-  //       return _submissionsStream(
-  //           s.controversial(limit: limit), SubType.controversial);
-  //   }
-  // }
 
   Stream<Submission> front({required int limit, required FrontSubType type}) {
     final s = reddit.front;
@@ -333,27 +226,10 @@ class RedditApiImpl implements RedditApi {
   }
 
   Stream<Submission> popular({required int limit, required SubType type}) {
-    // final s = reddit.subreddit('popular');
-    // switch (type) {
-    //   // case SubType.best:
-    //   // TODO: find a solution without exception
-    //   // throw Exception('unsupported type: $type');
-    //   case SubType.hot:
-    //     return _submissionsStream(s.hot(limit: limit));
-    //   case SubType.newest:
-    //     return _submissionsStream(s.newest(limit: limit));
-    //   case SubType.top:
-    //     return _submissionsStream(s.top(limit: limit));
-    //   case SubType.rising:
-    //     return _submissionsStream(s.rising(limit: limit));
-    //   case SubType.controversial:
-    //     return _submissionsStream(s.controversial(limit: limit));
-    // }
     return subredditSubmissions('popular', limit: limit, type: type);
   }
 
   Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
-    // reddit.subreddits;
     await for (final v in reddit.user.subreddits(limit: limit)) {
       if (v.data == null) {
         _log.warning('draw.Subreddit.data is empty: $v');
@@ -372,9 +248,9 @@ class RedditApiImpl implements RedditApi {
     name = removeSubredditPrefix(name);
     final s = reddit.subreddit(name);
     switch (type) {
-      // case SubType.best:
+
       // TODO: find a solution without exception
-      // throw Exception('unsupported type: $type');
+
       case SubType.hot:
         return _submissionsStream(s.hot(limit: limit));
       case SubType.newest:
@@ -489,7 +365,7 @@ class RedditApiImpl implements RedditApi {
         .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
         .toList();
-    // return Submission.fromJson(sub.data!, comments: sub.comments!.comments);
+
     return Submission.fromJson(sub.data!, comments: comments);
   }
 
@@ -506,12 +382,6 @@ class RedditApiImpl implements RedditApi {
     final sub = await subRef.populate();
     return Subreddit.fromJson(sub.data! as Map<String, dynamic>).communityIcon;
   }
-
-  // Future<String> userIcon(String name) async {
-  //   final redditorRef = await reddit.redditor(name);
-  //   final redditor = await redditorRef.populate();
-  //   return User.fromJson(redditor.data! as Map<String, dynamic>).iconImg;
-  // }
 
   // TODO: use draw.Submission instead id for optimisation
   Future<void> submissionLike(String id, Like like) async {
@@ -555,22 +425,6 @@ class RedditApiImpl implements RedditApi {
     return s.unsave();
   }
 
-  // Future<void> submissionlike(String id) async {
-  //   return (await reddit.submission(id: id).populate()).like();
-  // }
-
-  // Future<void> submissiondislike(String id) async {
-  //   return (await reddit.submission(id: id).populate()).dislike();
-  // }
-
-  // Future<void> commentlike(String id) async {
-  //   return (await reddit.comment(id: id).populate()).like();
-  // }
-
-  // Future<void> commentdislike(String id) async {
-  //   return (await reddit.comment(id: id).populate()).dislike();
-  // }
-
   Future<User?> currentUser() async {
     final redditor = await reddit.user.me();
     if (redditor == null) {
@@ -580,17 +434,8 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<UserSaved> userSaved(String name, {required int limit}) async {
-    //  for(final v in await user!.saved().toList()) {
-    // if (v is Submission) print('Submission ${v.id}');
-    // if (v is CommentRef) print('CommentRef');
-    // if (v is Comment) print('Comment ${v.id}');
-    // final redditor = await reddit.user.me();
-    // if (redditor == null) {
-    //   return;
-    // }
-
     final redditorRef = reddit.redditor(name);
-    // final redditor = await redditorRef.populate();
+
     final submissions = <Submission>[];
     final comments = <Comment>[];
     await for (final v in redditorRef.saved(limit: limit)) {
@@ -609,25 +454,12 @@ class RedditApiImpl implements RedditApi {
     return UserSaved(submissions, comments);
   }
 
-  // Stream<Submission> userSavedSubmissions(String name, {required int limit}) {
-  //   return currentUserSaved(limit)
-  //       .where((v) => v is Submission)
-  //       .map((v) => v as Submission);
-  // }
-
-  // Stream<Comment> userSavedComments(String name, {required int limit}) {
-  //   return currentUserSaved(limit)
-  //       .where((v) => v is Comment)
-  //       .map((v) => v as Comment);
-  // }
-
   Stream<Submission> search(
     String query, {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
   }) async* {
-    // reddit.subreddits.search();
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
     await for (final v
@@ -735,7 +567,7 @@ class FakeRedditApi implements RedditApi {
 
   static final _log = getLogger('FakeRedditApi');
 
-  Duration _delay = Duration(seconds: 1~/2);
+  Duration _delay = Duration(seconds: 1 ~/ 2);
 
   Map _addType(Map v, Enum type) {
     v['title'] = '$type: ${v['title']}';
@@ -752,7 +584,6 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.front.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -775,7 +606,6 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/popular.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -794,7 +624,6 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.subreddits.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .take(limit);
 
@@ -816,7 +645,6 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/subreddit.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit);
@@ -859,8 +687,6 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/user.submissions.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
-        // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Submission.fromJson(v))
         .take(limit);
 
@@ -919,29 +745,15 @@ class FakeRedditApi implements RedditApi {
     final subData = await File('data/submission.json').readAsString();
     final comData = await File('data/submission.comments.json').readAsString();
 
-    // try {
     final comments = (jsonDecode(comData) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
         .toList();
 
-    // print(comments);
     return Submission.fromJson(
       jsonDecode(subData) as Map,
       comments: comments,
     );
-    // } catch (e, st) {
-    // print(e);
-    // print(st);
-    // }
-
-    // return placeholderSubmission();
-
-    //     .map((v) => Trophy.fromJson(v));
-
-    // final items = (jsonDecode(data) as List<dynamic>)
-    //     .map((v) => v as Map<String, dynamic>)
-    //     .map((v) => Trophy.fromJson(v));
   }
 
   Future<Subreddit> subreddit(String name) async {
@@ -1032,20 +844,6 @@ class FakeRedditApi implements RedditApi {
     );
   }
 
-  // Stream<Submission> currentUserSavedSubmissions({required int limit}) {
-  //   return _currentUserSaved(limit)
-  //       .where((v) => v is Submission)
-  //       .map((v) => v as Submission)
-  //       .take(limit);
-  // }
-
-  // Stream<Comment> currentUserSavedComments({required int limit}) {
-  //   return _currentUserSaved(limit)
-  //       .where((v) => v is Comment)
-  //       .map((v) => v as Comment)
-  //       .take(limit);
-  // }
-
   Future<String> subredditIcon(String name) async {
     _log.info('subredditIcon($name)');
     await Future.delayed(_delay);
@@ -1053,11 +851,6 @@ class FakeRedditApi implements RedditApi {
     name = removeSubredditPrefix(name);
     return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   }
-
-  // Future<String> userIcon(String name) async {
-  //   await Future.delayed(_delay);
-  //   return 'https://styles.redditmedia.com/t5_27o1ou/styles/profileIcon_snoo1bb735c3-8e35-4cf7-86db-61a16e425270-headshot.png?width=256&height=256&crop=256:256,smart&s=b2b6b0dbdc33478836366f4b75a132c734d19126';
-  // }
 
   Stream<Submission> search(
     String query, {
@@ -1072,9 +865,7 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, sort))
-        // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Submission.fromJson(v))
         .take(limit);
 
@@ -1093,9 +884,6 @@ class FakeRedditApi implements RedditApi {
     final data = await File('data/subreddits.search.json').readAsString();
 
     final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
-        // .map((v) => _addType(v, sort))
-        // .map((v) => Submission.fromJson(v, type: SubType.hot))
         .map((v) => Subreddit.fromJson(v))
         .take(limit);
 
@@ -1111,11 +899,8 @@ class FakeRedditApi implements RedditApi {
     final data =
         await File('data/subreddits.search.by.name.json').readAsString();
 
-    final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
-        // .map((v) => _addType(v, sort))
-        // .map((v) => Submission.fromJson(v, type: SubType.hot))
-        .map((v) => Subreddit.fromJson(v));
+    final items =
+        (jsonDecode(data) as List<dynamic>).map((v) => Subreddit.fromJson(v));
 
     for (final item in items) {
       yield item;
@@ -1148,14 +933,11 @@ class FakeRedditApi implements RedditApi {
 
   bool _isLoggedIn = false;
 
-  // Future<bool> isLoggedIn() async => _isLoggedIn;
   bool get isLoggedIn => _isLoggedIn;
 
   Future<void> login() async {
     _log.info('login()');
-    // if (user != 'fake' || pass != 'fake') {
-    //   throw Exception('fail to login, use user=fake, pass=fake for login');
-    // }
+
     await File(await _loginPath()).create();
     _isLoggedIn = true;
     return;
@@ -1166,8 +948,6 @@ class FakeRedditApi implements RedditApi {
     _isLoggedIn = await File(await _loginPath()).exists();
     _log.info('loginSilently: $_isLoggedIn');
     return _isLoggedIn;
-    // _isLoggedIn = true;
-    // return true;
   }
 
   Future<void> logout() async {
@@ -1205,11 +985,8 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     final data = await File('data/inbox.messages.json').readAsString();
 
-    final items = (jsonDecode(data) as List<dynamic>)
-        // .map((v) => v as Map<String, dynamic>)
-        // .map((v) => _addType(v, sort))
-        // .map((v) => Submission.fromJson(v, type: SubType.hot))
-        .map((v) => Message.fromJson(v));
+    final items =
+        (jsonDecode(data) as List<dynamic>).map((v) => Message.fromJson(v));
 
     for (final item in items) {
       yield item;

@@ -21,21 +21,10 @@ class UserTrophies extends StatelessWidget {
       data: (_) => notifier.trophies,
       onData: (_, trophies) {
         return CustomListView(
-          // shrinkWrap: true,
           children: [
             ListTitle('trophies'),
-            // Container(
-            //     // height: 40,
-            //     color: Theme.of(context).scaffoldBackgroundColor,
-            //     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            //     child: Text(
-            //       'TROPHIES',
-            //       // style: Theme.of(context).textTheme.headline6,
-            //       style: TextStyle(fontWeight: FontWeight.bold),
-            //     )),
             Container(
               color: Theme.of(context).primaryColor,
-              // height: double.infinity,
               child: ListView(
                 shrinkWrap: true,
                 children: [

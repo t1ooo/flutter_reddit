@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style/style.dart';
 
 import 'login.dart';
 

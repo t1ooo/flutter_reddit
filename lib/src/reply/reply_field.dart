@@ -27,7 +27,6 @@ class ReplyField extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              // MaterialPageRoute(builder: (_) => AddCommentScreen(id: id)),
               MaterialPageRoute(
                 builder: (_) =>
                     ChangeNotifierProvider<SubmissionNotifier>.value(

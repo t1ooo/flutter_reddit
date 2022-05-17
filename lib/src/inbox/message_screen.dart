@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/message.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +11,6 @@ import '../util/date_time.dart';
 import '../widget/list.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/space_bar.dart';
-import 'messages.dart';
 
 class MessageScreen extends StatelessWidget {
   MessageScreen({Key? key}) : super(key: key);
@@ -39,7 +37,6 @@ class MessageScreen extends StatelessWidget {
           ];
         },
         body: CustomListView(
-          // shrinkWrap: true,
           padding: pagePadding,
           children: [
             SizedBox(height: 20),

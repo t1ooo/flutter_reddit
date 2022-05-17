@@ -28,7 +28,6 @@ class Messages extends StatelessWidget {
             children: [
               for (final message in messages) ...[
                 Container(
-                  // decoration: BoxDecoration(border: Border(bottom: BorderSide())),
                   child: ListTile(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -46,7 +45,6 @@ class Messages extends StatelessWidget {
                     },
                     leading: Icon(Icons.mail),
                     title: Text(message.message.subject),
-                    // subtitle: Text(message.message.desc),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -72,42 +70,6 @@ class Messages extends StatelessWidget {
                 ),
                 Divider(height: 0),
               ],
-              // InkWell(
-              //   onTap: message.message.submissionId == ''
-              //       ? null
-              //       : () {
-              //           // Navigator.push(
-              //           //   context,
-              //           //   MaterialPageRoute(
-              //           //     builder: (_) =>
-              //           //         SubmissionScreen(id: message.submissionId),
-              //           //   ),
-              //           // );
-              //         },
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              //     // padding: commentPadding(0),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text(message.message.linkTitle, textScaleFactor: 2),
-              //         Row(
-              //           children: [
-              //             Text(message.message.subredditNamePrefixed),
-              //             Text(' • '),
-              //             Text(message.message.created.toString()),
-              //             Text(' • '),
-              //             Text(message.message.ups.toString()),
-              //           ],
-              //         ),
-              //         SizedBox(height: 10),
-              //         Text(message.message.body),
-              //         // Text(message.message.isSubmitter.toString()),
-              //         Divider(),
-              //       ],
-              //     ),
-              //   ),
-              // )
             ],
           );
         },

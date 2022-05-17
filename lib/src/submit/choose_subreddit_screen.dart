@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:flutter_reddit_prototype/src/widget/sliver_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/subreddit.dart';
 import '../subreddit/subreddit_icon.dart';
-import '../util/snackbar.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
 import '../widget/space_bar.dart';
@@ -48,7 +45,6 @@ class ChooseSubredditScreen extends StatelessWidget {
       data: (_) => notifier.subreddits,
       onData: (_, subreddits) {
         return CustomListView(
-          // shrinkWrap: true,
           children: [
             ListTitle('JOINED'),
             for (final subreddit in subreddits)
@@ -63,7 +59,6 @@ class ChooseSubredditScreen extends StatelessWidget {
                         SubredditIcon(icon: subreddit.subreddit.communityIcon)),
                 title: Text(subreddit.subreddit.displayNamePrefixed),
               )
-            // Text(subreddit.name)
           ],
         );
       },

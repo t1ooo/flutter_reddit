@@ -17,7 +17,7 @@ class CustomPopupMenuItem {
   final FutureOr Function() onTap;
 }
 
-// PopupMenuButton doesn't work correctly with navigation
+/// PopupMenuButton doesn't work correctly with navigation
 class CustomPopupMenuButton extends StatefulWidget {
   CustomPopupMenuButton({
     Key? key,
@@ -25,9 +25,6 @@ class CustomPopupMenuButton extends StatefulWidget {
     this.child,
     this.icon,
   }) : super(key: key);
-
-  // final List<String> awardIcons;
-  // final int totalAwardsReceived;
 
   final List<CustomPopupMenuItem> items;
   final Widget? child;

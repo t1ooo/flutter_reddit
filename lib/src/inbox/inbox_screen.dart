@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/message.dart';
 
 import '../user_menu.dart';
 import '../widget/sliver_app_bar.dart';
@@ -24,8 +23,6 @@ class InboxScreen extends StatelessWidget {
                     Scaffold.of(context).openDrawer();
                   },
                   icon: SpaceBarIcon(Icons.account_circle),
-                  // iconData: Icons.account_circle,
-                  // theme: appBarIconThemeDark,
                 ),
                 title: AppBarTitle('Inbox'),
               ),

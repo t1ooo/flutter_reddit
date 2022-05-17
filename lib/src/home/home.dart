@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logger.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/submission_type.dart';
 import 'package:flutter_reddit_prototype/src/widget/swipe_to_refresh.dart';
 import 'package:provider/provider.dart';

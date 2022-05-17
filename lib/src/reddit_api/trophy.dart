@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
 import 'parse.dart';
 
 class Trophy extends Equatable {
@@ -37,8 +36,6 @@ class Trophy extends Equatable {
       description: parseString(m['description'], '$f.description'),
     );
   }
-
-  // static final _log = getLogger('Trophy');
 
   @override
   List<Object> get props {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/logging/logging.dart';
@@ -22,7 +20,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
     required this.submissions,
     this.activeLink = true,
     this.showTypeSelector = true,
-    // this.showSubreddit = true,
   }) : super(key: key);
 
   final T type;
@@ -30,7 +27,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
   final List<SubmissionNotifier>? submissions;
   final Future<void> Function(T) load;
   final bool activeLink;
-  // final bool showSubreddit;
 
   final bool showTypeSelector;
 
@@ -43,38 +39,9 @@ class GSubmissionTiles<T> extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           children: [
-            // Padding(
-            //   // width: 100,
-            //   padding: const EdgeInsets.only(left: 20),
-            //   child: // alignedDropdown: false,
-            //       DropdownButton<T>(
-            //     // isExpanded: true,
-            //     // selectedItemBuilder: (ctx) => [Text(_typeToString(type))],
-            //     // hint: Text('123'),
-            //     // disabledHint: Text('123'),
-            //     // menuMaxHeight: 100,
-            //     onTap: () {
-
-            //     },
-            //     underline: Container(),
-            //     value: type,
-            //     onChanged: (v) {
-            //       if (v != null) onTypeChanged(v);
-            //     },
-            //     items: [
-            //       for (final type in types)
-            //         DropdownMenuItem(
-            //           value: type,
-            //           child: Text(_typeToString(type) + ' POSTS'),
-            //         )
-            //     ],
-            //   ),
-            // ),
-
             Align(
               alignment: Alignment.centerLeft,
-              // width: 100,
-              // padding: const EdgeInsets.only(left: 20),
+
               // TODO: add icon
               child: ButtonTheme(
                 height: 200,
@@ -91,7 +58,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text('SORT POST BY'),
                             ListTile(
                               minLeadingWidth: 0,
                               title: Text('SORT POST BY'),
@@ -109,36 +75,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
                             ),
                           ],
                         );
-                        // return Column(
-                        // children: [
-                        //   for (final type in types)
-                        //     RadioListTile<T>(
-                        //       controlAffinity: ListTileControlAffinity.trailing,
-                        //       value: type,
-                        //       secondary: Icon(Icons.check),
-                        //       groupValue: type,
-                        //       title: Text(_typeToString(type) + ' POSTS'),
-                        //       onChanged: (_) {},
-                        //     )
-                        // ],
-
-                        // title: Text('Material Dialog'),
-                        // content: Text('Hey! I am Coflutter!'),
-                        // actions: <Widget>[
-                        //   TextButton(
-                        //       onPressed: () {
-                        //         // _dismissDiauiLogger.error();
-                        //       },
-                        //       child: Text('Close')),
-                        //   TextButton(
-                        //     onPressed: () {
-                        //       print('HelloWorld!');
-                        //       // _dismissDiauiLogger.error();
-                        //     },
-                        //     child: Text('HelloWorld!'),
-                        //   )
-                        // ],
-                        // );
                       },
                     );
                   },
@@ -158,7 +94,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
                 ),
               ),
             ),
-            // SizedBox(height: 50),
             for (final sub in submissions)
               ChangeNotifierProvider<SubmissionNotifier>.value(
                 value: sub,
@@ -166,7 +101,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   child: SubmissionTile(
                     activeLink: activeLink,
-                    // showSubreddit: showSubreddit,
                   ),
                 ),
               ),
@@ -258,79 +192,10 @@ class _RadioListState<T> extends State<RadioList<T>> {
                   )
                 : null,
           )
-        // RadioListTile<T>(
-        //   controlAffinity: ListTileControlAffinity.trailing,
-        //   selected: value == _value,
-        //   // toggleable: true,
-        //   value: value,
-        //   // secondary: Icon(Icons.check),
-        //   groupValue: _value,
-        //   title: widget.titleBuilder(value),
-        //   onChanged: (v) {
-        //     if (v != null) {
-        //       widget.onChanged(v);
-        //     }
-        //   },
-        //   // tileColor:Colors.black,
-        //   // selectedTileColor: Colors.black,
-        // )
       ],
     );
   }
 }
-
-// class GSubmissionTiles extends StatelessWidget {
-//   GSubmissionTiles({
-//     Key? key,
-//     // required this.type,
-//     // required this.types,
-//     required this.submissions,
-//     required this.dropdownButton,
-//     // required this.onTypeChanged,
-//     this.activeLink = true,
-//     // this.showTrending = true,
-//     this.showTypeSelector = true,
-//     // this.showLocationSelector = true,
-//   }) : super(key: key);
-
-//   // final T type;
-//   // final List<T> types;
-//   final List<SubmissionNotifier>? submissions;
-//   final Widget dropdownButton;
-//   // final Function(T) onTypeChanged;
-//   final bool activeLink;
-//   // final bool showTrending;
-//   final bool showTypeSelector;
-//   // final bool showLocationSelector;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // WidgetsBinding.instance?.addPostFrameCallback((_) {
-//     //   onTypeChanged(type);
-//     // });
-//     if (submissions == null) {
-//       return Center(child: CircularProgressIndicator());
-//     }
-
-//     return ListView(
-//       shrinkWrap: true,
-//       children: [
-//         // CustomDropdownButton<T>(
-//         //   value: type,
-//         //   values: types,
-//         //   onChanged: onTypeChanged,
-//         // ),
-//         dropdownButton,
-//         SizedBox(height: 50),
-//         for (final sub in submissions ?? [])
-//           ChangeNotifierProvider<SubmissionNotifier>.value(
-//             value: sub,
-//             child: SubmissionTile(activeLink: activeLink),
-//           ),
-//       ],
-//     );
-//   }
-// }
 
 class SubmissionTiles extends StatelessWidget {
   SubmissionTiles({
@@ -339,18 +204,15 @@ class SubmissionTiles extends StatelessWidget {
     required this.submissions,
     required this.onTypeChanged,
     this.activeLink = true,
-    // this.showTrending = true,
     this.showTypeSelector = true,
-    // this.showLocationSelector = true,
   }) : super(key: key);
 
   final SubType type;
   final List<SubmissionNotifier>? submissions;
   final Function(SubType) onTypeChanged;
   final bool activeLink;
-  // final bool showTrending;
+
   final bool showTypeSelector;
-  // final bool showLocationSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -369,47 +231,7 @@ class SubmissionTiles extends StatelessWidget {
           values: SubType.values,
           onChanged: onTypeChanged,
         ),
-        // Row(
-        //   children: [
-        //     if (showTypeSelector)
-        //       DropdownButton<SubType>(
-        //         value: type,
-        //         onChanged: (v) {
-        //           if (v != null) onTypeChanged(v);
-        //         },
-        //         items: SubType.values
-        //             .map<DropdownMenuItem<SubType>>((SubType type) {
-        //           return DropdownMenuItem<SubType>(
-        //             value: type,
-        //             child: Text(type.toString()),
-        //           );
-        //         }).toList(),
-        //       ),
-        //     Spacer(),
-        //     Text('...'),
-        //   ],
-        // ),
         SizedBox(height: 50),
-        // ],
-        // if (showTrending) ...[
-        //   Text('Trending today'),
-        //   SizedBox(
-        //     height: 200,
-        //     child: CustomScroll(
-        //       child: ListView(
-        //         scrollDirection: Axis.horizontal,
-        //         children: <Widget>[
-        //           for (int i = 0; i < 10; i++)
-        //             Padding(
-        //               padding: EdgeInsets.only(left: 10),
-        //               child: SizedPlaceholder(width: 200, height: 200 * 3 / 4),
-        //             ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        //   SizedBox(height: 10),
-        // ],
         for (final sub in submissions ?? [])
           ChangeNotifierProvider<SubmissionNotifier>.value(
             value: sub,
@@ -427,18 +249,15 @@ class SearchSubmissionTiles extends StatelessWidget {
     required this.submissions,
     required this.onTypeChanged,
     this.activeLink = true,
-    // this.showTrending = true,
     this.showTypeSelector = true,
-    // this.showLocationSelector = true,
   }) : super(key: key);
 
   final Sort sort;
   final List<SubmissionNotifier>? submissions;
   final Function(Sort) onTypeChanged;
   final bool activeLink;
-  // final bool showTrending;
+
   final bool showTypeSelector;
-  // final bool showLocationSelector;
 
   @override
   Widget build(BuildContext context) {
@@ -456,46 +275,7 @@ class SearchSubmissionTiles extends StatelessWidget {
           values: Sort.values,
           onChanged: onTypeChanged,
         ),
-        // Row(
-        //   children: [
-        //     if (showTypeSelector)
-        //       DropdownButton<Sort>(
-        //         value: sort,
-        //         onChanged: (v) {
-        //           if (v != null) onTypeChanged(v);
-        //         },
-        //         items: Sort.values.map<DropdownMenuItem<Sort>>((Sort sort) {
-        //           return DropdownMenuItem<Sort>(
-        //             value: sort,
-        //             child: Text(sort.toString()),
-        //           );
-        //         }).toList(),
-        //       ),
-        //     Spacer(),
-        //     Text('...'),
-        //   ],
-        // ),
         SizedBox(height: 50),
-        // ],
-        // if (showTrending) ...[
-        //   Text('Trending today'),
-        //   SizedBox(
-        //     height: 200,
-        //     child: CustomScroll(
-        //       child: ListView(
-        //         scrollDirection: Axis.horizontal,
-        //         children: <Widget>[
-        //           for (int i = 0; i < 10; i++)
-        //             Padding(
-        //               padding: EdgeInsets.only(left: 10),
-        //               child: SizedPlaceholder(width: 200, height: 200 * 3 / 4),
-        //             ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        //   SizedBox(height: 10),
-        // ],
         for (final sub in submissions ?? [])
           ChangeNotifierProvider<SubmissionNotifier>.value(
             value: sub,

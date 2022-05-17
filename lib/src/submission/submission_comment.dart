@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_reddit_prototype/src/util/date_time.dart';
 import 'package:provider/provider.dart';
 
 import '../reply/reply_screen.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/comment.dart';
-import '../reddit_api/like.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
-import '../util/snackbar.dart';
 import '../widget/awards.dart';
 import '../widget/custom_popup_menu_button.dart';
-import '../widget/icon_text.dart';
 import '../widget/like.dart';
 import '../widget/save.dart';
 import 'style.dart';
@@ -142,11 +137,9 @@ class SubmissionComment extends StatelessWidget {
             );
           },
           icon: Icon(Icons.reply),
-          // icon: IconText(icon: Icon(Icons.reply), text: Text('Reply')),
         ),
         SizedBox(width: 20),
-        // _likeButton(context, notifier),
-        LikeButton(likable:notifier),
+        LikeButton(likable: notifier),
       ],
     );
   }
@@ -160,16 +153,6 @@ class SubmissionComment extends StatelessWidget {
     return CustomPopupMenuButton(
       icon: Icon(Icons.more_vert),
       items: [
-        // CustomPopupMenuItem(
-        //   icon: Icon(
-        //     comment.saved ? Icons.bookmark : Icons.bookmark_border,
-        //   ),
-        //   label: comment.saved ? 'Unsave' : 'Save',
-        //   onTap: () {
-        //     return (comment.saved ? notifier.unsave() : notifier.save())
-        //         .catchError((e) => showErrorSnackBar(context, e));
-        //   },
-        // ),
         savePopupMenuItem(context, notifier),
 
         CustomPopupMenuItem(
@@ -204,35 +187,4 @@ class SubmissionComment extends StatelessWidget {
       ],
     );
   }
-
-  // Widget _likeButton(BuildContext context, CommentNotifier notifier) {
-  //   final comment = notifier.comment;
-
-  //   return Row(
-  //     children: [
-  //       IconButton(
-  //         onPressed: () {
-  //           notifier.like().catchError((e) => showErrorSnackBar(context, e));
-  //         },
-  //         icon: Icon(
-  //           Icons.expand_less,
-  //           color: comment.likes == Like.up ? Colors.green : null,
-  //         ),
-  //       ),
-  //       Text(comment.score.toString()),
-  //       // TODO: disable on progress
-  //       IconButton(
-  //         onPressed: () {
-  //           notifier
-  //               .dislike()
-  //               .catchError((e) => showErrorSnackBar(context, e));
-  //         },
-  //         icon: Icon(
-  //           Icons.expand_more,
-  //           color: comment.likes == Like.down ? Colors.red : null,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }

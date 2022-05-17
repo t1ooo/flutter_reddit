@@ -3,7 +3,6 @@ import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
 import 'package:flutter_reddit_prototype/src/widget/swipe_to_refresh.dart';
 import 'package:provider/provider.dart';
 
-import '../submission/submission_comment.dart';
 // ignore: unused_import
 import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';

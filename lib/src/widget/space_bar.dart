@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '../search/search_by_subreddit_screen.dart';
@@ -32,55 +29,12 @@ class SpaceBarIcon extends StatelessWidget {
               spreadRadius: 15,
             )
           ],
-          // shape: CircleBorder(side: BorderSide()),
           shape: CircleBorder(),
         ),
       ),
     );
   }
 }
-
-// class SpaceBarIconButton extends StatelessWidget {
-//   SpaceBarIconButton({
-//     Key? key,
-//     required this.icon,
-//     this.onPressed,
-//   }) : super(key: key);
-
-//   final Icon icon;
-//   final void Function()? onPressed;
-
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: EdgeInsets.symmetric(horizontal: 10),
-//       child: IconButton(
-//         padding: EdgeInsets.zero,
-//         onPressed: () {
-//           Navigator.maybePop(context);
-//         },
-//         // icon: IconTheme(
-//         icon: Container(
-//           child: IconTheme(
-//             data: appBarIconThemeDark,
-//             child: icon,
-//           ),
-//           decoration: ShapeDecoration(
-//             // color: Colors.white,
-//             shadows: [
-//               BoxShadow(
-//                 color: Colors.white54,
-//                 blurRadius: 15,
-//                 spreadRadius: 15,
-//               )
-//             ],
-//             // shape: CircleBorder(side: BorderSide()),
-//             shape: CircleBorder(),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle(this.text, {Key? key}) : super(key: key);
@@ -99,15 +53,7 @@ class AppBarTitle extends StatelessWidget {
 class AppBarBackButton extends StatelessWidget {
   AppBarBackButton({
     Key? key,
-    // this.theme = appBarIconThemeDark,
   }) : super(key: key);
-
-  // AppBarBackButton.black({
-  //   Key? key,
-  //   this.theme = appBarIconThemeDark,
-  // });
-
-  // final IconThemeData theme;
 
   Widget build(BuildContext context) {
     return Padding(
@@ -117,52 +63,16 @@ class AppBarBackButton extends StatelessWidget {
         onPressed: () {
           Navigator.maybePop(context);
         },
-        // icon: IconTheme(
-        //   data: theme,
-        //   child: Icon(Icons.arrow_back),
-        // ),
         icon: SpaceBarIcon(Icons.arrow_back),
-
-        // icon: Stack(
-        //   children: <Widget>[
-        //     Positioned(
-        //       // left: 1.0,
-        //       top: 0.0,
-        //       child: Icon(Icons.arrow_back, color: Colors.black54, size:35),
-        //     ),
-        //     Positioned(
-        //       // left: 1.0,
-        //       top: 2.0,
-        //       left: 2.0,
-        //       child: Icon(Icons.arrow_back, color: Colors.white, size:28),
-        //     ),
-        //     // Icon(Icons.arrow_back, color: Colors.white, size:28),
-        //   ],
-        // ),
       ),
     );
-    // return SearchIconButton(
-    //   onPressed: () {
-    //     Navigator.of(context).pop(); // does not work
-    //   },
-    //   iconData: Icons.arrow_back,
-    //   theme: appBarIconTheme,
-    // );
   }
 }
 
 class AppBarCloseButton extends StatelessWidget {
   AppBarCloseButton({
     Key? key,
-    // this.theme = appBarIconThemeDark,
   }) : super(key: key);
-
-  // AppBarBackButton.black({
-  //   Key? key,
-  //   this.theme = appBarIconThemeDark,
-  // });
-
-  // final IconThemeData theme;
 
   Widget build(BuildContext context) {
     return Padding(
@@ -172,66 +82,11 @@ class AppBarCloseButton extends StatelessWidget {
         onPressed: () {
           Navigator.maybePop(context);
         },
-        // icon: IconTheme(
-        //   data: theme,
-        //   child: Icon(Icons.arrow_back),
-        // ),
         icon: SpaceBarIcon(Icons.close),
-
-        // icon: Stack(
-        //   children: <Widget>[
-        //     Positioned(
-        //       // left: 1.0,
-        //       top: 0.0,
-        //       child: Icon(Icons.arrow_back, color: Colors.black54, size:35),
-        //     ),
-        //     Positioned(
-        //       // left: 1.0,
-        //       top: 2.0,
-        //       left: 2.0,
-        //       child: Icon(Icons.arrow_back, color: Colors.white, size:28),
-        //     ),
-        //     // Icon(Icons.arrow_back, color: Colors.white, size:28),
-        //   ],
-        // ),
       ),
     );
-    // return SearchIconButton(
-    //   onPressed: () {
-    //     Navigator.of(context).pop(); // does not work
-    //   },
-    //   iconData: Icons.arrow_back,
-    //   theme: appBarIconTheme,
-    // );
   }
 }
-
-// class PrimarySliverAppBar extends StatelessWidget {
-//   PrimarySliverAppBar({
-//     Key? key,
-//     required this.awardIcons,
-//     required this.totalAwardsReceived,
-//   }) : super(key: key);
-
-//   final List<String> awardIcons;
-//   final int totalAwardsReceived;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SliverAppBar(
-//       // stretch: true,
-//       pinned: true,
-//       // snap: true,
-//       primary: true,
-//       // leading: Icon(Icons.back_hand),
-//       automaticallyImplyLeading: false,
-//       collapsedHeight: 120,
-//       expandedHeight: appBarExpandedHeight,
-
-//       flexibleSpace: flexibleSpace,
-//     );
-//   }
-// }
 
 class SpaceBar extends StatelessWidget {
   SpaceBar({
@@ -241,7 +96,6 @@ class SpaceBar extends StatelessWidget {
     this.leading,
     this.title,
     this.trailing,
-    // this.showSearchForm = true,
   }) : super(key: key);
 
   final String? src;
@@ -283,12 +137,10 @@ class SpaceBar extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    // end: Alignment(
-                    // 0.8, 0.0), // 10% of the width, so there are ten blinds.
                     colors: <Color>[
                       backgroundColor!,
                       Color(backgroundColor!.value - 100),
-                    ], // red to yellow
+                    ],
                   ),
                 ),
               )),
@@ -298,14 +150,6 @@ class SpaceBar extends StatelessWidget {
           right: 0,
           child: Padding(
             padding: EdgeInsets.only(top: 40, right: 10, bottom: 10),
-            // child: Container(height: 80, child: title),
-            // child: ListTile(
-            //   leading: leading ?? SizedBox(width: 40),
-            //   minLeadingWidth: 0,
-            //   contentPadding: EdgeInsets.zero,
-            //   title: Container(height: 80, child: title),
-            //   trailing: trailing,
-            // ),
             child: Row(
               children: [
                 if (leading != null)
@@ -370,13 +214,6 @@ class SearchForm extends StatelessWidget {
                     : SearchScreen(query: query),
               ),
             );
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     // settings: RouteSettings(name: routeName),
-            //     builder: (_) => SearchScreen(query: query),
-            //   ),
-            // );
           }
         },
         cursorColor: blackColor,
@@ -391,7 +228,6 @@ class SearchForm extends StatelessWidget {
           hintText: subreddit != null ? '$subreddit' : 'Search',
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(),
-          // focusColor: black,
         ),
       ),
     );

@@ -7,9 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../subreddit/subreddit_screen.dart';
-import '../widget/list.dart';
-import '../widget/loader.dart';
-import '../widget/network_image.dart';
 
 class SubscriptionTile extends StatelessWidget {
   const SubscriptionTile({Key? key, this.favorite = true}) : super(key: key);
@@ -24,10 +21,6 @@ class SubscriptionTile extends StatelessWidget {
       leading: SizedBox.square(
         dimension: 40,
         child: SubredditIcon(icon: subreddit.communityIcon),
-        // child: (subreddit.subreddit.communityIcon != '')
-        // ? CustomNetworkImageBuilder(
-        // subreddit.subreddit.communityIcon)
-        // : Image.asset('communityIcon.png'),
       ),
       title: Text(subreddit.displayNamePrefixed),
       trailing: favorite
@@ -36,11 +29,7 @@ class SubscriptionTile extends StatelessWidget {
                 (subreddit.userHasFavorited
                         ? notifier.unfavorite()
                         : notifier.favorite())
-                //     .then(
-                //   (_) => context.read<CurrentUserNotifier>().refresh(),
-                //   onError: (e) => showErrorSnackBar(context, e),
-                // );
-                .catchError((e) => showErrorSnackBar(context, e));
+                    .catchError((e) => showErrorSnackBar(context, e));
               },
               icon: Icon(Icons.star,
                   color: subreddit.userHasFavorited ? selectedColor : null),

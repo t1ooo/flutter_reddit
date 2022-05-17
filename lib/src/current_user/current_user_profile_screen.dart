@@ -10,11 +10,5 @@ class CurrentUserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserProfile();
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('User Profile'),
-    //   ),
-    //   body: UserProfile(isCurrentUser: true),
-    // );
   }
 }

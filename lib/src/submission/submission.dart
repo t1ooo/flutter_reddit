@@ -15,9 +15,7 @@ class SubmissionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<SubmissionNotifier>();
 
-    return /* Stack(
-      children: [ */
-        SwipeToRefresh(
+    return SwipeToRefresh(
       onRefresh: () => notifier
           .reloadSubmission()
           .catchError((e) => showErrorSnackBar(context, e)),
@@ -43,16 +41,6 @@ class SubmissionWidget extends StatelessWidget {
               );
             },
           ),
-          // ListView(
-          //   shrinkWrap: true,
-          //   children: [
-          //     for (final comment in notifier.comments)
-          //       ChangeNotifierProvider<CommentNotifier>.value(
-          //         value: comment,
-          //         child: SubmissionComment(),
-          //       ),
-          //   ],
-          // ),
           SizedBox(height: 100),
         ],
       ),

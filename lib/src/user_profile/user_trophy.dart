@@ -19,7 +19,6 @@ class UserTrophy extends StatelessWidget {
       onTap: () {
         showTodoSnackBar(context); // TODO
       },
-      // leading: Image.network(trophy.icon40),
       leading: SizedBox.square(
           dimension: 40, child: CustomNetworkImageBuilder(trophy.icon40)),
       title: Text(trophy.name),

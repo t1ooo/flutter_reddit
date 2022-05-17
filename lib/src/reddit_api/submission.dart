@@ -1,10 +1,7 @@
-import 'package:draw/draw.dart' show CommentForest;
 import 'package:equatable/equatable.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
 
-import '../logging/logging.dart';
-import 'nullable.dart';
 import 'parse.dart';
 import 'comment.dart';
 import 'video.dart';
@@ -37,13 +34,11 @@ class Submission extends Equatable {
     required this.awardIcons,
     required this.totalAwardsReceived,
     required this.likes,
-    // required this.type,
     required this.comments,
     required this.saved,
     required this.preview,
     required this.video,
     required this.postHint,
-    // required this.shortLink,
   });
 
   final String author;
@@ -71,23 +66,12 @@ class Submission extends Equatable {
   final int totalAwardsReceived;
   final Like likes;
   final bool saved;
-  // final SubType? type;
-  // final CommentForest? comments;
+
   final List<Comment>? comments;
-  // final String shortLink;
-  // final List<Previews> preview;
+
   final List<Preview> preview;
   final Video? video;
   final PostHint postHint;
-
-  // static final _log = getLogger('Submission');
-
-  // static const _descLen = 200;
-  // String get desc {
-  //   final text = selftext.replaceAll(RegExp(r'\s+'), ' ');
-  //   // return selftext.length <= _descLen ? selftext : selftext.substring(0, _descLen);
-  //   return text.length <= _descLen ? text : text.substring(0, _descLen) + '...';
-  // }
 
   String get shortLink {
     if (id == '') {
@@ -96,59 +80,46 @@ class Submission extends Equatable {
     return 'https://redd.it/$id';
   }
 
-  // factory Submission.fromDrawSubmission(draw.Submission sub, {required SubType type}) {
   factory Submission.fromJson(
     Map m, {
-    // SubType? type,
-    // CommentForest? comments,
     List<Comment>? comments,
   }) {
     const f = 'Submission';
     return Submission(
       author: parseString(m['author'], '$f.author'),
-      authorFlairText: parseString(m['author_flair_text'], '$f.author_flair_text'),
+      authorFlairText:
+          parseString(m['author_flair_text'], '$f.author_flair_text'),
       awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
       created: parseTime(m['created'], '$f.created'),
       createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
       domain: parseString(m['domain'], '$f.domain'),
       downs: parseInt(m['downs'], '$f.downs'),
-      // edited: parseInt(m['edited'], '$f.edited'),
       hidden: parseBool(m['hidden'], '$f.hidden'),
       id: parseString(m['id'], '$f.id'),
       isVideo: parseBool(m['is_video'], '$f.is_video'),
       linkFlairText: parseString(m['link_flair_text'], '$f.link_flair_text'),
-      totalAwardsReceived: parseInt(m['total_awards_received'], '$f.total_awards_received'),
+      totalAwardsReceived:
+          parseInt(m['total_awards_received'], '$f.total_awards_received'),
       numComments: parseInt(m['num_comments'], '$f.num_comments'),
       over18: parseBool(m['over_18'], '$f.over_18'),
       pinned: parseBool(m['pinned'], '$f.pinned'),
       score: parseInt(m['score'], '$f.score'),
       selftext: parseString(m['selftext'], '$f.selftext'),
       subreddit: parseString(m['subreddit'], '$f.subreddit'),
-      subredditNamePrefixed: parseString(m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
+      subredditNamePrefixed: parseString(
+          m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
       thumbnail: parseUrl(m['thumbnail'], '$f.thumbnail'),
       title: parseString(m['title'], '$f.title'),
       ups: parseInt(m['ups'], '$f.ups'),
       url: parseUrl(m['url'], '$f.url'),
       likes: parseLikes(m['likes'], '$f.likes'),
       saved: parseBool(m['saved'], '$f.saved'),
-      // shortLink: _genShortLink(mapGet(m, 'id', '')),
-      // type: type,
-      // preview: parsePreview(m['preview'], '$f.preview'),
       preview: parsePreview(m['preview'], '$f.preview'),
       video: parseVideo(m['media'], '$f.media'),
       postHint: parsePostHint(m['post_hint'], m['url'], '$f.post_hint'),
       comments: comments,
     );
   }
-
-  // static final _log = getLogger('Submission');
-
-  // static String _genShortLink(String id) {
-  //   if (id == '') {
-  //     return '';
-  //   }
-  //   return 'https://redd.it/$id';
-  // }
 
   @override
   List<Object?> get props {
@@ -158,7 +129,6 @@ class Submission extends Equatable {
       createdUtc,
       domain,
       downs,
-      // edited,
       hidden,
       id,
       isVideo,
@@ -178,7 +148,6 @@ class Submission extends Equatable {
       awardIcons,
       totalAwardsReceived,
       likes,
-      // type,
       comments,
       saved,
       shortLink,
@@ -247,46 +216,10 @@ class Submission extends Equatable {
       totalAwardsReceived: totalAwardsReceived ?? this.totalAwardsReceived,
       likes: likes ?? this.likes,
       saved: saved ?? this.saved,
-      // type: type ?? this.type,
       comments: comments ?? this.comments,
       preview: preview ?? this.preview,
-      // video: video != null ? video.value : this.video,
       video: video != null ? video() : this.video,
       postHint: postHint ?? this.postHint,
     );
   }
 }
-
-// Submission placeholderSubmission() {
-//   return Submission(
-//     author: 'author',
-//     created: DateTime.now(),
-//     createdUtc: DateTime.now(),
-//     domain: 'domain',
-//     downs: 0,
-//     // edited: 0,
-//     hidden: false,
-//     id: 'id',
-//     isVideo: false,
-//     linkFlairText: 'linkFlairText',
-//     authorFlairText: 'authorFlairText',
-//     numComments: 0,
-//     over18: false,
-//     pinned: true,
-//     score: 0,
-//     selftext: 'selftext',
-//     subreddit: 'subreddit',
-//     subredditNamePrefixed: 'subredditNamePrefixed',
-//     thumbnail: 'thumbnail',
-//     title: 'title',
-//     likes: 0,
-//     url: 'https://example.com',
-//     awardIcons: [],
-//     totalAwardsReceived: 0,
-//     likes: Like.none,
-//     type: SubType.best,
-//     comments: [],
-//     saved: false,
-//     // shortLink: '',
-//   );
-// }

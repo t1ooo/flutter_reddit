@@ -20,25 +20,7 @@ final _root = Logger(_rootName);
 
 setLevel(Level level) => _root.level = level;
 
-// void setLevelByName(String name, Level level) {
-//   for (final e in _loggers.entries) {
-//     if (e.key == name) {
-//       e.value.level = level;
-//       break;
-//     }
-//   }
-//   throw Exception('logger not found: $name');
-// }
-
-// void setLevelByName(String name, Level level) {
-//   _loggers[name]?.level = level;
-// }
-
 void setLevelByName(String name, Level level) {
-  // A local, top-level, or class variable that’s declared as final
-  // is initialized the first time it’s used.
-  // Therefore, we try to set the level, otherwise we set the level
-  // during initialization in [getLogger].
   _loggers[name]?.level = level;
   _levels[name] = level;
 }

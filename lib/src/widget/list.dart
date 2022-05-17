@@ -1,9 +1,4 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
-import 'network_image.dart';
 
 class CustomListView extends StatelessWidget {
   CustomListView({
@@ -39,7 +34,6 @@ class ListTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 40,
       color: Theme.of(context).scaffoldBackgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Text(

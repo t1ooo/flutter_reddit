@@ -14,7 +14,7 @@ import '../widget/sliver_app_bar.dart';
 import '../widget/space_bar.dart';
 
 Future<void> initVideoPlayer() async {
-  // dispose and clear players after hot restart
+  /// dispose and clear players after hot restart
   players.forEach((_, p) => p.dispose());
   players.clear();
   await DartVLC.initialize(useFlutterNativeView: true);
@@ -185,7 +185,6 @@ class ImageLink extends StatelessWidget {
                         Icon(
                           Icons.open_in_new,
                           color: Colors.white,
-                          // size: 100,
                         ),
                       ],
                     ),
@@ -237,11 +236,9 @@ class ImageScreen extends StatelessWidget {
   ImageScreen({
     Key? key,
     required this.imageUrl,
-    // required this.size,
   }) : super(key: key);
 
   final String imageUrl;
-  // final Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +439,6 @@ class _ImageSliderState extends State<ImageSlider> {
             spreadRadius: 15,
           )
         ],
-        // shape: CircleBorder(side: BorderSide()),
         shape: CircleBorder(),
       ),
     );

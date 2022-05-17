@@ -14,7 +14,6 @@ class Reply extends StatefulWidget {
 
   final String id;
   final bool isComment;
-  // final Function(String) onSubmit;
 
   @override
   State<Reply> createState() => _ReplyState();
@@ -44,10 +43,6 @@ class _ReplyState extends State<Reply> {
           },
           decoration: InputDecoration(hintText: 'You comment'),
         ),
-        // ElevatedButton(
-        //   onPressed: submit,
-        //   child: Text('Post'),
-        // ),
       ],
     );
   }

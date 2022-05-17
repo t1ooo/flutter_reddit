@@ -3,8 +3,6 @@ import 'package:flutter_reddit_prototype/src/submission/submission_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../style/style.dart';
-import '../submission/style.dart';
 import '../util/date_time.dart';
 
 class UserComment extends StatelessWidget {
@@ -14,12 +12,6 @@ class UserComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Card(
-    //   child: Padding(
-    //     padding: cardPadding,
-    //     child: body(context),
-    //   ),
-    // );
     return Container(
         color: Theme.of(context).primaryColor, child: body(context));
   }
@@ -40,7 +32,6 @@ class UserComment extends StatelessWidget {
             },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        // padding: commentPadding(0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

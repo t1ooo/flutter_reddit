@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
 import 'subreddit.dart';
 import 'parse.dart';
 
@@ -21,7 +20,6 @@ class User extends Equatable {
     required this.totalKarma,
     required this.acceptChats,
     required this.name,
-    // required this.displayNamePrefixed,
     required this.created,
     required this.createdUtc,
     required this.snoovatarImg,
@@ -46,7 +44,7 @@ class User extends Equatable {
   final int totalKarma;
   final bool acceptChats;
   final String name;
-  // final String displayNamePrefixed;
+
   final DateTime created;
   final DateTime createdUtc;
   final String snoovatarImg;
@@ -66,14 +64,14 @@ class User extends Equatable {
       isGold: parseBool(m['is_gold'], '$f.is_gold'),
       isMod: parseBool(m['is_mod'], '$f.is_mod'),
       awarderKarma: parseInt(m['awarder_karma'], '$f.awarder_karma'),
-      hasVerifiedEmail: parseBool(m['has_verified_email'], '$f.has_verified_email'),
+      hasVerifiedEmail:
+          parseBool(m['has_verified_email'], '$f.has_verified_email'),
       iconImg: parseUrl(m['icon_img'], '$f.icon_img'),
       linkKarma: parseInt(m['link_karma'], '$f.link_karma'),
       isBlocked: parseBool(m['is_blocked'], '$f.is_blocked'),
       totalKarma: parseInt(m['total_karma'], '$f.total_karma'),
       acceptChats: parseBool(m['accept_chats'], '$f.accept_chats'),
       name: parseString(m['name'], '$f.name'),
-      // displayNamePrefixed: mapGetNested(m, ['subreddit','display_name_prefixed'], '', _log),
       created: parseTime(m['created'], '$f.created'),
       createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
       snoovatarImg: parseString(m['snoovatar_img'], '$f.snoovatar_img'),
@@ -83,8 +81,6 @@ class User extends Equatable {
       subreddit: Subreddit.fromJson(cast(m['subreddit'], {}, '$f.subreddit')),
     );
   }
-
-  // static final _log = getLogger('User');
 
   @override
   List<Object> get props {
@@ -104,7 +100,6 @@ class User extends Equatable {
       totalKarma,
       acceptChats,
       name,
-      // displayNamePrefixed,
       created,
       createdUtc,
       snoovatarImg,

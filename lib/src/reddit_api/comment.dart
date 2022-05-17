@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../logging/logging.dart';
 import 'parse.dart';
 import 'like.dart';
 
-// class Comment extends Equatable {
+// TODO: add equatable
 class Comment {
   Comment({
     required this.subredditId,
@@ -71,7 +70,6 @@ class Comment {
       subreddit: parseString(m['subreddit'], '$f.subreddit'),
       linkAuthor: parseString(m['link_author'], '$f.link_author'),
       likes: parseLikes(m['likes'], '$f.likes'),
-      // replies: parseReplies(m['replies']?['data']?['children'], '$f.replies.data.children'),
       replies: parseReplies(m['replies'], '$f.replies'),
       saved: parseBool(m['saved'], '$f.saved'),
       id: parseString(m['id'], '$f.id'),
@@ -101,7 +99,7 @@ class Comment {
       name: parseString(m['name'], '$f.name'),
       subredditNamePrefixed: parseString(
           m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
-      treatmentTags: parseListString(m['treatment_tags'],'$f.treatment_tags'),
+      treatmentTags: parseListString(m['treatment_tags'], '$f.treatment_tags'),
       created: parseTime(m['created'], '$f.created'),
       createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
       locked: parseBool(m['locked'], '$f.locked'),
@@ -111,8 +109,6 @@ class Comment {
       awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
     );
   }
-
-  // static final _log = getLogger('Comment');
 
   final String subredditId;
   final bool authorIsBlocked;

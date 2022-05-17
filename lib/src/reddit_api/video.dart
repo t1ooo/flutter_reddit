@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
-import '../logging/logging.dart';
 
 class Video extends Equatable {
   Video({
@@ -22,7 +21,7 @@ class Video extends Equatable {
   final int duration;
   final bool isGif;
 
-  // static final _log = getLogger('Video');
+ 
 
   Video copyWith({
     int? bitrateKbps,

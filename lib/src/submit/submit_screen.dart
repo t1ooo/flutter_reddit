@@ -6,7 +6,6 @@ import 'package:flutter_reddit_prototype/src/widget/sliver_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/subreddit.dart';
 import '../subreddit/subreddit_icon.dart';
 import '../util/snackbar.dart';
 import '../widget/space_bar.dart';
@@ -15,10 +14,7 @@ import 'choose_subreddit_screen.dart';
 class SubmitScreen extends StatefulWidget {
   SubmitScreen({
     Key? key,
-    // required this.id,
   }) : super(key: key);
-
-  // final String id;
 
   @override
   State<SubmitScreen> createState() => _SubmitScreenState();
@@ -36,7 +32,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             PrimarySliverAppBar(
-              // forceElevated: true,
               collapsed: true,
               flexibleSpace: SpaceBar(
                 leading: AppBarCloseButton(),
@@ -61,12 +56,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
   Widget _form(BuildContext context) {
     return ListView(
       children: [
-        // SizedBox(height: topPadding),
-        // Text(
-        //   (widget.isComment)
-        //       ? context.read<CommentNotifier>().comment.body
-        //       : context.read<SubmissionNotifier>().submission.title,
-        // ),
         InkWell(
           onTap: () {
             Navigator.push(
@@ -104,9 +93,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
         SizedBox(height: 20),
         TextField(
           onChanged: (v) => _title = v,
-          // onSubmitted: (v) {
-          //   _submit();
-          // },
           cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'An interesting title',
@@ -161,7 +147,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
       },
       onError: (e) => showErrorSnackBar(context, e),
     );
-    // .catchError((e) => showErrorSnackBar(context, e));
 
     Navigator.pop(context);
   }

@@ -28,48 +28,6 @@ T cast<T>(dynamic data, T defaultValue, [String? name]) {
   }
 }
 
-// List<T> castList<T>(dynamic data, List<T> defaultValue, [String? name]) {
-//   try {
-//     if (data == null) {
-//       return defaultValue;
-//     }
-
-//     return (data as List).cast<T>();
-//   } on TypeError catch (_) {
-//     _log('fail to cast: $data to <$T>', name);
-//     return defaultValue;
-//   }
-// }
-
-// T mapGet<T>(Map m, String key, T defaultValue, [String? name]) {
-//   final val = m[key];
-//   try {
-//     if (val == null) {
-//       return defaultValue;
-//     }
-
-//     return val as T;
-//   } on TypeError catch (_) {
-//     _log('fail to cast: {$key: $val} to <$T>', name);
-//     return defaultValue;
-//   }
-// }
-
-// List<T> mapGetList<T>(Map m, String key, List<T> defaultValue, [String? name]) {
-//   final val = m[key];
-//   try {
-//     if (val == null) {
-//       return defaultValue;
-//     }
-
-//     return (val as List).cast<T>();
-//   } on TypeError catch (_) {
-//     // _log.warning(e);
-//     _log('fail to cast: {$key: $val} to List<$T>', name);
-//     return defaultValue;
-//   }
-// }
-
 final colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive: false);
 
 String parseColor(dynamic data, [String? name]) {
@@ -131,11 +89,6 @@ String parseUrl(dynamic data, [String? name]) {
     return '';
   }
 
-  // final s = cast<String>(data, '');
-  // if (s == '') {
-  //   _log('fail to parse uri: $data', name);
-  //   return '';
-  // }
   if (!(data.startsWith('http://') || data.startsWith('https://'))) {
     _log('fail to parse uri: $data', name);
     return '';
@@ -143,18 +96,6 @@ String parseUrl(dynamic data, [String? name]) {
 
   return data.replaceAll('&amp;', '&');
 }
-
-// Uri? parseUrl(dynamic data, [String? name]) {
-//   if (data == null ||
-//       data == '' ||
-//       data == 'self' ||
-//       data == 'default' ||
-//       data == 'image') {
-//     return null;
-//   }
-
-//   return Uri.tryParse(data.replaceAll('&amp;', '&'));
-// }
 
 DateTime parseTime(dynamic data, [String? name]) {
   return _parseTime(data, false, name);
