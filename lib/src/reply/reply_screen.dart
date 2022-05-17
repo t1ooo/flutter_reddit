@@ -10,11 +10,9 @@ import '../widget/snackbar.dart';
 class ReplyScreen extends StatefulWidget {
   ReplyScreen({
     Key? key,
-    required this.id, // TODO: remove
     this.isComment = false,
   }) : super(key: key);
 
-  final String id;
   final bool isComment;
 
   @override

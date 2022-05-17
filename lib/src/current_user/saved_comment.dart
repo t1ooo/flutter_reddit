@@ -96,10 +96,7 @@ class SavedComment extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider<CommentNotifier>.value(
                   value: context.read<CommentNotifier>(),
-                  child: ReplyScreen(
-                    id: comment.id,
-                    isComment: true,
-                  ),
+                  child: ReplyScreen(isComment: true),
                 ),
               ),
             );

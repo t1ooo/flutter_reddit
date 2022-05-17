@@ -9,10 +9,7 @@ import '../style/style.dart';
 class ReplyField extends StatelessWidget {
   const ReplyField({
     Key? key,
-    required this.id, // TODO: remove
   }) : super(key: key);
-
-  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class ReplyField extends StatelessWidget {
                 builder: (_) =>
                     ChangeNotifierProvider<SubmissionNotifier>.value(
                   value: context.read<SubmissionNotifier>(),
-                  child: ReplyScreen(id: id),
+                  child: ReplyScreen(),
                 ),
               ),
             );

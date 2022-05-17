@@ -51,7 +51,7 @@ class _SubmissionScreen extends StatelessWidget {
     final submission = context.read<SubmissionNotifier>().submission;
 
     return Scaffold(
-      bottomNavigationBar: ReplyField(id: submission.id),
+      bottomNavigationBar: ReplyField(),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
