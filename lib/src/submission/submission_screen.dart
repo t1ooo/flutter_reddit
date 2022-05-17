@@ -8,6 +8,7 @@ import '../notifier/reddir_notifier.v4_2.dart';
 import '../reply/reply_field.dart';
 import '../util/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
+import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/space_bar.dart';
 import 'submission.dart';
@@ -22,7 +23,22 @@ class SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SubmissionScreen();
+    if (id == null) {
+      return _SubmissionScreen();
+    }
+
+    final notifier = context.read<SubmissionLoaderNotifier>();
+
+    return Loader<SubmissionNotifier>(
+      load: (_) => notifier.loadSubmission(id!),
+      data: (_) => notifier.submission,
+      onData: (_, submission) {
+        return ChangeNotifierProvider<SubmissionNotifier>.value(
+          value: submission,
+          child: _SubmissionScreen(),
+        );
+      },
+    );
   }
 }
 
@@ -33,9 +49,10 @@ class _SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final submission = context.read<SubmissionNotifier>().submission;
+
     return Scaffold(
-      bottomNavigationBar:
-          ReplyField(id: context.read<SubmissionNotifier>().submission.id),
+      bottomNavigationBar: ReplyField(id: submission.id),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -44,8 +61,7 @@ class _SubmissionScreen extends StatelessWidget {
               PrimarySliverAppBar(
                 collapsed: true,
                 flexibleSpace: SpaceBar(
-                  backgroundColor: generateColor(
-                      context.read<SubmissionNotifier>().submission.id),
+                  backgroundColor: generateColor(submission.id),
                   leading: AppBarBackButton(),
                   trailing: _submissionMenu(context),
                 ),
