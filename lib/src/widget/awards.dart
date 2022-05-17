@@ -15,6 +15,7 @@ class Awards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (totalAwardsReceived == 0) return Container();
+
     return Row(children: [
       for (final icon in awardIcons)
         CustomNetworkImage(icon, onData: (_, image) {

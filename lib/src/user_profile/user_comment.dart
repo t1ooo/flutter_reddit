@@ -12,48 +12,47 @@ class UserComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Theme.of(context).primaryColor, child: body(context));
-  }
-
-  Widget body(BuildContext context) {
     final notifier = context.read<CommentNotifier>();
     final comment = notifier.comment;
-    return InkWell(
-      onTap: comment.submissionId == ''
-          ? null
-          : () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SubmissionScreen(id: comment.submissionId),
-                ),
-              );
-            },
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              comment.linkTitle,
-              textScaleFactor: 1.7,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text(comment.subredditNamePrefixed),
-                Text(' • '),
-                Text(formatDateTime(comment.created)),
-              ],
-            ),
-            SizedBox(height: 10),
-            Text(comment.body),
-            Text(comment.isSubmitter.toString()),
-            Divider(),
-          ],
+
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: InkWell(
+        onTap: comment.submissionId == ''
+            ? null
+            : () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SubmissionScreen(id: comment.submissionId),
+                  ),
+                );
+              },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                comment.linkTitle,
+                textScaleFactor: 1.7,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Text(comment.subredditNamePrefixed),
+                  Text(' • '),
+                  Text(formatDateTime(comment.created)),
+                ],
+              ),
+              SizedBox(height: 10),
+              Text(comment.body),
+              Text(comment.isSubmitter.toString()),
+              Divider(),
+            ],
+          ),
         ),
       ),
     );

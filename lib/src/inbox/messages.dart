@@ -27,45 +27,43 @@ class Messages extends StatelessWidget {
             shrinkWrap: true,
             children: [
               for (final message in messages) ...[
-                Container(
-                  child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              ChangeNotifierProvider<MessageNotifier>.value(
-                            value: message,
-                            child: MessageScreen(),
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            ChangeNotifierProvider<MessageNotifier>.value(
+                          value: message,
+                          child: MessageScreen(),
+                        ),
+                      ),
+                    );
+                  },
+                  leading: Icon(Icons.mail),
+                  title: Text(message.message.subject),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        message.message.body,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text(
+                            'u/${message.message.author}',
+                            style: TextStyle(color: Colors.red),
                           ),
-                        ),
-                      );
-                    },
-                    leading: Icon(Icons.mail),
-                    title: Text(message.message.subject),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          message.message.body,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text(
-                              'u/${message.message.author}',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            Text(' • '),
-                            Text(formatDateTime(message.message.created)),
-                          ],
-                        ),
-                      ],
-                    ),
+                          Text(' • '),
+                          Text(formatDateTime(message.message.created)),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Divider(height: 0),
