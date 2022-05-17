@@ -1,9 +1,6 @@
 // TODO: optimistic updates
 // TODO: auto disabled buttons
 // TODO: remove unused containers
-// TODO: reddit api
-  // convert stream to future<list>
-  // consistent method names
 // TODO: mobile login
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: use catchFutureError

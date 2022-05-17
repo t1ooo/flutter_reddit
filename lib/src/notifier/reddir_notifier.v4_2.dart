@@ -104,10 +104,8 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
       _sort = sort;
       _subredditName = subredditName;
 
-      _submissions = (await _redditApi
-              .search(query,
-                  limit: _limit, sort: _sort, subreddit: _subredditName)
-              .toList())
+      _submissions = (await _redditApi.search(query,
+              limit: _limit, sort: _sort, subreddit: _subredditName))
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -150,10 +148,9 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
       if (_subreddits != null && _query == query) return;
       _query = query;
 
-      _subreddits =
-          (await _redditApi.searchSubreddits(query, limit: _limit).toList())
-              .map((v) => SubredditNotifier(_redditApi, v))
-              .toList();
+      _subreddits = (await _redditApi.searchSubreddits(query, limit: _limit))
+          .map((v) => SubredditNotifier(_redditApi, v))
+          .toList();
       notifyListeners();
     }, 'fail to search subreddits');
   }
@@ -290,7 +287,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   @override
-  Stream<Submission> _loadSubmissions() {
+  Future<List<Submission>> _loadSubmissions() {
     return _redditApi.subredditSubmissions(name, limit: _limit, type: _subType);
   }
 
@@ -371,14 +368,14 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
       if (_submissions != null && _subType == subType) return;
       _subType = subType;
 
-      _submissions = (await _loadSubmissions().toList())
+      _submissions = (await _loadSubmissions())
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to search');
   }
 
-  Stream<Submission> _loadSubmissions();
+  Future<List<Submission>> _loadSubmissions();
 }
 
 // TODO: move to current user
@@ -389,7 +386,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
   static final _log = getLogger('HomeFrontNotifier');
 
   @override
-  Stream<Submission> _loadSubmissions() {
+  Future<List<Submission>> _loadSubmissions() {
     return _redditApi.front(limit: _limit, type: _subType);
   }
 
@@ -407,7 +404,7 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
   static final _log = getLogger('HomeFrontNotifier');
 
   @override
-  Stream<Submission> _loadSubmissions() {
+  Future<List<Submission>> _loadSubmissions() {
     return _redditApi.popular(limit: _limit, type: _subType);
   }
 
@@ -720,10 +717,9 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   Future<void> loadSubmissions() {
     return _try(() async {
       if (_submissions != null) return;
-      _submissions =
-          (await _redditApi.userSubmissions(_name, limit: _limit).toList())
-              .map((v) => SubmissionNotifier(_redditApi, v))
-              .toList();
+      _submissions = (await _redditApi.userSubmissions(_name, limit: _limit))
+          .map((v) => SubmissionNotifier(_redditApi, v))
+          .toList();
       notifyListeners();
     }, 'fail to load user submissions');
   }
@@ -739,7 +735,7 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   Future<void> loadComments() {
     return _try(() async {
       if (_comments != null) return;
-      _comments = (await _redditApi.userComments(_name, limit: _limit).toList())
+      _comments = (await _redditApi.userComments(_name, limit: _limit))
           .map((v) => CommentNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -892,8 +888,7 @@ class CurrentUserNotifier extends UserNotifier with PropertyListener {
     if (_subreddits != null) {
       return;
     }
-    _subreddits = await _redditApi
-        .currentUserSubreddits(limit: _limit)
+    _subreddits = (await _redditApi.currentUserSubreddits(limit: _limit))
         .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
         .toList();
     notifyListeners();
@@ -928,8 +923,7 @@ class CurrentUserNotifier extends UserNotifier with PropertyListener {
       if (_inboxMessages != null) {
         return;
       }
-      _inboxMessages = await _redditApi
-          .inboxMessages()
+      _inboxMessages = (await _redditApi.inboxMessages())
           .map((v) => MessageNotifier(_redditApi, v))
           .toList();
       notifyListeners();

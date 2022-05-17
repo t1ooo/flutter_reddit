@@ -35,17 +35,19 @@ class UserSaved {
   List<Comment> comments;
 }
 
-// TODO: rename commentSave -> saveComment
 abstract class RedditApi {
-  Stream<Submission> front({required int limit, required FrontSubType type});
-  Stream<Submission> popular({required int limit, required SubType type});
+  Future<List<Submission>> front({
+    required int limit,
+    required FrontSubType type,
+  });
+  Future<List<Submission>> popular({required int limit, required SubType type});
 
   Future<Subreddit> subreddit(String name);
   // Future<String> subredditIcon(String name);
 
   Future<User> user(String name);
-  Stream<Comment> userComments(String name, {required int limit});
-  Stream<Submission> userSubmissions(String name, {required int limit});
+  Future<List<Comment>> userComments(String name, {required int limit});
+  Future<List<Submission>> userSubmissions(String name, {required int limit});
   Future<List<Trophy>> userTrophies(String name);
   Future<UserSaved> userSaved(String name, {required int limit});
 
@@ -53,7 +55,7 @@ abstract class RedditApi {
   Future<void> subredditUnsubscribe(String name);
   Future<void> subredditFavorite(String name);
   Future<void> subredditUnfavorite(String name);
-  Stream<Submission> subredditSubmissions(
+  Future<List<Submission>> subredditSubmissions(
     String name, {
     required int limit,
     required SubType type,
@@ -71,16 +73,16 @@ abstract class RedditApi {
   Future<Comment> commentReply(String id, String body);
 
   Future<User?> currentUser();
-  Stream<Subreddit> currentUserSubreddits({required int limit});
+  Future<List<Subreddit>> currentUserSubreddits({required int limit});
 
-  Stream<Submission> search(
+  Future<List<Submission>> search(
     String query, {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
   });
-  Stream<Subreddit> searchSubreddits(String query, {required int limit});
-  Stream<Subreddit> searchSubredditsByName(String query);
+  Future<List<Subreddit>> searchSubreddits(String query, {required int limit});
+  Future<List<Subreddit>> searchSubredditsByName(String query);
 
   Future<Submission> submit({
     required String subreddit,
@@ -98,7 +100,7 @@ abstract class RedditApi {
   Future<void> login();
   Future<void> logout();
 
-  Stream<Message> inboxMessages();
+  Future<List<Message>> inboxMessages();
 }
 
 class RedditApiImpl implements RedditApi {
@@ -173,110 +175,145 @@ class RedditApiImpl implements RedditApi {
     return _reddit!;
   }
 
-  Stream<Submission> _submissionsStream(Stream<draw.UserContent> s) async* {
-    await for (final v in s) {
-      // final dsub = cast<draw.Submission?>(v, null);
-      // if (dsub == null) {
-      //   _log.warning('not draw.Submission: $v');
-      //   continue;
-      // }
-      // if (dsub.data == null) {
-      //   _log.warning('draw.Submission.data is empty: $v');
-      //   continue;
-      // }
+  // Future<List<Submission>> _submissionsStream(
+  //     Future<List<draw.UserContent>> s) async {
+  //   s.map
+  //     try {
+  //       Submission.fromJson(
+  //         (v as draw.Submission).data as Map<String, dynamic>,
+  //       );
+  //     } on TypeError catch (_) {
+  //       _log.warning('fail to parse Submission: $v');
+  //       continue;
+  //     } on Exception catch (_) {
+  //       _log.warning('fail to parse Submission: $v');
+  //       continue;
+  //     }
+  //   }
+  // }
 
-      // final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
-      // yield sub;
-
-      try {
-        yield Submission.fromJson(
-          (v as draw.Submission).data as Map<String, dynamic>,
-        );
-      } on TypeError catch (_) {
-        _log.warning('fail to parse Submission: $v');
-        continue;
-      } on Exception catch (_) {
-        _log.warning('fail to parse Submission: $v');
-        continue;
-      }
+  Submission? _parseSubmission(draw.UserContent v) {
+    try {
+      return Submission.fromJson(
+        (v as draw.Submission).data as Map<String, dynamic>,
+      );
+    } on TypeError catch (_) {
+      _log.warning('fail to parse Submission: $v');
+    } on Exception catch (_) {
+      _log.warning('fail to parse Submission: $v');
     }
+    return null;
   }
 
-  Stream<Subreddit> _subredditStream(Stream<draw.Subreddit> s) async* {
-    await for (final v in s) {
-      try {
-        yield Subreddit.fromJson(v.data! as Map<String, dynamic>);
-      } on TypeError catch (_) {
-        _log.warning('fail to parse Subreddit: $v');
-        continue;
-      } on Exception catch (_) {
-        _log.warning('fail to parse Subreddit: $v');
-        continue;
-      }
+  Subreddit? _parseSubreddit(draw.Subreddit v) {
+    try {
+      return Subreddit.fromJson(v.data! as Map<String, dynamic>);
+    } on TypeError catch (_) {
+      _log.warning('fail to parse Subreddit: $v');
+    } on Exception catch (_) {
+      _log.warning('fail to parse Subreddit: $v');
     }
+    return null;
   }
 
-  Stream<Comment> _commentsStream(Stream<draw.UserContent> s) async* {
-    await for (final v in s) {
-      try {
-        yield Comment.fromJson(
-          (v as draw.Comment).data! as Map<String, dynamic>,
-        );
-      } on TypeError catch (_) {
-        _log.warning('fail to parse Comment: $v');
-        continue;
-      } on Exception catch (_) {
-        _log.warning('fail to parse Comment: $v');
-        continue;
-      }
+  Message? _parseMessage(draw.Message v) {
+    try {
+      return Message.fromJson(v.data! as Map<String, dynamic>);
+    } on TypeError catch (_) {
+      _log.warning('fail to parse Message: $v');
+    } on Exception catch (_) {
+      _log.warning('fail to parse Message: $v');
     }
+    return null;
   }
 
-  Stream<Submission> front({required int limit, required FrontSubType type}) {
+  Comment? _parseComment(draw.UserContent v) {
+    try {
+      return Comment.fromJson(
+        (v as draw.Comment).data! as Map<String, dynamic>,
+      );
+    } on TypeError catch (_) {
+      _log.warning('fail to parse Comment: $v');
+    } on Exception catch (_) {
+      _log.warning('fail to parse Comment: $v');
+    }
+    return null;
+  }
+
+  User? _parseUser(draw.Redditor v) {
+    try {
+      return User.fromJson(v.data! as Map<String, dynamic>);
+    } on TypeError catch (_) {
+      _log.warning('fail to parse Comment: $v');
+    } on Exception catch (_) {
+      _log.warning('fail to parse Comment: $v');
+    }
+    return null;
+  }
+
+  Trophy? _parseTrophy(draw.Trophy v) {
+    try {
+      return Trophy.fromJson(v.data! as Map<String, dynamic>);
+    } on TypeError catch (_) {
+      _log.warning('fail to parse Trophy: $v');
+    } on Exception catch (_) {
+      _log.warning('fail to parse Trophy: $v');
+    }
+    return null;
+  }
+
+  Future<List<R>> _parseStream<T, R>(Stream<T> s, R? Function(T) parser) async {
+    return (await s.toList()).map(parser).whereType<R>().toList();
+  }
+
+  Future<List<Submission>> _parseSubmissionStream(
+    Stream<draw.UserContent> s,
+  ) async {
+    return _parseStream<draw.UserContent, Submission>(s, _parseSubmission);
+  }
+
+  Future<List<Comment>> _parseCommentStream(Stream<draw.UserContent> s) async {
+    return _parseStream<draw.UserContent, Comment>(s, _parseComment);
+  }
+
+  Future<List<Subreddit>> _parseSubredditStream(
+      Stream<draw.Subreddit> s) async {
+    return _parseStream<draw.Subreddit, Subreddit>(s, _parseSubreddit);
+  }
+
+  Future<List<Message>> _parseMessageStream(Stream<draw.Message> s) async {
+    return _parseStream<draw.Message, Message>(s, _parseMessage);
+  }
+
+  Future<List<Submission>> front(
+      {required int limit, required FrontSubType type}) {
     final s = reddit.front;
     switch (type) {
       case FrontSubType.best:
-        return _submissionsStream(s.best(limit: limit));
+        return _parseSubmissionStream(s.best(limit: limit));
       case FrontSubType.hot:
-        return _submissionsStream(s.hot(limit: limit));
+        return _parseSubmissionStream(s.hot(limit: limit));
       case FrontSubType.newest:
-        return _submissionsStream(s.newest(limit: limit));
+        return _parseSubmissionStream(s.newest(limit: limit));
       case FrontSubType.top:
-        return _submissionsStream(s.top(limit: limit));
+        return _parseSubmissionStream(s.top(limit: limit));
       case FrontSubType.rising:
-        return _submissionsStream(s.rising(limit: limit));
+        return _parseSubmissionStream(s.rising(limit: limit));
       case FrontSubType.controversial:
-        return _submissionsStream(s.controversial(limit: limit));
+        return _parseSubmissionStream(s.controversial(limit: limit));
     }
   }
 
-  Stream<Submission> popular({required int limit, required SubType type}) {
+  Future<List<Submission>> popular(
+      {required int limit, required SubType type}) {
     return subredditSubmissions('popular', limit: limit, type: type);
   }
 
-  Stream<Subreddit> currentUserSubreddits({required int limit}) {
-    // await for (final v in reddit.user.subreddits(limit: limit)) {
-    //   // if (v.data == null) {
-    //   //   _log.warning('draw.Subreddit.data is empty: $v');
-    //   //   continue;
-    //   // }
-    //   // final sub = Subreddit.fromJson(v.data! as Map<String, dynamic>);
-    //   // yield sub;
-
-    //   try {
-    //     yield Subreddit.fromJson(v.data! as Map<String, dynamic>);
-    //   } on TypeError catch (_) {
-    //     _log.warning('fail to parse Subreddit: $v');
-    //     continue;
-    //   } on Exception catch (_) {
-    //     _log.warning('fail to parse Subreddit: $v');
-    //     continue;
-    //   }
-    // }
-    return _subredditStream(reddit.user.subreddits(limit: limit));
+  Future<List<Subreddit>> currentUserSubreddits({required int limit}) {
+    return _parseSubredditStream(reddit.user.subreddits(limit: limit));
   }
 
-  Stream<Submission> subredditSubmissions(
+  Future<List<Submission>> subredditSubmissions(
     String name, {
     required int limit,
     required SubType type,
@@ -285,26 +322,27 @@ class RedditApiImpl implements RedditApi {
     final s = reddit.subreddit(name);
     switch (type) {
       case SubType.hot:
-        return _submissionsStream(s.hot(limit: limit));
+        return _parseSubmissionStream(s.hot(limit: limit));
       case SubType.newest:
-        return _submissionsStream(s.newest(limit: limit));
+        return _parseSubmissionStream(s.newest(limit: limit));
       case SubType.top:
-        return _submissionsStream(s.top(limit: limit));
+        return _parseSubmissionStream(s.top(limit: limit));
       case SubType.rising:
-        return _submissionsStream(s.rising(limit: limit));
+        return _parseSubmissionStream(s.rising(limit: limit));
       case SubType.controversial:
-        return _submissionsStream(s.controversial(limit: limit));
+        return _parseSubmissionStream(s.controversial(limit: limit));
     }
   }
 
   Future<User> user(String name) async {
     final redditorRef = await reddit.redditor(name);
     final redditor = await redditorRef.populate();
-    return User.fromJson(redditor.data! as Map<String, dynamic>);
+    // return User.fromJson(redditor.data! as Map<String, dynamic>);
+    return _parseUser(redditor)!;
   }
 
   // TODO: MAYBE: add type support
-  Stream<Comment> userComments(
+  Future<List<Comment>> userComments(
     String name, {
     required int limit,
   }) {
@@ -333,11 +371,13 @@ class RedditApiImpl implements RedditApi {
     //     continue;
     //   }
     // }
-    return _commentsStream(reddit.redditor(name).comments.newest(limit: limit));
+    // return _commentsStream(reddit.redditor(name).comments.newest(limit: limit));
+    return _parseCommentStream(
+        reddit.redditor(name).comments.newest(limit: limit));
   }
 
 // TODO: MAYBE: add type support
-  Stream<Submission> userSubmissions(String name, {required int limit}) {
+  Future<List<Submission>> userSubmissions(String name, {required int limit}) {
     // await for (final v
     // in reddit.redditor(name).submissions.newest(limit: limit)) {
     // final dsub = cast<draw.Comment?>(v, null);
@@ -352,30 +392,34 @@ class RedditApiImpl implements RedditApi {
     // final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
     // yield sub;
     // }
-    return _submissionsStream(
+    return _parseSubmissionStream(
         reddit.redditor(name).submissions.newest(limit: limit));
   }
 
   Future<List<Trophy>> userTrophies(String name) async {
-    final drawTrophies = await reddit.redditor('foo').trophies();
-    final trophies = <Trophy>[];
-    for (final v in drawTrophies) {
-      // if (trophy.data == null) {
-      //   _log.warning('draw.Trophy.data is empty: $trophy');
-      //   continue;
-      // }
-      // trophies.add(Trophy.fromJson(trophy.data! as Map<String, dynamic>));
-      try {
-        trophies.add(Trophy.fromJson(v.data! as Map<String, dynamic>));
-      } on TypeError catch (_) {
-        _log.warning('fail to parse Trophy: $v');
-        continue;
-      } on Exception catch (_) {
-        _log.warning('fail to parse Trophy: $v');
-        continue;
-      }
-    }
-    return trophies;
+    // final drawTrophies = await reddit.redditor('foo').trophies();
+    return (await reddit.redditor(name).trophies())
+        .map(_parseTrophy)
+        .whereType<Trophy>()
+        .toList();
+    // final trophies = <Trophy>[];
+    // for (final v in drawTrophies) {
+    //   // if (trophy.data == null) {
+    //   //   _log.warning('draw.Trophy.data is empty: $trophy');
+    //   //   continue;
+    //   // }
+    //   // trophies.add(Trophy.fromJson(trophy.data! as Map<String, dynamic>));
+    //   try {
+    //     trophies.add(Trophy.fromJson(v.data! as Map<String, dynamic>));
+    //   } on TypeError catch (_) {
+    //     _log.warning('fail to parse Trophy: $v');
+    //     continue;
+    //   } on Exception catch (_) {
+    //     _log.warning('fail to parse Trophy: $v');
+    //     continue;
+    //   }
+    // }
+    // return trophies;
   }
 
   // TODO: rename to subredditSubscribe
@@ -496,9 +540,9 @@ class RedditApiImpl implements RedditApi {
     await for (final v in redditorRef.saved(limit: limit)) {
       try {
         if (v is draw.Submission)
-          submissions.add(Submission.fromJson(v.data! as Map<String, dynamic>));
+          submissions.add(_parseSubmission(v)!);
         else if (v is draw.Comment)
-          comments.add(Comment.fromJson(v.data! as Map<String, dynamic>));
+          comments.add(_parseComment(v)!);
         else
           _log.warning('undefined type');
       } on TypeError catch (e, st) {
@@ -511,7 +555,7 @@ class RedditApiImpl implements RedditApi {
     return UserSaved(submissions, comments);
   }
 
-  Stream<Submission> search(
+  Future<List<Submission>> search(
     String query, {
     required int limit,
     required Sort sort,
@@ -532,11 +576,11 @@ class RedditApiImpl implements RedditApi {
     //   }
     //   yield Submission.fromJson(dsub.data! as Map<String, dynamic>);
     // }
-    return _submissionsStream(
+    return _parseSubmissionStream(
         reddit.subreddit(subreddit).search(query, params: params));
   }
 
-  Stream<Subreddit> searchSubreddits(String query, {required int limit}) {
+  Future<List<Subreddit>> searchSubreddits(String query, {required int limit}) {
     // await for (final v in reddit.subreddits.search(query, limit: limit)) {
     //   final dsub = cast<draw.Subreddit?>(v, null);
     //   if (dsub == null) {
@@ -549,41 +593,45 @@ class RedditApiImpl implements RedditApi {
     //   }
     //   yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
     // }
-    return _subredditStream(reddit.subreddits
+    return _parseSubredditStream(reddit.subreddits
         .search(query, limit: limit)
         .map((v) => v as draw.Subreddit));
   }
 
-  Stream<Subreddit> searchSubredditsByName(
+  Future<List<Subreddit>> searchSubredditsByName(
     String query,
-  ) async* {
-    for (final v in await reddit.subreddits.searchByName(query)) {
-      final dsub = cast<draw.Subreddit?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Subreddit: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Subreddit.data is empty: $v');
-        continue;
-      }
-      yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
-    }
-    // return _subredditStream(reddit.subreddits.searchByName(query));
+  ) async {
+    return (await reddit.subreddits.searchByName(query))
+        .map((v) => v as draw.Subreddit)
+        .map(_parseSubreddit)
+        .whereType<Subreddit>()
+        .toList();
+    // for (final v in await reddit.subreddits.searchByName(query)) {
+    //   final dsub = cast<draw.Subreddit?>(v, null);
+    //   if (dsub == null) {
+    //     _log.warning('not draw.Subreddit: $v');
+    //     continue;
+    //   }
+    //   if (dsub.data == null) {
+    //     _log.warning('draw.Subreddit.data is empty: $v');
+    //     continue;
+    //   }
+    //   yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
+    // }
   }
 
   Future<Comment> submissionReply(String id, String body) async {
     final subRef = reddit.submission(id: id);
     final sub = await subRef.populate();
     final comment = await sub.reply(body);
-    return Comment.fromJson(comment.data! as Map<String, dynamic>);
+    return _parseComment(comment)!;
   }
 
   Future<Comment> commentReply(String id, String body) async {
     final commentRef = reddit.comment(id: id);
     final comment = await commentRef.populate();
     final commentReply = await comment.reply(body);
-    return Comment.fromJson(commentReply.data! as Map<String, dynamic>);
+    return _parseComment(commentReply)!;
   }
 
   Future<Submission> submit({
@@ -605,22 +653,23 @@ class RedditApiImpl implements RedditApi {
           nsfw: nsfw,
           spoiler: spoiler,
         );
-    return Submission.fromJson(sub.data! as Map<String, dynamic>);
+    return _parseSubmission(sub)!;
   }
 
-  Stream<Message> inboxMessages() async* {
-    await for (final v in reddit.inbox.messages()) {
-      final dsub = cast<draw.Message?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Subreddit: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Subreddit.data is empty: $v');
-        continue;
-      }
-      yield Message.fromJson(dsub.data! as Map<String, dynamic>);
-    }
+  Future<List<Message>> inboxMessages() async {
+    // await for (final v in reddit.inbox.messages()) {
+    //   final dsub = cast<draw.Message?>(v, null);
+    //   if (dsub == null) {
+    //     _log.warning('not draw.Subreddit: $v');
+    //     continue;
+    //   }
+    //   if (dsub.data == null) {
+    //     _log.warning('draw.Subreddit.data is empty: $v');
+    //     continue;
+    //   }
+    //   yield Message.fromJson(dsub.data! as Map<String, dynamic>);
+    // }
+    return _parseMessageStream(reddit.inbox.messages());
   }
 }
 
@@ -636,84 +685,66 @@ class FakeRedditApi implements RedditApi {
     return v;
   }
 
-  Stream<Submission> front({
+  Future<List<Submission>> front({
     required int limit,
     required FrontSubType type,
-  }) async* {
+  }) async {
     _log.info('front($limit, $type)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await File('data/user.front.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
   Random _random = Random(42);
 
-  Stream<Submission> popular({
+  Future<List<Submission>> popular({
     required int limit,
     required SubType type,
-  }) async* {
+  }) async {
     _log.info('popular($limit, $type)');
     await Future.delayed(_delay);
-
     _mustLoggedIn();
     final data = await File('data/popular.json').readAsString();
 
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
   @override
-  Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
+  Future<List<Subreddit>> currentUserSubreddits({required int limit}) async {
     _log.info('currentUserSubreddits($limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-
     final data = await File('data/user.subreddits.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => Subreddit.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
-  Stream<Submission> subredditSubmissions(
+  Future<List<Submission>> subredditSubmissions(
     String name, {
     required int limit,
     required SubType type,
-  }) async* {
+  }) async {
     _log.info('subredditSubmissions($name, $limit, $type)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
-
     final data = await File('data/subreddit.submissions.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
   Future<User> user(String name) async {
@@ -724,51 +755,41 @@ class FakeRedditApi implements RedditApi {
     return User.fromJson(jsonDecode(data));
   }
 
-  Stream<Comment> userComments(String name, {required int limit}) async* {
+  Future<List<Comment>> userComments(String name, {required int limit}) async {
     _log.info('userComments($name, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-
     final data = await File('data/user.comments.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
-  Stream<Submission> userSubmissions(String name, {required int limit}) async* {
+  Future<List<Submission>> userSubmissions(
+    String name, {
+    required int limit,
+  }) async {
     _log.info('userSubmissions($name, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-
     final data = await File('data/user.submissions.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => Submission.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
   Future<List<Trophy>> userTrophies(String name) async {
     _log.info('userTrophies($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-
     final data = await File('data/user.trophies.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Trophy.fromJson(v));
-
-    return items.toList();
+        .map((v) => Trophy.fromJson(v))
+        .toList();
   }
 
   Future<void> subredditSubscribe(String name) async {
@@ -914,59 +935,48 @@ class FakeRedditApi implements RedditApi {
   //   return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   // }
 
-  Stream<Submission> search(
+  Future<List<Submission>> search(
     String query, {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
-  }) async* {
+  }) async {
     _log.info('search($query, $limit, $sort, $subreddit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     subreddit = removeSubredditPrefix(subreddit);
     final data = await File('data/search.json').readAsString();
 
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, sort))
         .map((v) => Submission.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
-  Stream<Subreddit> searchSubreddits(
+  Future<List<Subreddit>> searchSubreddits(
     String query, {
     required int limit,
-  }) async* {
+  }) async {
     _log.info('searchSubreddits($query, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await File('data/subreddits.search.json').readAsString();
-
-    final items = (jsonDecode(data) as List<dynamic>)
+    return (jsonDecode(data) as List<dynamic>)
         .map((v) => Subreddit.fromJson(v))
-        .take(limit);
-
-    for (final item in items) {
-      yield item;
-    }
+        .take(limit)
+        .toList();
   }
 
-  Stream<Subreddit> searchSubredditsByName(String query) async* {
+  Future<List<Subreddit>> searchSubredditsByName(String query) async {
     _log.info('searchSubredditsByName($query)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data =
         await File('data/subreddits.search.by.name.json').readAsString();
-
-    final items =
-        (jsonDecode(data) as List<dynamic>).map((v) => Subreddit.fromJson(v));
-
-    for (final item in items) {
-      yield item;
-    }
+    return (jsonDecode(data) as List<dynamic>)
+        .map((v) => Subreddit.fromJson(v))
+        .toList();
   }
 
   Future<Comment> submissionReply(String id, String body) async {
@@ -1041,17 +1051,14 @@ class FakeRedditApi implements RedditApi {
     });
   }
 
-  Stream<Message> inboxMessages() async* {
+  Future<List<Message>> inboxMessages() async {
     _log.info('inboxMessages()');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await File('data/inbox.messages.json').readAsString();
 
-    final items =
-        (jsonDecode(data) as List<dynamic>).map((v) => Message.fromJson(v));
-
-    for (final item in items) {
-      yield item;
-    }
+    return (jsonDecode(data) as List<dynamic>)
+        .map((v) => Message.fromJson(v))
+        .toList();
   }
 }
