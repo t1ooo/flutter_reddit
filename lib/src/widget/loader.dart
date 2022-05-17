@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../util/snackbar.dart';
+import 'snackbar.dart';
 
 class Loader<T> extends StatelessWidget {
   Loader({

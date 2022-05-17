@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../submission_tile/submission_tile.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import '../widget/swipe_to_refresh.dart';
 
@@ -29,12 +29,9 @@ class SavedSubmissions extends StatelessWidget {
                 ChangeNotifierProvider<SubmissionNotifier>.value(
                   value: sub,
                   child: Builder(builder: (context) {
-                    final submission =
-                        context.watch<SubmissionNotifier>().submission;
-                    if (!submission.saved) {
-                      return Container();
-                    }
-                    return SubmissionTile();
+                    return context.watch<SubmissionNotifier>().submission.saved
+                        ? SubmissionTile()
+                        : Container();
                   }),
                 ),
             ],

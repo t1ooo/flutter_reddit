@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
+import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:flutter_reddit_prototype/src/widget/swipe_to_refresh.dart';
 import 'package:provider/provider.dart';
 
-// ignore: unused_import
-import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../widget/loader.dart';
 import 'saved_comment.dart';

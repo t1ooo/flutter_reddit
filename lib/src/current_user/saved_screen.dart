@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 import 'saved_comments.dart';
 import 'saved_submissions.dart';
 

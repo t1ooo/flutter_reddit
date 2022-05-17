@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../submission_tile/submission_tiles.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);

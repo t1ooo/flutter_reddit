@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/logging/logging.dart';
-import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
+import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../logger.dart';

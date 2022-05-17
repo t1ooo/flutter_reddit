@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'login.dart';
+import '../notifier/reddir_notifier.v4_2.dart';
+import '../widget/snackbar.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,7 +13,22 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Login'),
       ),
-      body: Login(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                context
+                    .read<UserAuth>()
+                    .login('', '')
+                    .catchError((e) => showErrorSnackBar(context, e));
+              },
+              child: Text('Log in'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

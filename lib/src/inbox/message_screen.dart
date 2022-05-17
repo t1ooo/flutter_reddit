@@ -10,7 +10,6 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../widget/list.dart';
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 
 class MessageScreen extends StatelessWidget {
   MessageScreen({Key? key}) : super(key: key);

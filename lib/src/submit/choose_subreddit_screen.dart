@@ -7,7 +7,6 @@ import '../notifier/reddir_notifier.v4_2.dart';
 import '../subreddit/subreddit_icon.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
-import '../widget/space_bar.dart';
 
 class ChooseSubredditScreen extends StatelessWidget {
   ChooseSubredditScreen({
@@ -54,9 +53,9 @@ class ChooseSubredditScreen extends StatelessWidget {
                   Navigator.of(context).pop();
                 },
                 leading: SizedBox.square(
-                    dimension: 40,
-                    child:
-                        SubredditIcon(icon: subreddit.subreddit.communityIcon)),
+                  dimension: 40,
+                  child: SubredditIcon(icon: subreddit.subreddit.communityIcon),
+                ),
                 title: Text(subreddit.subreddit.displayNamePrefixed),
               )
           ],

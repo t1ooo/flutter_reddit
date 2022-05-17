@@ -4,7 +4,7 @@ import 'package:flutter_reddit_prototype/src/widget/swipe_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 
 class UserComments extends StatelessWidget {

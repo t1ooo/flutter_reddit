@@ -5,8 +5,7 @@ import 'package:flutter_reddit_prototype/src/widget/sliver_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../util/snackbar.dart';
-import '../widget/space_bar.dart';
+import '../widget/snackbar.dart';
 
 class ReplyScreen extends StatefulWidget {
   ReplyScreen({
@@ -17,7 +16,6 @@ class ReplyScreen extends StatefulWidget {
 
   final String id;
   final bool isComment;
- 
 
   @override
   State<ReplyScreen> createState() => _ReplyScreenState();
@@ -52,67 +50,11 @@ class _ReplyScreenState extends State<ReplyScreen> {
         ),
       ),
     );
-
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
   }
 
   Widget _form(BuildContext context) {
     return ListView(
       children: [
-       
         Text(
           (widget.isComment)
               ? context.read<CommentNotifier>().comment.body
@@ -124,24 +66,12 @@ class _ReplyScreenState extends State<ReplyScreen> {
           onSubmitted: (v) {
             _submit();
           },
-         
-         
-         
-         
-         
-         
-         
-         
           cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'You comment',
             border: InputBorder.none,
           ),
         ),
-       
-       
-       
-       
       ],
     );
   }
@@ -156,25 +86,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
     (widget.isComment
             ? context.read<CommentNotifier>().reply(_message)
             : context.read<SubmissionNotifier>().reply(_message))
-   
-   
-   
-   
-    .catchError((e) => showErrorSnackBar(context, e));
-
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
+        .catchError((e) => showErrorSnackBar(context, e));
 
     Navigator.pop(context);
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/like.dart';
-import '../util/snackbar.dart';
+import 'snackbar.dart';
 
 class LikeButton extends StatelessWidget {
   const LikeButton({

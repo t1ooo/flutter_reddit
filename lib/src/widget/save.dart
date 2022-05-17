@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart';
 
-import '../util/snackbar.dart';
+import 'snackbar.dart';
 import 'custom_popup_menu_button.dart';
 
 CustomPopupMenuItem savePopupMenuItem(BuildContext context, Savable savable) {

@@ -3,7 +3,6 @@ import 'package:flutter_reddit_prototype/src/style/style.dart';
 
 import '../user_menu.dart';
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 import 'home.dart';
 import 'popular.dart';
 

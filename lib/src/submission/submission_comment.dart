@@ -10,7 +10,6 @@ import '../widget/awards.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/like.dart';
 import '../widget/save.dart';
-import 'style.dart';
 
 class SubmissionComment extends StatelessWidget {
   const SubmissionComment({
@@ -50,7 +49,7 @@ class SubmissionComment extends StatelessWidget {
               notifier.expand();
             },
       child: Padding(
-        padding: commentPadding(depth),
+        padding: _commentPadding(depth),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -185,6 +184,18 @@ class SubmissionComment extends StatelessWidget {
         CustomPopupMenuItem(
             icon: Icon(Icons.circle), label: 'Block user', onTap: () {}),
       ],
+    );
+  }
+
+  EdgeInsets _commentPadding([int depth = 0]) {
+    const padding = 5.0;
+    const commentMaxDepth = 3;
+    final leftPadding = (depth <= commentMaxDepth ? depth : 0) * 30.0;
+
+    return EdgeInsets.only(
+      left: leftPadding,
+      top: padding,
+      bottom: padding,
     );
   }
 }

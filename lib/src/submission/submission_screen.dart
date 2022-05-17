@@ -6,11 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reply/reply_field.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 import 'submission.dart';
 
 class SubmissionScreen extends StatelessWidget {

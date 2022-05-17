@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import '../widget/swipe_to_refresh.dart';
 import 'search_subreddit.dart';

@@ -11,11 +11,6 @@ import 'submit/submit_screen.dart';
 class Tabs extends StatelessWidget {
   Tabs({Key? key}) : super(key: key);
 
-  // TODO: remove
-  Widget withScaffold(Widget body) {
-    return body;
-  }
-
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
@@ -25,7 +20,7 @@ class Tabs extends StatelessWidget {
         SubscriptionsScreen(),
         Container(),
         InboxScreen(),
-      ].map(withScaffold).toList(),
+      ],
       items: [
         PersistentBottomNavBarItem(
           icon: Icon(Icons.home),

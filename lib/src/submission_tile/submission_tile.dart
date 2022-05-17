@@ -16,7 +16,7 @@ import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 
 import '../util/size.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/icon_text.dart';
 
@@ -60,9 +60,7 @@ class SubmissionTile extends StatelessWidget {
                           builder: (_) =>
                               ChangeNotifierProvider<SubmissionNotifier>.value(
                             value: notifier,
-                            child: SubmissionScreen(
-                              id: submission.id,
-                            ),
+                            child: SubmissionScreen(),
                           ),
                         ),
                       );

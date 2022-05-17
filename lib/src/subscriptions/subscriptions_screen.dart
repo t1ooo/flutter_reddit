@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../user_menu.dart';
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 import 'subscriptions.dart';
 
 class SubscriptionsScreen extends StatelessWidget {

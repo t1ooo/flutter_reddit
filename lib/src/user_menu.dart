@@ -3,13 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/logging/logging.dart';
-import 'package:flutter_reddit_prototype/src/util/snackbar.dart';
+import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import 'current_user/saved_screen.dart';
 import 'logger.dart';
 import 'notifier/reddir_notifier.v4_2.dart';
-import 'current_user/current_user_profile_screen.dart';
+import 'user_profile/user_profile.dart';
 import 'util/date_time.dart';
 
 class UserMenu extends StatelessWidget {
@@ -68,7 +68,7 @@ class UserMenu extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => ChangeNotifierProvider<UserNotifier>.value(
                     value: user,
-                    child: CurrentUserProfileScreen(),
+                    child: UserProfile(),
                   ),
                 ),
               );

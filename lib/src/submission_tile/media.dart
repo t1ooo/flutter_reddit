@@ -11,7 +11,6 @@ import '../logger.dart';
 import '../style/style.dart';
 import '../widget/network_image.dart';
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 
 Future<void> initVideoPlayer() async {
   /// dispose and clear players after hot restart

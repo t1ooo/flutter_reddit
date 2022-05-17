@@ -41,8 +41,6 @@ class GSubmissionTiles<T> extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.centerLeft,
-
-              // TODO: add icon
               child: ButtonTheme(
                 height: 200,
                 child: TextButton(

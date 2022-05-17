@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../subreddit/subreddit_icon.dart';
-import '../util/snackbar.dart';
-import '../widget/space_bar.dart';
+import '../widget/snackbar.dart';
 import 'choose_subreddit_screen.dart';
 
 class SubmitScreen extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
 import '../widget/swipe_to_refresh.dart';
@@ -25,9 +25,9 @@ class Subscriptions extends StatelessWidget {
         load: (_) => notifier.loadSubreddits(),
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
-          final favoriteSubreddits =
+          final favorite =
               CurrentUserNotifier.filterFavorite(subreddits);
-          final unfavoriteSubreddits =
+          final unfavorite =
               CurrentUserNotifier.filterUnfavorite(subreddits);
 
           return CustomListView(
@@ -36,17 +36,17 @@ class Subscriptions extends StatelessWidget {
                 value: notifier.all!,
                 child: SubscriptionTile(favorite: false),
               ),
-              if (favoriteSubreddits.isNotEmpty) ...[
+              if (favorite.isNotEmpty) ...[
                 ListTitle('favorited'),
-                for (final subreddit in favoriteSubreddits)
+                for (final subreddit in favorite)
                   ChangeNotifierProvider<SubredditNotifier>.value(
                     value: subreddit,
                     child: SubscriptionTile(),
                   ),
               ],
-              if (unfavoriteSubreddits.isNotEmpty) ...[
+              if (unfavorite.isNotEmpty) ...[
                 ListTitle('communites'),
-                for (final subreddit in unfavoriteSubreddits)
+                for (final subreddit in unfavorite)
                   ChangeNotifierProvider<SubredditNotifier>.value(
                     value: subreddit,
                     child: SubscriptionTile(),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../widget/sliver_app_bar.dart';
-import '../widget/space_bar.dart';
 import 'search_posts.dart';
 
 class SearchBySubredditScreen extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../reddit_api/trophy.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/network_image.dart';
 
 class UserTrophy extends StatelessWidget {

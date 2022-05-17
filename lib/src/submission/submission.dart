@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../submission_tile/submission_tile.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../util/snackbar.dart';
+import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import 'submission_comment.dart';
 
