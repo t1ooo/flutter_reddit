@@ -49,5 +49,4 @@ final theme = ThemeData(
     contentTextStyle: TextStyle(color: blackColor),
     behavior: SnackBarBehavior.floating,
   ),
-  indicatorColor: selectedColor,
 );

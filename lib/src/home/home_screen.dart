@@ -32,8 +32,6 @@ class HomeScreenV4 extends StatelessWidget {
                 primary: false,
                 automaticallyImplyLeading: false,
                 flexibleSpace: TabBar(
-                  // indicatorColor: selectedColor, // TODO: config with app theme
-                  // indicatorSize: TabBarIndicatorSize.tab,
                   tabs: [
                     Tab(text: 'Home'),
                     Tab(text: 'Popular'),

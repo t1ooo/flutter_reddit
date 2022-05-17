@@ -80,8 +80,6 @@ class _UserProfileScreen extends StatelessWidget {
                 pinned: true,
                 automaticallyImplyLeading: false,
                 flexibleSpace: TabBar(
-                  indicatorColor: selectedColor,
-                  indicatorSize: TabBarIndicatorSize.tab,
                   tabs: [
                     Tab(text: 'Posts'),
                     Tab(text: 'Comments'),

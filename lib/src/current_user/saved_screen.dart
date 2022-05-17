@@ -22,16 +22,11 @@ class SavedScreen extends StatelessWidget {
               ),
               SliverAppBar(
                 automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  width: 100,
-                  child: TabBar(
-                    indicatorColor: selectedColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    tabs: [
-                      Tab(child: Text('Posts')),
-                      Tab(child: Text('Comments')),
-                    ],
-                  ),
+                flexibleSpace: TabBar(
+                  tabs: [
+                    Tab(child: Text('Posts')),
+                    Tab(child: Text('Comments')),
+                  ],
                 ),
               ),
             ];

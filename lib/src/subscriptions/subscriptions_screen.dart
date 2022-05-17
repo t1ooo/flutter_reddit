@@ -32,16 +32,11 @@ class SubscriptionsScreen extends StatelessWidget {
               SliverAppBar(
                 pinned: true,
                 automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  width: 100,
-                  child: TabBar(
-                    indicatorColor: selectedColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    tabs: [
-                      Tab(text: 'Subscriptions'),
-                      Tab(text: 'Custom Feed'),
-                    ],
-                  ),
+                flexibleSpace: TabBar(
+                  tabs: [
+                    Tab(text: 'Subscriptions'),
+                    Tab(text: 'Custom Feed'),
+                  ],
                 ),
               ),
             ];
