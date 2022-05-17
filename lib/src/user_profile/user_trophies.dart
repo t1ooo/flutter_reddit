@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reddit_api/trophy.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
-import 'user_trophy.dart';
+import '../widget/network_image.dart';
+import '../widget/snackbar.dart';
 
 class UserTrophies extends StatelessWidget {
   const UserTrophies({
@@ -28,7 +30,7 @@ class UserTrophies extends StatelessWidget {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  for (final trophy in trophies) UserTrophy(trophy: trophy),
+                  for (final trophy in trophies) _userTrophy(context, trophy),
                 ],
               ),
             ),
@@ -37,4 +39,20 @@ class UserTrophies extends StatelessWidget {
       },
     );
   }
+
+  Widget _userTrophy(BuildContext context, Trophy trophy) {
+    return ListTile(
+      onTap: () {
+        showTodoSnackBar(context); // TODO
+      },
+      leading: SizedBox.square(
+        dimension: 40,
+        child: CustomNetworkImageBuilder(trophy.icon40),
+      ),
+      title: Text(trophy.name),
+      subtitle: Text(_formatter.format(trophy.grantedAt)),
+    );
+  }
+
+  static final _formatter = DateFormat('y-MM-d');
 }

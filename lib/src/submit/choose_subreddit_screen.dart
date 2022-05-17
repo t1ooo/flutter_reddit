@@ -20,7 +20,7 @@ class ChooseSubredditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
+        headerSliverBuilder: (context, _) {
           return [
             PrimarySliverAppBar(
               collapsed: true,

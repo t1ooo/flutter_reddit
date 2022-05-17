@@ -15,7 +15,7 @@ class SubscriptionsScreen extends StatelessWidget {
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
+          headerSliverBuilder: (context, _) {
             return [
               PrimarySliverAppBar(
                 collapsed: true,

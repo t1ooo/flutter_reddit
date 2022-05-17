@@ -34,8 +34,6 @@ class PrimarySliverAppBar extends StatelessWidget {
   }
 }
 
-
-
 class SpaceBarIcon extends StatelessWidget {
   SpaceBarIcon(
     this.icon, {
@@ -143,7 +141,7 @@ class SpaceBar extends StatelessWidget {
 
     return Stack(
       children: [
-        if (src != null)
+        if (src != null && src != '')
           Positioned(
             top: 0,
             left: 0,

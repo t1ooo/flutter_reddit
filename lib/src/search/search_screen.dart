@@ -19,7 +19,7 @@ class SearchScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
+          headerSliverBuilder: (context, _) {
             return [
               PrimarySliverAppBar(
                 collapsed: true,

@@ -41,9 +41,9 @@ class SavedComment extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              header(context, notifier),
+              _header(context, notifier),
               Text(comment.body),
-              footer(context, notifier),
+              _footer(context, notifier),
             ],
           ),
         ),
@@ -51,7 +51,7 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, CommentNotifier notifier) {
+  Widget _header(BuildContext context, CommentNotifier notifier) {
     final comment = notifier.comment;
 
     return Column(
@@ -81,7 +81,7 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  Widget footer(BuildContext context, CommentNotifier notifier) {
+  Widget _footer(BuildContext context, CommentNotifier notifier) {
     final comment = notifier.comment;
 
     return Row(

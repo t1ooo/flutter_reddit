@@ -12,7 +12,7 @@ class SavedScreen extends StatelessWidget {
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
+          headerSliverBuilder: (context, _) {
             return [
               PrimarySliverAppBar(
                 flexibleSpace: SpaceBar(

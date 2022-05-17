@@ -12,7 +12,7 @@ class InboxScreen extends StatelessWidget {
     return Scaffold(
       drawer: UserMenu(),
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
+        headerSliverBuilder: (context, _) {
           return [
             PrimarySliverAppBar(
               collapsed: true,

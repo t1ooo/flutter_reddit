@@ -15,15 +15,13 @@ class HomeScreenV4 extends StatelessWidget {
         length: 2,
         child: NestedScrollView(
           floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
+          headerSliverBuilder: (context, _) {
             return [
               PrimarySliverAppBar(
                 collapsed: true,
                 flexibleSpace: SpaceBar(
                   leading: IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
+                    onPressed: Scaffold.of(context).openDrawer,
                     icon: SpaceBarIcon(Icons.account_circle),
                   ),
                   title: SearchForm(),
@@ -34,9 +32,8 @@ class HomeScreenV4 extends StatelessWidget {
                 primary: false,
                 automaticallyImplyLeading: false,
                 flexibleSpace: TabBar(
-                  indicatorColor: selectedColor, // TODO: config with app theme
-                  indicatorSize: TabBarIndicatorSize.tab,
-
+                  // indicatorColor: selectedColor, // TODO: config with app theme
+                  // indicatorSize: TabBarIndicatorSize.tab,
                   tabs: [
                     Tab(text: 'Home'),
                     Tab(text: 'Popular'),

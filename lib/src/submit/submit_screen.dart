@@ -28,7 +28,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
+        headerSliverBuilder: (context, _) {
           return [
             PrimarySliverAppBar(
               collapsed: true,
