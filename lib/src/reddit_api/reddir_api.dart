@@ -19,12 +19,6 @@ import 'submission_type.dart';
 import 'subreddit.dart';
 import 'like.dart';
 
-// abstract class RedditApi {
-//   Future<List<Submission>> front({required int limit});
-//   Future<List<Submission>> popular({required int limit});
-//   Future<List<Subreddit>> currentUserSubreddits({required int limit});
-// }
-
 typedef Sort = draw.Sort;
 
 String removeSubredditPrefix(String name) {
