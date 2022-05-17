@@ -206,8 +206,6 @@ class SubmissionTile extends StatelessWidget {
   }
 
   Widget footer(BuildContext context, SubmissionNotifier notifier) {
-    final submission = notifier.submission;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -242,8 +240,6 @@ class SubmissionTile extends StatelessWidget {
     BuildContext context,
     SubmissionNotifier notifier,
   ) {
-    final submission = notifier.submission;
-
     return CustomPopupMenuButton(
       icon: Icon(Icons.more_vert),
       items: [

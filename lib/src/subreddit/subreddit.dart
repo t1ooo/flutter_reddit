@@ -21,7 +21,7 @@ class SubredditWidget extends StatelessWidget {
       onRefresh: () => notifier
           .reloadSubmissions()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: GSubmissionTiles<SubType>(
+      child: SubmissionTiles<SubType>(
         type: notifier.subType,
         types: SubType.values,
         submissions: notifier.submissions,

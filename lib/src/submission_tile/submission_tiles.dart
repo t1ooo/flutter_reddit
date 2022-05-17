@@ -11,8 +11,8 @@ import '../style/style.dart';
 import '../widget/icon_text.dart';
 import 'submission_tile.dart';
 
-class GSubmissionTiles<T> extends StatelessWidget {
-  GSubmissionTiles({
+class SubmissionTiles<T> extends StatelessWidget {
+  SubmissionTiles({
     Key? key,
     required this.type,
     required this.types,
@@ -39,59 +39,7 @@ class GSubmissionTiles<T> extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: ButtonTheme(
-                height: 200,
-                child: TextButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(vertical: 30),
-                    ),
-                  ),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ListTile(
-                              minLeadingWidth: 0,
-                              title: Text('SORT POST BY'),
-                            ),
-                            Divider(),
-                            RadioList<T>(
-                              initialValue: type,
-                              onChanged: (t) {
-                                load(t);
-                                Navigator.pop(context);
-                              },
-                              titleBuilder: (t) => Text(_typeToString(t)),
-                              iconBuilder: (t) => _typeIcon(t),
-                              values: types,
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: IconText(
-                          icon: _typeIcon(type),
-                          text: Text(_typeToString(type) + ' POSTS'),
-                        ),
-                      ),
-                      Icon(Icons.expand_more),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            _typeSelector(context),
             for (final sub in submissions)
               ChangeNotifierProvider<SubmissionNotifier>.value(
                 value: sub,
@@ -105,6 +53,64 @@ class GSubmissionTiles<T> extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _typeSelector(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ButtonTheme(
+        height: 200,
+        child: TextButton(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+              EdgeInsets.symmetric(vertical: 30),
+            ),
+          ),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: _modal,
+            );
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: IconText(
+                  icon: _typeIcon(type),
+                  text: Text(_typeToString(type) + ' POSTS'),
+                ),
+              ),
+              Icon(Icons.expand_more),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _modal(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          minLeadingWidth: 0,
+          title: Text('SORT POST BY'),
+        ),
+        Divider(),
+        _RadioList<T>(
+          initialValue: type,
+          onChanged: (t) {
+            load(t);
+            Navigator.pop(context);
+          },
+          titleBuilder: (t) => Text(_typeToString(t)),
+          iconBuilder: (t) => _typeIcon(t),
+          values: types,
+        ),
+      ],
     );
   }
 
@@ -137,8 +143,8 @@ class GSubmissionTiles<T> extends StatelessWidget {
   }
 }
 
-class RadioList<T> extends StatefulWidget {
-  RadioList({
+class _RadioList<T> extends StatefulWidget {
+  _RadioList({
     Key? key,
     required this.initialValue,
     required this.values,
@@ -154,10 +160,10 @@ class RadioList<T> extends StatefulWidget {
   final void Function(T) onChanged;
 
   @override
-  State<RadioList<T>> createState() => _RadioListState();
+  State<_RadioList<T>> createState() => _RadioListState();
 }
 
-class _RadioListState<T> extends State<RadioList<T>> {
+class _RadioListState<T> extends State<_RadioList<T>> {
   late T _value;
 
   @override
@@ -180,7 +186,6 @@ class _RadioListState<T> extends State<RadioList<T>> {
               setState(() {
                 _value = value;
               });
-
               widget.onChanged(_value);
             },
             trailing: value == _value
@@ -189,125 +194,6 @@ class _RadioListState<T> extends State<RadioList<T>> {
                     color: selectedColor,
                   )
                 : null,
-          )
-      ],
-    );
-  }
-}
-
-class SubmissionTiles extends StatelessWidget {
-  SubmissionTiles({
-    Key? key,
-    this.type = SubType.hot, // TODO: make required
-    required this.submissions,
-    required this.onTypeChanged,
-    this.activeLink = true,
-    this.showTypeSelector = true,
-  }) : super(key: key);
-
-  final SubType type;
-  final List<SubmissionNotifier>? submissions;
-  final Function(SubType) onTypeChanged;
-  final bool activeLink;
-
-  final bool showTypeSelector;
-
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      onTypeChanged(type);
-    });
-    if (submissions == null) {
-      return Center(child: CircularProgressIndicator());
-    }
-
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        CustomDropdownButton<SubType>(
-          value: type,
-          values: SubType.values,
-          onChanged: onTypeChanged,
-        ),
-        SizedBox(height: 50),
-        for (final sub in submissions ?? [])
-          ChangeNotifierProvider<SubmissionNotifier>.value(
-            value: sub,
-            child: SubmissionTile(activeLink: activeLink),
-          ),
-      ],
-    );
-  }
-}
-
-class SearchSubmissionTiles extends StatelessWidget {
-  SearchSubmissionTiles({
-    Key? key,
-    this.sort = Sort.relevance, // TODO: make required
-    required this.submissions,
-    required this.onTypeChanged,
-    this.activeLink = true,
-    this.showTypeSelector = true,
-  }) : super(key: key);
-
-  final Sort sort;
-  final List<SubmissionNotifier>? submissions;
-  final Function(Sort) onTypeChanged;
-  final bool activeLink;
-
-  final bool showTypeSelector;
-
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      onTypeChanged(sort);
-    });
-    if (submissions == null) {
-      return Center(child: CircularProgressIndicator());
-    }
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        CustomDropdownButton<Sort>(
-          value: sort,
-          values: Sort.values,
-          onChanged: onTypeChanged,
-        ),
-        SizedBox(height: 50),
-        for (final sub in submissions ?? [])
-          ChangeNotifierProvider<SubmissionNotifier>.value(
-            value: sub,
-            child: SubmissionTile(activeLink: activeLink),
-          ),
-      ],
-    );
-  }
-}
-
-class CustomDropdownButton<T> extends StatelessWidget {
-  CustomDropdownButton({
-    Key? key,
-    required this.value,
-    required this.values,
-    required this.onChanged,
-  }) : super(key: key);
-
-  T value;
-  List<T> values;
-  final Function(T) onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<T>(
-      value: value,
-      onChanged: (v) {
-        if (v != null) onChanged(v);
-      },
-      items: [
-        for (final value in values)
-          DropdownMenuItem(
-            value: value,
-            child: Text(value.toString()),
           )
       ],
     );

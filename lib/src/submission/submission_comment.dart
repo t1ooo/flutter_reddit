@@ -104,8 +104,6 @@ class SubmissionComment extends StatelessWidget {
   }
 
   Widget footer(BuildContext context, CommentNotifier notifier) {
-    final comment = notifier.comment;
-
     return Row(
       children: [
         Spacer(),
@@ -144,8 +142,6 @@ class SubmissionComment extends StatelessWidget {
     BuildContext context,
     CommentNotifier notifier,
   ) {
-    final comment = notifier.comment;
-
     return CustomPopupMenuButton(
       icon: Icon(Icons.more_vert),
       items: [

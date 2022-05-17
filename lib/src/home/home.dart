@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
       onRefresh: () => notifier
           .reloadSubmissions()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: GSubmissionTiles<FrontSubType>(
+      child: SubmissionTiles<FrontSubType>(
         type: notifier.subType,
         types: FrontSubType.values,
         submissions: notifier.submissions,
