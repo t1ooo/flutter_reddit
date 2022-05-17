@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../style/style.dart';
@@ -21,19 +22,18 @@ class SearchSubreddit extends StatelessWidget {
       ),
       title: Text(subredditN.name),
       subtitle: Text('${subreddit.subscribers} members'),
-      trailing: subreddit.userIsSubscriber
-          ? IconButton(
-              onPressed: () {
-                subredditN.unsubscribe();
-              },
-              icon: Icon(Icons.check_box, color: selectedColor),
-            )
-          : IconButton(
-              onPressed: () {
-                subredditN.subscribe();
-              },
-              icon: Icon(Icons.add_box, color: selectedColor),
-            ),
+      trailing: IconButton(
+        onPressed: () {
+          (subreddit.userIsSubscriber
+                  ? subredditN.unsubscribe()
+                  : subredditN.subscribe())
+              .catchError((e) => showErrorSnackBar(context, e));
+        },
+        icon: Icon(
+          subreddit.userIsSubscriber ? Icons.check_box : Icons.add_box,
+          color: selectedColor,
+        ),
+      ),
     );
   }
 }
