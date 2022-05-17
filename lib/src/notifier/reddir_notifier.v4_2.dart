@@ -256,7 +256,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   Future<void> subscribe() {
     return _try(() async {
       if (_subreddit.userIsSubscriber) return;
-      await _redditApi.subscribe(name);
+      await _redditApi.subredditSubscribe(name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: true);
       notifyListeners();
     }, 'fail to subscribe');
@@ -265,7 +265,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   Future<void> unsubscribe() {
     return _try(() async {
       if (!(_subreddit.userIsSubscriber)) return;
-      await _redditApi.subscribe(name);
+      await _redditApi.subredditSubscribe(name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: false);
       notifyListeners();
     }, 'fail to unsubscribe');

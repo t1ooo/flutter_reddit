@@ -40,42 +40,38 @@ abstract class RedditApi {
   Stream<Submission> front({required int limit, required FrontSubType type});
   Stream<Submission> popular({required int limit, required SubType type});
 
+  Future<Subreddit> subreddit(String name);
+  // Future<String> subredditIcon(String name);
+
+  Future<User> user(String name);
+  Stream<Comment> userComments(String name, {required int limit});
+  Stream<Submission> userSubmissions(String name, {required int limit});
+  Future<List<Trophy>> userTrophies(String name);
+  Future<UserSaved> userSaved(String name, {required int limit});
+
+  Future<void> subredditSubscribe(String name);
+  Future<void> subredditUnsubscribe(String name);
+  Future<void> subredditFavorite(String name);
+  Future<void> subredditUnfavorite(String name);
   Stream<Submission> subredditSubmissions(
     String name, {
     required int limit,
     required SubType type,
   });
 
-  Future<Subreddit> subreddit(String name);
-  Future<String> subredditIcon(String name);
-
-  Future<User> user(String name);
-  Stream<Comment> userComments(String name, {required int limit});
-  Stream<Submission> userSubmissions(String name, {required int limit});
-  Future<List<Trophy>> userTrophies(String name);
-
-  Future<void> subscribe(String name);
-  Future<void> unsubscribe(String name);
-
-  Future<void> subredditFavorite(String name);
-
-  Future<void> subredditUnfavorite(String name);
-
   Future<Submission> submission(String id);
-
   Future<void> submissionLike(String id, Like like);
-  Future<void> commentLike(String id, Like like);
-
   Future<void> submissionSave(String id);
   Future<void> submissionUnsave(String id);
+  Future<Comment> submissionReply(String id, String body);
 
+  Future<void> commentLike(String id, Like like);
   Future<void> commentSave(String id);
   Future<void> commentUnsave(String id);
+  Future<Comment> commentReply(String id, String body);
 
   Future<User?> currentUser();
   Stream<Subreddit> currentUserSubreddits({required int limit});
-
-  Future<UserSaved> userSaved(String name, {required int limit});
 
   Stream<Submission> search(
     String query, {
@@ -83,13 +79,8 @@ abstract class RedditApi {
     required Sort sort,
     String subreddit = 'all',
   });
-
   Stream<Subreddit> searchSubreddits(String query, {required int limit});
-
   Stream<Subreddit> searchSubredditsByName(String query);
-
-  Future<Comment> submissionReply(String id, String body);
-  Future<Comment> commentReply(String id, String body);
 
   Future<Submission> submit({
     required String subreddit,
@@ -182,22 +173,62 @@ class RedditApiImpl implements RedditApi {
     return _reddit!;
   }
 
-  Stream<Submission> _submissionsStream(
-    Stream<draw.UserContent> s,
-  ) async* {
+  Stream<Submission> _submissionsStream(Stream<draw.UserContent> s) async* {
     await for (final v in s) {
-      final dsub = cast<draw.Submission?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Submission: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Submission.data is empty: $v');
-        continue;
-      }
+      // final dsub = cast<draw.Submission?>(v, null);
+      // if (dsub == null) {
+      //   _log.warning('not draw.Submission: $v');
+      //   continue;
+      // }
+      // if (dsub.data == null) {
+      //   _log.warning('draw.Submission.data is empty: $v');
+      //   continue;
+      // }
 
-      final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
-      yield sub;
+      // final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
+      // yield sub;
+
+      try {
+        yield Submission.fromJson(
+          (v as draw.Submission).data as Map<String, dynamic>,
+        );
+      } on TypeError catch (_) {
+        _log.warning('fail to parse Submission: $v');
+        continue;
+      } on Exception catch (_) {
+        _log.warning('fail to parse Submission: $v');
+        continue;
+      }
+    }
+  }
+
+  Stream<Subreddit> _subredditStream(Stream<draw.Subreddit> s) async* {
+    await for (final v in s) {
+      try {
+        yield Subreddit.fromJson(v.data! as Map<String, dynamic>);
+      } on TypeError catch (_) {
+        _log.warning('fail to parse Subreddit: $v');
+        continue;
+      } on Exception catch (_) {
+        _log.warning('fail to parse Subreddit: $v');
+        continue;
+      }
+    }
+  }
+
+  Stream<Comment> _commentsStream(Stream<draw.UserContent> s) async* {
+    await for (final v in s) {
+      try {
+        yield Comment.fromJson(
+          (v as draw.Comment).data! as Map<String, dynamic>,
+        );
+      } on TypeError catch (_) {
+        _log.warning('fail to parse Comment: $v');
+        continue;
+      } on Exception catch (_) {
+        _log.warning('fail to parse Comment: $v');
+        continue;
+      }
     }
   }
 
@@ -223,15 +254,26 @@ class RedditApiImpl implements RedditApi {
     return subredditSubmissions('popular', limit: limit, type: type);
   }
 
-  Stream<Subreddit> currentUserSubreddits({required int limit}) async* {
-    await for (final v in reddit.user.subreddits(limit: limit)) {
-      if (v.data == null) {
-        _log.warning('draw.Subreddit.data is empty: $v');
-        continue;
-      }
-      final sub = Subreddit.fromJson(v.data! as Map<String, dynamic>);
-      yield sub;
-    }
+  Stream<Subreddit> currentUserSubreddits({required int limit}) {
+    // await for (final v in reddit.user.subreddits(limit: limit)) {
+    //   // if (v.data == null) {
+    //   //   _log.warning('draw.Subreddit.data is empty: $v');
+    //   //   continue;
+    //   // }
+    //   // final sub = Subreddit.fromJson(v.data! as Map<String, dynamic>);
+    //   // yield sub;
+
+    //   try {
+    //     yield Subreddit.fromJson(v.data! as Map<String, dynamic>);
+    //   } on TypeError catch (_) {
+    //     _log.warning('fail to parse Subreddit: $v');
+    //     continue;
+    //   } on Exception catch (_) {
+    //     _log.warning('fail to parse Subreddit: $v');
+    //     continue;
+    //   }
+    // }
+    return _subredditStream(reddit.user.subreddits(limit: limit));
   }
 
   Stream<Submission> subredditSubmissions(
@@ -242,9 +284,6 @@ class RedditApiImpl implements RedditApi {
     name = removeSubredditPrefix(name);
     final s = reddit.subreddit(name);
     switch (type) {
-
-      // TODO: find a solution without exception
-
       case SubType.hot:
         return _submissionsStream(s.hot(limit: limit));
       case SubType.newest:
@@ -268,60 +307,84 @@ class RedditApiImpl implements RedditApi {
   Stream<Comment> userComments(
     String name, {
     required int limit,
-  }) async* {
-    await for (final v in reddit.redditor(name).comments.newest(limit: limit)) {
-      final dsub = cast<draw.Comment?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Submission: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Submission.data is empty: $v');
-        continue;
-      }
-      final sub = Comment.fromJson(dsub.data! as Map<String, dynamic>);
-      yield sub;
-    }
+  }) {
+    // await for (final v in reddit.redditor(name).comments.newest(limit: limit)) {
+    // final dsub = cast<draw.Comment?>(v, null);
+    // if (dsub == null) {
+    //   _log.warning('not draw.Submission: $v');
+    //   continue;
+    // }
+    // if (dsub.data == null) {
+    //   _log.warning('draw.Submission.data is empty: $v');
+    //   continue;
+    // }
+    // final sub = Comment.fromJson(dsub.data! as Map<String, dynamic>);
+    // yield sub;
+
+    //   try {
+    //     yield Comment.fromJson(
+    //       (v as draw.Comment).data! as Map<String, dynamic>,
+    //     );
+    //   } on TypeError catch (_) {
+    //     _log.warning('fail to parse Comment: $v');
+    //     continue;
+    //   } on Exception catch (_) {
+    //     _log.warning('fail to parse Comment: $v');
+    //     continue;
+    //   }
+    // }
+    return _commentsStream(reddit.redditor(name).comments.newest(limit: limit));
   }
 
 // TODO: MAYBE: add type support
-  Stream<Submission> userSubmissions(String name, {required int limit}) async* {
-    await for (final v
-        in reddit.redditor(name).submissions.newest(limit: limit)) {
-      final dsub = cast<draw.Comment?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Submission: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Submission.data is empty: $v');
-        continue;
-      }
-      final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
-      yield sub;
-    }
+  Stream<Submission> userSubmissions(String name, {required int limit}) {
+    // await for (final v
+    // in reddit.redditor(name).submissions.newest(limit: limit)) {
+    // final dsub = cast<draw.Comment?>(v, null);
+    // if (dsub == null) {
+    //   _log.warning('not draw.Submission: $v');
+    //   continue;
+    // }
+    // if (dsub.data == null) {
+    //   _log.warning('draw.Submission.data is empty: $v');
+    //   continue;
+    // }
+    // final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
+    // yield sub;
+    // }
+    return _submissionsStream(
+        reddit.redditor(name).submissions.newest(limit: limit));
   }
 
   Future<List<Trophy>> userTrophies(String name) async {
     final drawTrophies = await reddit.redditor('foo').trophies();
     final trophies = <Trophy>[];
-    for (final trophy in drawTrophies) {
-      if (trophy.data == null) {
-        _log.warning('draw.Trophy.data is empty: $trophy');
+    for (final v in drawTrophies) {
+      // if (trophy.data == null) {
+      //   _log.warning('draw.Trophy.data is empty: $trophy');
+      //   continue;
+      // }
+      // trophies.add(Trophy.fromJson(trophy.data! as Map<String, dynamic>));
+      try {
+        trophies.add(Trophy.fromJson(v.data! as Map<String, dynamic>));
+      } on TypeError catch (_) {
+        _log.warning('fail to parse Trophy: $v');
+        continue;
+      } on Exception catch (_) {
+        _log.warning('fail to parse Trophy: $v');
         continue;
       }
-      trophies.add(Trophy.fromJson(trophy.data! as Map<String, dynamic>));
     }
     return trophies;
   }
 
   // TODO: rename to subredditSubscribe
-  Future<void> subscribe(String name) {
+  Future<void> subredditSubscribe(String name) {
     name = removeSubredditPrefix(name);
     return reddit.subreddit(name).subscribe();
   }
 
-  Future<void> unsubscribe(String name) {
+  Future<void> subredditUnsubscribe(String name) {
     name = removeSubredditPrefix(name);
     return reddit.subreddit(name).unsubscribe();
   }
@@ -356,10 +419,8 @@ class RedditApiImpl implements RedditApi {
     final subRef = reddit.submission(id: id);
     final sub = await subRef.populate();
     final comments = (sub.comments!.comments)
-        .map((v) => v as Map<String, dynamic>)
-        .map((v) => Comment.fromJson(v))
+        .map((v) => Comment.fromJson(v as Map<String, dynamic>))
         .toList();
-
     return Submission.fromJson(sub.data!, comments: comments);
   }
 
@@ -370,12 +431,12 @@ class RedditApiImpl implements RedditApi {
     return Subreddit.fromJson(sub.data! as Map<String, dynamic>);
   }
 
-  Future<String> subredditIcon(String name) async {
-    name = removeSubredditPrefix(name);
-    final subRef = reddit.subreddit(name);
-    final sub = await subRef.populate();
-    return Subreddit.fromJson(sub.data! as Map<String, dynamic>).communityIcon;
-  }
+  // Future<String> subredditIcon(String name) async {
+  //   name = removeSubredditPrefix(name);
+  //   final subRef = reddit.subreddit(name);
+  //   final sub = await subRef.populate();
+  //   return Subreddit.fromJson(sub.data! as Map<String, dynamic>).communityIcon;
+  // }
 
   // TODO: use draw.Submission instead id for optimisation
   Future<void> submissionLike(String id, Like like) async {
@@ -440,6 +501,8 @@ class RedditApiImpl implements RedditApi {
           comments.add(Comment.fromJson(v.data! as Map<String, dynamic>));
         else
           _log.warning('undefined type');
+      } on TypeError catch (e, st) {
+        _log.error('', e, st);
       } on Exception catch (e, st) {
         _log.error('', e, st);
       }
@@ -453,38 +516,42 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
-  }) async* {
+  }) {
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
-    await for (final v
-        in reddit.subreddit(subreddit).search(query, params: params)) {
-      final dsub = cast<draw.Submission?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Submission: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Submission.data is empty: $v');
-        continue;
-      }
-      yield Submission.fromJson(dsub.data! as Map<String, dynamic>);
-    }
+    // await for (final v
+    //     in reddit.subreddit(subreddit).search(query, params: params)) {
+    //   final dsub = cast<draw.Submission?>(v, null);
+    //   if (dsub == null) {
+    //     _log.warning('not draw.Submission: $v');
+    //     continue;
+    //   }
+    //   if (dsub.data == null) {
+    //     _log.warning('draw.Submission.data is empty: $v');
+    //     continue;
+    //   }
+    //   yield Submission.fromJson(dsub.data! as Map<String, dynamic>);
+    // }
+    return _submissionsStream(
+        reddit.subreddit(subreddit).search(query, params: params));
   }
 
-  Stream<Subreddit> searchSubreddits(String query,
-      {required int limit}) async* {
-    await for (final v in reddit.subreddits.search(query, limit: limit)) {
-      final dsub = cast<draw.Subreddit?>(v, null);
-      if (dsub == null) {
-        _log.warning('not draw.Subreddit: $v');
-        continue;
-      }
-      if (dsub.data == null) {
-        _log.warning('draw.Subreddit.data is empty: $v');
-        continue;
-      }
-      yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
-    }
+  Stream<Subreddit> searchSubreddits(String query, {required int limit}) {
+    // await for (final v in reddit.subreddits.search(query, limit: limit)) {
+    //   final dsub = cast<draw.Subreddit?>(v, null);
+    //   if (dsub == null) {
+    //     _log.warning('not draw.Subreddit: $v');
+    //     continue;
+    //   }
+    //   if (dsub.data == null) {
+    //     _log.warning('draw.Subreddit.data is empty: $v');
+    //     continue;
+    //   }
+    //   yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
+    // }
+    return _subredditStream(reddit.subreddits
+        .search(query, limit: limit)
+        .map((v) => v as draw.Subreddit));
   }
 
   Stream<Subreddit> searchSubredditsByName(
@@ -502,6 +569,7 @@ class RedditApiImpl implements RedditApi {
       }
       yield Subreddit.fromJson(dsub.data! as Map<String, dynamic>);
     }
+    // return _subredditStream(reddit.subreddits.searchByName(query));
   }
 
   Future<Comment> submissionReply(String id, String body) async {
@@ -703,7 +771,7 @@ class FakeRedditApi implements RedditApi {
     return items.toList();
   }
 
-  Future<void> subscribe(String name) async {
+  Future<void> subredditSubscribe(String name) async {
     _log.info('subscribe($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
@@ -711,7 +779,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
-  Future<void> unsubscribe(String name) async {
+  Future<void> subredditUnsubscribe(String name) async {
     _log.info('unsubscribe($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
@@ -838,13 +906,13 @@ class FakeRedditApi implements RedditApi {
     );
   }
 
-  Future<String> subredditIcon(String name) async {
-    _log.info('subredditIcon($name)');
-    await Future.delayed(_delay);
-    _mustLoggedIn();
-    name = removeSubredditPrefix(name);
-    return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
-  }
+  // Future<String> subredditIcon(String name) async {
+  //   _log.info('subredditIcon($name)');
+  //   await Future.delayed(_delay);
+  //   _mustLoggedIn();
+  //   name = removeSubredditPrefix(name);
+  //   return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
+  // }
 
   Stream<Submission> search(
     String query, {
