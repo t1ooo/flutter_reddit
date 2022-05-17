@@ -1,8 +1,14 @@
-// TODO: convert stream to future<list>
+// TODO: auto disabled buttons
+// TODO: remove unused containers
+// TODO: reddit api
+  // convert stream to future<list>
+  // consistent method names
+// TODO: mobile login
 // TODO: merge screen with widgets (how about header screen?)
 // TODO: use catchFutureError
 // TODO: remove unused code
 // TODO: split notifiers to files
+// TODO: access to fields via notifier
 
 // TODO: show comment link_url image
 // TODO: submission tile show domain
