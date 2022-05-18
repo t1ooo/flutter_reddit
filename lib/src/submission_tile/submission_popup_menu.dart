@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 
+import '../report/report_screen.dart';
 import '../widget/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 
@@ -42,14 +43,22 @@ class SubmissionPopupMenu extends StatelessWidget {
         //     showTodoSnackBar(context); // TODO
         //   },
         // ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.report),
-            label: 'Report',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
+
+        CustomPopupMenuItem(
+          icon: Icon(Icons.report),
+          label: 'Report',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => InheritedProvider<Reportable>.value(
+                  value: notifier,
+                  child: ReportScreen(),
+                ),
+              ),
+            );
+          },
+        ),
         // if (kDebugMode)
         //   CustomPopupMenuItem(
         //     icon: Icon(Icons.block),

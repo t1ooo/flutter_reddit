@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../reply/reply_screen.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
+import '../report/report_screen.dart';
 import '../style/style.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../widget/awards.dart';
@@ -53,9 +54,21 @@ class CommentPopupMenu extends StatelessWidget {
             },
           ),
 
-        // TODO
         CustomPopupMenuItem(
-            icon: Icon(Icons.circle), label: 'Report', onTap: () {}),
+          icon: Icon(Icons.circle),
+          label: 'Report',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => InheritedProvider<Reportable>.value(
+                  value: notifier,
+                  child: ReportScreen(),
+                ),
+              ),
+            );
+          },
+        ),
         // CustomPopupMenuItem(
         // icon: Icon(Icons.circle), label: 'Block user', onTap: () {}),
       ],

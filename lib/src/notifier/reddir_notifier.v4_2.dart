@@ -19,6 +19,10 @@ import '../reddit_api/user.dart';
 
 const int _limit = 100;
 
+abstract class Reportable {
+  Future<void> report(String reason);
+}
+
 abstract class Savable {
   Future<void> save() async {
     if (saved) {
@@ -288,7 +292,6 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     }, 'fail to unfavorite');
   }
 
-
   Future<void> share() {
     return _try(() async {
       await Share.share('${_subreddit.title} ${_subreddit.shortLink}');
@@ -429,7 +432,8 @@ class PreviewImage {
 }
 
 class SubmissionNotifier extends ChangeNotifier
-    with TryMixin, Likable, Savable, PropertyListener {
+    with TryMixin, Likable, Savable, PropertyListener
+    implements Reportable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -532,8 +536,6 @@ class SubmissionNotifier extends ChangeNotifier
   int get score => _submission.score;
 
   Future<void> _updateLike(Like like) {
-    _log.info('_updateLike($like)');
-
     return _try(() async {
       await _redditApi.submissionLike(submission.id, like);
       _submission = submission.copyWith(
@@ -580,6 +582,14 @@ class SubmissionNotifier extends ChangeNotifier
     super.notifyListeners();
   }
 
+  @override
+  Future<void> report(String reason) {
+    return _try(() async {
+      await _redditApi.submissionReport(submission.id, reason);
+      notifyListeners();
+    }, 'fail to report');
+  }
+
   // Future<void> userBlock() {
   //   return _updateUserBlock(true);
   // }
@@ -607,7 +617,8 @@ class CommentNotifier
         ChangeNotifier,
         Likable,
         Savable,
-        PropertyListener {
+        PropertyListener
+    implements Reportable {
   CommentNotifier(this._redditApi, this._comment) {
     _replies = _comment.replies
         .map((v) => _addListener(CommentNotifier(_redditApi, v)))
@@ -687,6 +698,14 @@ class CommentNotifier
         print('update');
         notifyListeners();
       });
+  }
+
+  @override
+  Future<void> report(String reason) {
+    return _try(() async {
+      await _redditApi.submissionReport(comment.id, reason);
+      notifyListeners();
+    }, 'fail to report');
   }
 
   // Future<void> userBlock() {

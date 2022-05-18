@@ -70,11 +70,13 @@ abstract class RedditApi {
   Future<void> submissionHide(String id);
   Future<void> submissionUnhide(String id);
   Future<Comment> submissionReply(String id, String body);
+  Future<void> submissionReport(String id, String reason);
 
   Future<void> commentLike(String id, Like like);
   Future<void> commentSave(String id);
   Future<void> commentUnsave(String id);
   Future<Comment> commentReply(String id, String body);
+  Future<void> commentReport(String id, String reason);
 
   Future<User?> currentUser();
   Future<List<Subreddit>> currentUserSubreddits({required int limit});
@@ -652,6 +654,20 @@ class RedditApiImpl implements RedditApi {
     return _parseComment(comment)!;
   }
 
+  Future<void> submissionReport(String id, String reason) async {
+    final subRef = reddit.submission(id: id);
+    final sub = await subRef.populate();
+    return sub.report(reason);
+    // final comment = await sub.reply(body);
+    // return _parseComment(comment)!;
+  }
+
+  Future<void> commentReport(String id, String reason) async {
+    final commentRef = reddit.comment(id: id);
+    final comment = await commentRef.populate();
+    return comment.report(reason);
+  }
+
   Future<Comment> commentReply(String id, String body) async {
     final commentRef = reddit.comment(id: id);
     final comment = await commentRef.populate();
@@ -1109,6 +1125,20 @@ class FakeRedditApi implements RedditApi {
 
   Future<void> userUnblock(String name) async {
     _log.info('userUnblock($name)');
+    _mustLoggedIn();
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> submissionReport(String id, String reason) async {
+    _log.info('submissionReport($id, $reason)');
+    _mustLoggedIn();
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> commentReport(String id, String reason) async {
+    _log.info('commentReport($id, $reason)');
     _mustLoggedIn();
     await Future.delayed(_delay);
     return;
