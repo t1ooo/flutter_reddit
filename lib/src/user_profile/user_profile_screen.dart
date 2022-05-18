@@ -107,14 +107,13 @@ class _UserProfileScreen extends StatelessWidget {
     return CustomPopupMenuButton(
       icon: SpaceBarIcon(Icons.more_vert),
       items: [
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.report),
-            label: 'Share',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
+        CustomPopupMenuItem(
+          icon: Icon(Icons.share),
+          label: 'Share',
+          onTap: () async {
+            return notifier.subreddit.share();
+          },
+        ),
         CustomPopupMenuItem(
           icon: Icon(
             user.isBlocked ? Icons.person_add : Icons.block,

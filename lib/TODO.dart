@@ -1,5 +1,4 @@
-// TODO: user, subreddit share
-// TODO: comment edit|delete
+/// TODO: comment edit|delete
 // TODO: go back when hide post
 // TODO: add draw model to model for optimization (.*like|save|...)
 //  or use praw post|get directly

@@ -53,6 +53,10 @@ class Subreddit extends Equatable {
   final bool userIsSubscriber;
   final bool userHasFavorited;
 
+  String get shortLink {
+    return 'https://www.reddit.com/$displayNamePrefixed';
+  }
+
   factory Subreddit.fromJson(Map<String, dynamic> m) {
     const f = 'Subreddit';
     return Subreddit(

@@ -288,6 +288,13 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     }, 'fail to unfavorite');
   }
 
+
+  Future<void> share() {
+    return _try(() async {
+      await Share.share('${_subreddit.title} ${_subreddit.shortLink}');
+    }, 'fail to share');
+  }
+
   @override
   Future<List<Submission>> _loadSubmissions() {
     return _redditApi.subredditSubmissions(name, limit: _limit, type: _subType);

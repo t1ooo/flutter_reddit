@@ -67,7 +67,7 @@ class _SubredditScreen extends StatelessWidget {
                   title: SearchForm(subreddit: 'r/${notifier.name}'),
                   src: backgroundImage,
                   backgroundColor: backgroundColor,
-                  trailing: _subredditMenu(context),
+                  trailing: _subredditMenu(context, notifier),
                 ),
               ),
               SliverList(
@@ -99,10 +99,17 @@ class _SubredditScreen extends StatelessWidget {
     );
   }
 
-  Widget _subredditMenu(BuildContext context) {
+  Widget _subredditMenu(BuildContext context, SubredditNotifier notifier) {
     return CustomPopupMenuButton(
       icon: SpaceBarIcon(Icons.more_vert),
       items: [
+        CustomPopupMenuItem(
+          icon: Icon(Icons.share),
+          label: 'Share',
+          onTap: () async {
+            return notifier.share();
+          },
+        ),
         if (kDebugMode)
           CustomPopupMenuItem(
             icon: Icon(Icons.circle),
