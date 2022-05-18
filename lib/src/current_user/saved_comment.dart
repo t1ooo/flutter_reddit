@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../reply/reply_screen.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../style/style.dart';
+import '../submission/comment_popup_menu.dart';
 import '../submission/submission_screen.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/like.dart';
@@ -82,12 +83,11 @@ class SavedComment extends StatelessWidget {
   }
 
   Widget _footer(BuildContext context, CommentNotifier notifier) {
-    final comment = notifier.comment;
-
     return Row(
       children: [
         Spacer(),
-        _popupMenuButton(context, notifier),
+        // _popupMenuButton(context, notifier),
+        CommentPopupMenu(showCollapse: false),
         SizedBox(width: 20),
         TextButton.icon(
           onPressed: () async {
@@ -110,37 +110,37 @@ class SavedComment extends StatelessWidget {
     );
   }
 
-  CustomPopupMenuButton _popupMenuButton(
-    BuildContext context,
-    CommentNotifier notifier,
-  ) {
-    final comment = notifier.comment;
+  // CustomPopupMenuButton _popupMenuButton(
+  //   BuildContext context,
+  //   CommentNotifier notifier,
+  // ) {
+  //   final comment = notifier.comment;
 
-    return CustomPopupMenuButton(
-      icon: Icon(Icons.more_vert),
-      items: [
-        savePopupMenuItem(context, notifier),
+  //   return CustomPopupMenuButton(
+  //     icon: Icon(Icons.more_vert),
+  //     items: [
+  //       savePopupMenuItem(context, notifier),
 
-        CustomPopupMenuItem(
-          icon: Icon(Icons.share),
-          label: 'Share',
-          onTap: () async {
-            return notifier.share();
-          },
-        ),
+  //       CustomPopupMenuItem(
+  //         icon: Icon(Icons.share),
+  //         label: 'Share',
+  //         onTap: () async {
+  //           return notifier.share();
+  //         },
+  //       ),
 
-        CustomPopupMenuItem(
-          icon: Icon(Icons.content_copy),
-          label: 'Copy Text',
-          onTap: () async {
-            return notifier.copyText();
-          },
-        ),
+  //       CustomPopupMenuItem(
+  //         icon: Icon(Icons.content_copy),
+  //         label: 'Copy Text',
+  //         onTap: () async {
+  //           return notifier.copyText();
+  //         },
+  //       ),
 
-        // TODO
-        CustomPopupMenuItem(
-            icon: Icon(Icons.circle), label: 'Report', onTap: () {}),
-      ],
-    );
-  }
+  //       // TODO
+  //       CustomPopupMenuItem(
+  //           icon: Icon(Icons.circle), label: 'Report', onTap: () {}),
+  //     ],
+  //   );
+  // }
 }
