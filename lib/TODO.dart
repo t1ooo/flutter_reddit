@@ -7,8 +7,6 @@
 // TODO: auto disabled buttons
 // TODO: remove unused containers
 // TODO: mobile login
-// TODO: merge screen with widgets (how about header screen?)
-// TODO: use catchFutureError
 // TODO: remove unused code
 // TODO: split notifiers to files
 // TODO: access to fields via notifier, make models mutable
