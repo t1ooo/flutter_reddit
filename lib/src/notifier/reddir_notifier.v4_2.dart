@@ -17,6 +17,8 @@ import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
 
+const int _limit = 100;
+
 abstract class Savable {
   Future<void> save() async {
     if (saved) {
@@ -62,7 +64,7 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
   SearchNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+
   static final _log = getLogger('SearchNotifierX');
 
   void reset() {
@@ -124,7 +126,7 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
   SearchSubredditsQ(this._redditApi);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+
   static final _log = getLogger('SearchSubredditsQ');
 
   void reset() {
@@ -241,7 +243,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   ]) : super(_redditApi, SubType.values.first);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+
   static final _log = getLogger('SubredditNotifier');
 
   final bool isUserSubreddit;
@@ -342,8 +344,6 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
       : _subType = _initialSubType;
 
   final RedditApi _redditApi;
-
-  int _limit = 10;
 
   void reset() {
     _submissions = null;
@@ -693,7 +693,7 @@ class UserNotifier extends ChangeNotifier with TryMixin {
         _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+
   static final _log = getLogger('UserNotifier');
 
   final bool isCurrentUser;
@@ -790,7 +790,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   UserAuth(this._redditApi);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+
   static final _log = getLogger('UserAuth');
 
   CurrentUserNotifier? _user;
@@ -853,7 +853,7 @@ class CurrentUserNotifier extends UserNotifier with PropertyListener {
       : super(_redditApi, user, true);
 
   final RedditApi _redditApi;
-  int _limit = 10;
+
   static final _log = getLogger('CurrentUserNotifier');
 
   SubredditNotifier? _all;
