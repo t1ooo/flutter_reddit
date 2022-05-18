@@ -37,6 +37,15 @@ class SubmissionTile extends StatelessWidget {
     final notifier = context.watch<SubmissionNotifier>();
     final submission = notifier.submission;
 
+    if (submission.hidden) {
+      return Card(
+        child: Padding(
+          padding: cardPadding,
+          child: header(context, notifier),
+        ),
+      );
+    }
+
     return Card(
       child: Padding(
         padding: cardPadding,

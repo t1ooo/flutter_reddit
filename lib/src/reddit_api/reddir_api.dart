@@ -65,6 +65,8 @@ abstract class RedditApi {
   Future<void> submissionLike(String id, Like like);
   Future<void> submissionSave(String id);
   Future<void> submissionUnsave(String id);
+  Future<void> submissionHide(String id);
+  Future<void> submissionUnhide(String id);
   Future<Comment> submissionReply(String id, String body);
 
   Future<void> commentLike(String id, Like like);
@@ -514,6 +516,16 @@ class RedditApiImpl implements RedditApi {
     return s.unsave();
   }
 
+  Future<void> submissionHide(String id) async {
+    final s = await reddit.submission(id: id).populate();
+    return s.hide();
+  }
+
+  Future<void> submissionUnhide(String id) async {
+    final s = await reddit.submission(id: id).populate();
+    return s.unhide();
+  }
+
   Future<void> commentSave(String id) async {
     final s = await reddit.comment(id: id).populate();
     return s.save();
@@ -876,7 +888,20 @@ class FakeRedditApi implements RedditApi {
     _log.info('submissionUnsave($id)');
     await Future.delayed(_delay);
     _mustLoggedIn();
+    return;
+  }
 
+  Future<void> submissionHide(String id) async {
+    _log.info('submissionHide($id)');
+    await Future.delayed(_delay);
+    _mustLoggedIn();
+    return;
+  }
+
+  Future<void> submissionUnhide(String id) async {
+    _log.info('submissionUnhide($id)');
+    await Future.delayed(_delay);
+    _mustLoggedIn();
     return;
   }
 

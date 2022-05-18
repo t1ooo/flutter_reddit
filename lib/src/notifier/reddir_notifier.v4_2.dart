@@ -499,6 +499,27 @@ class SubmissionNotifier extends ChangeNotifier
     }, 'fail to' + (saved ? 'save' : 'unsave'));
   }
 
+  Future<void> hide() {
+    return _updateHide(true);
+  }
+
+  Future<void> unhide() {
+    return _updateHide(false);
+  }
+
+  Future<void> _updateHide(bool hidden) {
+    return _try(() async {
+      if (_submission.hidden == hidden) return;
+      await (hidden
+          ? _redditApi.submissionHide(submission.id)
+          : _redditApi.submissionUnhide(submission.id));
+      _submission = submission.copyWith(
+        hidden: hidden,
+      );
+      notifyListeners();
+    }, 'fail to' + (saved ? 'hide' : 'unhide'));
+  }
+
   @override
   Like get likes => _submission.likes;
 
