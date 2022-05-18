@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_reddit_prototype/src/util/color.dart';
@@ -6,8 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reddir_notifier.v4_2.dart';
 import '../reply/reply_field.dart';
-import '../widget/snackbar.dart';
-import '../widget/custom_popup_menu_button.dart';
+import '../submission_tile/submission_popup_menu.dart';
 import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
 import 'submission.dart';
@@ -62,7 +60,8 @@ class _SubmissionScreen extends StatelessWidget {
                 flexibleSpace: SpaceBar(
                   backgroundColor: generateColor(submission.id),
                   leading: AppBarBackButton(),
-                  trailing: _submissionMenu(context),
+                  // trailing: _submissionMenu(context),
+                  trailing: SubmissionPopupMenu(),
                 ),
               ),
             ];
@@ -73,43 +72,43 @@ class _SubmissionScreen extends StatelessWidget {
     );
   }
 
-  Widget _submissionMenu(BuildContext context) {
-    return CustomPopupMenuButton(
-      icon: SpaceBarIcon(Icons.more_vert),
-      items: [
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.circle),
-            label: 'Share',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.circle),
-            label: 'Hide post',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.circle),
-            label: 'Report',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.circle),
-            label: 'Block user',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-      ],
-    );
-  }
+  // Widget _submissionMenu(BuildContext context) {
+  //   return CustomPopupMenuButton(
+  //     icon: SpaceBarIcon(Icons.more_vert),
+  //     items: [
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.circle),
+  //           label: 'Share',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.circle),
+  //           label: 'Hide post',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.circle),
+  //           label: 'Report',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.circle),
+  //           label: 'Block user',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //     ],
+  //   );
+  // }
 }

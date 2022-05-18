@@ -17,12 +17,12 @@ import '../util/date_time.dart';
 
 import '../util/size.dart';
 import '../widget/snackbar.dart';
-import '../widget/custom_popup_menu_button.dart';
 import '../widget/icon_text.dart';
 
 import '../widget/like.dart';
 import '../widget/save.dart';
 import 'media.dart';
+import 'submission_popup_menu.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
@@ -201,7 +201,8 @@ class SubmissionTile extends StatelessWidget {
           ],
         ),
       ),
-      trailing: activeLink ? _popupMenuButton(context, notifier) : null,
+      // trailing: activeLink ? _popupMenuButton(context, notifier) : null,
+      trailing: activeLink ? SubmissionPopupMenu() : null,
     );
   }
 
@@ -236,39 +237,39 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  CustomPopupMenuButton _popupMenuButton(
-    BuildContext context,
-    SubmissionNotifier notifier,
-  ) {
-    return CustomPopupMenuButton(
-      icon: Icon(Icons.more_vert),
-      items: [
-        savePopupMenuItem(context, notifier),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.visibility_off),
-            label: 'Hide Post',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.report),
-            label: 'Report',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.block),
-            label: 'Block user',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-      ],
-    );
-  }
+  // CustomPopupMenuButton _popupMenuButton(
+  //   BuildContext context,
+  //   SubmissionNotifier notifier,
+  // ) {
+  //   return CustomPopupMenuButton(
+  //     icon: Icon(Icons.more_vert),
+  //     items: [
+  //       savePopupMenuItem(context, notifier),
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.visibility_off),
+  //           label: 'Hide Post',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.report),
+  //           label: 'Report',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //       if (kDebugMode)
+  //         CustomPopupMenuItem(
+  //           icon: Icon(Icons.block),
+  //           label: 'Block user',
+  //           onTap: () {
+  //             showTodoSnackBar(context); // TODO
+  //           },
+  //         ),
+  //     ],
+  //   );
+  // }
 }
