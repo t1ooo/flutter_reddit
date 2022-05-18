@@ -32,6 +32,7 @@
 // TODO: hide/unhide submission
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: make padding consistent
+// TODO: history (not supported by Reddit API)
 // TODO: trendings (not supported by Reddit API)
 // TODO: user chat (not supported by Reddit API)
 // TODO: give award to submission (not supported by DRAW lib)
