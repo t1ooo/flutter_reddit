@@ -1,3 +1,4 @@
+// TODO: merge comments menu
 // TODO: add dart analytics options
 // TODO: optimistic updates
 // TODO: auto disabled buttons
@@ -29,7 +30,6 @@
 // TODO: show/edit current user profile
 // TODO: block user
 // TODO: report
-// TODO: hide/unhide submission
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: make padding consistent
 // TODO: history (not supported by Reddit API)
