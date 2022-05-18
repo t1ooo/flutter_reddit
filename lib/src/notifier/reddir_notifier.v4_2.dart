@@ -489,14 +489,14 @@ class SubmissionNotifier extends ChangeNotifier
 
   bool get saved => _submission.saved;
 
-  Future<void> _updateSave(bool saved) {
+  Future<void> _updateSave(bool save) {
     return _try(() async {
-      await (saved
+      await (save
           ? _redditApi.submissionSave
           : _redditApi.submissionUnsave)(submission.id);
-      _submission = submission.copyWith(saved: saved);
+      _submission = submission.copyWith(saved: save);
       notifyListeners();
-    }, 'fail to' + (saved ? 'save' : 'unsave'));
+    }, 'fail to' + (save ? 'save' : 'unsave'));
   }
 
   Future<void> hide() {
@@ -507,17 +507,15 @@ class SubmissionNotifier extends ChangeNotifier
     return _updateHide(false);
   }
 
-  Future<void> _updateHide(bool hidden) {
+  Future<void> _updateHide(bool hide) {
     return _try(() async {
-      if (_submission.hidden == hidden) return;
-      await (hidden
-          ? _redditApi.submissionHide(submission.id)
-          : _redditApi.submissionUnhide(submission.id));
-      _submission = submission.copyWith(
-        hidden: hidden,
-      );
+      if (_submission.hidden == hide) return;
+      await (hide
+          ? _redditApi.submissionHide
+          : _redditApi.submissionUnhide)(submission.id);
+      _submission = submission.copyWith(hidden: hide);
       notifyListeners();
-    }, 'fail to' + (saved ? 'hide' : 'unhide'));
+    }, 'fail to' + (hide ? 'hide' : 'unhide'));
   }
 
   @override
@@ -574,6 +572,25 @@ class SubmissionNotifier extends ChangeNotifier
     _log.info('notifyListeners');
     super.notifyListeners();
   }
+
+  // Future<void> userBlock() {
+  //   return _updateUserBlock(true);
+  // }
+
+  // Future<void> userUnblock() {
+  //   return _updateUserBlock(false);
+  // }
+
+  // Future<void> _updateUserBlock(bool block) {
+  //   return _try(() async {
+  //     if (_submission.authorIsBlocked == block) return;
+  //     await (block
+  //         ? _redditApi.userBlock
+  //         : _redditApi.userUnblock)(_submission.author);
+  //     _submission = _submission.copyWith(authorIsBlocked: block);
+  //     notifyListeners();
+  //   }, 'fail to' + (block ? 'block' : 'unblock'));
+  // }
 }
 
 class CommentNotifier
@@ -614,14 +631,14 @@ class CommentNotifier
 
   bool get saved => _comment.saved;
 
-  Future<void> _updateSave(bool saved) {
+  Future<void> _updateSave(bool save) {
     return _try(() async {
-      await (saved
+      await (save
           ? _redditApi.commentSave
           : _redditApi.commentUnsave)(comment.id);
-      _comment = comment.copyWith(saved: saved);
+      _comment = comment.copyWith(saved: save);
       notifyListeners();
-    }, 'fail to ' + (saved ? 'save' : 'unsave'));
+    }, 'fail to ' + (save ? 'save' : 'unsave'));
   }
 
   @override
@@ -664,6 +681,25 @@ class CommentNotifier
         notifyListeners();
       });
   }
+
+  // Future<void> userBlock() {
+  //   return _updateUserBlock(true);
+  // }
+
+  // Future<void> userUnblock() {
+  //   return _updateUserBlock(false);
+  // }
+
+  // Future<void> _updateUserBlock(bool block) {
+  //   return _try(() async {
+  //     if (_comment.authorIsBlocked == block) return;
+  //     await (block
+  //         ? _redditApi.userBlock
+  //         : _redditApi.userUnblock)(_comment.author);
+  //     _comment = _comment.copyWith(authorIsBlocked: block);
+  //     notifyListeners();
+  //   }, 'fail to' + (block ? 'block' : 'unblock'));
+  // }
 
   @override
   void notifyListeners() {
@@ -796,6 +832,23 @@ class UserNotifier extends ChangeNotifier with TryMixin {
           saved.comments.map((v) => CommentNotifier(_redditApi, v)).toList();
       notifyListeners();
     }, 'fail to load saved');
+  }
+
+  Future<void> block() {
+    return _updateBlock(true);
+  }
+
+  Future<void> unblock() {
+    return _updateBlock(false);
+  }
+
+  Future<void> _updateBlock(bool block) {
+    return _try(() async {
+      if (_user.isBlocked == block) return;
+      await (block ? _redditApi.userBlock : _redditApi.userUnblock)(_user.name);
+      _user = _user.copyWith(isBlocked: block);
+      notifyListeners();
+    }, 'fail to' + (block ? 'block' : 'unblock'));
   }
 
   @override

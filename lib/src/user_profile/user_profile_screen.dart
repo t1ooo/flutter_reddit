@@ -72,7 +72,7 @@ class _UserProfileScreen extends StatelessWidget {
                   leading: AppBarBackButton(),
                   src: backgroundImage,
                   backgroundColor: backgroundColor,
-                  trailing: _userMenu(context),
+                  trailing: _userMenu(context, notifier),
                 ),
               ),
               SliverList(delegate: SliverChildListDelegate([UserInfo()])),
@@ -101,7 +101,9 @@ class _UserProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _userMenu(BuildContext context) {
+  Widget _userMenu(BuildContext context, UserNotifier notifier) {
+    final user = notifier.user;
+
     return CustomPopupMenuButton(
       icon: SpaceBarIcon(Icons.more_vert),
       items: [
@@ -113,14 +115,16 @@ class _UserProfileScreen extends StatelessWidget {
               showTodoSnackBar(context); // TODO
             },
           ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.block),
-            label: 'Block user',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
+        CustomPopupMenuItem(
+          icon: Icon(
+            user.isBlocked ? Icons.person_add : Icons.block,
           ),
+          label: user.isBlocked ? 'Unblock' : 'Block',
+          onTap: () {
+            return (user.isBlocked ? notifier.unblock() : notifier.block())
+                .catchError((e) => showErrorSnackBar(context, e));
+          },
+        ),
       ],
     );
   }

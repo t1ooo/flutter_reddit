@@ -39,6 +39,7 @@ class Submission extends Equatable {
     required this.preview,
     required this.video,
     required this.postHint,
+    required this.authorIsBlocked,
   });
 
   final String author;
@@ -66,12 +67,11 @@ class Submission extends Equatable {
   final int totalAwardsReceived;
   final Like likes;
   final bool saved;
-
   final List<Comment>? comments;
-
   final List<Preview> preview;
   final Video? video;
   final PostHint postHint;
+  final bool authorIsBlocked;
 
   String get shortLink {
     if (id == '') {
@@ -117,6 +117,8 @@ class Submission extends Equatable {
       preview: parsePreview(m['preview'], '$f.preview'),
       video: parseVideo(m['media'], '$f.media'),
       postHint: parsePostHint(m['post_hint'], m['url'], '$f.post_hint'),
+      authorIsBlocked:
+          parseBool(m['author_is_blocked'], '$f.author_is_blocked'),
       comments: comments,
     );
   }
@@ -154,6 +156,7 @@ class Submission extends Equatable {
       preview,
       video,
       postHint,
+      authorIsBlocked,
     ];
   }
 
@@ -188,6 +191,7 @@ class Submission extends Equatable {
     List<Preview>? preview,
     Video? Function()? video,
     PostHint? postHint,
+    bool? authorIsBlocked,
   }) {
     return Submission(
       author: author ?? this.author,
@@ -220,6 +224,7 @@ class Submission extends Equatable {
       preview: preview ?? this.preview,
       video: video != null ? video() : this.video,
       postHint: postHint ?? this.postHint,
+      authorIsBlocked: authorIsBlocked ?? this.authorIsBlocked,
     );
   }
 }

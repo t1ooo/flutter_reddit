@@ -50,14 +50,14 @@ class SubmissionPopupMenu extends StatelessWidget {
               showTodoSnackBar(context); // TODO
             },
           ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.block),
-            label: 'Block user',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
+        // if (kDebugMode)
+        //   CustomPopupMenuItem(
+        //     icon: Icon(Icons.block),
+        //     label: 'Block user',
+        //     onTap: () {
+        //       showTodoSnackBar(context); // TODO
+        //     },
+        //   ),
       ],
     );
   }

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'subreddit.dart';
 import 'parse.dart';
+import 'subreddit.dart';
 
 class User extends Equatable {
   User({
@@ -108,5 +108,55 @@ class User extends Equatable {
       hasSubscribed,
       subreddit,
     ];
+  }
+
+  User copyWith({
+    bool? isEmployee,
+    bool? isFriend,
+    int? awardeeKarma,
+    String? id,
+    bool? verified,
+    bool? isGold,
+    bool? isMod,
+    int? awarderKarma,
+    bool? hasVerifiedEmail,
+    String? iconImg,
+    int? linkKarma,
+    bool? isBlocked,
+    int? totalKarma,
+    bool? acceptChats,
+    String? name,
+    DateTime? created,
+    DateTime? createdUtc,
+    String? snoovatarImg,
+    int? commentKarma,
+    bool? acceptFollowers,
+    bool? hasSubscribed,
+    Subreddit? subreddit,
+  }) {
+    return User(
+      isEmployee: isEmployee ?? this.isEmployee,
+      isFriend: isFriend ?? this.isFriend,
+      awardeeKarma: awardeeKarma ?? this.awardeeKarma,
+      id: id ?? this.id,
+      verified: verified ?? this.verified,
+      isGold: isGold ?? this.isGold,
+      isMod: isMod ?? this.isMod,
+      awarderKarma: awarderKarma ?? this.awarderKarma,
+      hasVerifiedEmail: hasVerifiedEmail ?? this.hasVerifiedEmail,
+      iconImg: iconImg ?? this.iconImg,
+      linkKarma: linkKarma ?? this.linkKarma,
+      isBlocked: isBlocked ?? this.isBlocked,
+      totalKarma: totalKarma ?? this.totalKarma,
+      acceptChats: acceptChats ?? this.acceptChats,
+      name: name ?? this.name,
+      created: created ?? this.created,
+      createdUtc: createdUtc ?? this.createdUtc,
+      snoovatarImg: snoovatarImg ?? this.snoovatarImg,
+      commentKarma: commentKarma ?? this.commentKarma,
+      acceptFollowers: acceptFollowers ?? this.acceptFollowers,
+      hasSubscribed: hasSubscribed ?? this.hasSubscribed,
+      subreddit: subreddit ?? this.subreddit,
+    );
   }
 }

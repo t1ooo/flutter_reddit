@@ -50,6 +50,8 @@ abstract class RedditApi {
   Future<List<Submission>> userSubmissions(String name, {required int limit});
   Future<List<Trophy>> userTrophies(String name);
   Future<UserSaved> userSaved(String name, {required int limit});
+  Future<void> userBlock(String name);
+  Future<void> userUnblock(String name);
 
   Future<void> subredditSubscribe(String name);
   Future<void> subredditUnsubscribe(String name);
@@ -343,6 +345,18 @@ class RedditApiImpl implements RedditApi {
     return _parseUser(redditor)!;
   }
 
+  Future<void> userBlock(String name) async {
+    final params = {'name': name};
+    await reddit.post('/api/block_user/', params);
+  }
+
+  Future<void> userUnblock(String name) async {
+    final redditorRef = await reddit.redditor(name);
+    // final redditor = await redditorRef.populate();
+    // return User.fromJson(redditor.data! as Map<String, dynamic>);
+    return redditorRef.unblock();
+  }
+
   // TODO: MAYBE: add type support
   Future<List<Comment>> userComments(
     String name, {
@@ -484,7 +498,6 @@ class RedditApiImpl implements RedditApi {
   //   return Subreddit.fromJson(sub.data! as Map<String, dynamic>).communityIcon;
   // }
 
-  // TODO: use draw.Submission instead id for optimisation
   Future<void> submissionLike(String id, Like like) async {
     final s = await reddit.submission(id: id).populate();
     return _like(s, like);
@@ -1085,5 +1098,19 @@ class FakeRedditApi implements RedditApi {
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Message.fromJson(v))
         .toList();
+  }
+
+  Future<void> userBlock(String name) async {
+    _log.info('userBlock($name)');
+    _mustLoggedIn();
+    await Future.delayed(_delay);
+    return;
+  }
+
+  Future<void> userUnblock(String name) async {
+    _log.info('userUnblock($name)');
+    _mustLoggedIn();
+    await Future.delayed(_delay);
+    return;
   }
 }
