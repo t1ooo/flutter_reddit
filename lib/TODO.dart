@@ -2,7 +2,6 @@
 // TODO: go back when hide post
 // TODO: add draw model to model for optimization (.*like|save|...)
 //  or use praw post|get directly
-// TODO: merge comments menu
 // TODO: add dart analytics options
 // TODO: optimistic updates
 // TODO: auto disabled buttons
