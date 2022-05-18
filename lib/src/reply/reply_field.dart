@@ -33,7 +33,6 @@ class ReplyField extends StatelessWidget {
               ),
             );
           },
-          cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'Add a comment',
             border: OutlineInputBorder(),

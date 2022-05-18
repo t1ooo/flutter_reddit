@@ -53,7 +53,6 @@ class _ReportScreenState extends State<ReportScreen> {
       onSubmitted: (v) {
         _submit();
       },
-      cursorColor: blackColor,
       decoration: InputDecoration(
         hintText: 'Reason',
         border: InputBorder.none,

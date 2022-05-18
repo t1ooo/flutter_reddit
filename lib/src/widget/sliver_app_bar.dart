@@ -247,7 +247,6 @@ class SearchForm extends StatelessWidget {
             );
           }
         },
-        cursorColor: blackColor,
         decoration: InputDecoration(
           prefixIcon: IconTheme(data: formIconTheme, child: Icon(Icons.search)),
           suffixIcon: IconButton(

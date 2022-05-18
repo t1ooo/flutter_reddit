@@ -92,7 +92,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
         SizedBox(height: 20),
         TextField(
           onChanged: (v) => _title = v,
-          cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'An interesting title',
             border: InputBorder.none,
@@ -107,7 +106,6 @@ class _SubmitScreenState extends State<SubmitScreen> {
           onSubmitted: (v) {
             _submit();
           },
-          cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'You text post(optional)',
             border: InputBorder.none,

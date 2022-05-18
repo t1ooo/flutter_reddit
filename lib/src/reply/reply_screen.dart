@@ -64,7 +64,6 @@ class _ReplyScreenState extends State<ReplyScreen> {
           onSubmitted: (v) {
             _submit();
           },
-          cursorColor: blackColor,
           decoration: InputDecoration(
             hintText: 'You comment',
             border: InputBorder.none,

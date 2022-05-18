@@ -49,4 +49,7 @@ final theme = ThemeData(
     contentTextStyle: TextStyle(color: blackColor),
     behavior: SnackBarBehavior.floating,
   ),
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: blackColor,
+  ),
 );
