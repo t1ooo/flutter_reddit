@@ -28,16 +28,18 @@ class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
     Key? key,
     this.activeLink = true,
+    this.fullpage = false,
   }) : super(key: key);
 
   final bool activeLink;
+  final bool fullpage;
 
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<SubmissionNotifier>();
     final submission = notifier.submission;
 
-    if (submission.hidden) {
+    if (!fullpage && submission.hidden) {
       return Card(
         child: Padding(
           padding: cardPadding,

@@ -15,7 +15,10 @@ import '../widget/save.dart';
 class SubmissionPopupMenu extends StatelessWidget {
   const SubmissionPopupMenu({
     Key? key,
+    this.fullpage = false,
   }) : super(key: key);
+
+  final bool fullpage;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +35,25 @@ class SubmissionPopupMenu extends StatelessWidget {
           ),
           label: submission.hidden ? 'Unhide' : 'Hide',
           onTap: () {
+            // return (submission.hidden ? notifier.unhide() : notifier.hide())
+            //     .catchError((e) => showErrorSnackBar(context, e));
+
+            final hidden = submission.hidden;
             return (submission.hidden ? notifier.unhide() : notifier.hide())
-                .catchError((e) => showErrorSnackBar(context, e));
+                .then(
+              (_) {
+                if (!hidden && fullpage) Navigator.pop(context);
+              },
+              onError: (e) => (e) => showErrorSnackBar(context, e),
+            );
+
+            // return submission.hidden
+            //     ? notifier
+            //         .unhide()
+            //         .catchError((e) => showErrorSnackBar(context, e))
+            //     : notifier.hide().then((_) {
+            //         if (popOnHide) Navigator.pop(context);
+            //       }, onError: (e) => (e) => showErrorSnackBar(context, e));
           },
         ),
         // CustomPopupMenuItem(

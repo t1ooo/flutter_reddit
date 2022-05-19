@@ -23,6 +23,7 @@ class SubmissionWidget extends StatelessWidget {
         children: [
           SubmissionTile(
             activeLink: false,
+            fullpage: true,
           ),
           SizedBox(height: 50),
           Loader<List<CommentNotifier>>(

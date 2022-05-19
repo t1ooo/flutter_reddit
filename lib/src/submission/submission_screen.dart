@@ -61,7 +61,7 @@ class _SubmissionScreen extends StatelessWidget {
                   backgroundColor: generateColor(submission.id),
                   leading: AppBarBackButton(),
                   // trailing: _submissionMenu(context),
-                  trailing: SubmissionPopupMenu(),
+                  trailing: SubmissionPopupMenu(fullpage:true),
                 ),
               ),
             ];
