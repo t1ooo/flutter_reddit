@@ -45,7 +45,7 @@ class UserInfo extends StatelessWidget {
                 SizedBox(width: 10),
                 Text(subreddit.displayNamePrefixed, textScaleFactor: 2),
                 Spacer(),
-                if (notifier.isCurrentUser)
+                if (notifier is CurrentUserNotifier)
                   if (kDebugMode)
                     ElevatedButton(
                         onPressed: () {

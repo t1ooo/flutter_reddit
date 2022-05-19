@@ -482,7 +482,7 @@ class SubmissionNotifier extends ChangeNotifier
     }).toList();
   }
 
-  String get replyToMessage  => _submission.title;
+  String get replyToMessage => _submission.title;
 
   Future<void> reply(String body) {
     return _try(() async {
@@ -690,7 +690,7 @@ class CommentNotifier
     }, 'fail to share');
   }
 
-  String get replyToMessage  => _comment.body;
+  String get replyToMessage => _comment.body;
 
   Future<void> reply(String body) async {
     return _try(() async {
@@ -780,15 +780,13 @@ class UserLoaderNotifier extends ChangeNotifier with TryMixin {
 }
 
 class UserNotifier extends ChangeNotifier with TryMixin {
-  UserNotifier(this._redditApi, this._user, [this.isCurrentUser = false])
+  UserNotifier(this._redditApi, this._user)
       : _name = _user.name,
         _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);
 
   final RedditApi _redditApi;
 
   static final _log = getLogger('UserNotifier');
-
-  final bool isCurrentUser;
 
   final String _name;
 
@@ -958,8 +956,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
 }
 
 class CurrentUserNotifier extends UserNotifier with PropertyListener {
-  CurrentUserNotifier(this._redditApi, User user)
-      : super(_redditApi, user, true);
+  CurrentUserNotifier(this._redditApi, User user) : super(_redditApi, user);
 
   final RedditApi _redditApi;
 
