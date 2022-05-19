@@ -18,7 +18,7 @@ class SubmissionTiles<T> extends StatelessWidget {
     required this.types,
     required this.load,
     required this.submissions,
-    this.activeLink = true,
+    // this.activeLink = true,
     this.showTypeSelector = true,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class SubmissionTiles<T> extends StatelessWidget {
   final List<T> types;
   final List<SubmissionNotifier>? submissions;
   final Future<void> Function(T) load;
-  final bool activeLink;
+  // final bool activeLink;
 
   final bool showTypeSelector;
 
@@ -45,9 +45,7 @@ class SubmissionTiles<T> extends StatelessWidget {
                 value: sub,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  child: SubmissionTile(
-                    activeLink: activeLink,
-                  ),
+                  child: SubmissionTile(),
                 ),
               ),
           ],

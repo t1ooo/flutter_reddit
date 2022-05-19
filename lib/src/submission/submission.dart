@@ -21,10 +21,7 @@ class SubmissionWidget extends StatelessWidget {
           .catchError((e) => showErrorSnackBar(context, e)),
       child: ListView(
         children: [
-          SubmissionTile(
-            activeLink: false,
-            fullpage: true,
-          ),
+          SubmissionTile(fullpage: true),
           SizedBox(height: 50),
           Loader<List<CommentNotifier>>(
             load: (_) => notifier.loadComments(),

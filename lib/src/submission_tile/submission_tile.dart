@@ -27,11 +27,9 @@ import 'submission_popup_menu.dart';
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
     Key? key,
-    this.activeLink = true,
     this.fullpage = false,
   }) : super(key: key);
 
-  final bool activeLink;
   final bool fullpage;
 
   @override
@@ -63,7 +61,7 @@ class SubmissionTile extends StatelessWidget {
             ),
             SizedBox(height: 15),
             InkWell(
-              onTap: activeLink
+              onTap: !fullpage
                   ? () {
                       Navigator.push(
                         context,
@@ -213,7 +211,7 @@ class SubmissionTile extends StatelessWidget {
         ),
       ),
       // trailing: activeLink ? _popupMenuButton(context, notifier) : null,
-      trailing: activeLink ? SubmissionPopupMenu() : null,
+      trailing: !fullpage ? SubmissionPopupMenu() : null,
     );
   }
 
