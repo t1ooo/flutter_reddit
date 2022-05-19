@@ -38,22 +38,35 @@ class SubmissionPopupMenu extends StatelessWidget {
             // return (submission.hidden ? notifier.unhide() : notifier.hide())
             //     .catchError((e) => showErrorSnackBar(context, e));
 
-            final hidden = submission.hidden;
-            return (submission.hidden ? notifier.unhide() : notifier.hide())
-                .then(
-              (_) {
-                if (!hidden && fullpage) Navigator.pop(context);
-              },
-              onError: (e) => (e) => showErrorSnackBar(context, e),
-            );
+            // final hidden = submission.hidden;
+            // return (submission.hidden ? notifier.unhide() : notifier.hide())
+            //     .then(
+            //   (_) {
+            //     if (!hidden && fullpage) Navigator.pop(context);
+            //   },
+            //   onError: (e) => (e) => showErrorSnackBar(context, e),
+            // );
+
+            // final catchError = (e) => showErrorSnackBar(context, e);
 
             // return submission.hidden
-            //     ? notifier
-            //         .unhide()
-            //         .catchError((e) => showErrorSnackBar(context, e))
+            //     ? notifier.unhide().catchError(catchError)
             //     : notifier.hide().then((_) {
-            //         if (popOnHide) Navigator.pop(context);
-            //       }, onError: (e) => (e) => showErrorSnackBar(context, e));
+            //         if (fullpage) Navigator.pop(context);
+            //       }, onError: catchError);
+
+            // return (submission.hidden
+            //         ? notifier.unhide()
+            //         : notifier.hide().then((_) {
+            //             if (fullpage) Navigator.pop(context);
+            //           }))
+            //     .catchError((e) => showErrorSnackBar(context, e));
+
+            return submission.hidden
+                ? notifier.unhide()
+                : notifier.hide().then((_) {
+                    if (fullpage) Navigator.pop(context);
+                  }, onError: (e) => showErrorSnackBar(context, e),);
           },
         ),
         // CustomPopupMenuItem(
