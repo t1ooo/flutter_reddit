@@ -26,7 +26,7 @@ class ReplyField extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (_) =>
-                    ChangeNotifierProvider<SubmissionNotifier>.value(
+                    InheritedProvider<Replyable>.value(
                   value: context.read<SubmissionNotifier>(),
                   child: ReplyScreen(),
                 ),

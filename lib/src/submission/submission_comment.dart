@@ -118,16 +118,9 @@ class SubmissionComment extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider<SubmissionNotifier>.value(
-                      value: context.read<SubmissionNotifier>(),
-                    ),
-                    ChangeNotifierProvider<CommentNotifier>.value(
-                      value: context.read<CommentNotifier>(),
-                    ),
-                  ],
-                  child: ReplyScreen(isComment: true),
+                builder: (_) => InheritedProvider<Replyable>.value(
+                  value: context.read<CommentNotifier>(),
+                  child: ReplyScreen(),
                 ),
               ),
             );

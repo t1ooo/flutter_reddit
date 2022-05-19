@@ -19,6 +19,11 @@ import '../reddit_api/user.dart';
 
 const int _limit = 100;
 
+abstract class Replyable {
+  String get replyToMessage;
+  Future<void> reply(String message);
+}
+
 abstract class Reportable {
   Future<void> report(String reason);
 }
@@ -433,7 +438,7 @@ class PreviewImage {
 
 class SubmissionNotifier extends ChangeNotifier
     with TryMixin, Likable, Savable, PropertyListener
-    implements Reportable {
+    implements Reportable, Replyable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);
   }
@@ -476,6 +481,8 @@ class SubmissionNotifier extends ChangeNotifier
       return _addListener(CommentNotifier(_redditApi, v));
     }).toList();
   }
+
+  String get replyToMessage  => _submission.title;
 
   Future<void> reply(String body) {
     return _try(() async {
@@ -618,7 +625,7 @@ class CommentNotifier
         Likable,
         Savable,
         PropertyListener
-    implements Reportable {
+    implements Reportable, Replyable {
   CommentNotifier(this._redditApi, this._comment) {
     _replies = _comment.replies
         .map((v) => _addListener(CommentNotifier(_redditApi, v)))
@@ -682,6 +689,8 @@ class CommentNotifier
       await Share.share('${_comment.linkTitle} ${_comment.shortLink}');
     }, 'fail to share');
   }
+
+  String get replyToMessage  => _comment.body;
 
   Future<void> reply(String body) async {
     return _try(() async {

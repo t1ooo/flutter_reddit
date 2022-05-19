@@ -8,12 +8,7 @@ import '../notifier/reddir_notifier.v4_2.dart';
 import '../widget/snackbar.dart';
 
 class ReplyScreen extends StatefulWidget {
-  ReplyScreen({
-    Key? key,
-    this.isComment = false,
-  }) : super(key: key);
-
-  final bool isComment;
+  ReplyScreen({Key? key}) : super(key: key);
 
   @override
   State<ReplyScreen> createState() => _ReplyScreenState();
@@ -53,11 +48,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
   Widget _form(BuildContext context) {
     return ListView(
       children: [
-        Text(
-          (widget.isComment)
-              ? context.read<CommentNotifier>().comment.body
-              : context.read<SubmissionNotifier>().submission.title,
-        ),
+        Text(context.read<Replyable>().replyToMessage),
         Divider(),
         TextField(
           onChanged: (v) => _message = v,
@@ -80,9 +71,9 @@ class _ReplyScreenState extends State<ReplyScreen> {
       return;
     }
 
-    (widget.isComment
-            ? context.read<CommentNotifier>().reply(_message)
-            : context.read<SubmissionNotifier>().reply(_message))
+    context
+        .read<Replyable>()
+        .reply(_message)
         .catchError((e) => showErrorSnackBar(context, e));
 
     Navigator.pop(context);

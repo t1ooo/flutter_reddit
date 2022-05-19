@@ -94,9 +94,9 @@ class SavedComment extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => ChangeNotifierProvider<CommentNotifier>.value(
+                builder: (_) => InheritedProvider<Replyable>.value(
                   value: context.read<CommentNotifier>(),
-                  child: ReplyScreen(isComment: true),
+                  child: ReplyScreen(),
                 ),
               ),
             );
