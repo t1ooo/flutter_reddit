@@ -885,7 +885,9 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
-    final data = await File('data/subreddit.json').readAsString();
+    final files = ['data/subreddit.1.json', 'data/subreddit.2.json'];
+    final data =
+        await File(files[Random().nextInt(files.length)]).readAsString();
     final map = jsonDecode(data) as Map;
     map['user_is_subscriber'] = _random.nextInt(1000) % 2 == 0;
     return Subreddit.fromJson(map as Map<String, dynamic>);
