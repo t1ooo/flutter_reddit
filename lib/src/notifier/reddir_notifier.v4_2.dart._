@@ -305,7 +305,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   @override
-  Future<List<Submission>> _loadSubmissions() {
+  Future<List<Submission>> loadSubmissions_() {
     return _redditApi.subredditSubmissions(name, limit: limit, type: _subType);
   }
 
@@ -411,14 +411,14 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
       if (_submissions != null && _subType == subType) return;
       _subType = subType;
 
-      _submissions = (await _loadSubmissions())
+      _submissions = (await loadSubmissions_())
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to search');
   }
 
-  Future<List<Submission>> _loadSubmissions();
+  Future<List<Submission>> loadSubmissions_();
 }
 
 // TODO: move to current user
@@ -429,7 +429,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
   static final _log = getLogger('HomeFrontNotifier');
 
   @override
-  Future<List<Submission>> _loadSubmissions() {
+  Future<List<Submission>> loadSubmissions_() {
     return _redditApi.front(limit: limit, type: _subType);
   }
 
@@ -447,7 +447,7 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
   static final _log = getLogger('HomeFrontNotifier');
 
   @override
-  Future<List<Submission>> _loadSubmissions() {
+  Future<List<Submission>> loadSubmissions_() {
     return _redditApi.popular(limit: limit, type: _subType);
   }
 

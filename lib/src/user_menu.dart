@@ -45,7 +45,7 @@ class UserMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<UserAuth>();
+    final notifier = context.watch<AuthNotifier>();
     final user = notifier.user!;
     return Drawer(
       child: Column(

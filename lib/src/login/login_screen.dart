@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context
-                    .read<UserAuth>()
+                    .read<AuthNotifier>()
                     .login('', '')
                     .catchError((e) => showErrorSnackBar(context, e));
               },

@@ -16,7 +16,7 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 
   // TODO: remove
   @override
-  Future<List<Submission>> _loadSubmissions() {
+  Future<List<Submission>> loadSubmissions_() {
     return _redditApi.popular(limit: limit, type: subType);
   }
 

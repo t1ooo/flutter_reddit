@@ -5,14 +5,12 @@ import '../reddit_api/reddit_api.dart';
 import 'current_user_notifier.dart';
 import 'try_mixin.dart';
 
-// TODO: rename to AuthNotifier
-// TODO: merge with CurrentUserNotifier?
-class UserAuth extends ChangeNotifier with TryMixin {
-  UserAuth(this._redditApi);
+class AuthNotifier extends ChangeNotifier with TryMixin {
+  AuthNotifier(this._redditApi);
 
   final RedditApi _redditApi;
 
-  static final _log = getLogger('UserAuth');
+  static final _log = getLogger('AuthNotifier');
 
   CurrentUserNotifier? _user;
   CurrentUserNotifier? get user => _user;

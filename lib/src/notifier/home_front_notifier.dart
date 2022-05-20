@@ -15,7 +15,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
   static final _log = getLogger('HomeFrontNotifier');
 
   @override
-  Future<List<Submission>> _loadSubmissions() {
+  Future<List<Submission>> loadSubmissions_() {
     return _redditApi.front(limit: limit, type: subType);
   }
 

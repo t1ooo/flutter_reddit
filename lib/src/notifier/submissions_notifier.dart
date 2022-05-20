@@ -34,12 +34,12 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
       if (_submissions != null && _subType == subType) return;
       _subType = subType;
 
-      _submissions = (await _loadSubmissions())
+      _submissions = (await loadSubmissions_())
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
     }, 'fail to search');
   }
 
-  Future<List<Submission>> _loadSubmissions();
+  Future<List<Submission>> loadSubmissions_();
 }

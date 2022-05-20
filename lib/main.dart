@@ -78,9 +78,9 @@ Future<void> main() async {
         ChangeNotifierProvider<SearchSubredditsQ>(
           create: (context) => SearchSubredditsQ(redditApi),
         ),
-        ChangeNotifierProvider<UserAuth>(
+        ChangeNotifierProvider<AuthNotifier>(
           create: (context) {
-            final notifier = UserAuth(redditApi);
+            final notifier = AuthNotifier(redditApi);
             return notifier
               ..addListener(() {
                 if (notifier.user == null) {
