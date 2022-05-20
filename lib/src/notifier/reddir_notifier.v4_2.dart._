@@ -18,7 +18,7 @@ import '../reddit_api/subreddit.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
 
-const int _limit = 100;
+const int limit = 100;
 
 abstract class Replyable {
   String get replyToMessage;
@@ -106,7 +106,7 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
     Sort sort = Sort.relevance,
     String subredditName = 'all',
   ]) {
-    return _try(() async {
+    return try_(() async {
       if (_submissions != null &&
           _query == query &&
           _sort == sort &&
@@ -117,7 +117,7 @@ class SearchNotifier extends ChangeNotifier with TryMixin {
       _subredditName = subredditName;
 
       _submissions = (await _redditApi.search(query,
-              limit: _limit, sort: _sort, subreddit: _subredditName))
+              limit: limit, sort: _sort, subreddit: _subredditName))
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -156,11 +156,11 @@ class SearchSubredditsQ extends ChangeNotifier with TryMixin {
   }
 
   Future<void> search(String query) {
-    return _try(() async {
+    return try_(() async {
       if (_subreddits != null && _query == query) return;
       _query = query;
 
-      _subreddits = (await _redditApi.searchSubreddits(query, limit: _limit))
+      _subreddits = (await _redditApi.searchSubreddits(query, limit: limit))
           .map((v) => SubredditNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -192,7 +192,7 @@ class SubmissionLoaderNotifier extends ChangeNotifier with TryMixin {
   SubmissionNotifier? get submission => _submission;
 
   Future<void> loadSubmission(String id) {
-    return _try(() async {
+    return try_(() async {
       if (_submission != null && _id == id) return;
       _id = id;
 
@@ -227,7 +227,7 @@ class SubredditLoaderNotifier extends ChangeNotifier with TryMixin {
   SubredditNotifier? get subreddit => _subreddit;
 
   Future<void> loadSubreddit(String name) {
-    return _try(() async {
+    return try_(() async {
       if (_subreddit != null && _name == name) return;
       _name = name;
 
@@ -263,7 +263,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   Subreddit get subreddit => _subreddit;
 
   Future<void> subscribe() {
-    return _try(() async {
+    return try_(() async {
       if (_subreddit.userIsSubscriber) return;
       await _redditApi.subredditSubscribe(name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: true);
@@ -272,7 +272,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   Future<void> unsubscribe() {
-    return _try(() async {
+    return try_(() async {
       if (!(_subreddit.userIsSubscriber)) return;
       await _redditApi.subredditSubscribe(name);
       _subreddit = _subreddit.copyWith(userIsSubscriber: false);
@@ -281,7 +281,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   Future<void> favorite() {
-    return _try(() async {
+    return try_(() async {
       if (_subreddit.userHasFavorited) return;
       await _redditApi.subredditFavorite(name);
       _subreddit = _subreddit.copyWith(userHasFavorited: true);
@@ -290,7 +290,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   Future<void> unfavorite() {
-    return _try(() async {
+    return try_(() async {
       if (!(_subreddit.userHasFavorited)) return;
       await _redditApi.subredditUnfavorite(name);
       _subreddit = _subreddit.copyWith(userHasFavorited: false);
@@ -299,14 +299,14 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   Future<void> share() {
-    return _try(() async {
+    return try_(() async {
       await Share.share('${_subreddit.title} ${_subreddit.shortLink}');
     }, 'fail to share');
   }
 
   @override
   Future<List<Submission>> _loadSubmissions() {
-    return _redditApi.subredditSubmissions(name, limit: _limit, type: _subType);
+    return _redditApi.subredditSubmissions(name, limit: limit, type: _subType);
   }
 
   Future<SubmissionNotifier> submit({
@@ -318,7 +318,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     bool nsfw = false,
     bool spoiler = false,
   }) async {
-    return _try(() async {
+    return try_(() async {
       final submission = await _redditApi.submit(
         subreddit: _subreddit.displayName,
         title: title,
@@ -342,7 +342,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
   }
 
   Future<void> loadRules() {
-    return _try(() async {
+    return try_(() async {
       if (_rules != null) return;
       _rules = (await _redditApi.subredditRules(_subreddit.displayName))
           .map((v) => RuleNotifier(v))
@@ -407,7 +407,7 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
   }
 
   Future<void> loadSubmissions(T subType) {
-    return _try(() async {
+    return try_(() async {
       if (_submissions != null && _subType == subType) return;
       _subType = subType;
 
@@ -430,7 +430,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
 
   @override
   Future<List<Submission>> _loadSubmissions() {
-    return _redditApi.front(limit: _limit, type: _subType);
+    return _redditApi.front(limit: limit, type: _subType);
   }
 
   @override
@@ -448,7 +448,7 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 
   @override
   Future<List<Submission>> _loadSubmissions() {
-    return _redditApi.popular(limit: _limit, type: _subType);
+    return _redditApi.popular(limit: limit, type: _subType);
   }
 
   @override
@@ -492,7 +492,7 @@ class SubmissionNotifier extends ChangeNotifier
   }
 
   Future<void> _loadSubmission() {
-    return _try(() async {
+    return try_(() async {
       if (_comments != null) return;
       _submission = await _redditApi.submission(_submission.id);
       _setComments(_submission.comments);
@@ -513,7 +513,7 @@ class SubmissionNotifier extends ChangeNotifier
   String get replyToMessage => _submission.title;
 
   Future<void> reply(String body) {
-    return _try(() async {
+    return try_(() async {
       final commentReply =
           await _redditApi.submissionReply(submission.id, body);
 
@@ -536,7 +536,7 @@ class SubmissionNotifier extends ChangeNotifier
   bool get saved => _submission.saved;
 
   Future<void> _updateSave(bool save) {
-    return _try(() async {
+    return try_(() async {
       await (save
           ? _redditApi.submissionSave
           : _redditApi.submissionUnsave)(submission.id);
@@ -554,7 +554,7 @@ class SubmissionNotifier extends ChangeNotifier
   }
 
   Future<void> _updateHide(bool hide) {
-    return _try(() async {
+    return try_(() async {
       if (_submission.hidden == hide) return;
       await (hide
           ? _redditApi.submissionHide
@@ -571,7 +571,7 @@ class SubmissionNotifier extends ChangeNotifier
   int get score => _submission.score;
 
   Future<void> _updateLike(Like like) {
-    return _try(() async {
+    return try_(() async {
       await _redditApi.submissionLike(submission.id, like);
       _submission = submission.copyWith(
         likes: like,
@@ -582,7 +582,7 @@ class SubmissionNotifier extends ChangeNotifier
   }
 
   Future<void> share() {
-    return _try(() async {
+    return try_(() async {
       await Share.share('${submission.title} ${submission.shortLink}');
     }, 'fail to share');
   }
@@ -619,7 +619,7 @@ class SubmissionNotifier extends ChangeNotifier
 
   @override
   Future<void> report(String reason) {
-    return _try(() async {
+    return try_(() async {
       await _redditApi.submissionReport(submission.id, reason);
       notifyListeners();
     }, 'fail to report');
@@ -634,7 +634,7 @@ class SubmissionNotifier extends ChangeNotifier
   // }
 
   // Future<void> _updateUserBlock(bool block) {
-  //   return _try(() async {
+  //   return try_(() async {
   //     if (_submission.authorIsBlocked == block) return;
   //     await (block
   //         ? _redditApi.userBlock
@@ -677,7 +677,7 @@ class CommentNotifier
   }
 
   Future<void> copyText() {
-    return _try(() {
+    return try_(() {
       return Clipboard.setData(ClipboardData(text: _comment.body));
     }, 'fail to copy');
   }
@@ -685,7 +685,7 @@ class CommentNotifier
   bool get saved => _comment.saved;
 
   Future<void> _updateSave(bool save) {
-    return _try(() async {
+    return try_(() async {
       await (save
           ? _redditApi.commentSave
           : _redditApi.commentUnsave)(comment.id);
@@ -702,7 +702,7 @@ class CommentNotifier
 
   Future<void> _updateLike(Like like) {
     _log.info('_updateLike($like)');
-    return _try(() async {
+    return try_(() async {
       await _redditApi.commentLike(comment.id, like);
       _comment = comment.copyWith(
         likes: like,
@@ -713,7 +713,7 @@ class CommentNotifier
   }
 
   Future<void> share() {
-    return _try(() async {
+    return try_(() async {
       await Share.share('${_comment.linkTitle} ${_comment.shortLink}');
     }, 'fail to share');
   }
@@ -721,7 +721,7 @@ class CommentNotifier
   String get replyToMessage => _comment.body;
 
   Future<void> reply(String body) async {
-    return _try(() async {
+    return try_(() async {
       final commentReply = await _redditApi.commentReply(_comment.id, body);
 
       _replies.insert(0, CommentNotifier(_redditApi, commentReply));
@@ -739,7 +739,7 @@ class CommentNotifier
 
   @override
   Future<void> report(String reason) {
-    return _try(() async {
+    return try_(() async {
       await _redditApi.submissionReport(comment.id, reason);
       notifyListeners();
     }, 'fail to report');
@@ -754,7 +754,7 @@ class CommentNotifier
   // }
 
   // Future<void> _updateUserBlock(bool block) {
-  //   return _try(() async {
+  //   return try_(() async {
   //     if (_comment.authorIsBlocked == block) return;
   //     await (block
   //         ? _redditApi.userBlock
@@ -790,7 +790,7 @@ class UserLoaderNotifier extends ChangeNotifier with TryMixin {
   UserNotifier? get user => _user;
 
   Future<void> loadUser(String name) {
-    return _try(() async {
+    return try_(() async {
       if (_user != null && _name == name) return;
       _name = name;
 
@@ -833,9 +833,9 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   }
 
   Future<void> loadSubmissions() {
-    return _try(() async {
+    return try_(() async {
       if (_submissions != null) return;
-      _submissions = (await _redditApi.userSubmissions(_name, limit: _limit))
+      _submissions = (await _redditApi.userSubmissions(_name, limit: limit))
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -851,9 +851,9 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   }
 
   Future<void> loadComments() {
-    return _try(() async {
+    return try_(() async {
       if (_comments != null) return;
-      _comments = (await _redditApi.userComments(_name, limit: _limit))
+      _comments = (await _redditApi.userComments(_name, limit: limit))
           .map((v) => CommentNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -863,7 +863,7 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   List<Trophy>? _trophies;
   List<Trophy>? get trophies => _trophies;
   Future<void> loadTrophies() {
-    return _try(() async {
+    return try_(() async {
       if (_trophies != null) return;
       _trophies = await _redditApi.userTrophies(_name);
       notifyListeners();
@@ -883,9 +883,9 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   }
 
   Future<void> loadSaved() {
-    return _try(() async {
+    return try_(() async {
       if (_savedComments != null && _savedSubmissions != null) return;
-      final saved = await _redditApi.userSaved(_user.name, limit: _limit);
+      final saved = await _redditApi.userSaved(_user.name, limit: limit);
       _savedSubmissions = saved.submissions
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
@@ -904,7 +904,7 @@ class UserNotifier extends ChangeNotifier with TryMixin {
   }
 
   Future<void> _updateBlock(bool block) {
-    return _try(() async {
+    return try_(() async {
       if (_user.isBlocked == block) return;
       await (block ? _redditApi.userBlock : _redditApi.userUnblock)(_user.name);
       _user = _user.copyWith(isBlocked: block);
@@ -932,7 +932,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   CurrentUserNotifier? get user => _user;
 
   Future<bool> loginSilently(String name, String pass) async {
-    return _try<bool>(() async {
+    return try_<bool>(() async {
       if (_redditApi.isLoggedIn) {
         return true;
       }
@@ -947,7 +947,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
 
   // TODO: remove args
   Future<void> login(String name, String pass) {
-    return _try(() async {
+    return try_(() async {
       if (_redditApi.isLoggedIn) {
         return;
       }
@@ -966,7 +966,7 @@ class UserAuth extends ChangeNotifier with TryMixin {
   }
 
   Future<void> logout() {
-    return _try(() async {
+    return try_(() async {
       if (!_redditApi.isLoggedIn) {
         return;
       }
@@ -1003,7 +1003,7 @@ class CurrentUserNotifier extends UserNotifier with PropertyListener {
   }
 
   Future<void> loadSubreddits() {
-    return _try(() async {
+    return try_(() async {
       _loadSubredditAll();
       _loadSubreddits();
     }, 'fail to load subreddits');
@@ -1022,7 +1022,7 @@ class CurrentUserNotifier extends UserNotifier with PropertyListener {
     if (_subreddits != null) {
       return;
     }
-    _subreddits = (await _redditApi.currentUserSubreddits(limit: _limit))
+    _subreddits = (await _redditApi.currentUserSubreddits(limit: limit))
         .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
         .toList();
     notifyListeners();
@@ -1053,7 +1053,7 @@ class CurrentUserNotifier extends UserNotifier with PropertyListener {
   }
 
   Future<void> loadInboxMessages() {
-    return _try(() async {
+    return try_(() async {
       if (_inboxMessages != null) {
         return;
       }
@@ -1096,7 +1096,7 @@ class UIException implements Exception {
 mixin TryMixin {
   static final _log = getLogger('TryMixin');
 
-  Future<T> _try<T>(Future<T> Function() fn, String error) async {
+  Future<T> try_T>(Future<T> Function() fn, String error) async {
     try {
       return await fn();
     } on Exception catch (e, st) {
