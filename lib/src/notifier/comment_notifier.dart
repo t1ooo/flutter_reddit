@@ -9,15 +9,15 @@ import '../logging/logging.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/like.dart';
 import '../reddit_api/reddit_api.dart';
-import 'collapse_mixin.dart';
-import 'likable_mixin.dart';
+import 'collapsible.dart';
+import 'likable.dart';
 import 'property_listener.dart';
-import 'savable_mixin.dart';
+import 'savable.dart';
 import 'score.dart';
 import 'try_mixin.dart';
 
 class CommentNotifier
-    with Try, Collapse, ChangeNotifier, Likable, Savable
+    with Try, Collapsible, ChangeNotifier, Likable, Savable
     implements Reportable, Replyable {
   CommentNotifier(this._redditApi, this._comment) {
     _replies = _comment.replies

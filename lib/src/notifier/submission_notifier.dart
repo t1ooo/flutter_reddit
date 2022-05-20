@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:flutter_reddit_prototype/src/notifier/iterable_sum.dart';
 import 'package:flutter_reddit_prototype/src/notifier/replyable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reportable.dart';
-import 'package:flutter_reddit_prototype/src/notifier/savable_mixin.dart';
+import 'package:flutter_reddit_prototype/src/notifier/savable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/try_mixin.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -14,7 +14,7 @@ import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import 'comment_notifier.dart';
-import 'likable_mixin.dart';
+import 'likable.dart';
 import 'property_listener.dart';
 import 'score.dart';
 

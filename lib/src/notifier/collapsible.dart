@@ -1,4 +1,4 @@
-abstract class Collapse {
+abstract class Collapsible {
   bool _collapsed = false;
 
   bool get expanded => !_collapsed;

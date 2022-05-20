@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 
 import '../reddit_api/rule.dart';
-import 'collapse_mixin.dart';
+import 'collapsible.dart';
 
-class RuleNotifier with Collapse, ChangeNotifier {
+class RuleNotifier with Collapsible, ChangeNotifier {
   RuleNotifier(this._rule) {
     setCollapsed(true);
   }
