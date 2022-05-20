@@ -46,7 +46,7 @@ class SpaceBarIcon extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
       child: Container(
         child: IconTheme(
           data: appBarIconThemeDark,
@@ -88,7 +88,7 @@ class AppBarBackButton extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {
@@ -107,7 +107,7 @@ class AppBarCloseButton extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {

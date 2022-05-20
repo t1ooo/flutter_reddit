@@ -176,7 +176,7 @@ class SubmissionTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: DefaultTextStyle(
         style: TextStyle(color: blackColor, fontSize: 14),
-        child: Row(
+        child: Wrap(
           children: [
             InkWell(
               onTap: () {
@@ -208,6 +208,7 @@ class SubmissionTile extends StatelessWidget {
             Text(' • '),
             Text(formatDateTime(submission.created)),
           ],
+          // .map((v) => Flexible(child: v, flex:1)).toList(),
         ),
       ),
       // trailing: activeLink ? _popupMenuButton(context, notifier) : null,

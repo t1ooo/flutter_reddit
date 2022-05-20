@@ -122,14 +122,6 @@ class _SubredditScreen extends StatelessWidget {
         if (kDebugMode)
           CustomPopupMenuItem(
             icon: Icon(Icons.circle),
-            label: 'Community info',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
-          ),
-        if (kDebugMode)
-          CustomPopupMenuItem(
-            icon: Icon(Icons.circle),
             label: 'Change user flair',
             onTap: () {
               showTodoSnackBar(context); // TODO

@@ -23,16 +23,34 @@ class SubredditInfo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 30),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 100),
-                SubredditIcon(icon: subreddit.communityIcon),
-                SizedBox(width: 10),
-                Text(subreddit.displayNamePrefixed, textScaleFactor: 2),
-                Spacer(),
+                // SizedBox(height: 100),
+                Flexible(
+                  child: Row(
+                    children: [
+                      SubredditIcon(icon: subreddit.communityIcon),
+                      SizedBox(width: 10),
+                      Flexible(
+                        child: Text(
+                          subreddit.displayNamePrefixed,
+                          textScaleFactor: 2,
+                          // overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Spacer(),
                 SubscribeButton(),
               ],
             ),
+            SizedBox(height: 30),
             Text('${subreddit.subscribers} members'),
             SizedBox(height: 20),
             Text(subreddit.publicDescription),

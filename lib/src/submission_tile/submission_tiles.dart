@@ -90,8 +90,9 @@ class SubmissionTiles<T> extends StatelessWidget {
   }
 
   Widget _modal(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+      shrinkWrap: true,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
           minLeadingWidth: 0,

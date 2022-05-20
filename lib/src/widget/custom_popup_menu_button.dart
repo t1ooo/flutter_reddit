@@ -61,7 +61,14 @@ class _CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
                     padding: const EdgeInsets.only(right: 10),
                     child: widget.items[i].icon!,
                   ),
-                Text(widget.items[i].label),
+                Flexible(
+                  child: Text(
+                    widget.items[i].label,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                  ),
+                ),
               ],
             ),
           ),
