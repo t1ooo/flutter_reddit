@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'src/app.dart';
 import 'src/notifier/reddir_notifier.v4_2.dart';
-import 'src/reddit_api/reddir_api.dart';
+import 'src/reddit_api/reddit_api_fake.dart';
 import 'src/submission_tile/media.dart';
 
 Future<void> main() async {

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../submission_tile/submission_tiles.dart';
 import '../notifier/reddir_notifier.v4_2.dart';
-import '../reddit_api/reddir_api.dart';
+import '../reddit_api/reddit_api.dart';
 import '../widget/snackbar.dart';
 
 class SearchPosts extends StatelessWidget {
