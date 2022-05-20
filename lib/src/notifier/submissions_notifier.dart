@@ -5,7 +5,7 @@ import '../reddit_api/submission.dart';
 import 'submission_notifier.dart';
 import 'try_mixin.dart';
 
-abstract class SubmissionsNotifier<T> with TryMixin, ChangeNotifier {
+abstract class SubmissionsNotifier<T> with Try, ChangeNotifier {
   SubmissionsNotifier(this._redditApi, this._initialSubType)
       : _subType = _initialSubType;
 

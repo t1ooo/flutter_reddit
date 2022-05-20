@@ -9,7 +9,7 @@ import 'property_listener.dart';
 import 'subreddit_notifier.dart';
 import 'user_notifier.dart';
 
-class CurrentUserNotifier extends UserNotifier with PropertyListener {
+class CurrentUserNotifier extends UserNotifier {
   CurrentUserNotifier(this._redditApi, User user) : super(_redditApi, user);
 
   final RedditApi _redditApi;

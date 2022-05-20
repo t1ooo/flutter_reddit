@@ -1,6 +1,6 @@
 import '../reddit_api/like.dart';
 
-mixin LikableMixin {
+abstract class Likable {
   Future<void> like() async {
     if (likes == Like.up) {
       return updateLike_(Like.none);

@@ -6,8 +6,8 @@ class UIException implements Exception {
   String toString() => _message;
 }
 
-mixin TryMixin {
-  static final _log = getLogger('TryMixin');
+abstract class Try {
+  static final _log = getLogger('Try');
 
   Future<T> try_<T>(Future<T> Function() fn, String error) async {
     try {

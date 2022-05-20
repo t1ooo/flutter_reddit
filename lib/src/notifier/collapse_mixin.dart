@@ -1,4 +1,4 @@
-mixin CollapseMixin {
+abstract class Collapse {
   bool _collapsed = false;
 
   bool get expanded => !_collapsed;

@@ -36,7 +36,7 @@ class LikeButton extends StatelessWidget {
     required this.likable,
   }) : super(key: key);
 
-  final LikableMixin likable;
+  final Likable likable;
 
   @override
   Widget build(BuildContext context) {

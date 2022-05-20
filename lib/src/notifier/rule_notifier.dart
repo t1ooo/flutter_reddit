@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show ChangeNotifier;
 import '../reddit_api/rule.dart';
 import 'collapse_mixin.dart';
 
-class RuleNotifier with CollapseMixin, ChangeNotifier {
+class RuleNotifier with Collapse, ChangeNotifier {
   RuleNotifier(this._rule) {
     setCollapsed(true);
   }

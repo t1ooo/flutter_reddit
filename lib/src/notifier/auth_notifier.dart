@@ -5,7 +5,7 @@ import '../reddit_api/reddit_api.dart';
 import 'current_user_notifier.dart';
 import 'try_mixin.dart';
 
-class AuthNotifier with TryMixin, ChangeNotifier {
+class AuthNotifier with Try, ChangeNotifier {
   AuthNotifier(this._redditApi);
 
   final RedditApi _redditApi;

@@ -30,7 +30,7 @@ import 'package:flutter_reddit_prototype/src/notifier/user_notifier.dart';
 import 'snackbar.dart';
 import 'custom_popup_menu_button.dart';
 
-CustomPopupMenuItem savePopupMenuItem(BuildContext context, SavableMixin savable) {
+CustomPopupMenuItem savePopupMenuItem(BuildContext context, Savable savable) {
   return CustomPopupMenuItem(
     icon: Icon(
       savable.saved ? Icons.bookmark : Icons.bookmark_border,

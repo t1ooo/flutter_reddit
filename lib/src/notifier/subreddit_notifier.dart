@@ -12,8 +12,7 @@ import 'rule_notifier.dart';
 import 'submission_notifier.dart';
 import 'submissions_notifier.dart';
 
-class SubredditNotifier extends SubmissionsNotifier<SubType>
-    with PropertyListener {
+class SubredditNotifier extends SubmissionsNotifier<SubType> {
   SubredditNotifier(
     this._redditApi,
     this._subreddit, [
