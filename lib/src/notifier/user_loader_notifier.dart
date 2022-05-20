@@ -5,7 +5,7 @@ import '../reddit_api/reddit_api.dart';
 import 'try_mixin.dart';
 import 'user_notifier.dart';
 
-class UserLoaderNotifier extends ChangeNotifier with TryMixin {
+class UserLoaderNotifier with TryMixin, ChangeNotifier {
   UserLoaderNotifier(this._redditApi);
 
   final RedditApi _redditApi;

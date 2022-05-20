@@ -5,7 +5,7 @@ import '../reddit_api/submission.dart';
 import 'submission_notifier.dart';
 import 'try_mixin.dart';
 
-abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
+abstract class SubmissionsNotifier<T> with TryMixin, ChangeNotifier {
   SubmissionsNotifier(this._redditApi, this._initialSubType)
       : _subType = _initialSubType;
 
@@ -41,5 +41,5 @@ abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
     }, 'fail to search');
   }
 
-  Future<List<Submission>> loadSubmissions_();
+  Future<List<Submission>> loadSubmissions_() => throw UnimplementedError();
 }

@@ -1,9 +1,6 @@
 import '../reddit_api/like.dart';
 
 abstract class Likable {
-  Like get likes;
-  int get score;
-
   Future<void> like() async {
     if (likes == Like.up) {
       return _updateLike(Like.none);
@@ -18,5 +15,7 @@ abstract class Likable {
     return await _updateLike(Like.down);
   }
 
-  Future<void> _updateLike(Like like);
+  Like get likes => throw UnimplementedError();
+  int get score => throw UnimplementedError();
+  Future<void> _updateLike(Like like) => throw UnimplementedError();
 }

@@ -6,12 +6,13 @@ import 'limit.dart';
 import 'subreddit_notifier.dart';
 import 'try_mixin.dart';
 
-class SearchSubredditsQ extends ChangeNotifier with TryMixin {
+// TODO: rename
+class SearchSubredditsQ with TryMixin, ChangeNotifier {
   SearchSubredditsQ(this._redditApi);
 
   final RedditApi _redditApi;
 
-  static final _log = getLogger('SearchSubredditsQ');
+  static final _log = getLogger('SearchSubreddits');
 
   void reset() {
     _query = '';

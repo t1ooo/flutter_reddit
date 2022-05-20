@@ -13,7 +13,7 @@ abstract class Savable {
     return _updateSave(false);
   }
 
-  Future<void> _updateSave(bool saved);
-
   bool get saved;
+
+  Future<void> _updateSave(bool saved) => throw UnimplementedError();
 }

@@ -11,6 +11,6 @@ mixin PropertyListener on ChangeNotifier {
       }
       value = newValue;
       listener();
-    });
+    },);
   }
 }

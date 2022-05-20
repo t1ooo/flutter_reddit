@@ -18,7 +18,5 @@ mixin CollapseMixin {
     notifyListeners();
   }
 
-  void notifyListeners() {
-    throw UnimplementedError();
-  }
+  void notifyListeners() => throw UnimplementedError();
 }

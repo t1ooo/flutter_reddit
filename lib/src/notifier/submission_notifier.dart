@@ -24,8 +24,8 @@ class PreviewImage {
   PreviewImage(this.image, this.preview);
 }
 
-class SubmissionNotifier extends ChangeNotifier
-    with TryMixin, Likable, Savable, PropertyListener
+class SubmissionNotifier
+    with TryMixin, Likable, Savable, ChangeNotifier, PropertyListener
     implements Reportable, Replyable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);
