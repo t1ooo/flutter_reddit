@@ -1,3 +1,5 @@
+// TODO: subreddit custom feed
+// TODO: subreddit wiki
 // TODO: comment edit|delete
 // TODO: add draw model to model for optimization (.*like|save|...)
 //  or use praw post|get directly

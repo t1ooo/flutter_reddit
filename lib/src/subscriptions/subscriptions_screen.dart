@@ -47,7 +47,10 @@ class SubscriptionsScreen extends StatelessWidget {
                 value: context.read<UserAuth>().user!,
                 child: Subscriptions(),
               ),
-              Text('TODO'),
+              Card(child: Padding(
+                padding: cardPadding,
+                child: Text('TODO'),
+              )),
             ],
           ),
         ),
