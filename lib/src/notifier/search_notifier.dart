@@ -6,7 +6,7 @@ import 'limit.dart';
 import 'submission_notifier.dart';
 import 'try_mixin.dart';
 
-class SearchNotifier with Try, ChangeNotifier {
+class SearchNotifier with TryMixin, ChangeNotifier {
   SearchNotifier(this._redditApi);
 
   final RedditApi _redditApi;

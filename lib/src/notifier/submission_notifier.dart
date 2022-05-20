@@ -25,7 +25,7 @@ class PreviewImage {
 }
 
 class SubmissionNotifier
-    with Try, Likable, Savable, ChangeNotifier
+    with TryMixin, Likable, Savable, ChangeNotifier
     implements Reportable, Replyable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);

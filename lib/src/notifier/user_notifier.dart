@@ -10,7 +10,7 @@ import 'submission_notifier.dart';
 import 'subreddit_notifier.dart';
 import 'try_mixin.dart';
 
-class UserNotifier with Try, ChangeNotifier {
+class UserNotifier with TryMixin, ChangeNotifier {
   UserNotifier(this._redditApi, this._user)
       : _name = _user.name,
         _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);

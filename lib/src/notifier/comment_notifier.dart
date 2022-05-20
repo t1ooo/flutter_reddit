@@ -17,7 +17,7 @@ import 'score.dart';
 import 'try_mixin.dart';
 
 class CommentNotifier
-    with Try, Collapsible, ChangeNotifier, Likable, Savable
+    with TryMixin, Collapsible, ChangeNotifier, Likable, Savable
     implements Reportable, Replyable {
   CommentNotifier(this._redditApi, this._comment) {
     _replies = _comment.replies

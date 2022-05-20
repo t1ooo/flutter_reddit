@@ -5,7 +5,7 @@ import '../reddit_api/message.dart';
 import '../reddit_api/reddit_api.dart';
 import 'try_mixin.dart';
 
-class MessageNotifier with Try, ChangeNotifier {
+class MessageNotifier with TryMixin, ChangeNotifier {
   MessageNotifier(this._redditApi, this._message);
 
   final RedditApi _redditApi;

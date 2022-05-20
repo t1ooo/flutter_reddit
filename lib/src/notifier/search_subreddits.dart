@@ -7,7 +7,7 @@ import 'subreddit_notifier.dart';
 import 'try_mixin.dart';
 
 // TODO: rename
-class SearchSubredditsQ with Try, ChangeNotifier {
+class SearchSubredditsQ with TryMixin, ChangeNotifier {
   SearchSubredditsQ(this._redditApi);
 
   final RedditApi _redditApi;
