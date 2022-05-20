@@ -7,7 +7,7 @@ import '../notifier/current_user_notifier.dart';
 import '../notifier/home_front_notifier.dart';
 import '../notifier/home_popular_notifier.dart';
 import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
+import '../notifier/likable_mixin.dart';
 import '../notifier/limit.dart';
 import '../notifier/list_notifier.dart';
 import '../notifier/message_notifier.dart';
@@ -36,7 +36,7 @@ class LikeButton extends StatelessWidget {
     required this.likable,
   }) : super(key: key);
 
-  final Likable likable;
+  final LikableMixin likable;
 
   @override
   Widget build(BuildContext context) {

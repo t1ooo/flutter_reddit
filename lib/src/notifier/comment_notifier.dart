@@ -10,7 +10,7 @@ import '../reddit_api/comment.dart';
 import '../reddit_api/like.dart';
 import '../reddit_api/reddit_api.dart';
 import 'collapse_mixin.dart';
-import 'likable.dart';
+import 'likable_mixin.dart';
 import 'property_listener.dart';
 import 'savable.dart';
 import 'score.dart';
@@ -21,7 +21,7 @@ class CommentNotifier
         TryMixin,
         CollapseMixin,
         ChangeNotifier,
-        Likable,
+        LikableMixin,
         Savable,
         PropertyListener
     implements Reportable, Replyable {
@@ -71,8 +71,8 @@ class CommentNotifier
   @override
   int get score => _comment.score;
 
-  Future<void> _updateLike(Like like) {
-    _log.info('_updateLike($like)');
+  Future<void> updateLike_(Like like) {
+    _log.info('updateLike_($like)');
     return try_(() async {
       await _redditApi.commentLike(comment.id, like);
       _comment = comment.copyWith(

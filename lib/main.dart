@@ -12,7 +12,7 @@ import 'src/notifier/current_user_notifier.dart';
 import 'src/notifier/home_front_notifier.dart';
 import 'src/notifier/home_popular_notifier.dart';
 import 'src/notifier/iterable_sum.dart';
-import 'src/notifier/likable.dart';
+import 'src/notifier/likable_mixin.dart';
 import 'src/notifier/limit.dart';
 import 'src/notifier/list_notifier.dart';
 import 'src/notifier/message_notifier.dart';

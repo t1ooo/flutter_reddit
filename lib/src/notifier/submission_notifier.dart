@@ -14,7 +14,7 @@ import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import 'comment_notifier.dart';
-import 'likable.dart';
+import 'likable_mixin.dart';
 import 'property_listener.dart';
 import 'score.dart';
 
@@ -25,7 +25,7 @@ class PreviewImage {
 }
 
 class SubmissionNotifier
-    with TryMixin, Likable, Savable, ChangeNotifier, PropertyListener
+    with TryMixin, LikableMixin, Savable, ChangeNotifier, PropertyListener
     implements Reportable, Replyable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);
@@ -130,7 +130,7 @@ class SubmissionNotifier
   @override
   int get score => _submission.score;
 
-  Future<void> _updateLike(Like like) {
+  Future<void> updateLike_(Like like) {
     return try_(() async {
       await _redditApi.submissionLike(submission.id, like);
       _submission = submission.copyWith(

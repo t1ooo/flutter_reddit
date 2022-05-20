@@ -1,21 +1,21 @@
 import '../reddit_api/like.dart';
 
-abstract class Likable {
+mixin LikableMixin {
   Future<void> like() async {
     if (likes == Like.up) {
-      return _updateLike(Like.none);
+      return updateLike_(Like.none);
     }
-    return await _updateLike(Like.up);
+    return await updateLike_(Like.up);
   }
 
   Future<void> dislike() async {
     if (likes == Like.down) {
-      return _updateLike(Like.none);
+      return updateLike_(Like.none);
     }
-    return await _updateLike(Like.down);
+    return await updateLike_(Like.down);
   }
 
   Like get likes => throw UnimplementedError();
   int get score => throw UnimplementedError();
-  Future<void> _updateLike(Like like) => throw UnimplementedError();
+  Future<void> updateLike_(Like like) => throw UnimplementedError();
 }
