@@ -45,18 +45,19 @@ class UserInfo extends StatelessWidget {
                 SizedBox(width: 10),
                 Text(subreddit.displayNamePrefixed, textScaleFactor: 2),
                 Spacer(),
-                if (notifier is CurrentUserNotifier)
+                if (notifier is CurrentUserNotifier) ...[
                   if (kDebugMode)
                     ElevatedButton(
-                        onPressed: () {
-                          showTodoSnackBar(context); // TODO
-                        },
-                        child: Text('EDIT'))
-                  else
-                    ChangeNotifierProvider<SubredditNotifier>.value(
-                      value: notifier.subreddit,
-                      child: SubscribeButton(),
-                    ),
+                      onPressed: () {
+                        showTodoSnackBar(context); // TODO
+                      },
+                      child: Text('EDIT'),
+                    )
+                ] else
+                  ChangeNotifierProvider<SubredditNotifier>.value(
+                    value: notifier.subreddit,
+                    child: SubscribeButton(),
+                  ),
               ],
             ),
             Text(

@@ -25,6 +25,7 @@ class UserTrophies extends StatelessWidget {
         return CustomListView(
           children: [
             ListTitle('trophies'),
+            SizedBox(height: 10),
             Container(
               color: Theme.of(context).primaryColor,
               child: ListView(

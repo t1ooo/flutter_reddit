@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart';
 import 'package:flutter_reddit_prototype/src/user_profile/user_trophies.dart';
+import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
 import '../util/date_time.dart';
@@ -37,8 +38,21 @@ class UserAbout extends StatelessWidget {
               ],
             ),
             SizedBox(height: 50),
-            ListTile(leading: Icon(Icons.mail), title: Text('Send a message')),
-            ListTile(leading: Icon(Icons.chat), title: Text('Start chat')),
+            ListTile(
+              leading: Icon(Icons.mail),
+              title: Text('Send a message'),
+              onTap: () {
+                showTodoSnackBar(context); // TODO
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.chat),
+              title: Text('Start chat'),
+              onTap: () {
+                showTodoSnackBar(context); // TODO
+              },
+            ),
+            SizedBox(height: 10),
           ],
         ),
         UserTrophies(),
