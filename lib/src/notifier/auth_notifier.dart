@@ -15,7 +15,7 @@ class AuthNotifier extends ChangeNotifier with TryMixin {
   CurrentUserNotifier? _user;
   CurrentUserNotifier? get user => _user;
 
-  Future<bool> loginSilently(String name, String pass) async {
+  Future<bool> loginSilently() async {
     return try_<bool>(() async {
       if (_redditApi.isLoggedIn) {
         return true;
@@ -29,8 +29,7 @@ class AuthNotifier extends ChangeNotifier with TryMixin {
     }, 'fail to login silently');
   }
 
-  // TODO: remove args
-  Future<void> login(String name, String pass) {
+  Future<void> login() {
     return try_(() async {
       if (_redditApi.isLoggedIn) {
         return;

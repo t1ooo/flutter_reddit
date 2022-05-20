@@ -41,7 +41,7 @@ class StartScreen extends StatelessWidget {
       builder: (context) {
         final notifier = context.watch<AuthNotifier>();
         return CustomFutureBuilder<bool>(
-          future: notifier.loginSilently('', ''),
+          future: notifier.loginSilently(),
           onData: (_, ok) {
             if (ok) {
               return Tabs();

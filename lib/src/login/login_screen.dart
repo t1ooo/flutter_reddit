@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 context
                     .read<AuthNotifier>()
-                    .login('', '')
+                    .login()
                     .catchError((e) => showErrorSnackBar(context, e));
               },
               child: Text('Log in'),
