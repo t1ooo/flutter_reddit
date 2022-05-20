@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:flutter_reddit_prototype/src/notifier/iterable_sum.dart';
 import 'package:flutter_reddit_prototype/src/notifier/replyable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reportable.dart';
-import 'package:flutter_reddit_prototype/src/notifier/savable.dart';
+import 'package:flutter_reddit_prototype/src/notifier/savable_mixin.dart';
 import 'package:flutter_reddit_prototype/src/notifier/try_mixin.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -25,7 +25,7 @@ class PreviewImage {
 }
 
 class SubmissionNotifier
-    with TryMixin, LikableMixin, Savable, ChangeNotifier, PropertyListener
+    with TryMixin, LikableMixin, SavableMixin, ChangeNotifier, PropertyListener
     implements Reportable, Replyable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);

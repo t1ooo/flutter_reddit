@@ -20,7 +20,7 @@ import 'src/notifier/property_listener.dart';
 import 'src/notifier/replyable.dart';
 import 'src/notifier/reportable.dart';
 import 'src/notifier/rule_notifier.dart';
-import 'src/notifier/savable.dart';
+import 'src/notifier/savable_mixin.dart';
 import 'src/notifier/score.dart';
 import 'src/notifier/search_notifier.dart';
 import 'src/notifier/search_subreddits.dart';

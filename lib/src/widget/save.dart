@@ -14,7 +14,7 @@ import 'package:flutter_reddit_prototype/src/notifier/property_listener.dart';
 import 'package:flutter_reddit_prototype/src/notifier/replyable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reportable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/rule_notifier.dart';
-import 'package:flutter_reddit_prototype/src/notifier/savable.dart';
+import 'package:flutter_reddit_prototype/src/notifier/savable_mixin.dart';
 import 'package:flutter_reddit_prototype/src/notifier/score.dart';
 import 'package:flutter_reddit_prototype/src/notifier/search_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/search_subreddits.dart';
@@ -30,7 +30,7 @@ import 'package:flutter_reddit_prototype/src/notifier/user_notifier.dart';
 import 'snackbar.dart';
 import 'custom_popup_menu_button.dart';
 
-CustomPopupMenuItem savePopupMenuItem(BuildContext context, Savable savable) {
+CustomPopupMenuItem savePopupMenuItem(BuildContext context, SavableMixin savable) {
   return CustomPopupMenuItem(
     icon: Icon(
       savable.saved ? Icons.bookmark : Icons.bookmark_border,

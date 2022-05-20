@@ -24,7 +24,7 @@ import 'notifier/property_listener.dart';
 import 'notifier/replyable.dart';
 import 'notifier/reportable.dart';
 import 'notifier/rule_notifier.dart';
-import 'notifier/savable.dart';
+import 'notifier/savable_mixin.dart';
 import 'notifier/score.dart';
 import 'notifier/search_notifier.dart';
 import 'notifier/search_subreddits.dart';

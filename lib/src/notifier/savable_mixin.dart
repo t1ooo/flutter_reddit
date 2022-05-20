@@ -1,4 +1,4 @@
-abstract class Savable {
+mixin SavableMixin {
   Future<void> save() async {
     if (saved) {
       return;
