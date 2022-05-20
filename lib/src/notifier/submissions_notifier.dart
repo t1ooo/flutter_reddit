@@ -41,5 +41,5 @@ abstract class SubmissionsNotifier<T> with TryMixin, ChangeNotifier {
     }, 'fail to search');
   }
 
-  Future<List<Submission>> loadSubmissions_() => throw UnimplementedError();
+  Future<List<Submission>> loadSubmissions_();
 }

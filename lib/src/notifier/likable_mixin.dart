@@ -15,7 +15,7 @@ mixin LikableMixin {
     return await updateLike_(Like.down);
   }
 
-  Like get likes => throw UnimplementedError();
-  int get score => throw UnimplementedError();
-  Future<void> updateLike_(Like like) => throw UnimplementedError();
+  Like get likes;
+  int get score;
+  Future<void> updateLike_(Like like);
 }

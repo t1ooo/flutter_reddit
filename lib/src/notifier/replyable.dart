@@ -1,4 +1,4 @@
 abstract class Replyable {
-  String get replyToMessage => throw UnimplementedError();
-  Future<void> reply(String message) => throw UnimplementedError();
+  String get replyToMessage;
+  Future<void> reply(String message);
 }

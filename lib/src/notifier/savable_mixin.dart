@@ -15,5 +15,5 @@ mixin SavableMixin {
 
   bool get saved;
 
-  Future<void> _updateSave(bool saved) => throw UnimplementedError();
+  Future<void> _updateSave(bool saved);
 }
