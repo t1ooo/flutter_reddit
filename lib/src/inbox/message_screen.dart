@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+
 import 'package:flutter_reddit_prototype/src/notifier/reddir_notifier.v4_2.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../user_menu.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../widget/list.dart';
+import '../widget/markdown.dart';
 import '../widget/sliver_app_bar.dart';
 
 class MessageScreen extends StatelessWidget {
@@ -64,12 +64,7 @@ class MessageScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            MarkdownBody(
-              data: message.body,
-              onTapLink: (_, href, __) {
-                if (href != null) launch(href);
-              },
-            ),
+            Markdown(message.body),
           ],
         ),
       ),
