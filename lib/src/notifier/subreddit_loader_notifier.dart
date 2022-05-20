@@ -10,6 +10,7 @@ class SubredditLoaderNotifier  with TryMixin, ChangeNotifier {
 
   final RedditApi _redditApi;
   static final _log = getLogger('SubredditNotifier');
+  Logger get log => _log;
 
   void reset() {
     _name = null;

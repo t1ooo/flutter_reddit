@@ -13,6 +13,7 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 
   final RedditApi _redditApi;
   static final _log = getLogger('HomeFrontNotifier');
+  Logger get log => _log;
 
   // TODO: remove
   @override

@@ -15,6 +15,7 @@ class CurrentUserNotifier extends UserNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('CurrentUserNotifier');
+  Logger get log => _log;
 
   SubredditNotifier? _all;
   SubredditNotifier? get all => _all;

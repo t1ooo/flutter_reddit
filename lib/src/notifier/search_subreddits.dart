@@ -13,6 +13,7 @@ class SearchSubredditsQ with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('SearchSubreddits');
+  Logger get log => _log;
 
   void reset() {
     _query = '';

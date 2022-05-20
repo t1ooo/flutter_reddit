@@ -18,6 +18,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('UserNotifier');
+  Logger get log => _log;
 
   final String _name;
 

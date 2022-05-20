@@ -12,6 +12,7 @@ class SearchNotifier with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('SearchNotifier');
+  Logger get log => _log;
 
   void reset() {
     _subredditName = '';

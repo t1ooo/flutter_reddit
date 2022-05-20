@@ -10,6 +10,7 @@ class MessageNotifier with TryMixin, ChangeNotifier {
 
   final RedditApi _redditApi;
   static final _log = getLogger('MessageNotifier');
+  Logger get log => _log;
 
   Message _message;
   Message get message => _message;

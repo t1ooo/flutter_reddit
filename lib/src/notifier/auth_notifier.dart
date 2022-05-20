@@ -11,6 +11,7 @@ class AuthNotifier with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('AuthNotifier');
+  Logger get log => _log;
 
   CurrentUserNotifier? _user;
   CurrentUserNotifier? get user => _user;

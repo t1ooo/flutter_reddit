@@ -11,6 +11,7 @@ class UserLoaderNotifier with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('UserLoaderNotifier');
+  Logger get log => _log;
 
   void reset() {
     _name = null;

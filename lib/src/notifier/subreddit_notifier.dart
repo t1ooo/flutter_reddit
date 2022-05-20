@@ -22,6 +22,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   final RedditApi _redditApi;
 
   static final _log = getLogger('SubredditNotifier');
+  Logger get log => _log;
 
   final bool isUserSubreddit;
 

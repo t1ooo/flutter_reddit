@@ -13,6 +13,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
 
   final RedditApi _redditApi;
   static final _log = getLogger('HomeFrontNotifier');
+  Logger get log => _log;
 
   @override
   Future<List<Submission>> loadSubmissions_() {

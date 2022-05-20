@@ -28,6 +28,7 @@ class CommentNotifier
   final RedditApi _redditApi;
 
   static final _log = getLogger('CommentNotifier');
+  Logger get log => _log;
 
   Comment _comment;
   Comment get comment => _comment;

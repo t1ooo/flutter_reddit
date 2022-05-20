@@ -33,6 +33,7 @@ class SubmissionNotifier
 
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionNotifier');
+  Logger get log => _log;
 
   List<CommentNotifier>? _comments;
   List<CommentNotifier>? get comments => _comments;
