@@ -16,9 +16,7 @@ class UserAbout extends StatelessWidget {
     final user = context.read<UserNotifier>().user;
     return CustomListView(
       children: [
-        ListDivider(
-          height: 10,
-        ),
+        ListDivider(height: 10),
         CustomListView(
           children: [
             SizedBox(height: 50),
