@@ -11,6 +11,7 @@ import '../reddit_api/like.dart';
 import '../reddit_api/message.dart';
 import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddir_api.dart';
+import '../reddit_api/rule.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
@@ -257,7 +258,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
 
   final bool isUserSubreddit;
 
-  String get name => _subreddit.displayName;
+  String get name => _subreddit.displayName; // TODO: remove
   Subreddit _subreddit;
   Subreddit get subreddit => _subreddit;
 
@@ -332,6 +333,24 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     }, 'fail to submit');
   }
 
+  List<RuleNotifier>? _rules;
+  List<RuleNotifier>? get rules => _rules;
+
+  Future<void> reloadRules() {
+    _rules = null;
+    return loadRules();
+  }
+
+  Future<void> loadRules() {
+    return _try(() async {
+      if (_rules != null) return;
+      _rules = (await _redditApi.subredditRules(_subreddit.displayName))
+          .map((v) => RuleNotifier(v))
+          .toList();
+      notifyListeners();
+    }, 'fail to load rules');
+  }
+
   // TODO
   Future<void> loadAbout() => throw UnimplementedError();
   Object? _about;
@@ -352,6 +371,15 @@ class SubredditNotifier extends SubmissionsNotifier<SubType>
     _log.info('notifyListeners');
     super.notifyListeners();
   }
+}
+
+class RuleNotifier with CollapseMixin, ChangeNotifier {
+  RuleNotifier(this._rule) {
+    _collapsed = true;
+  }
+
+  final Rule _rule;
+  Rule get rule => _rule;
 }
 
 abstract class SubmissionsNotifier<T> extends ChangeNotifier with TryMixin {
@@ -1072,6 +1100,9 @@ mixin TryMixin {
     try {
       return await fn();
     } on Exception catch (e, st) {
+      _log.error('', e, st);
+      throw UIException(error);
+    } on TypeError catch (e, st) {
       _log.error('', e, st);
       throw UIException(error);
     }

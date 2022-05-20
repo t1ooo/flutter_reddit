@@ -10,6 +10,7 @@ import '../widget/custom_popup_menu_button.dart';
 import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
 import 'subreddit.dart';
+import 'subreddit_about.dart';
 import 'subreddit_info.dart';
 
 class SubredditScreen extends StatelessWidget {
@@ -90,7 +91,7 @@ class _SubredditScreen extends StatelessWidget {
           body: TabBarView(
             children: [
               SubredditWidget(),
-              Text('todo'),
+              SubredditAbout(),
               Text('todo'),
             ],
           ),

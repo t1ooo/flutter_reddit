@@ -4,6 +4,7 @@ import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 
 import '../logging/logging.dart';
 import 'preview_images.dart';
+import 'rule.dart';
 import 'video.dart';
 import 'like.dart';
 
@@ -196,6 +197,27 @@ Video? parseVideo(dynamic data, [String? name]) {
   }
 }
 
+List<Rule>? parseRules(dynamic data, [String? name]) {
+   try {
+    if (data == null) {
+      return [];
+    }
+
+    final rules = <Rule>[];
+    for (final v in (data['rules'] as List<dynamic>)) {
+      try {
+        rules.add(Rule.fromJson(v));
+      } on TypeError catch (e) {
+        _log('$e: $v', name);
+      }
+    }
+    return rules;
+  } on TypeError catch (e) {
+    _log('$e: $data', name);
+    return [];
+  }
+}
+
 double parsePositiveDouble(dynamic data, [String? name]) {
   final d = parseDouble(data, name);
   if (d < 0) {
@@ -261,6 +283,15 @@ String parseString(dynamic data, [String? name]) {
   }
   _log('fail to parse string: $data', name);
   return defaultValue;
+}
+
+final markdownRegExp = RegExp(r'#+');
+
+String parseMarkdown(dynamic data, [String? name]) {
+  final text = parseString(data, name);
+  return text.replaceAllMapped(RegExp(r'#+'), (m) {
+    return '${m.group(0)} ';
+  });
 }
 
 bool parseBool(dynamic data, [String? name]) {

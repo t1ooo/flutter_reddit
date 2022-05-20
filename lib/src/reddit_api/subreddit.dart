@@ -63,7 +63,7 @@ class Subreddit extends Equatable {
       communityIcon: parseUrl(m['community_icon'], '$f.community_icon'),
       created: parseTime(m['created'], '$f.created'),
       createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-      description: parseString(m['description'], '$f.description'),
+      description: parseMarkdown(m['description'], '$f.description'),
       descriptionHtml:
           parseString(m['description_html'], '$f.description_html'),
       displayName: parseString(m['display_name'], '$f.display_name'),

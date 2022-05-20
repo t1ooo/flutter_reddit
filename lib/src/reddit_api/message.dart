@@ -97,7 +97,7 @@ class Message extends Equatable {
       subredditNamePrefixed: parseString(
           m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
       new_: parseBool(m['new'], '$f.new'),
-      body: parseString(m['body'], '$f.body'),
+      body: parseMarkdown(m['body'], '$f.body'),
       dest: parseString(m['dest'], '$f.dest'),
       wasComment: parseBool(m['was_comment'], '$f.wasComment'),
       bodyHtml: parseString(m['body_html'], '$f.bodyHtml'),

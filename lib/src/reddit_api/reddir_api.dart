@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:draw/draw.dart' as draw;
 import 'package:draw/src/listing/listing_generator.dart' as draw;
+import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,6 +63,7 @@ abstract class RedditApi {
     required int limit,
     required SubType type,
   });
+  Future<List<Rule>> subredditRules(String name);
 
   Future<Submission> submission(String id);
   Future<void> submissionLike(String id, Like like);
@@ -712,6 +714,14 @@ class RedditApiImpl implements RedditApi {
     // }
     return _parseMessageStream(reddit.inbox.messages());
   }
+
+
+  Future<List<Rule>> subredditRules(String name) async {
+    name = removeSubredditPrefix(name);
+    final resp =
+        await reddit.get('/r/$name/about/rules', objectify: false);
+    return parseRules(resp)!;
+  }
 }
 
 class FakeRedditApi implements RedditApi {
@@ -1144,5 +1154,13 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     await Future.delayed(_delay);
     return;
+  }
+
+  Future<List<Rule>> subredditRules(String name) async {
+   _log.info('subredditRules($name)');
+    await Future.delayed(_delay);
+    _mustLoggedIn();
+    final data = await File('data/subreddit.2.rules.json').readAsString();
+    return parseRules(jsonDecode(data))!;
   }
 }
