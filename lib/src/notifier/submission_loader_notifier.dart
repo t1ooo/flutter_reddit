@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 
-import '../logging/logging.dart';
+import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import 'submission_notifier.dart';
 import 'try_mixin.dart';

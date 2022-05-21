@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
-import '../logger.dart';
-import '../logging/logging.dart';
+import '../ui_logger.dart';
+import '../logging.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   CustomNetworkImage(

@@ -7,7 +7,7 @@ import 'package:flutter_reddit_prototype/src/notifier/savable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/try_mixin.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../logging/logging.dart';
+import '../logging.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/like.dart';
 import '../reddit_api/preview_images.dart';

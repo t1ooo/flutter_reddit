@@ -1,3 +1,3 @@
-import 'logging/logging.dart';
+import 'logging.dart';
 
 final uiLogger = getLogger('ui');

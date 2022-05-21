@@ -1,4 +1,4 @@
-import '../logging/logging.dart';
+import '../logging.dart';
 
 class UIException implements Exception {
   UIException(this._message);

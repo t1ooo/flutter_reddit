@@ -5,9 +5,9 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:flutter_reddit_prototype/src/logging/logging.dart';
+import 'package:flutter_reddit_prototype/src/logging.dart';
 
-import '../logger.dart';
+import '../ui_logger.dart';
 import '../style.dart';
 import '../widget/network_image.dart';
 import '../widget/sliver_app_bar.dart';

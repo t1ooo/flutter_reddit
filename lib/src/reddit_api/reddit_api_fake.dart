@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../logging/logging.dart';
+import '../logging.dart';
 import 'message.dart';
 import 'parse.dart';
 import 'trophy.dart';

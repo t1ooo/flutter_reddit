@@ -1,6 +1,6 @@
 import 'package:clock/clock.dart';
 
-import '../logging/logging.dart';
+import '../logging.dart';
 
 import 'comment.dart';
 import 'post_hint.dart';

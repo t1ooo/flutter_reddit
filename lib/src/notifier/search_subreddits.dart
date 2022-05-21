@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 
-import '../logging/logging.dart';
+import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import 'limit.dart';
 import 'subreddit_notifier.dart';

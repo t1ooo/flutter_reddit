@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging/logging.dart';
+import 'package:flutter_reddit_prototype/src/logging.dart';
 
-import '../logger.dart';
+import '../ui_logger.dart';
 import '../widget/network_image.dart';
 
 class SubredditIcon extends StatelessWidget {

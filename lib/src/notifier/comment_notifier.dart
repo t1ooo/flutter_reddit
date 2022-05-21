@@ -5,7 +5,7 @@ import 'package:flutter_reddit_prototype/src/notifier/iterable_sum.dart';
 import 'package:flutter_reddit_prototype/src/notifier/replyable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/reportable.dart';
 
-import '../logging/logging.dart';
+import '../logging.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/like.dart';
 import '../reddit_api/reddit_api.dart';

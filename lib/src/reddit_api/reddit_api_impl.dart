@@ -3,7 +3,7 @@ import 'package:draw/draw.dart' as draw;
 import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../logging/logging.dart';
+import '../logging.dart';
 import 'message.dart';
 import 'parse.dart';
 import 'auth.dart';

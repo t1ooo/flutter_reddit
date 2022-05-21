@@ -1,10 +1,10 @@
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging/logging.dart';
+import 'package:flutter_reddit_prototype/src/logging.dart';
 import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:provider/provider.dart';
 
-import '../logger.dart';
+import '../ui_logger.dart';
 import '../notifier/auth_notifier.dart';
 import '../notifier/collapsible.dart';
 import '../notifier/comment_notifier.dart';
