@@ -1,3 +1,5 @@
+// TODO: fix submission subreddit all
+// TODO: fix subreddit about description markdown
 // TODO: add reddit api cache
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
