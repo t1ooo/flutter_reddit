@@ -18,7 +18,7 @@ import 'package:flutter_reddit_prototype/src/notifier/rule_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/savable.dart';
 import 'package:flutter_reddit_prototype/src/notifier/score.dart';
 import 'package:flutter_reddit_prototype/src/notifier/search_notifier.dart';
-import 'package:flutter_reddit_prototype/src/notifier/search_subreddits.dart';
+import 'package:flutter_reddit_prototype/src/notifier/search_subreddits_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/submission_loader_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/submission_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/submissions_notifier.dart';

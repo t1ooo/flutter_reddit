@@ -6,12 +6,12 @@ import 'limit.dart';
 import 'subreddit_notifier.dart';
 import 'try_mixin.dart';
 
-class SearchSubreddits with TryMixin, ChangeNotifier {
-  SearchSubreddits(this._redditApi);
+class SearchSubredditsNotifier with TryMixin, ChangeNotifier {
+  SearchSubredditsNotifier(this._redditApi);
 
   final RedditApi _redditApi;
 
-  static final _log = getLogger('SearchSubreddits');
+  static final _log = getLogger('SearchSubredditsNotifier');
   Logger get log => _log;
 
   void reset() {

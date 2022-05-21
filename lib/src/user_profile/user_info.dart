@@ -25,7 +25,7 @@ import '../notifier/rule_notifier.dart';
 import '../notifier/savable.dart';
 import '../notifier/score.dart';
 import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits.dart';
+import '../notifier/search_subreddits_notifier.dart';
 import '../notifier/submission_loader_notifier.dart';
 import '../notifier/submission_notifier.dart';
 import '../notifier/submissions_notifier.dart';

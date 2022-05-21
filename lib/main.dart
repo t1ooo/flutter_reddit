@@ -12,7 +12,7 @@ import 'src/notifier/auth_notifier.dart';
 import 'src/notifier/home_front_notifier.dart';
 import 'src/notifier/home_popular_notifier.dart';
 import 'src/notifier/search_notifier.dart';
-import 'src/notifier/search_subreddits.dart';
+import 'src/notifier/search_subreddits_notifier.dart';
 import 'src/notifier/submission_loader_notifier.dart';
 import 'src/notifier/subreddit_all_notifier.dart';
 import 'src/notifier/subreddit_loader_notifier.dart';
@@ -56,8 +56,8 @@ Future<void> main() async {
         ChangeNotifierProvider<HomePopularNotifier>(
           create: (context) => HomePopularNotifier(redditApi),
         ),
-        ChangeNotifierProvider<SearchSubreddits>(
-          create: (context) => SearchSubreddits(redditApi),
+        ChangeNotifierProvider<SearchSubredditsNotifier>(
+          create: (context) => SearchSubredditsNotifier(redditApi),
         ),
         ChangeNotifierProvider<SubredditAllNotifier>(
           create: (context) => SubredditAllNotifier(redditApi),
@@ -74,7 +74,7 @@ Future<void> main() async {
                   context.read<UserLoaderNotifier>().reset();
                   context.read<HomeFrontNotifier>().reset();
                   context.read<HomePopularNotifier>().reset();
-                  context.read<SearchSubreddits>().reset();
+                  context.read<SearchSubredditsNotifier>().reset();
                   context.read<SubredditAllNotifier>().reset();
                 }
               });
