@@ -6,7 +6,7 @@ import '../widget/sliver_app_bar.dart';
 import 'home.dart';
 import 'popular.dart';
 
-class HomeScreenV4 extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

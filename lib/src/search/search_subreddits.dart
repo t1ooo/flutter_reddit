@@ -44,7 +44,7 @@ class SearchSubreddits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<SearchSubredditsQ>();
+    final notifier = context.read<SearchSubreddits>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier

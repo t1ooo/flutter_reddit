@@ -16,7 +16,7 @@ class Tabs extends StatelessWidget {
     return PersistentTabView(
       context,
       screens: [
-        HomeScreenV4(),
+        HomeScreen(),
         SubscriptionsScreen(),
         Container(),
         InboxScreen(),

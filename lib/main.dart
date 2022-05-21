@@ -56,8 +56,8 @@ Future<void> main() async {
         ChangeNotifierProvider<HomePopularNotifier>(
           create: (context) => HomePopularNotifier(redditApi),
         ),
-        ChangeNotifierProvider<SearchSubredditsQ>(
-          create: (context) => SearchSubredditsQ(redditApi),
+        ChangeNotifierProvider<SearchSubreddits>(
+          create: (context) => SearchSubreddits(redditApi),
         ),
         ChangeNotifierProvider<SubredditAllNotifier>(
           create: (context) => SubredditAllNotifier(redditApi),
@@ -74,7 +74,7 @@ Future<void> main() async {
                   context.read<UserLoaderNotifier>().reset();
                   context.read<HomeFrontNotifier>().reset();
                   context.read<HomePopularNotifier>().reset();
-                  context.read<SearchSubredditsQ>().reset();
+                  context.read<SearchSubreddits>().reset();
                   context.read<SubredditAllNotifier>().reset();
                 }
               });
