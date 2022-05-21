@@ -52,4 +52,5 @@ final theme = ThemeData(
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: blackColor,
   ),
+  progressIndicatorTheme: ProgressIndicatorThemeData(color: selectedColor),
 );
