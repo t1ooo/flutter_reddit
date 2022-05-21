@@ -31,8 +31,8 @@ class CurrentUserNotifier extends UserNotifier {
 
   Future<void> loadSubreddits() {
     return try_(() async {
-      _loadSubredditAll();
-      _loadSubreddits();
+      await _loadSubredditAll();
+      await _loadSubreddits();
     }, 'fail to load subreddits');
   }
 
