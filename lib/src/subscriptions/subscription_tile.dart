@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:flutter_reddit_prototype/src/style.dart';
 import 'package:flutter_reddit_prototype/src/subreddit/subreddit_icon.dart';
 import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 

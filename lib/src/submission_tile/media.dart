@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_reddit_prototype/src/logging/logging.dart';
 
 import '../logger.dart';
-import '../style/style.dart';
+import '../style.dart';
 import '../widget/network_image.dart';
 import '../widget/sliver_app_bar.dart';
 

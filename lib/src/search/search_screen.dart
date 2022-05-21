@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../style/style.dart';
+import '../style.dart';
 import '../widget/sliver_app_bar.dart';
 import 'search_posts.dart';
 import 'search_subreddits.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'start_screen.dart';
-import 'style/style.dart';
+import 'style.dart';
 import 'widget/custom_scroll.dart';
 
 class MyApp extends StatelessWidget {

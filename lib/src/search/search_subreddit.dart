@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
-import '../style/style.dart';
+import '../style.dart';
 import '../notifier/auth_notifier.dart';
 import '../notifier/collapsible.dart';
 import '../notifier/comment_notifier.dart';

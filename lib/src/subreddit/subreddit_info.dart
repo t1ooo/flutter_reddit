@@ -28,7 +28,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
-import '../style/style.dart';
+import '../style.dart';
 import '../widget/subscribe_button.dart';
 import 'subreddit_icon.dart';
 

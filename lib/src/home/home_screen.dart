@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:flutter_reddit_prototype/src/style.dart';
 
 import '../user_menu.dart';
 import '../widget/sliver_app_bar.dart';

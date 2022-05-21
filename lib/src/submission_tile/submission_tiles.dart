@@ -33,7 +33,7 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../reddit_api/submission_type.dart';
-import '../style/style.dart';
+import '../style.dart';
 import '../widget/icon_text.dart';
 import 'submission_tile.dart';
 

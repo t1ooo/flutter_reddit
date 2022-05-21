@@ -31,7 +31,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
-import '../style/style.dart';
+import '../style.dart';
 import '../util/color.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/sliver_app_bar.dart';

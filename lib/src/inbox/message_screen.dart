@@ -27,7 +27,7 @@ import 'package:flutter_reddit_prototype/src/notifier/subreddit_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/try_mixin.dart';
 import 'package:flutter_reddit_prototype/src/notifier/user_loader_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/user_notifier.dart';
-import 'package:flutter_reddit_prototype/src/style/style.dart';
+import 'package:flutter_reddit_prototype/src/style.dart';
 import 'package:provider/provider.dart';
 
 import '../const.dart';

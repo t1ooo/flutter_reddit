@@ -4,7 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart'
     show MarkdownBody, MarkdownStyleSheet;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../style/style.dart';
+import '../style.dart';
 
 class Markdown extends StatelessWidget {
   Markdown(
