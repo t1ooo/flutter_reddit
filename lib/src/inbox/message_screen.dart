@@ -30,6 +30,7 @@ import 'package:flutter_reddit_prototype/src/notifier/user_notifier.dart';
 import 'package:flutter_reddit_prototype/src/style/style.dart';
 import 'package:provider/provider.dart';
 
+import '../const.dart';
 import '../user_menu.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
@@ -90,7 +91,7 @@ class MessageScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            Markdown(message.body),
+            Markdown(message.body, baseUrl: redditBaseUrl),
           ],
         ),
       ),

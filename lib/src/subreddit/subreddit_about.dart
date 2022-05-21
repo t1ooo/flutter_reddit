@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../const.dart';
 import '../notifier/auth_notifier.dart';
 import '../notifier/collapsible.dart';
 import '../notifier/comment_notifier.dart';
@@ -44,6 +45,8 @@ class SubredditAbout extends StatelessWidget {
     final subreddit = notifier.subreddit;
     final titleStyle = TextStyle(fontWeight: FontWeight.bold);
 
+    print(subreddit.description);
+    print('-------------------');
     return ListView(
       shrinkWrap: true,
       children: [
@@ -57,7 +60,7 @@ class SubredditAbout extends StatelessWidget {
                 children: [
                   Text('About', style: titleStyle),
                   Divider(height: 30),
-                  Markdown(subreddit.description),
+                  Markdown(subreddit.description, baseUrl: redditBaseUrl),
                   SizedBox(height: 50),
                 ],
               ),
