@@ -1,4 +1,3 @@
-// TODO: split userSaved to userSavedSubmissions and userSavedComments
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
 // TODO: comment edit|delete
@@ -7,33 +6,21 @@
 //  or use draw models with access to fields via notifier
 // TODO: add dart analytics options
 // TODO: optimistic updates
-// TODO: auto disabled buttons
 // TODO: remove unused containers
 // TODO: mobile login
+// TODO: mobile video
+// TODO: mobile youtube embed
 // TODO: remove unused code
-// TODO: split notifiers to files
 // TODO: access to fields via notifier, make models mutable
-
 // TODO: show comment link_url image
 // TODO: submission tile show domain
-// TODO: replace textScaleFactor to fontSize
 // TODO: inbox notifications
 // TODO: inbox mod message
 // TODO: inbox message reply
 // TODO: link|image|video post submitting
-// TODO: ((un)subscrube (un)save reply post) update user saved subscribed
-//      TODO?: move actions to CurrentUserNotifier
-//      TODO?: cache to small time CurrentUserNotifier saved and subscribed
-//      NOTE: reddit app use manual refresh
-// TODO: hide bottom bar on some screens
-// TODO: add top padding to page padding
-// TODO: share interfaces for generic widget implementation
 // TODO: retry, undo
-// TODO: user inbox
 // TODO: show/edit current user settings
 // TODO: show/edit current user profile
-// TODO: block user
-// TODO: report
 // TODO: remove non-displayed fields from reddit_api models
 // TODO: make padding consistent
 // TODO: history (not supported by Reddit API)

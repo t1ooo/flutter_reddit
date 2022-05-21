@@ -33,8 +33,7 @@ abstract class RedditApi {
   });
   Future<List<Submission>> popular({required int limit, required SubType type});
 
-  Future<Subreddit> subreddit(String name);
-  // Future<String> subredditIcon(String name);
+  
 
   Future<User> user(String name);
   Future<List<Comment>> userComments(String name, {required int limit});
@@ -44,6 +43,8 @@ abstract class RedditApi {
   Future<void> userBlock(String name);
   Future<void> userUnblock(String name);
 
+  Future<Subreddit> subreddit(String name);
+  // Future<String> subredditIcon(String name);
   Future<void> subredditSubscribe(String name);
   Future<void> subredditUnsubscribe(String name);
   Future<void> subredditFavorite(String name);
