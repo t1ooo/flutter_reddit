@@ -38,7 +38,8 @@ class CurrentUserNotifier extends UserNotifier {
       _subreddits = (await _redditApi.currentUserSubreddits(limit: limit))
           .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
           .toList();
-      _subreddits!.sort((a,b) => a.name.compareTo(b.name));
+      _subreddits!
+          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
       notifyListeners();
     }, 'fail to load subreddits');
   }
