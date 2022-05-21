@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/subscriptions/subscriptions_screen.dart';
-import 'package:flutter_reddit_prototype/src/user_menu.dart';
+import 'package:flutter_reddit_prototype/src/current_user/user_menu.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'home/home_screen.dart';

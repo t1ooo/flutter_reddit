@@ -29,7 +29,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
-import '../user_menu.dart';
+import '../current_user/user_menu.dart';
 import '../widget/sliver_app_bar.dart';
 import 'subscriptions.dart';
 

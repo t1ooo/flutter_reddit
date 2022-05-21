@@ -31,7 +31,7 @@ import 'package:flutter_reddit_prototype/src/style.dart';
 import 'package:provider/provider.dart';
 
 import '../const.dart';
-import '../user_menu.dart';
+import '../current_user/user_menu.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../widget/list.dart';
