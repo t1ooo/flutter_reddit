@@ -29,6 +29,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../subreddit/subreddit_icon.dart';
 import '../widget/snackbar.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
@@ -51,17 +52,16 @@ class Subscriptions extends StatelessWidget {
         load: (_) => notifier.loadSubreddits(),
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
-          final favorite =
-              CurrentUserNotifier.filterFavorite(subreddits);
-          final unfavorite =
-              CurrentUserNotifier.filterUnfavorite(subreddits);
+          final favorite = CurrentUserNotifier.filterFavorite(subreddits);
+          final unfavorite = CurrentUserNotifier.filterUnfavorite(subreddits);
 
           return CustomListView(
             children: [
-              ChangeNotifierProvider<SubredditNotifier>.value(
-                value: notifier.all!,
-                child: SubscriptionTile(favorite: false),
-              ),
+              // ChangeNotifierProvider<SubredditNotifier>.value(
+              //   value: notifier.all!,
+              //   child: SubscriptionTile(favorite: false),
+              // ),
+              SubscriptionAllTile(),
               if (favorite.isNotEmpty) ...[
                 ListTitle('favorited'),
                 for (final subreddit in favorite)
