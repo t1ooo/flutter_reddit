@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/comment.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
+import 'package:clock/clock.dart';
 
 import '../logging/logging.dart';
+
+import 'comment.dart';
+import 'post_hint.dart';
 import 'preview_images.dart';
 import 'rule.dart';
 import 'video.dart';
@@ -32,6 +33,9 @@ T cast<T>(dynamic data, T defaultValue, [String? name]) {
 final colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive: false);
 
 String parseColor(dynamic data, [String? name]) {
+  if (data == null || data == '') {
+    return '';
+  }
   final text = parseString(data, name);
   if (colorRegExp.hasMatch(text)) {
     return text;
@@ -86,7 +90,8 @@ String parseUrl(dynamic data, [String? name]) {
       data == '' ||
       data == 'self' ||
       data == 'default' ||
-      data == 'image') {
+      data == 'image' || 
+      data == 'spoiler') {
     return '';
   }
 
@@ -107,10 +112,13 @@ DateTime parseTimeUtc(dynamic data, [String? name]) {
 }
 
 DateTime _parseTime(dynamic data, bool isUtc, [String? name]) {
+  if (data == null) {
+    return clock.now();
+  }
   final num = parseDouble(data, name);
   if (num == 0) {
     _log('fail to parse time: $data', name);
-    return DateTime.now();
+    return clock.now();
   }
 
   return DateTime.fromMillisecondsSinceEpoch(
@@ -288,9 +296,9 @@ String parseString(dynamic data, [String? name]) {
 final markdownRegExp = RegExp(r'#+');
 
 String parseMarkdown(dynamic data, [String? name]) {
-  final text = parseString(data, name);
+  final text = parseBody(data, name);
   return text.replaceAllMapped(RegExp(r'#+'), (m) {
-    return '${m.group(0)} ';
+    return ' ${m.group(0)} ';
   });
 }
 
