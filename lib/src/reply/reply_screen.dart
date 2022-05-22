@@ -31,6 +31,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../widget/list.dart';
 import '../widget/snackbar.dart';
 
 class ReplyScreen extends StatefulWidget {
@@ -72,7 +73,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
   }
 
   Widget _form(BuildContext context) {
-    return ListView(
+    return CustomListView(
       children: [
         Text(context.read<Replyable>().replyToMessage),
         Divider(),

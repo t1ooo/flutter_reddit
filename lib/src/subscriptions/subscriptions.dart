@@ -55,7 +55,7 @@ class Subscriptions extends StatelessWidget {
           final favorite = CurrentUserNotifier.filterFavorite(subreddits);
           final unfavorite = CurrentUserNotifier.filterUnfavorite(subreddits);
 
-          return CustomListView(
+          return PrimaryColorListView(
             children: [
               // ChangeNotifierProvider<SubredditNotifier>.value(
               //   value: notifier.all!,

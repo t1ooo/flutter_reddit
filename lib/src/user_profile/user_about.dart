@@ -41,10 +41,10 @@ class UserAbout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<UserNotifier>().user;
-    return CustomListView(
+    return PrimaryColorListView(
       children: [
         ListDivider(height: 10),
-        CustomListView(
+        PrimaryColorListView(
           children: [
             SizedBox(height: 50),
             Table(

@@ -30,6 +30,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 
@@ -50,7 +51,7 @@ class UserComments extends StatelessWidget {
         load: (_) => notifier.loadComments(),
         data: (_) => notifier.comments,
         onData: (_, comments) {
-          return ListView(
+          return CustomListView(
             children: [
               for (final comment in comments)
                 ChangeNotifierProvider<CommentNotifier>.value(

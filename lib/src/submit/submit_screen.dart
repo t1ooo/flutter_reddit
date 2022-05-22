@@ -33,6 +33,7 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../subreddit/subreddit_icon.dart';
+import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import 'choose_subreddit_screen.dart';
 
@@ -79,7 +80,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
   }
 
   Widget _form(BuildContext context) {
-    return ListView(
+    return CustomListView(
       children: [
         InkWell(
           onTap: () {

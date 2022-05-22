@@ -60,7 +60,7 @@ class MessageScreen extends StatelessWidget {
             ),
           ];
         },
-        body: CustomListView(
+        body: PrimaryColorListView(
           padding: pagePadding,
           children: [
             SizedBox(height: 20),

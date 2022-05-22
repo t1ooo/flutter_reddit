@@ -35,6 +35,7 @@ import '../notifier/user_notifier.dart';
 import '../reddit_api/submission_type.dart';
 import '../style.dart';
 import '../widget/icon_text.dart';
+import '../widget/list.dart';
 import 'submission_tile.dart';
 
 class SubmissionTiles<T> extends StatelessWidget {
@@ -62,7 +63,8 @@ class SubmissionTiles<T> extends StatelessWidget {
       load: (_) => load(type),
       data: (_) => submissions,
       onData: (context, submissions) {
-        return ListView(
+        return CustomListView(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           children: [
             _typeSelector(context),
@@ -83,12 +85,13 @@ class SubmissionTiles<T> extends StatelessWidget {
   Widget _typeSelector(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: ButtonTheme(
+      child: ButtonTheme( // TODO: remove
         // height: 200,
         child: TextButton(
           style: ButtonStyle(
             padding: MaterialStateProperty.all(
-              EdgeInsets.symmetric(vertical: 20),
+              // EdgeInsets.symmetric(vertical: 20),
+              EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width/30),
             ),
           ),
           onPressed: () {
@@ -116,7 +119,7 @@ class SubmissionTiles<T> extends StatelessWidget {
   }
 
   Widget _modal(BuildContext context) {
-    return ListView(
+    return CustomListView(
       shrinkWrap: true,
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [

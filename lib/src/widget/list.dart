@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../style.dart';
 
-class CustomListView extends StatelessWidget {
-  CustomListView({
+class PrimaryColorListView extends StatelessWidget {
+  PrimaryColorListView({
     Key? key,
     required this.children,
     this.padding,
@@ -17,10 +17,32 @@ class CustomListView extends StatelessWidget {
     return Container(
       color: primaryColor,
       padding: padding,
-      child: ListView(
+      child: CustomListView(
         shrinkWrap: true,
         children: children,
       ),
+    );
+  }
+}
+
+class CustomListView extends StatelessWidget {
+  CustomListView({
+    Key? key,
+    required this.children,
+    this.padding = EdgeInsets.zero,
+    this.shrinkWrap=true,
+  }) : super(key: key);
+
+  final List<Widget> children;
+  final EdgeInsetsGeometry? padding;
+  final bool shrinkWrap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: padding,
+      shrinkWrap: shrinkWrap,
+      children: children,
     );
   }
 }

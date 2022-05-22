@@ -29,6 +29,7 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../submission_tile/submission_tile.dart';
+import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import '../widget/swipe_to_refresh.dart';
@@ -48,7 +49,7 @@ class SavedSubmissions extends StatelessWidget {
         load: (_) => notifier.loadSaved(),
         data: (_) => notifier.savedSubmissions,
         onData: (_, submissions) {
-          return ListView(
+          return CustomListView(
             shrinkWrap: true,
             children: [
               for (final sub in submissions)

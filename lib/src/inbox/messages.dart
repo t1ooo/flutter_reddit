@@ -30,6 +30,7 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../util/date_time.dart';
+import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import 'message_screen.dart';
@@ -49,7 +50,7 @@ class Messages extends StatelessWidget {
         load: (_) => notifier.loadInboxMessages(),
         data: (_) => notifier.inboxMessages,
         onData: (_, messages) {
-          return ListView(
+          return CustomListView(
             shrinkWrap: true,
             children: [
               for (final message in messages) ...[

@@ -30,6 +30,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../widget/list.dart';
 import '../widget/loader.dart';
 import 'saved_comment.dart';
 
@@ -48,7 +49,7 @@ class SavedComments extends StatelessWidget {
         load: (_) => notifier.loadSaved(),
         data: (_) => notifier.savedComments,
         onData: (_, comments) {
-          return ListView(
+          return CustomListView(
             shrinkWrap: true,
             children: [
               for (final comment in comments)

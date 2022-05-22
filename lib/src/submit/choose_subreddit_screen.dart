@@ -69,7 +69,7 @@ class ChooseSubredditScreen extends StatelessWidget {
       load: (_) => notifier.loadSubreddits(),
       data: (_) => notifier.subreddits,
       onData: (_, subreddits) {
-        return CustomListView(
+        return PrimaryColorListView(
           children: [
             ListTitle('JOINED'),
             for (final subreddit in subreddits)

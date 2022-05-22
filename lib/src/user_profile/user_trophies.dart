@@ -49,13 +49,13 @@ class UserTrophies extends StatelessWidget {
       load: (_) => notifier.loadTrophies(),
       data: (_) => notifier.trophies,
       onData: (_, trophies) {
-        return CustomListView(
+        return PrimaryColorListView(
           children: [
             ListTitle('trophies'),
             SizedBox(height: 10),
             Container(
               color: primaryColor,
-              child: ListView(
+              child: CustomListView(
                 shrinkWrap: true,
                 children: [
                   for (final trophy in trophies) _userTrophy(context, trophy),

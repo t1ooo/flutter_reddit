@@ -30,6 +30,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import 'submission_comment.dart';
@@ -45,7 +46,7 @@ class SubmissionWidget extends StatelessWidget {
       onRefresh: () => notifier
           .reloadSubmission()
           .catchError((e) => showErrorSnackBar(context, e)),
-      child: ListView(
+      child: CustomListView(
         children: [
           SubmissionTile(fullpage: true),
           SizedBox(height: 50),
@@ -53,7 +54,7 @@ class SubmissionWidget extends StatelessWidget {
             load: (_) => notifier.loadComments(),
             data: (_) => notifier.comments,
             onData: (_, comments) {
-              return ListView(
+              return CustomListView(
                 shrinkWrap: true,
                 children: [
                   for (final comment in comments)

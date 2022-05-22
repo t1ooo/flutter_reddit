@@ -30,6 +30,7 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../style.dart';
+import '../widget/list.dart';
 import '../widget/loader.dart';
 import '../widget/markdown.dart';
 import 'subreddit_rule.dart';
@@ -47,7 +48,7 @@ class SubredditAbout extends StatelessWidget {
 
     print(subreddit.description);
     print('-------------------');
-    return ListView(
+    return CustomListView(
       shrinkWrap: true,
       children: [
         SizedBox(height: 10),
@@ -76,7 +77,7 @@ class SubredditAbout extends StatelessWidget {
             return Card(
               child: Padding(
                 padding: cardPadding,
-                child: ListView(
+                child: CustomListView(
                   shrinkWrap: true,
                   children: [
                     Text('Rules', style: titleStyle),
