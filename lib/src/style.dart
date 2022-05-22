@@ -55,4 +55,6 @@ final theme = ThemeData(
   ),
   progressIndicatorTheme: ProgressIndicatorThemeData(color: selectedColor),
   hoverColor: primaryColor,
+  // tabBarTheme: TabBarTheme(indicator: DecoratedBox()),
+  indicatorColor: selectedColor,
 );
