@@ -13,6 +13,7 @@
 // TODO: mobile login
 // TODO: mobile youtube embed
 // TODO: mobile responsive height, width
+// TODO: mobile make save space white
 // TODO: remove unused code
 // TODO: access to fields via notifier, make models mutable
 // TODO: show comment link_url image
