@@ -89,8 +89,10 @@ class UserInfo extends StatelessWidget {
             Text(
                 '${user.totalKarma} karma • ${formatDateTime(user.created)} • ${'${user.subreddit.subscribers} followers'}'),
             SizedBox(height: 20),
-            Text(subreddit.publicDescription),
-            SizedBox(height: 50),
+            if (subreddit.publicDescription != '') ...[
+              Text(subreddit.publicDescription),
+              SizedBox(height: 20),
+            ],
           ],
         ),
       ),

@@ -201,14 +201,16 @@ class SpaceBar extends StatelessWidget {
           left: 0,
           right: 0,
           child: Padding(
-            padding: EdgeInsets.only(top: 15, right: 10, bottom: 10),
+            padding: EdgeInsets.only(top: 15, right: 0, bottom: 10),
             child: Row(
               children: [
                 if (leading != null)
                   Expanded(
                     flex: 1,
                     child: Center(child: leading!),
-                  ),
+                  )
+                else
+                  SizedBox(width: 5),
                 Expanded(
                   flex: titleFlex,
                   child: titleWidget,
@@ -217,7 +219,9 @@ class SpaceBar extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Center(child: trailing!),
-                  ),
+                  )
+                else
+                  SizedBox(width: 5)
               ],
             ),
           ),

@@ -84,11 +84,11 @@ class SubmissionTiles<T> extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: ButtonTheme(
-        height: 200,
+        // height: 200,
         child: TextButton(
           style: ButtonStyle(
             padding: MaterialStateProperty.all(
-              EdgeInsets.symmetric(vertical: 30),
+              EdgeInsets.symmetric(vertical: 20),
             ),
           ),
           onPressed: () {

@@ -1,4 +1,3 @@
-// TODO: app bar: remove icon shadow, add app bar shadow ?
 // TODO: media move to dir; split to files
 // TODO: add reddit api cache
 // TODO: subreddit custom feed
