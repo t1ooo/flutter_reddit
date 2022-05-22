@@ -17,16 +17,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Reddit App',
       theme: theme,
-      home: SafeArea(
-        child: CustomScroll(
-          child: StartScreen(),
+      home: Container(
+        color: primaryColor,
+        child: SafeArea(
+          child: CustomScroll(
+            child: StartScreen(),
+          ),
         ),
       ),
       builder: (context, child) => ResponsiveWrapper.builder(
         child,
         breakpoints: [
           ResponsiveBreakpoint.resize(480, name: MOBILE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.resize(800, name: TABLET),
           ResponsiveBreakpoint.resize(1000, name: DESKTOP),
         ],
       ),
