@@ -1,3 +1,4 @@
+// TODO: app bar: remove icon shadow, add app bar shadow ?
 // TODO: media move to dir; split to files
 // TODO: add reddit api cache
 // TODO: subreddit custom feed
@@ -11,7 +12,6 @@
 // TODO: remove unused containers
 // TODO: mobile login
 // TODO: mobile youtube embed
-// TODO: mobile sliver save space
 // TODO: mobile responsive height, width
 // TODO: remove unused code
 // TODO: access to fields via notifier, make models mutable
