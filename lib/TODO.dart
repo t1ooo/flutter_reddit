@@ -1,5 +1,4 @@
-// TODO: fix submission image hover
-//   or change theme hover color (inkwell, listtile)
+// TODO: tab add bottom line
 // TODO: app bar: remove icon shadow, add app bar shadow ?
 // TODO: media move to dir; split to files
 // TODO: add reddit api cache

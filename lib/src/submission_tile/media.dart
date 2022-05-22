@@ -25,98 +25,71 @@ Future<void> initVideoPlayer() async {
 
 const _fit = BoxFit.contain;
 
-class VideoPlayer extends StatefulWidget {
-  VideoPlayer({
+abstract class BaseVideoPlayer extends StatefulWidget {
+  BaseVideoPlayer({
     Key? key,
     required this.videoUrl,
     required this.size,
-    this.scale = 1.0, // TODO: remove
     this.previewImageUrl,
   }) : super(key: key);
 
   final String videoUrl;
   final Size size;
-  final double scale;
   final String? previewImageUrl;
 
-  static bool isSupportedPlatform = Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-
-  @override
-  State<VideoPlayer> createState() => _VideoPlayerState();
+  // @override
+  // State<BaseVideoPlayer> createState() => _BaseVideoPlayerState();
 }
 
-class _VideoPlayerState extends State<VideoPlayer> {
-  late final Player _player;
+abstract class _BaseVideoPlayerState<T extends BaseVideoPlayer>
+    extends State<T> {
   bool _showPlayer = false;
 
   @override
-  void initState() {
-    _player = Player(
-      id: Random().nextInt(1000 * 1000),
-      registerTexture: true,
-    );
-    _player.open(
-      Playlist(
-        medias: [Media.network(widget.videoUrl)],
-      ),
-      autoStart: false, //default
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final image = _previewImage(context);
+    final image = _previewImage();
     if (image != null) {
-      return image;
+      return AnimatedCrossFade(
+        firstChild: image,
+        secondChild: videoBuilder(true),
+        crossFadeState:
+            _showPlayer ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        duration: Duration(seconds: 1),
+      );
+    } else {
+      return videoBuilder();
     }
 
-    return Center(
-      child: Video(
-        player: _player,
-        scale: widget.scale,
-        width: widget.size.width,
-        height: widget.size.height,
-        volumeThumbColor: Colors.blue,
-        volumeActiveColor: Colors.blue,
-        fillColor: Colors.white,
-        showControls: true,
-        fit: _fit,
-      ),
-    );
+    // final image = _previewImage();
+    // if (image != null) {
+    //   return image;
+    // }
+
+    // return Center(child: videoBuilder());
   }
 
-  void _play() {
-    setState(
-      () {
-        _showPlayer = true;
-        _player.play();
-      },
-    );
-  }
+  Widget? _previewImage() {
+    // final previewImageUrl = widget.previewImageUrl;
+    // if (_showPlayer || previewImageUrl == null) {
+    //   return null;
+    // }
 
-  Widget? _previewImage(BuildContext context) {
-    final previewImageUrl = widget.previewImageUrl;
-    if (_showPlayer || previewImageUrl == null) {
+    if (widget.previewImageUrl == null) {
       return null;
     }
 
     return Center(
       child: GestureDetector(
-        onTap: _play,
+        onTap: () {
+          setState(() => _showPlayer = true);
+        },
         child: SizedBox(
           width: widget.size.width,
           height: widget.size.height,
           child: Stack(
             children: [
               _SizedNetworkImage(
-                imageUrl: previewImageUrl,
+                imageUrl: widget.previewImageUrl!,
                 size: widget.size,
                 showErrorText: false,
               ),
@@ -139,32 +112,97 @@ class _VideoPlayerState extends State<VideoPlayer> {
       ),
     );
   }
+
+  Widget videoBuilder([bool autoPlay = false]);
+  // void play();
 }
 
-class MobileVideoPlayer extends StatefulWidget {
-  MobileVideoPlayer({
+class VideoPlayer extends BaseVideoPlayer {
+  VideoPlayer({
     Key? key,
-    required this.videoUrl,
-    required this.size,
-    this.scale = 1.0, // TODO: remove
-    this.previewImageUrl,
-  }) : super(key: key);
+    required String videoUrl,
+    required Size size,
+    String? previewImageUrl,
+  }) : super(
+            key: key,
+            videoUrl: videoUrl,
+            size: size,
+            previewImageUrl: previewImageUrl);
 
-  final String videoUrl;
-  final Size size;
-  final double scale;
-  final String? previewImageUrl;
-
-  static bool isSupportedPlatform = Platform.isAndroid || Platform.isIOS || kIsWeb;
+  static bool isSupportedPlatform =
+      Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 
   @override
-  State<MobileVideoPlayer> createState() => _MobileVideoPlayerState();
+  State<VideoPlayer> createState() => _VideoBuilderState();
 }
 
-class _MobileVideoPlayerState extends State<MobileVideoPlayer> {
+class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
+  late final Player _player;
+
+  @override
+  void initState() {
+    _player = Player(
+      id: Random().nextInt(1000 * 1000),
+      registerTexture: true,
+    );
+    _player.open(
+      Playlist(medias: [Media.network(widget.videoUrl)]),
+      autoStart: false,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget videoBuilder([bool autoPlay = false]) {
+    if (autoPlay) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _player.play();
+      });
+    }
+    return Center(
+      child: Video(
+        player: _player,
+        width: widget.size.width,
+        height: widget.size.height,
+        volumeThumbColor: Colors.blue,
+        volumeActiveColor: Colors.blue,
+        fillColor: Colors.white,
+        showControls: true,
+        fit: _fit,
+      ),
+    );
+  }
+}
+
+class MobileVideoPlayer extends BaseVideoPlayer {
+  MobileVideoPlayer({
+    Key? key,
+    required String videoUrl,
+    required Size size,
+    String? previewImageUrl,
+  }) : super(
+            key: key,
+            videoUrl: videoUrl,
+            size: size,
+            previewImageUrl: previewImageUrl);
+
+  static bool isSupportedPlatform =
+      Platform.isAndroid || Platform.isIOS || kIsWeb;
+
+  @override
+  State<MobileVideoPlayer> createState() => _MobileVideoBuilderState();
+}
+
+class _MobileVideoBuilderState
+    extends _BaseVideoPlayerState<MobileVideoPlayer> {
   late final VideoPlayerController _videoController;
   late final ChewieController _chewieController;
-  bool _showPlayer = false;
 
   @override
   void initState() {
@@ -173,6 +211,7 @@ class _MobileVideoPlayerState extends State<MobileVideoPlayer> {
       videoPlayerController: _videoController,
       // isLive: true,
       autoInitialize: true,
+      autoPlay: false,
     );
     super.initState();
   }
@@ -185,12 +224,12 @@ class _MobileVideoPlayerState extends State<MobileVideoPlayer> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final image = _previewImage(context);
-    if (image != null) {
-      return image;
+  Widget videoBuilder([bool autoPlay = false]) {
+    if (autoPlay) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _chewieController.play();
+      });
     }
-
     return Center(
       child: SizedBox(
         width: widget.size.width,
@@ -199,58 +238,305 @@ class _MobileVideoPlayerState extends State<MobileVideoPlayer> {
       ),
     );
   }
-
-  Future<void> _play() async {
-    if (!_videoController.value.isInitialized) {
-      await _videoController.initialize();
-    }
-    _chewieController.play();
-    setState(
-      () {
-        _showPlayer = true;
-      },
-    );
-  }
-
-  Widget? _previewImage(BuildContext context) {
-    final previewImageUrl = widget.previewImageUrl;
-    if (_showPlayer || previewImageUrl == null) {
-      return null;
-    }
-
-    return Center(
-      child: GestureDetector(
-        onTap: _play,
-        child: SizedBox(
-          width: widget.size.width,
-          height: widget.size.height,
-          child: Stack(
-            children: [
-              _SizedNetworkImage(
-                imageUrl: previewImageUrl,
-                size: widget.size,
-                showErrorText: false,
-              ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    color: Colors.black54,
-                    child: Icon(
-                      Icons.play_circle,
-                      color: Colors.white,
-                      size: 100,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
+
+// class VideoPlayer extends StatefulWidget {
+//   VideoPlayer({
+//     Key? key,
+//     required this.videoUrl,
+//     required this.size,
+//     this.scale = 1.0, // TODO: remove
+//     this.previewImageUrl,
+//   }) : super(key: key);
+
+//   final String videoUrl;
+//   final Size size;
+//   final double scale;
+//   final String? previewImageUrl;
+
+//   static bool isSupportedPlatform =
+//       Platform.isLinux || Platform.isMacOS || Platform.isWindows;
+
+//   @override
+//   State<VideoPlayer> createState() => _VideoPlayerState();
+// }
+
+// class _VideoPlayerState extends State<VideoPlayer> {
+//   late final Player _player;
+//   bool _showPlayer = false;
+
+//   @override
+//   void initState() {
+//     _player = Player(
+//       id: Random().nextInt(1000 * 1000),
+//       registerTexture: true,
+//     );
+//     _player.open(
+//       Playlist(
+//         medias: [Media.network(widget.videoUrl)],
+//       ),
+//       autoStart: false, //default
+//     );
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     _player.dispose();
+//     super.dispose();
+//   }
+
+//   void _play() {
+//     setState(
+//       () {
+//         _showPlayer = true;
+//         _player.play();
+//       },
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // final image = _previewImage(context);
+//     // if (image != null) {
+//     //   return image;
+//     // }
+
+//     if (!_showPlayer || widget.previewImageUrl != null) {
+//       return GestureDetector(
+//         onTap: _play,
+//         child: VideoPreviewImage(
+//           size: widget.size,
+//           previewImageUrl: widget.previewImageUrl!,
+//         ),
+//       );
+//     }
+
+//     return Center(
+//       child: Video(
+//         player: _player,
+//         scale: widget.scale,
+//         width: widget.size.width,
+//         height: widget.size.height,
+//         volumeThumbColor: Colors.blue,
+//         volumeActiveColor: Colors.blue,
+//         fillColor: Colors.white,
+//         showControls: true,
+//         fit: _fit,
+//       ),
+//     );
+//   }
+
+//   // Widget? _previewImage(BuildContext context) {
+//   //   final previewImageUrl = widget.previewImageUrl;
+//   //   if (_showPlayer || previewImageUrl == null) {
+//   //     return null;
+//   //   }
+
+//   //   return Center(
+//   //     child: GestureDetector(
+//   //       onTap: _play,
+//   //       child: SizedBox(
+//   //         width: widget.size.width,
+//   //         height: widget.size.height,
+//   //         child: Stack(
+//   //           children: [
+//   //             _SizedNetworkImage(
+//   //               imageUrl: previewImageUrl,
+//   //               size: widget.size,
+//   //               showErrorText: false,
+//   //             ),
+//   //             Positioned.fill(
+//   //               child: Align(
+//   //                 alignment: Alignment.center,
+//   //                 child: Container(
+//   //                   color: Colors.black54,
+//   //                   child: Icon(
+//   //                     Icons.play_circle,
+//   //                     color: Colors.white,
+//   //                     size: 100,
+//   //                   ),
+//   //                 ),
+//   //               ),
+//   //             ),
+//   //           ],
+//   //         ),
+//   //       ),
+//   //     ),
+//   //   );
+//   // }
+// }
+
+// class MobileVideoPlayer extends StatefulWidget {
+//   MobileVideoPlayer({
+//     Key? key,
+//     required this.videoUrl,
+//     required this.size,
+//     this.scale = 1.0, // TODO: remove
+//     this.previewImageUrl,
+//   }) : super(key: key);
+
+//   final String videoUrl;
+//   final Size size;
+//   final double scale;
+//   final String? previewImageUrl;
+
+//   static bool isSupportedPlatform =
+//       Platform.isAndroid || Platform.isIOS || kIsWeb;
+
+//   @override
+//   State<MobileVideoPlayer> createState() => _MobileVideoPlayerState();
+// }
+
+// class _MobileVideoPlayerState extends State<MobileVideoPlayer> {
+//   late final VideoPlayerController _videoController;
+//   late final ChewieController _chewieController;
+//   bool _showPlayer = false;
+
+//   @override
+//   void initState() {
+//     _videoController = VideoPlayerController.network(widget.videoUrl);
+//     _chewieController = ChewieController(
+//       videoPlayerController: _videoController,
+//       // isLive: true,
+//       autoInitialize: true,
+//     );
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     _videoController.dispose();
+//     _chewieController.dispose();
+//     super.dispose();
+//   }
+
+//   Future<void> _play() async {
+//     if (!_videoController.value.isInitialized) {
+//       await _videoController.initialize();
+//     }
+//     _chewieController.play();
+//     setState(() => _showPlayer = true);
+//   }
+
+//   // Widget _video() {
+//   //   return Center(
+//   //     child: SizedBox(
+//   //       width: widget.size.width,
+//   //       height: widget.size.height,
+//   //       child: Chewie(controller: _chewieController),
+//   //     ),
+//   //   );
+//   // }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // final image = _previewImage(context);
+//     // if (image != null) {
+//     //   return image;
+//     // }
+
+//     if (!_showPlayer || widget.previewImageUrl != null) {
+//       return GestureDetector(
+//         onTap: _play,
+//         child: VideoPreviewImage(
+//           size: widget.size,
+//           previewImageUrl: widget.previewImageUrl!,
+//         ),
+//       );
+//     }
+
+//     return Center(
+//       child: SizedBox(
+//         width: widget.size.width,
+//         height: widget.size.height,
+//         child: Chewie(controller: _chewieController),
+//       ),
+//     );
+//   }
+
+//   // Widget? _previewImage(BuildContext context) {
+//   //   final previewImageUrl = widget.previewImageUrl;
+//   //   if (_showPlayer || previewImageUrl == null) {
+//   //     return null;
+//   //   }
+
+//   //   return Center(
+//   //     child: GestureDetector(
+//   //       onTap: _play,
+//   //       child: SizedBox(
+//   //         width: widget.size.width,
+//   //         height: widget.size.height,
+//   //         child: Stack(
+//   //           children: [
+//   //             _SizedNetworkImage(
+//   //               imageUrl: previewImageUrl,
+//   //               size: widget.size,
+//   //               showErrorText: false,
+//   //             ),
+//   //             Positioned.fill(
+//   //               child: Align(
+//   //                 alignment: Alignment.center,
+//   //                 child: Container(
+//   //                   color: Colors.black54,
+//   //                   child: Icon(
+//   //                     Icons.play_circle,
+//   //                     color: Colors.white,
+//   //                     size: 100,
+//   //                   ),
+//   //                 ),
+//   //               ),
+//   //             ),
+//   //           ],
+//   //         ),
+//   //       ),
+//   //     ),
+//   //   );
+//   // }
+// }
+
+// class VideoPreviewImage extends StatelessWidget {
+//   VideoPreviewImage({
+//     Key? key,
+//     required this.size,
+//     required this.previewImageUrl,
+//   }) : super(key: key);
+
+//   final Size size;
+//   final String previewImageUrl;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: SizedBox(
+//         width: size.width,
+//         height: size.height,
+//         child: Stack(
+//           children: [
+//             _SizedNetworkImage(
+//               imageUrl: previewImageUrl,
+//               size: size,
+//               showErrorText: false,
+//             ),
+//             Positioned.fill(
+//               child: Align(
+//                 alignment: Alignment.center,
+//                 child: Container(
+//                   color: Colors.black54,
+//                   child: Icon(
+//                     Icons.play_circle,
+//                     color: Colors.white,
+//                     size: 100,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class ImageLink extends StatelessWidget {
   ImageLink({

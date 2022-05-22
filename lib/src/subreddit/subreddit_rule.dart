@@ -61,7 +61,7 @@ class SubredditRule extends StatelessWidget {
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
           duration: kThemeAnimationDuration,
-        )
+        ),
       ],
     );
   }
