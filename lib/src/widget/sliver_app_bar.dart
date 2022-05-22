@@ -75,7 +75,7 @@ class AppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 14),
+      padding: const EdgeInsets.only(top: 0), // TODO: remove padding
       child: Text(text, style: Theme.of(context).textTheme.titleLarge),
     );
   }
@@ -140,6 +140,7 @@ class SpaceBar extends StatelessWidget {
     final maxFlex = 10;
     final titleFlex =
         maxFlex - (leading != null ? 1 : 0) - (trailing != null ? 1 : 0);
+    final titleWidget = title ?? Container(height: 60);
 
     return Stack(
       children: [
@@ -190,7 +191,7 @@ class SpaceBar extends StatelessWidget {
                   ),
                 Expanded(
                   flex: titleFlex,
-                  child: Container(height: 60, child: title),
+                  child: titleWidget,
                 ),
                 if (trailing != null)
                   Expanded(
