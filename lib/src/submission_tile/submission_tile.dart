@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -132,14 +131,14 @@ class SubmissionTile extends StatelessWidget {
         return null;
       }
 
-      if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      if (VideoPlayer.isSupportedPlatform) {
         return VideoPlayer(
           videoUrl: video.fallbackUrl,
           previewImageUrl: previewImage?.url,
           size: _adjustSize(video.width, video.height),
         );
-      } else if (Platform.isAndroid || Platform.isIOS || kIsWeb) {
-        return AndroidVideoPlayer(
+      } else if (MobileVideoPlayer.isSupportedPlatform) {
+        return MobileVideoPlayer(
           videoUrl: video.fallbackUrl,
           previewImageUrl: previewImage?.url,
           size: _adjustSize(video.width, video.height),

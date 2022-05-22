@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -36,6 +38,8 @@ class VideoPlayer extends StatefulWidget {
   final Size size;
   final double scale;
   final String? previewImageUrl;
+
+  static bool isSupportedPlatform = Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 
   @override
   State<VideoPlayer> createState() => _VideoPlayerState();
@@ -137,8 +141,8 @@ class _VideoPlayerState extends State<VideoPlayer> {
   }
 }
 
-class AndroidVideoPlayer extends StatefulWidget {
-  AndroidVideoPlayer({
+class MobileVideoPlayer extends StatefulWidget {
+  MobileVideoPlayer({
     Key? key,
     required this.videoUrl,
     required this.size,
@@ -151,11 +155,13 @@ class AndroidVideoPlayer extends StatefulWidget {
   final double scale;
   final String? previewImageUrl;
 
+  static bool isSupportedPlatform = Platform.isAndroid || Platform.isIOS || kIsWeb;
+
   @override
-  State<AndroidVideoPlayer> createState() => _AndroidVideoPlayerState();
+  State<MobileVideoPlayer> createState() => _MobileVideoPlayerState();
 }
 
-class _AndroidVideoPlayerState extends State<AndroidVideoPlayer> {
+class _MobileVideoPlayerState extends State<MobileVideoPlayer> {
   late final VideoPlayerController _videoController;
   late final ChewieController _chewieController;
   bool _showPlayer = false;
