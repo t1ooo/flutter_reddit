@@ -18,7 +18,6 @@ import 'subreddit.dart';
 import 'like.dart';
 import 'reddit_api.dart';
 
-
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
@@ -31,8 +30,15 @@ class FakeRedditApi implements RedditApi {
     return v;
   }
 
-  Future<String>_readFile(String path) {
-      return rootBundle.loadString('assets/fake_reddit_api/$path');
+  Future<String> _readFile(String path) {
+    return rootBundle.loadString('assets/fake_reddit_api/$path');
+  }
+
+  // Future<String> _readRandFile(List<String> paths) {
+  //   return _readFile(paths[Random().nextInt(paths.length)]);
+  // }
+  T _randValue<T>(List<T> list) {
+    return list[Random().nextInt(list.length)];
   }
 
   Future<List<Submission>> front({
@@ -195,8 +201,7 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
     final files = ['subreddit.1.json', 'subreddit.2.json'];
-    final data =
-        await File(files[Random().nextInt(files.length)]).readAsString();
+    final data = await _readFile(_randValue(files));
     final map = jsonDecode(data) as Map;
     map['user_is_subscriber'] = _random.nextInt(1000) % 2 == 0;
     return Subreddit.fromJson(map as Map<String, dynamic>);
@@ -337,8 +342,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('searchSubredditsByName($query)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data =
-        await _readFile('subreddits.search.by.name.json');
+    final data = await _readFile('subreddits.search.by.name.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .toList();
@@ -456,7 +460,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<List<Rule>> subredditRules(String name) async {
-   _log.info('subredditRules($name)');
+    _log.info('subredditRules($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await _readFile('subreddit.2.rules.json');
