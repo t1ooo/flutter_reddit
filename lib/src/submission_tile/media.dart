@@ -61,11 +61,11 @@ abstract class _BaseVideoPlayerState<T extends BaseVideoPlayer>
     }
 
     // final image = _previewImage();
-    // if (image != null) {
+    // if (!_showPlayer && image != null) {
     //   return image;
     // }
 
-    // return Center(child: videoBuilder());
+    // return videoBuilder(true);
   }
 
   Widget? _previewImage() {
@@ -210,8 +210,9 @@ class _MobileVideoBuilderState
     _chewieController = ChewieController(
       videoPlayerController: _videoController,
       // isLive: true,
-      autoInitialize: true,
+      autoInitialize: false,
       autoPlay: false,
+      aspectRatio: widget.size.width/widget.size.height,
     );
     super.initState();
   }
@@ -225,11 +226,16 @@ class _MobileVideoBuilderState
 
   @override
   Widget videoBuilder([bool autoPlay = false]) {
-    if (autoPlay) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      // _chewieController.play();
+      if (!_videoController.value.isInitialized) {
+        await _videoController.initialize();
+      }
+      if (autoPlay) {
         _chewieController.play();
-      });
-    }
+      }
+    });
+
     return Center(
       child: SizedBox(
         width: widget.size.width,
