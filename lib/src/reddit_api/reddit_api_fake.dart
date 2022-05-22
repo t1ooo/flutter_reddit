@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -30,6 +31,10 @@ class FakeRedditApi implements RedditApi {
     return v;
   }
 
+  Future<String>_readFile(String path) {
+      return rootBundle.loadString('assets/fake_reddit_api/$path');
+  }
+
   Future<List<Submission>> front({
     required int limit,
     required FrontSubType type,
@@ -37,7 +42,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('front($limit, $type)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.front.json').readAsString();
+    final data = await _readFile('user.front.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
@@ -54,7 +59,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('popular($limit, $type)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/popular.json').readAsString();
+    final data = await _readFile('popular.json');
 
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, type))
@@ -68,7 +73,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('currentUserSubreddits($limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.subreddits.json').readAsString();
+    final data = await _readFile('user.subreddits.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .take(limit)
@@ -84,7 +89,7 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
-    final data = await File('data/subreddit.submissions.json').readAsString();
+    final data = await _readFile('subreddit.submissions.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
@@ -96,7 +101,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('user($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.info.json').readAsString();
+    final data = await _readFile('user.info.json');
     return User.fromJson(jsonDecode(data));
   }
 
@@ -104,7 +109,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('userComments($name, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.comments.json').readAsString();
+    final data = await _readFile('user.comments.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => Comment.fromJson(v))
@@ -119,7 +124,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('userSubmissions($name, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.submissions.json').readAsString();
+    final data = await _readFile('user.submissions.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Submission.fromJson(v))
         .take(limit)
@@ -130,7 +135,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('userTrophies($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.trophies.json').readAsString();
+    final data = await _readFile('user.trophies.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => Trophy.fromJson(v))
@@ -170,8 +175,8 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
 
-    final subData = await File('data/submission.json').readAsString();
-    final comData = await File('data/submission.comments.json').readAsString();
+    final subData = await _readFile('submission.json');
+    final comData = await _readFile('submission.comments.json');
 
     final comments = (jsonDecode(comData) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
@@ -189,7 +194,7 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     name = removeSubredditPrefix(name);
-    final files = ['data/subreddit.1.json', 'data/subreddit.2.json'];
+    final files = ['subreddit.1.json', 'subreddit.2.json'];
     final data =
         await File(files[Random().nextInt(files.length)]).readAsString();
     final map = jsonDecode(data) as Map;
@@ -259,7 +264,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('currentUser()');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.current.info.json').readAsString();
+    final data = await _readFile('user.current.info.json');
     return User.fromJson(jsonDecode(data));
   }
 
@@ -267,7 +272,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('userSaved($name, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/user.current.saved.json').readAsString();
+    final data = await _readFile('user.current.saved.json');
     final submissions = <Submission>[];
     final comments = <Comment>[];
 
@@ -305,7 +310,7 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     subreddit = removeSubredditPrefix(subreddit);
-    final data = await File('data/search.json').readAsString();
+    final data = await _readFile('search.json');
 
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => _addType(v, sort))
@@ -321,7 +326,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('searchSubreddits($query, $limit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/subreddits.search.json').readAsString();
+    final data = await _readFile('subreddits.search.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .take(limit)
@@ -333,7 +338,7 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data =
-        await File('data/subreddits.search.by.name.json').readAsString();
+        await _readFile('subreddits.search.by.name.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .toList();
@@ -415,7 +420,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('inboxMessages()');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/inbox.messages.json').readAsString();
+    final data = await _readFile('inbox.messages.json');
 
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => Message.fromJson(v))
@@ -454,7 +459,7 @@ class FakeRedditApi implements RedditApi {
    _log.info('subredditRules($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    final data = await File('data/subreddit.2.rules.json').readAsString();
+    final data = await _readFile('subreddit.2.rules.json');
     return parseRules(jsonDecode(data))!;
   }
 }
