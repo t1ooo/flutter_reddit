@@ -1,6 +1,8 @@
 #!/bin/bash
 
 deps=(
+    video_player
+    chewie
     carousel_slider
     dart_vlc
     flutter_markdown

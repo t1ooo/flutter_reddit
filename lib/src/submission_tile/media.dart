@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chewie/chewie.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_reddit_prototype/src/logging.dart';
+import 'package:video_player/video_player.dart';
 
 import '../ui_logger.dart';
 import '../style.dart';
@@ -26,7 +28,7 @@ class VideoPlayer extends StatefulWidget {
     Key? key,
     required this.videoUrl,
     required this.size,
-    this.scale = 1.0,
+    this.scale = 1.0, // TODO: remove
     this.previewImageUrl,
   }) : super(key: key);
 
@@ -91,6 +93,115 @@ class _VideoPlayerState extends State<VideoPlayer> {
       () {
         _showPlayer = true;
         _player.play();
+      },
+    );
+  }
+
+  Widget? _previewImage(BuildContext context) {
+    final previewImageUrl = widget.previewImageUrl;
+    if (_showPlayer || previewImageUrl == null) {
+      return null;
+    }
+
+    return Center(
+      child: GestureDetector(
+        onTap: _play,
+        child: SizedBox(
+          width: widget.size.width,
+          height: widget.size.height,
+          child: Stack(
+            children: [
+              _SizedNetworkImage(
+                imageUrl: previewImageUrl,
+                size: widget.size,
+                showErrorText: false,
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    color: Colors.black54,
+                    child: Icon(
+                      Icons.play_circle,
+                      color: Colors.white,
+                      size: 100,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AndroidVideoPlayer extends StatefulWidget {
+  AndroidVideoPlayer({
+    Key? key,
+    required this.videoUrl,
+    required this.size,
+    this.scale = 1.0, // TODO: remove
+    this.previewImageUrl,
+  }) : super(key: key);
+
+  final String videoUrl;
+  final Size size;
+  final double scale;
+  final String? previewImageUrl;
+
+  @override
+  State<AndroidVideoPlayer> createState() => _AndroidVideoPlayerState();
+}
+
+class _AndroidVideoPlayerState extends State<AndroidVideoPlayer> {
+  late final VideoPlayerController _videoController;
+  late final ChewieController _chewieController;
+  bool _showPlayer = false;
+
+  @override
+  void initState() {
+    _videoController = VideoPlayerController.network(widget.videoUrl);
+    _chewieController = ChewieController(
+      videoPlayerController: _videoController,
+      // isLive: true,
+      autoInitialize: true,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    _chewieController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final image = _previewImage(context);
+    if (image != null) {
+      return image;
+    }
+
+    return Center(
+      child: SizedBox(
+        width: widget.size.width,
+        height: widget.size.height,
+        child: Chewie(controller: _chewieController),
+      ),
+    );
+  }
+
+  Future<void> _play() async {
+    if (!_videoController.value.isInitialized) {
+      await _videoController.initialize();
+    }
+    _chewieController.play();
+    setState(
+      () {
+        _showPlayer = true;
       },
     );
   }
