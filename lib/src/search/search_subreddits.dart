@@ -29,6 +29,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../style.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import '../widget/swipe_to_refresh.dart';
@@ -55,7 +56,7 @@ class SearchSubreddits extends StatelessWidget {
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
           return Container(
-            color: Theme.of(context).primaryColor,
+            color: primaryColor,
             child: ListView(
               shrinkWrap: true,
               children: [

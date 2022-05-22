@@ -29,6 +29,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../style.dart';
 import '../util/date_time.dart';
 
 class UserComment extends StatelessWidget {
@@ -42,7 +43,7 @@ class UserComment extends StatelessWidget {
     final comment = notifier.comment;
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: primaryColor,
       child: InkWell(
         onTap: comment.submissionId == ''
             ? null

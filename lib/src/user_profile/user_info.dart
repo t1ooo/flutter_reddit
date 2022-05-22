@@ -50,7 +50,7 @@ class UserInfo extends StatelessWidget {
     final user = notifier.user;
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: primaryColor,
       child: Padding(
         padding: pagePadding,
         child: Column(

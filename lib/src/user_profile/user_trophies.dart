@@ -30,6 +30,7 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../reddit_api/trophy.dart';
+import '../style.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
 import '../widget/network_image.dart';
@@ -53,7 +54,7 @@ class UserTrophies extends StatelessWidget {
             ListTitle('trophies'),
             SizedBox(height: 10),
             Container(
-              color: Theme.of(context).primaryColor,
+              color: primaryColor,
               child: ListView(
                 shrinkWrap: true,
                 children: [

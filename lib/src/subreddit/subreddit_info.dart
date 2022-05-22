@@ -43,7 +43,7 @@ class SubredditInfo extends StatelessWidget {
     final subreddit = notifier.subreddit;
 
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: primaryColor,
       child: Padding(
         padding: pagePadding,
         child: Column(

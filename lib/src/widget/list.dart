@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../style.dart';
+
 class CustomListView extends StatelessWidget {
   CustomListView({
     Key? key,
@@ -13,7 +15,7 @@ class CustomListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: primaryColor,
       padding: padding,
       child: ListView(
         shrinkWrap: true,

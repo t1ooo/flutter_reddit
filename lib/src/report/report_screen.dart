@@ -65,7 +65,7 @@ class _ReportScreenState extends State<ReportScreen> {
           ];
         },
         body: Container(
-          color: Theme.of(context).primaryColor,
+          color: primaryColor,
           padding: pagePadding,
           child: _form(context),
         ),

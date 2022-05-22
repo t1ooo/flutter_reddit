@@ -70,7 +70,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
           ];
         },
         body: Container(
-          color: Theme.of(context).primaryColor,
+          color: primaryColor,
           padding: pagePadding,
           child: _form(context),
         ),

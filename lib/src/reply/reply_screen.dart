@@ -63,7 +63,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
           ];
         },
         body: Container(
-          color: Theme.of(context).primaryColor,
+          color: primaryColor,
           padding: pagePadding,
           child: _form(context),
         ),
