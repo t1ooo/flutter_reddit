@@ -16,8 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Reddit App',
       theme: theme,
-      home: CustomScroll(
-        child: StartScreen(),
+      home: SafeArea(
+        child: CustomScroll(
+          child: StartScreen(),
+        ),
       ),
     );
   }
