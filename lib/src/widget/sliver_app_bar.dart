@@ -24,6 +24,7 @@ class PrimarySliverAppBar extends StatelessWidget {
       pinned: true,
       primary: true,
       automaticallyImplyLeading: false,
+      leadingWidth: 0,
       toolbarHeight: appBarCollapsedHeight,
       // collapsedHeight: appBarCollapsedHeight,
       // expandedHeight: collapsed ? null : appBarExpandedHeight,
@@ -95,6 +96,25 @@ class AppBarBackButton extends StatelessWidget {
           Navigator.maybePop(context);
         },
         icon: SpaceBarIcon(Icons.arrow_back),
+      ),
+    );
+  }
+}
+
+class AppBarAccountButton extends StatelessWidget {
+  AppBarAccountButton({
+    Key? key,
+  }) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+        icon: SpaceBarIcon(Icons.account_circle),
       ),
     );
   }
@@ -181,13 +201,13 @@ class SpaceBar extends StatelessWidget {
           left: 0,
           right: 0,
           child: Padding(
-            padding: EdgeInsets.only(top: 40, right: 10, bottom: 10),
+            padding: EdgeInsets.only(top: 15, right: 10, bottom: 10),
             child: Row(
               children: [
                 if (leading != null)
                   Expanded(
                     flex: 1,
-                    child: leading!,
+                    child: Center(child: leading!),
                   ),
                 Expanded(
                   flex: titleFlex,
@@ -196,7 +216,7 @@ class SpaceBar extends StatelessWidget {
                 if (trailing != null)
                   Expanded(
                     flex: 1,
-                    child: trailing!,
+                    child: Center(child: trailing!),
                   ),
               ],
             ),
@@ -230,35 +250,38 @@ class SearchForm extends StatelessWidget {
         _controller.clear();
         return true;
       },
-      child: TextField(
-        controller: _controller,
-        textInputAction: TextInputAction.search,
-        onSubmitted: (query) {
-          query = query.trim();
-          if (query != '') {
-            navigatorPushOrReplace(
-              context,
-              MaterialPageRoute(
-                settings: RouteSettings(name: routeName),
-                builder: (_) => subreddit != null
-                    ? SearchBySubredditScreen(
-                        query: query, subreddit: subreddit!)
-                    : SearchScreen(query: query),
-              ),
-            );
-          }
-        },
-        decoration: InputDecoration(
-          prefixIcon: IconTheme(data: formIconTheme, child: Icon(Icons.search)),
-          suffixIcon: IconButton(
-            onPressed: _controller.clear,
-            icon: IconTheme(data: formIconTheme, child: Icon(Icons.cancel)),
+      child: SizedBox(
+        child: TextField(
+          controller: _controller,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (query) {
+            query = query.trim();
+            if (query != '') {
+              navigatorPushOrReplace(
+                context,
+                MaterialPageRoute(
+                  settings: RouteSettings(name: routeName),
+                  builder: (_) => subreddit != null
+                      ? SearchBySubredditScreen(
+                          query: query, subreddit: subreddit!)
+                      : SearchScreen(query: query),
+                ),
+              );
+            }
+          },
+          decoration: InputDecoration(
+            prefixIcon:
+                IconTheme(data: formIconTheme, child: Icon(Icons.search)),
+            suffixIcon: IconButton(
+              onPressed: _controller.clear,
+              icon: IconTheme(data: formIconTheme, child: Icon(Icons.cancel)),
+            ),
+            fillColor: Colors.white,
+            filled: true,
+            hintText: subreddit != null ? '$subreddit' : 'Search',
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(),
           ),
-          fillColor: Colors.white,
-          filled: true,
-          hintText: subreddit != null ? '$subreddit' : 'Search',
-          border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(),
         ),
       ),
     );

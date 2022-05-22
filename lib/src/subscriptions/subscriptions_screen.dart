@@ -46,12 +46,7 @@ class SubscriptionsScreen extends StatelessWidget {
               PrimarySliverAppBar(
                 collapsed: true,
                 flexibleSpace: SpaceBar(
-                  leading: IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    icon: SpaceBarIcon(Icons.account_circle),
-                  ),
+                  leading: AppBarAccountButton(),
                   title: SearchForm(),
                 ),
               ),
