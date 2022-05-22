@@ -1,3 +1,4 @@
+// TODO: media move to dir; split to files
 // TODO: add reddit api cache
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
@@ -11,6 +12,8 @@
 // TODO: mobile login
 // TODO: mobile video
 // TODO: mobile youtube embed
+// TODO: mobile sliver save space
+// TODO: mobile responsive height
 // TODO: remove unused code
 // TODO: access to fields via notifier, make models mutable
 // TODO: show comment link_url image
