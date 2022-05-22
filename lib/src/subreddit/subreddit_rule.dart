@@ -29,7 +29,6 @@ import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 
-
 class SubredditRule extends StatelessWidget {
   SubredditRule({Key? key}) : super(key: key);
 
@@ -42,7 +41,6 @@ class SubredditRule extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          hoverColor: Colors.white,
           minLeadingWidth: 0,
           contentPadding: EdgeInsets.zero,
           leading: Text('${rule.priority + 1}.'),

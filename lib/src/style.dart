@@ -54,4 +54,5 @@ final theme = ThemeData(
     cursorColor: blackColor,
   ),
   progressIndicatorTheme: ProgressIndicatorThemeData(color: selectedColor),
+  hoverColor: primaryColor,
 );
