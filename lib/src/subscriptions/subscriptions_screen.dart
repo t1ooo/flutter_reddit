@@ -50,15 +50,11 @@ class SubscriptionsScreen extends StatelessWidget {
                   title: SearchForm(),
                 ),
               ),
-              SliverAppBar(
-                pinned: true,
-                automaticallyImplyLeading: false,
-                flexibleSpace: TabBar(
-                  tabs: [
-                    Tab(text: 'Subscriptions'),
-                    Tab(text: 'Custom Feed'),
-                  ],
-                ),
+              SliverTabBar(
+                tabs: [
+                  Tab(text: 'Subscriptions'),
+                  Tab(text: 'Custom Feed'),
+                ],
               ),
             ];
           },
@@ -68,7 +64,8 @@ class SubscriptionsScreen extends StatelessWidget {
                 value: context.read<AuthNotifier>().user!,
                 child: Subscriptions(),
               ),
-              Card(child: Padding(
+              Card(
+                  child: Padding(
                 padding: cardPadding,
                 child: Text('TODO'),
               )),

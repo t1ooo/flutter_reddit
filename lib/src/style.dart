@@ -8,8 +8,8 @@ const topPadding = 20.0;
 const selectedColor = Colors.blue;
 const appBarIconThemeDark = IconThemeData(color: blackColor, size: 30);
 const formIconTheme = IconThemeData(color: Colors.black54);
-const appBarCollapsedHeight = 120.0;
-const appBarExpandedHeight = 200.0;
+// const appBarCollapsedHeight = 120.0;
+// const appBarExpandedHeight = 200.0;
 const primaryColor = Colors.white;
 
 final white = MaterialColor(Colors.white.value, const <int, Color>{

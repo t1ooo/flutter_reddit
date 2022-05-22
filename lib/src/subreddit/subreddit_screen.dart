@@ -101,16 +101,12 @@ class _SubredditScreen extends StatelessWidget {
                   delegate: SliverChildListDelegate([
                 SubredditInfo(),
               ])),
-              SliverAppBar(
-                pinned: true,
-                automaticallyImplyLeading: false,
-                flexibleSpace: TabBar(
-                  tabs: [
-                    Tab(text: 'Posts'),
-                    Tab(text: 'About'),
-                    Tab(text: 'Menu'),
-                  ],
-                ),
+              SliverTabBar(
+                tabs: [
+                  Tab(text: 'Posts'),
+                  Tab(text: 'About'),
+                  Tab(text: 'Menu'),
+                ],
               ),
             ];
           },

@@ -24,16 +24,11 @@ class HomeScreen extends StatelessWidget {
                   title: SearchForm(),
                 ),
               ),
-              SliverAppBar(
-                floating: true,
-                primary: false,
-                automaticallyImplyLeading: false,
-                flexibleSpace: TabBar(
-                  tabs: [
-                    Tab(text: 'Home'),
-                    Tab(text: 'Popular'),
-                  ],
-                ),
+              SliverTabBar(
+                tabs: [
+                  Tab(text: 'Home'),
+                  Tab(text: 'Popular'),
+                ],
               ),
             ];
           },

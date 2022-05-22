@@ -6,6 +6,16 @@ import '../search/search_screen.dart';
 import '../style.dart';
 import 'network_image.dart';
 
+// const appBarCollapsedHeight = 120.0;
+// const appBarExpandedHeight = 200.0;
+
+double appBarCollapsedHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height / 12;
+double appBarExpandedHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height / 6;
+double safeAreaTopPadding(BuildContext context) =>
+    MediaQuery.of(context).viewPadding.top;
+
 class PrimarySliverAppBar extends StatelessWidget {
   PrimarySliverAppBar({
     Key? key,
@@ -27,14 +37,32 @@ class PrimarySliverAppBar extends StatelessWidget {
       primary: true,
       automaticallyImplyLeading: false,
       leadingWidth: 0,
-      toolbarHeight: appBarCollapsedHeight,
+      toolbarHeight: appBarCollapsedHeight(context),
       // collapsedHeight: appBarCollapsedHeight,
       // expandedHeight: collapsed ? null : appBarExpandedHeight,
       // collapsedHeight: collapsed ? null : appBarCollapsedHeight,
-      expandedHeight: collapsed ? null : appBarExpandedHeight,
+      expandedHeight: collapsed ? null : appBarExpandedHeight(context),
       elevation: elevation,
       forceElevated: forceElevated,
       flexibleSpace: flexibleSpace,
+    );
+  }
+}
+
+class SliverTabBar extends StatelessWidget {
+  const SliverTabBar({
+    Key? key,
+    required this.tabs,
+  }) : super(key: key);
+  final List<Widget> tabs;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      pinned: true,
+      automaticallyImplyLeading: false,
+      toolbarHeight: kToolbarHeight - safeAreaTopPadding(context),
+      flexibleSpace: TabBar(tabs: tabs),
     );
   }
 }
@@ -171,7 +199,7 @@ class SpaceBar extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            height: appBarExpandedHeight,
+            height: appBarExpandedHeight(context) + safeAreaTopPadding(context),
             child: CustomNetworkImage(src!, onData: (_, image) {
               return Image(
                 image: image,
@@ -185,7 +213,8 @@ class SpaceBar extends StatelessWidget {
               top: 0,
               left: 0,
               right: 0,
-              height: appBarExpandedHeight,
+              height:
+                  appBarExpandedHeight(context) + safeAreaTopPadding(context),
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -204,9 +233,9 @@ class SpaceBar extends StatelessWidget {
           right: 0,
           child: Padding(
             padding: EdgeInsets.only(
-              top: 15 + MediaQuery.of(context).viewPadding.top, // safe area padding
+              top: 5 + safeAreaTopPadding(context),
               right: 0,
-              bottom: 10,
+              bottom: 5,
             ),
             child: Row(
               children: [
@@ -261,6 +290,7 @@ class SearchForm extends StatelessWidget {
         return true;
       },
       child: SizedBox(
+        height: 50,
         child: TextField(
           controller: _controller,
           textInputAction: TextInputAction.search,
@@ -291,6 +321,7 @@ class SearchForm extends StatelessWidget {
             hintText: subreddit != null ? '$subreddit' : 'Search',
             border: OutlineInputBorder(),
             focusedBorder: OutlineInputBorder(),
+            isDense: true,
           ),
         ),
       ),

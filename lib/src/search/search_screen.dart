@@ -41,15 +41,11 @@ class SearchScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SliverAppBar(
-                pinned: true,
-                automaticallyImplyLeading: false,
-                flexibleSpace: TabBar(
-                  tabs: [
-                    Tab(text: 'Posts'),
-                    Tab(text: 'Subreddits'),
-                  ],
-                ),
+              SliverTabBar(
+                tabs: [
+                  Tab(text: 'Posts'),
+                  Tab(text: 'Subreddits'),
+                ],
               ),
             ];
           },
@@ -64,7 +60,6 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
-
 
 class SearchBySubredditScreen extends StatelessWidget {
   SearchBySubredditScreen({
