@@ -1,3 +1,5 @@
+// TODO: fix submission image hover
+//   or change theme hover color (inkwell, listtile)
 // TODO: app bar: remove icon shadow, add app bar shadow ?
 // TODO: media move to dir; split to files
 // TODO: add reddit api cache
@@ -12,7 +14,6 @@
 // TODO: remove unused containers
 // TODO: mobile login
 // TODO: mobile youtube embed
-// TODO: mobile responsive height, width
 // TODO: mobile make save space white
 // TODO: remove unused code
 // TODO: access to fields via notifier, make models mutable

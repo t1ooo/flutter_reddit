@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'login/login_screen.dart';
 import 'notifier/auth_notifier.dart';
@@ -20,6 +21,14 @@ class MyApp extends StatelessWidget {
         child: CustomScroll(
           child: StartScreen(),
         ),
+      ),
+      builder: (context, child) => ResponsiveWrapper.builder(
+        child,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(480, name: MOBILE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
       ),
     );
   }

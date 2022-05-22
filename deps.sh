@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    responsive_framework
     video_player
     chewie
     carousel_slider
