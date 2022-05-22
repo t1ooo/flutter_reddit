@@ -10,10 +10,9 @@
 // TODO: optimistic updates
 // TODO: remove unused containers
 // TODO: mobile login
-// TODO: mobile video
 // TODO: mobile youtube embed
 // TODO: mobile sliver save space
-// TODO: mobile responsive height
+// TODO: mobile responsive height, width
 // TODO: remove unused code
 // TODO: access to fields via notifier, make models mutable
 // TODO: show comment link_url image
