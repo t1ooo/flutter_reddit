@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "./.env"
+source "./.env.desktop"
 flutter run \
     --dart-define=CLIENT_ID="$(printf "%q" "$CLIENT_ID")" \
     --dart-define=REDIRECT_URI="$(printf "%q" "$REDIRECT_URI")" \

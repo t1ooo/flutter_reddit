@@ -1,4 +1,3 @@
-
 import 'package:draw/draw.dart' as draw;
 import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,11 +15,23 @@ import 'subreddit.dart';
 import 'like.dart';
 import 'reddit_api.dart';
 
-
 class RedditApiImpl implements RedditApi {
-  RedditApiImpl(this.clientId, this.redirectUri, this.credentials);
+  // RedditApiImpl(this.clientId, this.redirectUri, this.credentials);
+  RedditApiImpl(this.clientId, this.auth, this.credentials);
 
   final userAgent = 'Flutter Client';
+  final String clientId;
+  // final Uri redirectUri;
+  final Auth auth;
+  final Credentials credentials;
+  static final _log = getLogger('RedditApiImpl');
+  draw.Reddit? _reddit;
+  draw.Reddit get reddit {
+    if (_reddit == null) {
+      throw Exception('not logged in');
+    }
+    return _reddit!;
+  }
 
   bool get isLoggedIn => _reddit != null;
 
@@ -44,7 +55,7 @@ class RedditApiImpl implements RedditApi {
       credentialsJson,
       clientId: clientId,
       userAgent: userAgent,
-      redirectUri: redirectUri,
+      // redirectUri: redirectUri,
     );
 
     return true;
@@ -55,38 +66,22 @@ class RedditApiImpl implements RedditApi {
       return;
     }
 
-    final s = AuthServer(redirectUri);
-
+    // final s = AuthServer(redirectUri);
     _reddit = draw.Reddit.createInstalledFlowInstance(
       clientId: clientId,
       userAgent: userAgent,
-      redirectUri: redirectUri,
+      redirectUri: auth.redirectUri,
+      // redirectUri: redirectUri,
     );
 
     final authUrl = reddit.auth.url(['*'], 'state');
     launch(authUrl.toString());
 
-    final authCode = await s.stream.first;
+    final authCode = await auth.stream.first;
     await reddit.auth.authorize(authCode);
 
     await credentials.write(reddit.auth.credentials.toJson());
-
-    await s.close();
-  }
-
-  final String clientId;
-
-  final Uri redirectUri;
-  final Credentials credentials;
-
-  static final _log = getLogger('RedditApiImpl');
-
-  draw.Reddit? _reddit;
-  draw.Reddit get reddit {
-    if (_reddit == null) {
-      throw Exception('not logged in');
-    }
-    return _reddit!;
+    // await s.close();
   }
 
   // Future<List<Submission>> _submissionsStream(
@@ -621,11 +616,9 @@ class RedditApiImpl implements RedditApi {
     return _parseMessageStream(reddit.inbox.messages());
   }
 
-
   Future<List<Rule>> subredditRules(String name) async {
     name = removeSubredditPrefix(name);
-    final resp =
-        await reddit.get('/r/$name/about/rules', objectify: false);
+    final resp = await reddit.get('/r/$name/about/rules', objectify: false);
     return parseRules(resp)!;
   }
 }

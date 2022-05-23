@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    uni_links
     responsive_framework
     video_player
     chewie

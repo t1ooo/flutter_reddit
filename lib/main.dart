@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/logging.dart';
 import 'package:path_provider/path_provider.dart';
@@ -92,9 +93,19 @@ Future<RedditApi> createRedditApi() async {
       Uri.tryParse(const String.fromEnvironment('REDIRECT_URI'));
   if (clientId != '' && redirectUri != null) {
     print('use reddit api');
+    final auth = Platform.isAndroid
+        ? AndroidAuth(redirectUri)
+        : Platform.isLinux
+            ? DesktopAuth(redirectUri)
+            : throw Exception('unsupported platform');
+
     final credentials = Credentials(
-        File((await getTemporaryDirectory()).path + '/credentials.json'));
-    return RedditApiImpl(clientId, redirectUri, credentials);
+      File((await getTemporaryDirectory()).path + '/credentials.json'),
+    );
+    return RedditApiImpl(clientId, auth, credentials);
+    // final credentials = Credentials(
+    //     File((await getTemporaryDirectory()).path + '/credentials.json'));
+    // return RedditApiImpl(clientId, redirectUri, credentials);
   }
 
   print('use fake reddit api');
