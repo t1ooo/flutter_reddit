@@ -2,6 +2,6 @@
 
 source "./.env.desktop"
 flutter run \
-    --dart-define=CLIENT_ID="$(printf "%q" "$CLIENT_ID")" \
-    --dart-define=REDIRECT_URI="$(printf "%q" "$REDIRECT_URI")" \
+    --dart-define=REDDIT_CLIENT_ID="$(printf "%q" "$REDDIT_CLIENT_ID")" \
+    --dart-define=REDDIT_REDIRECT_URI="$(printf "%q" "$REDDIT_REDIRECT_URI")" \
     -d linux "$@"

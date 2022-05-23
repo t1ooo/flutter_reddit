@@ -1,8 +1,9 @@
 #!/bin/bash
 
 source "./.env.mobile"
-export REDIRECT_URI="$REDIRECT_URI"
+# export REDDIT_REDIRECT_URI="$REDDIT_REDIRECT_URI" # gradle env
+export REDDIT_REDIRECT_URI="" # gradle env
 flutter run \
-    --dart-define=CLIENT_ID="$(printf "%q" "$CLIENT_ID")" \
-    --dart-define=REDIRECT_URI="$(printf "%q" "$REDIRECT_URI")" \
+    --dart-define=REDDIT_CLIENT_ID="$(printf "%q" "$REDDIT_CLIENT_ID")" \
+    --dart-define=REDDIT_REDIRECT_URI="$(printf "%q" "$REDDIT_REDIRECT_URI")" \
     -d android "$@"

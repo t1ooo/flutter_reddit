@@ -21,7 +21,22 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def redirectUri = new URI(System.getenv("REDIRECT_URI") ?: '')
+def parseRedditRedirectUri() {
+    def name = "REDDIT_REDIRECT_URI"
+    try {
+        def uri = new URI(System.getenv(name))
+        if (uri.scheme == null || uri.host == null 
+            || uri.scheme == "" || uri.host == "") {
+            throw new Exception()
+        }
+        return uri
+    } catch(Exception ex) {
+        throw new GradleException("invalid env variable ${name}")
+    }
+}
+
+def redditRedirectUri = parseRedditRedirectUri()
+
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -50,8 +65,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders["authCallbackScheme"] = redirectUri.scheme
-        manifestPlaceholders["authCallbackHost"] = redirectUri.host
+        manifestPlaceholders["redditRedirectUriScheme"] = redditRedirectUri.scheme
+        manifestPlaceholders["redditRedirectUriHost"] = redditRedirectUri.host
     }
 
     buildTypes {

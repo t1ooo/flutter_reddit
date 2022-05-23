@@ -88,9 +88,9 @@ Future<void> main() async {
 }
 
 Future<RedditApi> createRedditApi() async {
-  final clientId = const String.fromEnvironment('CLIENT_ID');
+  final clientId = const String.fromEnvironment('REDDIT_CLIENT_ID');
   final redirectUri =
-      Uri.tryParse(const String.fromEnvironment('REDIRECT_URI'));
+      Uri.tryParse(const String.fromEnvironment('REDDIT_REDIRECT_URI'));
   if (clientId != '' && redirectUri != null) {
     print('use reddit api');
     final auth = Platform.isAndroid

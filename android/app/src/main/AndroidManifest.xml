@@ -30,8 +30,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="${authCallbackScheme}"
-                    android:host="${authCallbackHost}" />
+                    android:scheme="${redditRedirectUriScheme}"
+                    android:host="${redditRedirectUriHost}" />
             </intent-filter>
             <!-- Deep Links end -->
         </activity>
