@@ -270,7 +270,9 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await _readFile('user.current.info.json');
-    return User.fromJson(jsonDecode(data));
+    final json = jsonDecode(data);
+    json['name'] = json['name'] + '_' + Random().nextInt(1000).toString();
+    return User.fromJson(json);
   }
 
   Future<UserSaved> userSaved(String name, {required int limit}) async {
