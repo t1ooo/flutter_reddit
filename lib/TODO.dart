@@ -1,6 +1,5 @@
-// TODO: mobile youtube embed
-
 // TODO: media move to dir; split to files
+
 // TODO: add reddit api cache
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
