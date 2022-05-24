@@ -9,12 +9,16 @@ import 'network_image.dart';
 // const appBarCollapsedHeight = 120.0;
 // const appBarExpandedHeight = 200.0;
 
-double appBarCollapsedHeight(BuildContext context) =>
-    MediaQuery.of(context).size.height / 12;
-double appBarExpandedHeight(BuildContext context) =>
+double _appBarCollapsedHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height / 12.5;
+double _appBarExpandedHeight(BuildContext context) =>
     MediaQuery.of(context).size.height / 6;
-double safeAreaTopPadding(BuildContext context) =>
+double _safeAreaTopPadding(BuildContext context) =>
     MediaQuery.of(context).viewPadding.top;
+// double _spaceBarHeight(BuildContext context) =>
+//     _appBarCollapsedHeight(context) * 0.8;
+// double _spaceBarTopPadding(BuildContext context) =>
+//     _appBarCollapsedHeight(context) * 0.1;
 
 class PrimarySliverAppBar extends StatelessWidget {
   PrimarySliverAppBar({
@@ -37,11 +41,11 @@ class PrimarySliverAppBar extends StatelessWidget {
       primary: true,
       automaticallyImplyLeading: false,
       leadingWidth: 0,
-      toolbarHeight: appBarCollapsedHeight(context),
+      toolbarHeight: _appBarCollapsedHeight(context),
       // collapsedHeight: appBarCollapsedHeight,
       // expandedHeight: collapsed ? null : appBarExpandedHeight,
       // collapsedHeight: collapsed ? null : appBarCollapsedHeight,
-      expandedHeight: collapsed ? null : appBarExpandedHeight(context),
+      expandedHeight: collapsed ? null : _appBarExpandedHeight(context),
       elevation: elevation,
       forceElevated: forceElevated,
       flexibleSpace: flexibleSpace,
@@ -61,7 +65,7 @@ class SliverTabBar extends StatelessWidget {
     return SliverAppBar(
       pinned: true,
       automaticallyImplyLeading: false,
-      toolbarHeight: kToolbarHeight - safeAreaTopPadding(context),
+      toolbarHeight: kToolbarHeight - _safeAreaTopPadding(context),
       flexibleSpace: TabBar(tabs: tabs),
     );
   }
@@ -190,7 +194,11 @@ class SpaceBar extends StatelessWidget {
     final maxFlex = 10;
     final titleFlex =
         maxFlex - (leading != null ? 1 : 0) - (trailing != null ? 1 : 0);
+
     final titleWidget = title ?? Container(height: 60);
+
+    final spaceBarHeight = _appBarCollapsedHeight(context) * 0.8;
+    final spaceBarTopPadding = _appBarCollapsedHeight(context) * 0.1;
 
     return Stack(
       children: [
@@ -199,7 +207,8 @@ class SpaceBar extends StatelessWidget {
             top: 0,
             left: 0,
             right: 0,
-            height: appBarExpandedHeight(context) + safeAreaTopPadding(context),
+            height:
+                _appBarExpandedHeight(context) + _safeAreaTopPadding(context),
             child: CustomNetworkImage(src!, onData: (_, image) {
               return Image(
                 image: image,
@@ -214,7 +223,7 @@ class SpaceBar extends StatelessWidget {
               left: 0,
               right: 0,
               height:
-                  appBarExpandedHeight(context) + safeAreaTopPadding(context),
+                  _appBarExpandedHeight(context) + _safeAreaTopPadding(context),
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -233,31 +242,35 @@ class SpaceBar extends StatelessWidget {
           right: 0,
           child: Padding(
             padding: EdgeInsets.only(
-              top: 5 + safeAreaTopPadding(context),
-              right: 0,
-              bottom: 5,
+              top: spaceBarTopPadding + _safeAreaTopPadding(context),
+              // top: 5 + safeAreaTopPadding(context),
+              // right: 0,
+              // bottom: 5,
             ),
-            child: Row(
-              children: [
-                if (leading != null)
+            child: SizedBox(
+              height: spaceBarHeight,
+              child: Row(
+                children: [
+                  if (leading != null)
+                    Expanded(
+                      flex: 1,
+                      child: Center(child: leading!),
+                    )
+                  else
+                    SizedBox(width: 5),
                   Expanded(
-                    flex: 1,
-                    child: Center(child: leading!),
-                  )
-                else
-                  SizedBox(width: 5),
-                Expanded(
-                  flex: titleFlex,
-                  child: titleWidget,
-                ),
-                if (trailing != null)
-                  Expanded(
-                    flex: 1,
-                    child: Center(child: trailing!),
-                  )
-                else
-                  SizedBox(width: 5)
-              ],
+                    flex: titleFlex,
+                    child: titleWidget,
+                  ),
+                  if (trailing != null)
+                    Expanded(
+                      flex: 1,
+                      child: Center(child: trailing!),
+                    )
+                  else
+                    SizedBox(width: 5)
+                ],
+              ),
             ),
           ),
         ),
@@ -289,8 +302,9 @@ class SearchForm extends StatelessWidget {
         _controller.clear();
         return true;
       },
-      child: SizedBox(
-        height: 50,
+      child: SizedBox(// TODO: remove
+        // height: 50,
+        // height: _searchFormHeight(context),
         child: TextField(
           controller: _controller,
           textInputAction: TextInputAction.search,
