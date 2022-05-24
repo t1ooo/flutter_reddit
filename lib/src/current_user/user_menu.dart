@@ -45,8 +45,9 @@ class UserMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<AuthNotifier>();
+    final notifier = context.read<AuthNotifier>();
     final user = notifier.user!;
+
     return Drawer(
       child: Column(
         children: [
@@ -62,7 +63,7 @@ class UserMenu extends StatelessWidget {
                   ),
                   onForegroundImageError: (e, _) => uiLogger.error('$e'),
                 ),
-                Text(user.user.subreddit.displayNamePrefixed),
+                Text('u/${user.user.name}'),
               ],
             ),
           ),

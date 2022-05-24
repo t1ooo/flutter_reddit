@@ -13,11 +13,11 @@ class UserLoaderNotifier with TryMixin, ChangeNotifier {
   static final _log = getLogger('UserLoaderNotifier');
   Logger get log => _log;
 
-  void reset() {
-    _name = null;
-    _user = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _name = null;
+  //   _user = null;
+  //   // notifyListeners();
+  // }
 
   String? _name;
 

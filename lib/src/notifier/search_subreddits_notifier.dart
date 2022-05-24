@@ -14,11 +14,11 @@ class SearchSubredditsNotifier with TryMixin, ChangeNotifier {
   static final _log = getLogger('SearchSubredditsNotifier');
   Logger get log => _log;
 
-  void reset() {
-    _query = '';
-    _subreddits = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _query = '';
+  //   _subreddits = null;
+  //   // notifyListeners();
+  // }
 
   String _query = '';
 

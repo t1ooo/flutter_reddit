@@ -9,6 +9,7 @@ import 'tabs.dart';
 import 'widget/custom_future_builder.dart';
 import 'widget/custom_scroll.dart';
 
+// TODO: add responsive param
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

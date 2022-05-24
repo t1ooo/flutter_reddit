@@ -12,11 +12,11 @@ class SubredditLoaderNotifier  with TryMixin, ChangeNotifier {
   static final _log = getLogger('SubredditNotifier');
   Logger get log => _log;
 
-  void reset() {
-    _name = null;
-    _subreddit = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _name = null;
+  //   _subreddit = null;
+  //   // notifyListeners();
+  // }
 
   String? _name;
 

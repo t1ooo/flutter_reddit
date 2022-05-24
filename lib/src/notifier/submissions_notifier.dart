@@ -11,11 +11,11 @@ abstract class SubmissionsNotifier<T> with TryMixin, ChangeNotifier {
 
   final RedditApi _redditApi;
 
-  void reset() {
-    _submissions = null;
-    _subType = _initialSubType;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _submissions = null;
+  //   _subType = _initialSubType;
+  //   // notifyListeners();
+  // }
 
   T _initialSubType;
   T _subType;

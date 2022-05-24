@@ -33,58 +33,50 @@ Future<void> main() async {
 
   final redditApi = await createRedditApi();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<CacheManager>(
-          create: (context) => CacheManager(
-            Config('flutter_reddit_cache'),
-          ),
-        ),
-        ChangeNotifierProvider<SubmissionLoaderNotifier>(
-          create: (context) => SubmissionLoaderNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<SearchNotifier>(
-          create: (context) => SearchNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<SubredditLoaderNotifier>(
-          create: (context) => SubredditLoaderNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<UserLoaderNotifier>(
-          create: (context) => UserLoaderNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<HomeFrontNotifier>(
-          create: (context) => HomeFrontNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<HomePopularNotifier>(
-          create: (context) => HomePopularNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<SearchSubredditsNotifier>(
-          create: (context) => SearchSubredditsNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<SubredditAllNotifier>(
-          create: (context) => SubredditAllNotifier(redditApi),
-        ),
-        ChangeNotifierProvider<AuthNotifier>(
-          create: (context) {
-            final notifier = AuthNotifier(redditApi);
-            return notifier
-              ..addListener(() {
-                if (notifier.user == null) {
-                  context.read<SubmissionLoaderNotifier>().reset();
-                  context.read<SearchNotifier>().reset();
-                  context.read<SubredditLoaderNotifier>().reset();
-                  context.read<UserLoaderNotifier>().reset();
-                  context.read<HomeFrontNotifier>().reset();
-                  context.read<HomePopularNotifier>().reset();
-                  context.read<SearchSubredditsNotifier>().reset();
-                  context.read<SubredditAllNotifier>().reset();
-                }
-              });
-          },
-        ),
-      ],
-      child: MyApp(),
+  return runApp(
+    ChangeNotifierProvider<AuthNotifier>(
+      create: (context) => AuthNotifier(redditApi),
+      child: Builder(builder: (context) {
+        final notifier = context.watch<AuthNotifier>();
+        if (notifier.user == null) {
+          return MyApp();
+        }
+        
+        return MultiProvider(
+          providers: [
+            Provider<CacheManager>(
+              create: (context) => CacheManager(
+                Config('flutter_reddit_cache'),
+              ),
+            ),
+            ChangeNotifierProvider<SubmissionLoaderNotifier>(
+              create: (context) => SubmissionLoaderNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<SearchNotifier>(
+              create: (context) => SearchNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<SubredditLoaderNotifier>(
+              create: (context) => SubredditLoaderNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<UserLoaderNotifier>(
+              create: (context) => UserLoaderNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<HomeFrontNotifier>(
+              create: (context) => HomeFrontNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<HomePopularNotifier>(
+              create: (context) => HomePopularNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<SearchSubredditsNotifier>(
+              create: (context) => SearchSubredditsNotifier(redditApi),
+            ),
+            ChangeNotifierProvider<SubredditAllNotifier>(
+              create: (context) => SubredditAllNotifier(redditApi),
+            ),
+          ],
+          child: MyApp(),
+        );
+      }),
     ),
   );
 }

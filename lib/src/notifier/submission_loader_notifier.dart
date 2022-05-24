@@ -12,11 +12,11 @@ class SubmissionLoaderNotifier with TryMixin, ChangeNotifier {
   static final _log = getLogger('SubmissionLoaderNotifier');
   Logger get log => _log;
 
-  void reset() {
-    _id = null;
-    _submission = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _id = null;
+  //   _submission = null;
+  //   // notifyListeners();
+  // }
 
   String? _id;
 

@@ -14,13 +14,13 @@ class SearchNotifier with TryMixin, ChangeNotifier {
   static final _log = getLogger('SearchNotifier');
   Logger get log => _log;
 
-  void reset() {
-    _subredditName = '';
-    _query = '';
-    _sort = Sort.relevance;
-    _submissions = null;
-    notifyListeners();
-  }
+  // void reset() {
+  //   _subredditName = '';
+  //   _query = '';
+  //   _sort = Sort.relevance;
+  //   _submissions = null;
+  //   // notifyListeners();
+  // }
 
   String _subredditName = '';
   String _query = '';
