@@ -15,6 +15,7 @@ import '../submission/submission_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../util/size.dart';
+import '../util/youtube.dart';
 import '../widget/icon_text.dart';
 import '../widget/like.dart';
 import '../widget/snackbar.dart';
@@ -125,6 +126,27 @@ class SubmissionTile extends StatelessWidget {
       );
     }
 
+    Widget? _richVideo() {
+      if (YoutubePlayer.isSupportedPlatform) {
+        final youtubeVideo = parseYoutubeUrl(submission.url);
+        if (youtubeVideo != null) {
+          return YoutubePlayer(youtubeVideo: youtubeVideo);
+        }
+      }
+
+      return _link();
+
+      // if (previewImage == null) {
+      //   return ExternalLink(url: submission.url);
+      // }
+
+      // return ImageLink(
+      //   imageUrl: previewImage.url,
+      //   url: notifier.submission.url,
+      //   size: _adjustSize(previewImage.width, previewImage.height),
+      // );
+    }
+
     Widget? _hostedVideo() {
       final video = submission.video;
       if (video == null || video.fallbackUrl == '') {
@@ -176,8 +198,9 @@ class SubmissionTile extends StatelessWidget {
         return _hostedVideo();
       case PostHint.image:
         return _image();
-      case PostHint.link:
       case PostHint.richVideo:
+        return _richVideo();
+      case PostHint.link:
         return _link();
       case PostHint.none:
       case PostHint.self:

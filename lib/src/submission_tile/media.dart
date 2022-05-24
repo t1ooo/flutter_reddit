@@ -1,25 +1,66 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:youtube_player_flutter/youtube_player_flutter.dart' as yp;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chewie/chewie.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:flutter_reddit_prototype/src/logging.dart';
 import 'package:video_player/video_player.dart';
 
-import '../ui_logger.dart';
+import 'package:flutter_reddit_prototype/src/logging.dart';
+
 import '../style.dart';
+import '../ui_logger.dart';
+import '../util/youtube.dart';
 import '../widget/network_image.dart';
 import '../widget/sliver_app_bar.dart';
 
 const _fit = BoxFit.contain;
+
+class YoutubePlayer extends StatefulWidget {
+  YoutubePlayer({
+    Key? key,
+    required this.youtubeVideo,
+  }) : super(key: key);
+
+  final YoutubeVideo youtubeVideo;
+
+  static bool get isSupportedPlatform => Platform.isAndroid || Platform.isIOS;
+
+  @override
+  State<YoutubePlayer> createState() => _YoutubePlayerState();
 }
 
-const _fit = BoxFit.contain;
+class _YoutubePlayerState extends State<YoutubePlayer> {
+  late final yp.YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    _controller = yp.YoutubePlayerController(
+      initialVideoId: widget.youtubeVideo.id,
+      flags: yp.YoutubePlayerFlags(
+          autoPlay: false, startAt: widget.youtubeVideo.startAt),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return yp.YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: true,
+    );
+  }
+}
 
 abstract class BaseVideoPlayer extends StatefulWidget {
   BaseVideoPlayer({
@@ -113,6 +154,21 @@ abstract class _BaseVideoPlayerState<T extends BaseVideoPlayer>
   // void play();
 }
 
+bool _dartVlcInited = false;
+
+Future<void> _initDartVlc() async {
+  /// dispose and clear players after hot restart
+  if (_dartVlcInited) {
+    return;
+  }
+  _dartVlcInited = true;
+
+  players.forEach((_, p) => p.dispose());
+  players.clear();
+  await DartVLC.initialize(useFlutterNativeView: true);
+  print('init end');
+}
+
 class VideoPlayer extends BaseVideoPlayer {
   VideoPlayer({
     Key? key,
@@ -139,14 +195,14 @@ class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
   @override
   void initState() {
     _initDartVlc().then((_) {
-    _player = Player(
-      id: Random().nextInt(1000 * 1000),
-      registerTexture: true,
-    );
+      _player = Player(
+        id: Random().nextInt(1000 * 1000),
+        registerTexture: true,
+      );
       _player!.open(
-      Playlist(medias: [Media.network(widget.videoUrl)]),
-      autoStart: false,
-    );
+        Playlist(medias: [Media.network(widget.videoUrl)]),
+        autoStart: false,
+      );
       setState(() => _ready = true);
     });
     super.initState();
@@ -222,7 +278,7 @@ class _MobileVideoBuilderState
       // isLive: true,
       autoInitialize: false,
       autoPlay: false,
-      aspectRatio: widget.size.width/widget.size.height,
+      aspectRatio: widget.size.width / widget.size.height,
     );
     super.initState();
   }

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    youtube_player_flutter
     flutter_secure_storage
     uni_links
     responsive_framework

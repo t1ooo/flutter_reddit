@@ -29,7 +29,6 @@ import 'src/submission_tile/media.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureLogger(kDebugMode);
-  // initVideoPlayer();
 
   final redditApi = await createRedditApi();
 
