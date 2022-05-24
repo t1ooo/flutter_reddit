@@ -9,7 +9,6 @@ import 'tabs.dart';
 import 'widget/custom_future_builder.dart';
 import 'widget/custom_scroll.dart';
 
-// TODO: add responsive param
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -32,14 +31,27 @@ class MyApp extends StatelessWidget {
       // }),
       // ),
       // ),
-      // builder: (context, child) => ResponsiveWrapper.builder(
-      //   child,
-      //   breakpoints: [
-      //     ResponsiveBreakpoint.resize(480, name: MOBILE),
-      //     ResponsiveBreakpoint.resize(800, name: TABLET),
-      //     ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-      //   ],
-      // ),
+    );
+  }
+}
+
+class MyAppResponsive extends StatelessWidget {
+  const MyAppResponsive({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Reddit App',
+      theme: theme,
+      home: CustomScroll(child: StartScreen()),
+      builder: (context, child) => ResponsiveWrapper.builder(
+        child,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(480, name: MOBILE),
+          ResponsiveBreakpoint.resize(800, name: TABLET),
+          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
+      ),
     );
   }
 }
