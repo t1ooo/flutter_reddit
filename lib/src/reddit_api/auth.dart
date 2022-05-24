@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:flutter_reddit_prototype/src/util/uri.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:alfred/alfred.dart';
 
@@ -14,8 +14,12 @@ abstract class Auth {
 
 class DesktopAuth implements Auth {
   DesktopAuth(this.redirectUri) {
+    if (redirectUri.isEmpty) {
+      throw Exception('auth.redirectUri is empty');
+    }
+
     _app = Alfred();
-    // stream = _s.stream;
+    _stream = _s.stream.asBroadcastStream();
     _app.get(redirectUri.path, _handleAuthRequest);
     _app.listen(redirectUri.port).catchError(_onError);
   }
@@ -35,8 +39,9 @@ class DesktopAuth implements Auth {
   final _s = StreamController<String>();
   final Uri redirectUri;
   late final Alfred _app;
-  // late final Stream<String> stream;
-  Stream<String> get stream => _s.stream;
+
+  late final Stream<String> _stream;
+  Stream<String> get stream => _stream;
 
   void _onError(dynamic e) {
     _log.error(e);
@@ -50,6 +55,11 @@ class DesktopAuth implements Auth {
 
 class AndroidAuth implements Auth {
   AndroidAuth(this.redirectUri) {
+    if (redirectUri.isEmpty) {
+      throw Exception('auth.redirectUri is empty');
+    }
+
+    _stream = _s.stream.asBroadcastStream();
     getInitialLink().then((link) {
       _add(link, true);
       _sub = linkStream.listen(_add, onError: _onError);
@@ -62,7 +72,8 @@ class AndroidAuth implements Auth {
   // late final Stream<String> stream;
   StreamSubscription? _sub;
 
-  Stream<String> get stream => _s.stream;
+  late final Stream<String> _stream;
+  Stream<String> get stream => _stream;
 
   void _add(String? link, [bool isInitialLink = false]) {
     final authCode = Uri.parse(link ?? '').queryParameters['code'] ?? '';
@@ -80,24 +91,5 @@ class AndroidAuth implements Auth {
   Future<void> close() async {
     await _sub?.cancel();
     await _s.close();
-  }
-}
-
-// TODO: add encryption
-class Credentials {
-  Credentials(this.file);
-
-  File file;
-
-  Future<String> read() async {
-    return file.existsSync() ? await file.readAsString() : '';
-  }
-
-  Future<void> write(String data) async {
-    await file.writeAsString(data);
-  }
-
-  Future<void> delete() async {
-    await file.delete();
   }
 }

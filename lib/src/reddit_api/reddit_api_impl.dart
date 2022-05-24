@@ -3,6 +3,7 @@ import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../logging.dart';
+import 'credentials.dart';
 import 'message.dart';
 import 'parse.dart';
 import 'auth.dart';
@@ -17,7 +18,11 @@ import 'reddit_api.dart';
 
 class RedditApiImpl implements RedditApi {
   // RedditApiImpl(this.clientId, this.redirectUri, this.credentials);
-  RedditApiImpl(this.clientId, this.auth, this.credentials);
+  RedditApiImpl(this.clientId, this.auth, this.credentials) {
+    if (clientId == '') {
+      throw Exception('clientId is empty');
+    }
+  }
 
   final userAgent = 'Flutter Client';
   final String clientId;
@@ -45,8 +50,7 @@ class RedditApiImpl implements RedditApi {
       return true;
     }
 
-    final credentialsJson = await credentials.read();
-
+    final credentialsJson = await credentials.read() ?? '';
     if (credentialsJson == '') {
       return false;
     }
@@ -67,6 +71,7 @@ class RedditApiImpl implements RedditApi {
     }
 
     // final s = AuthServer(redirectUri);
+    print(auth.redirectUri);
     _reddit = draw.Reddit.createInstalledFlowInstance(
       clientId: clientId,
       userAgent: userAgent,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_reddit_prototype/src/logging.dart';
+import 'package:flutter_reddit_prototype/src/util/uri.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ import 'src/notifier/subreddit_all_notifier.dart';
 import 'src/notifier/subreddit_loader_notifier.dart';
 import 'src/notifier/user_loader_notifier.dart';
 import 'src/reddit_api/auth.dart';
+import 'src/reddit_api/credentials.dart';
 import 'src/reddit_api/reddit_api.dart';
 import 'src/reddit_api/reddit_api_fake.dart';
 import 'src/reddit_api/reddit_api_impl.dart';
@@ -91,17 +93,14 @@ Future<RedditApi> createRedditApi() async {
   final clientId = const String.fromEnvironment('REDDIT_CLIENT_ID');
   final redirectUri =
       Uri.tryParse(const String.fromEnvironment('REDDIT_REDIRECT_URI'));
-  if (clientId != '' && redirectUri != null) {
+  if (clientId != '' && redirectUri != null && redirectUri.isNotEmpty) {
     print('use reddit api');
     final auth = Platform.isAndroid
         ? AndroidAuth(redirectUri)
         : Platform.isLinux
             ? DesktopAuth(redirectUri)
             : throw Exception('unsupported platform');
-
-    final credentials = Credentials(
-      File((await getTemporaryDirectory()).path + '/credentials.json'),
-    );
+    final credentials = SecureCredentials();
     return RedditApiImpl(clientId, auth, credentials);
     // final credentials = Credentials(
     //     File((await getTemporaryDirectory()).path + '/credentials.json'));

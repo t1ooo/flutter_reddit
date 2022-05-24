@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    flutter_secure_storage
     uni_links
     responsive_framework
     video_player
