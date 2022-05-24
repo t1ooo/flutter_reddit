@@ -16,11 +16,7 @@ import '../style.dart';
 import '../widget/network_image.dart';
 import '../widget/sliver_app_bar.dart';
 
-Future<void> initVideoPlayer() async {
-  /// dispose and clear players after hot restart
-  players.forEach((_, p) => p.dispose());
-  players.clear();
-  await DartVLC.initialize(useFlutterNativeView: true);
+const _fit = BoxFit.contain;
 }
 
 const _fit = BoxFit.contain;
@@ -137,37 +133,51 @@ class VideoPlayer extends BaseVideoPlayer {
 }
 
 class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
-  late final Player _player;
+  Player? _player;
+  bool _ready = false;
 
   @override
   void initState() {
+    _initDartVlc().then((_) {
     _player = Player(
       id: Random().nextInt(1000 * 1000),
       registerTexture: true,
     );
-    _player.open(
+      _player!.open(
       Playlist(medias: [Media.network(widget.videoUrl)]),
       autoStart: false,
     );
+      setState(() => _ready = true);
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    _player.dispose();
+    _player?.dispose();
     super.dispose();
   }
 
   @override
   Widget videoBuilder([bool autoPlay = false]) {
+    if (!_ready) {
+      return Center(
+        child: SizedBox(
+          width: widget.size.width,
+          height: widget.size.height,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     if (autoPlay) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _player.play();
+        _player!.play();
       });
     }
     return Center(
       child: Video(
-        player: _player,
+        player: _player!,
         width: widget.size.width,
         height: widget.size.height,
         volumeThumbColor: Colors.blue,
