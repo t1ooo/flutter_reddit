@@ -1,3 +1,6 @@
+// TODO: crypt credentials  
+// TODO: mobile youtube embed
+
 // TODO: media move to dir; split to files
 // TODO: add reddit api cache
 // TODO: subreddit custom feed
@@ -9,7 +12,6 @@
 // TODO: add dart analytics options
 // TODO: optimistic updates
 // TODO: remove unused containers
-// TODO: mobile youtube embed
 // TODO: remove unused code
 // TODO: access to fields via notifier, make models mutable
 // TODO: show comment link_url image
