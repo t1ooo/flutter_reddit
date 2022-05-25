@@ -31,8 +31,25 @@ class DrawCache {
   }
 
   T? get<T extends draw.RedditBase>(String key) {
-    _log.info(_cache.containsKey(key) ?  'hit' : 'miss');
-    return _cache[key] as T?;
+    // _log.info(_cache.containsKey(key) ?  'hit' : 'miss');
+    // return _cache[key] as T?;
+
+    // final value = _cache[key];
+    // if (value == null) {
+    //   _log.info('miss');
+    //   return null;
+    // }
+
+    // if (!(value is T)) {
+    //   _log.error('type ${value.runtimeType} is not a subtype of type $T?');
+    //   return null;
+    // }
+
+    // _log.info('hit');
+    // return value;
+    final value = cast<T?>(_cache[key], null);
+    _log.info(value != null ? 'hit' : 'miss');
+    return value;
   }
 
   // Future<T> getOrAsync<T extends draw.RedditBase>(
@@ -516,7 +533,8 @@ class RedditApiImpl implements RedditApi {
     // final subRef = reddit.subreddit(name);
     // final subreddit = await reddit.subreddit(name).populate();
     // _drawCache.set(name, subreddit);
-    return Subreddit.fromJson((await _loadSubreddit(name)).data! as Map<String, dynamic>);
+    return Subreddit.fromJson(
+        (await _loadSubreddit(name)).data! as Map<String, dynamic>);
   }
 
   // Future<String> subredditIcon(String name) async {
