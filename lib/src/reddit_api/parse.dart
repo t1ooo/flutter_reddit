@@ -25,7 +25,7 @@ T cast<T>(dynamic data, T defaultValue, [String? name]) {
 
     return data as T;
   } on TypeError catch (_) {
-    _log('fail to cast: $data to <$T>', name);
+    _log('fail to cast: <${data.runtimeType}> to <$T>', name);
     return defaultValue;
   }
 }
