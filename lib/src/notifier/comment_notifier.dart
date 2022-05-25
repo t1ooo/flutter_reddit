@@ -69,10 +69,10 @@ class CommentNotifier
   Future<void> updateLike_(Like like) {
     _log.info('updateLike_($like)');
     return try_(() async {
-      await _redditApi.commentLike(comment.id, like);
-      _comment = comment.copyWith(
+      await _redditApi.commentLike(_comment.id, like);
+      _comment = _comment.copyWith(
         likes: like,
-        score: calcScore(comment.score, comment.likes, like),
+        score: calcScore(_comment.score, _comment.likes, like),
       );
       notifyListeners();
     }, 'fail to like');
@@ -106,7 +106,7 @@ class CommentNotifier
   @override
   Future<void> report(String reason) {
     return try_(() async {
-      await _redditApi.submissionReport(comment.id, reason);
+      await _redditApi.commentReport(_comment.id, reason);
       notifyListeners();
     }, 'fail to report');
   }
