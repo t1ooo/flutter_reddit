@@ -24,7 +24,6 @@ import 'src/reddit_api/credentials.dart';
 import 'src/reddit_api/reddit_api.dart';
 import 'src/reddit_api/reddit_api_fake.dart';
 import 'src/reddit_api/reddit_api_impl.dart';
-import 'src/submission_tile/media.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

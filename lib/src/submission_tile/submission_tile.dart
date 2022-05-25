@@ -19,8 +19,14 @@ import '../util/youtube.dart';
 import '../widget/icon_text.dart';
 import '../widget/like.dart';
 import '../widget/snackbar.dart';
-import 'media.dart';
+
 import 'submission_popup_menu.dart';
+import 'media/external_link.dart';
+import 'media/fullscreen_image.dart';
+import 'media/image_slider.dart';
+import 'media/video_player.dart';
+import 'media/youtube_player.dart';
+import 'media/image_link.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({
