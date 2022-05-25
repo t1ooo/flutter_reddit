@@ -103,21 +103,21 @@ class RedditApiImpl implements RedditApi {
   // final _drawCache = LruMap<String, Object>(maximumSize: 1000);
   final _drawCache = DrawCache();
 
-  Future<draw.Submission> _cachedSubmission(String id) =>
+  Future<draw.Submission> _cachedSubmission(String id) async =>
       // _drawCache.getOrAsync(id, reddit.submission(id: id).populate);
-      _drawCache.get(id) ?? _loadSubmission(id);
+      _drawCache.get(id) ?? await _loadSubmission(id);
 
-  Future<draw.Comment> _cachedComment(String id) =>
+  Future<draw.Comment> _cachedComment(String id) async =>
       // _drawCache.getOrAsync(id, reddit.comment(id: id).populate);
-      _drawCache.get(id) ?? _loadComment(id);
+      _drawCache.get(id) ?? await _loadComment(id);
 
-  Future<draw.Redditor> _cachedRedditor(String name) =>
+  Future<draw.Redditor> _cachedRedditor(String name) async =>
       // _drawCache.getOrAsync(name, reddit.redditor(name).populate);
-      _drawCache.get(name) ?? _loadRedditor(name);
+      _drawCache.get(name) ?? await _loadRedditor(name);
 
-  Future<draw.Subreddit> _cachedSubreddit(String name) =>
+  Future<draw.Subreddit> _cachedSubreddit(String name) async =>
       // _drawCache.getOrAsync(name, reddit.subreddit(name).populate);
-      _drawCache.get(name) ?? _loadSubreddit(name);
+      _drawCache.get(name) ?? await _loadSubreddit(name);
 
   Future<draw.Submission> _loadSubmission(String id) async =>
       _drawCache.set(id, await reddit.submission(id: id).populate());
