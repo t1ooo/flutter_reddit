@@ -42,11 +42,16 @@ class AuthNotifier with TryMixin, ChangeNotifier {
   }
 
   Future<void> _loadUser() async {
-    final user = await _redditApi.currentUser();
-    if (user == null) {
-      throw Exception('user is null');
+    try {
+      final user = await _redditApi.currentUser();
+      if (user == null) {
+        throw Exception('user is empty');
+      }
+      _user = CurrentUserNotifier(_redditApi, user);
+    } catch (_) {
+      await _redditApi.logout();
+      rethrow;
     }
-    _user = CurrentUserNotifier(_redditApi, user);
   }
 
   Future<void> logout() {
