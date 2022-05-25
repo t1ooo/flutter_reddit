@@ -31,6 +31,8 @@ class SubmissionNotifier
     _setComments(_submission.comments);
   }
 
+  String get id => _submission.id;
+
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionNotifier');
   Logger get log => _log;
@@ -55,7 +57,7 @@ class SubmissionNotifier
   Future<void> _loadSubmission() {
     return try_(() async {
       if (_comments != null) return;
-      _submission = await _redditApi.submission(_submission.id);
+      _submission = await _redditApi.submission(id);
       _setComments(_submission.comments);
       notifyListeners();
     }, 'fail to load comments');
@@ -75,8 +77,7 @@ class SubmissionNotifier
 
   Future<void> reply(String body) {
     return try_(() async {
-      final commentReply =
-          await _redditApi.submissionReply(_submission.id, body);
+      final commentReply = await _redditApi.submissionReply(id, body);
 
       _comments ??= [];
       _comments!
@@ -100,7 +101,7 @@ class SubmissionNotifier
     return try_(() async {
       await (save
           ? _redditApi.submissionSave
-          : _redditApi.submissionUnsave)(_submission.id);
+          : _redditApi.submissionUnsave)(id);
       _submission = _submission.copyWith(saved: save);
       notifyListeners();
     }, 'fail to' + (save ? 'save' : 'unsave'));
@@ -119,7 +120,7 @@ class SubmissionNotifier
       if (_submission.hidden == hide) return;
       await (hide
           ? _redditApi.submissionHide
-          : _redditApi.submissionUnhide)(_submission.id);
+          : _redditApi.submissionUnhide)(id);
       _submission = _submission.copyWith(hidden: hide);
       notifyListeners();
     }, 'fail to' + (hide ? 'hide' : 'unhide'));
@@ -133,7 +134,7 @@ class SubmissionNotifier
 
   Future<void> updateLike_(Like like) {
     return try_(() async {
-      await _redditApi.submissionLike(_submission.id, like);
+      await _redditApi.submissionLike(id, like);
       _submission = _submission.copyWith(
         likes: like,
         score: calcScore(_submission.score, _submission.likes, like),
@@ -181,7 +182,7 @@ class SubmissionNotifier
   @override
   Future<void> report(String reason) {
     return try_(() async {
-      await _redditApi.submissionReport(_submission.id, reason);
+      await _redditApi.submissionReport(id, reason);
       notifyListeners();
     }, 'fail to report');
   }

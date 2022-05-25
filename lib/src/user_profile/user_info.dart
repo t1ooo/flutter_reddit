@@ -15,7 +15,7 @@ import '../notifier/home_front_notifier.dart';
 import '../notifier/home_popular_notifier.dart';
 import '../notifier/iterable_sum.dart';
 import '../notifier/likable.dart';
-import '../notifier/limit.dart';
+import '../notifier/const.dart';
 import '../notifier/list_notifier.dart';
 import '../notifier/message_notifier.dart';
 import '../notifier/property_listener.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show ChangeNotifier;
 
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
-import 'limit.dart';
+import 'const.dart';
 import 'submission_notifier.dart';
 import 'try_mixin.dart';
 

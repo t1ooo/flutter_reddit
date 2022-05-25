@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show ChangeNotifier;
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/user.dart';
-import 'limit.dart';
+import 'const.dart';
 import 'message_notifier.dart';
 import 'property_listener.dart';
 import 'subreddit_notifier.dart';

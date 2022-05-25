@@ -3,7 +3,7 @@ import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
-import 'limit.dart';
+import 'const.dart';
 import 'submissions_notifier.dart';
 
 class SubredditAllNotifier extends SubmissionsNotifier<SubType> {

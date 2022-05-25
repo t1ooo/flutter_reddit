@@ -8,7 +8,7 @@ import 'package:flutter_reddit_prototype/src/notifier/home_front_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/home_popular_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/iterable_sum.dart';
 import 'package:flutter_reddit_prototype/src/notifier/likable.dart';
-import 'package:flutter_reddit_prototype/src/notifier/limit.dart';
+import 'package:flutter_reddit_prototype/src/notifier/const.dart';
 import 'package:flutter_reddit_prototype/src/notifier/list_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/message_notifier.dart';
 import 'package:flutter_reddit_prototype/src/notifier/property_listener.dart';

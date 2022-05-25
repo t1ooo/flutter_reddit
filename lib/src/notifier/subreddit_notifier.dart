@@ -6,7 +6,7 @@ import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
 import '../reddit_api/subreddit.dart';
-import 'limit.dart';
+import 'const.dart';
 import 'property_listener.dart';
 import 'rule_notifier.dart';
 import 'submission_notifier.dart';
@@ -26,7 +26,8 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
 
   final bool isUserSubreddit;
 
-  String get name => _subreddit.displayName; // TODO: remove
+  String get name => _subreddit.displayName;
+  
   Subreddit _subreddit;
   Subreddit get subreddit => _subreddit;
 
@@ -88,7 +89,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   }) async {
     return try_(() async {
       final submission = await _redditApi.submit(
-        subreddit: _subreddit.displayName,
+        subreddit: name,
         title: title,
         selftext: selftext,
         url: url,
@@ -112,7 +113,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> loadRules() {
     return try_(() async {
       if (_rules != null) return;
-      _rules = (await _redditApi.subredditRules(_subreddit.displayName))
+      _rules = (await _redditApi.subredditRules(name))
           .map((v) => RuleNotifier(v))
           .toList();
       notifyListeners();

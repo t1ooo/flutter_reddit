@@ -5,22 +5,21 @@ import '../reddit_api/reddit_api.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
 import 'comment_notifier.dart';
-import 'limit.dart';
+import 'const.dart';
 import 'submission_notifier.dart';
 import 'subreddit_notifier.dart';
 import 'try_mixin.dart';
 
 class UserNotifier with TryMixin, ChangeNotifier {
   UserNotifier(this._redditApi, this._user)
-      : _name = _user.name,
-        _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);
+      : _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);
 
   final RedditApi _redditApi;
 
   static final _log = getLogger('UserNotifier');
   Logger get log => _log;
 
-  final String _name;
+  String get name => _user.name;
 
   final SubredditNotifier _subreddit;
   SubredditNotifier get subreddit => _subreddit;
@@ -39,7 +38,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadSubmissions() {
     return try_(() async {
       if (_submissions != null) return;
-      _submissions = (await _redditApi.userSubmissions(_name, limit: limit))
+      _submissions = (await _redditApi.userSubmissions(name, limit: limit))
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -57,7 +56,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadComments() {
     return try_(() async {
       if (_comments != null) return;
-      _comments = (await _redditApi.userComments(_name, limit: limit))
+      _comments = (await _redditApi.userComments(name, limit: limit))
           .map((v) => CommentNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -69,7 +68,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadTrophies() {
     return try_(() async {
       if (_trophies != null) return;
-      _trophies = await _redditApi.userTrophies(_name);
+      _trophies = await _redditApi.userTrophies(name);
       notifyListeners();
     }, 'fail to load user comments');
   }
@@ -89,7 +88,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadSaved() {
     return try_(() async {
       if (_savedComments != null && _savedSubmissions != null) return;
-      final saved = await _redditApi.userSaved(_user.name, limit: limit);
+      final saved = await _redditApi.userSaved(name, limit: limit);
       _savedSubmissions = saved.submissions
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
@@ -110,7 +109,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> _updateBlock(bool block) {
     return try_(() async {
       if (_user.isBlocked == block) return;
-      await (block ? _redditApi.userBlock : _redditApi.userUnblock)(_user.name);
+      await (block ? _redditApi.userBlock : _redditApi.userUnblock)(name);
       _user = _user.copyWith(isBlocked: block);
       notifyListeners();
     }, 'fail to' + (block ? 'block' : 'unblock'));

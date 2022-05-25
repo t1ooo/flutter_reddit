@@ -25,6 +25,8 @@ class CommentNotifier
         .toList();
   }
 
+  String get id => _comment.id;
+
   final RedditApi _redditApi;
 
   static final _log = getLogger('CommentNotifier');
@@ -52,9 +54,7 @@ class CommentNotifier
 
   Future<void> _updateSave(bool save) {
     return try_(() async {
-      await (save
-          ? _redditApi.commentSave
-          : _redditApi.commentUnsave)(comment.id);
+      await (save ? _redditApi.commentSave : _redditApi.commentUnsave)(id);
       _comment = comment.copyWith(saved: save);
       notifyListeners();
     }, 'fail to ' + (save ? 'save' : 'unsave'));
@@ -69,7 +69,7 @@ class CommentNotifier
   Future<void> updateLike_(Like like) {
     _log.info('updateLike_($like)');
     return try_(() async {
-      await _redditApi.commentLike(_comment.id, like);
+      await _redditApi.commentLike(id, like);
       _comment = _comment.copyWith(
         likes: like,
         score: calcScore(_comment.score, _comment.likes, like),
@@ -88,7 +88,7 @@ class CommentNotifier
 
   Future<void> reply(String body) async {
     return try_(() async {
-      final commentReply = await _redditApi.commentReply(_comment.id, body);
+      final commentReply = await _redditApi.commentReply(id, body);
 
       _replies.insert(0, CommentNotifier(_redditApi, commentReply));
       notifyListeners();
@@ -106,7 +106,7 @@ class CommentNotifier
   @override
   Future<void> report(String reason) {
     return try_(() async {
-      await _redditApi.commentReport(_comment.id, reason);
+      await _redditApi.commentReport(id, reason);
       notifyListeners();
     }, 'fail to report');
   }
