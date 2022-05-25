@@ -137,7 +137,8 @@ class RedditApiImpl implements RedditApi {
       _drawCache.get(name) ?? await _loadSubreddit(name);
 
   Future<draw.Submission> _loadSubmission(String id) async =>
-      _drawCache.set(id, await reddit.submission(id: id).populate());
+      // _drawCache.set(id, await reddit.submission(id: id).populate());
+      _cacheSubmission(await reddit.submission(id: id).populate());
 
   Future<draw.Comment> _loadComment(String id) async =>
       _drawCache.set(id, await reddit.comment(id: id).populate());
@@ -147,6 +148,25 @@ class RedditApiImpl implements RedditApi {
 
   Future<draw.Subreddit> _loadSubreddit(String name) async =>
       _drawCache.set(name, await reddit.subreddit(name).populate());
+
+  // Stream<draw.UserContent> _cacheSubmissionStream(
+  //   Stream<draw.UserContent> s
+  // ) {
+  //   return s.map((v) {
+  //     if (v is draw.Submission) {
+  //       _drawCache.set(v.id!, v);
+  //     }
+  //     if (v is draw.Comment) {
+  //       _drawCache.set(v.id!, v);
+  //     }
+  //     return v;
+  //   });
+  // }
+
+  draw.Submission _cacheSubmission(draw.Submission v) {
+    if (v.id != null) _drawCache.set(v.id!, v);
+    return v;
+  }
 
   draw.Reddit? _reddit;
   draw.Reddit get reddit {
@@ -319,22 +339,62 @@ class RedditApiImpl implements RedditApi {
     return _parseStream<draw.Message, Message>(s, _parseMessage);
   }
 
-  Future<List<Submission>> front(
-      {required int limit, required FrontSubType type}) {
+  // Future<List<Submission>> front(
+  //     {required int limit, required FrontSubType type}) {
+  //   final s = reddit.front;
+  //   switch (type) {
+  //     case FrontSubType.best:
+  //       return _parseSubmissionStream(s.best(limit: limit));
+  //     case FrontSubType.hot:
+  //       return _parseSubmissionStream(s.hot(limit: limit));
+  //     case FrontSubType.newest:
+  //       return _parseSubmissionStream(s.newest(limit: limit));
+  //     case FrontSubType.top:
+  //       return _parseSubmissionStream(s.top(limit: limit));
+  //     case FrontSubType.rising:
+  //       return _parseSubmissionStream(s.rising(limit: limit));
+  //     case FrontSubType.controversial:
+  //       return _parseSubmissionStream(s.controversial(limit: limit));
+  //   }
+  // }
+
+  Future<List<Submission>> front({
+    required int limit,
+    required FrontSubType type,
+  }) async {
+    // return _parseSubmissionStream(
+    //   _front(limit: limit, type: type).cast<draw.Submission>().map((v) {
+    //     if (v.id != null) _drawCache.set(v.id!, v);
+    //     return v;
+    //   }),
+    // );
+
+    return (await _front(limit: limit, type: type).toList())
+        .whereType<draw.Submission>()
+        .map(_cacheSubmission)
+        .map(_parseSubmission)
+        .whereType<Submission>()
+        .toList();
+  }
+
+  Stream<draw.UserContent> _front({
+    required int limit,
+    required FrontSubType type,
+  }) {
     final s = reddit.front;
     switch (type) {
       case FrontSubType.best:
-        return _parseSubmissionStream(s.best(limit: limit));
+        return s.best(limit: limit);
       case FrontSubType.hot:
-        return _parseSubmissionStream(s.hot(limit: limit));
+        return s.hot(limit: limit);
       case FrontSubType.newest:
-        return _parseSubmissionStream(s.newest(limit: limit));
+        return s.newest(limit: limit);
       case FrontSubType.top:
-        return _parseSubmissionStream(s.top(limit: limit));
+        return s.top(limit: limit);
       case FrontSubType.rising:
-        return _parseSubmissionStream(s.rising(limit: limit));
+        return s.rising(limit: limit);
       case FrontSubType.controversial:
-        return _parseSubmissionStream(s.controversial(limit: limit));
+        return s.controversial(limit: limit);
     }
   }
 
@@ -347,26 +407,63 @@ class RedditApiImpl implements RedditApi {
     return _parseSubredditStream(reddit.user.subreddits(limit: limit));
   }
 
+  // Future<List<Submission>> subredditSubmissions(
+  //   String name, {
+  //   required int limit,
+  //   required SubType type,
+  // }) {
+  //   name = removeSubredditPrefix(name);
+  //   final s = reddit.subreddit(name);
+  //   switch (type) {
+  //     case SubType.hot:
+  //       return _parseSubmissionStream(s.hot(limit: limit));
+  //     case SubType.newest:
+  //       return _parseSubmissionStream(s.newest(limit: limit));
+  //     case SubType.top:
+  //       return _parseSubmissionStream(s.top(limit: limit));
+  //     case SubType.rising:
+  //       return _parseSubmissionStream(s.rising(limit: limit));
+  //     case SubType.controversial:
+  //       return _parseSubmissionStream(s.controversial(limit: limit));
+  //   }
+  // }
+
   Future<List<Submission>> subredditSubmissions(
     String name, {
     required int limit,
     required SubType type,
-  }) {
+  }) async {
     name = removeSubredditPrefix(name);
+    return (await _subredditSubmissions(name, limit: limit, type: type).toList())
+        .whereType<draw.Submission>()
+        .map(_cacheSubmission)
+        .map(_parseSubmission)
+        .whereType<Submission>()
+        .toList();
+  }
+
+  Stream<draw.UserContent> _subredditSubmissions(
+    String name, {
+    required int limit,
+    required SubType type,
+  }) {
+    // name = removeSubredditPrefix(name);
     final s = reddit.subreddit(name);
     switch (type) {
       case SubType.hot:
-        return _parseSubmissionStream(s.hot(limit: limit));
+        return s.hot(limit: limit);
       case SubType.newest:
-        return _parseSubmissionStream(s.newest(limit: limit));
+        return s.newest(limit: limit);
       case SubType.top:
-        return _parseSubmissionStream(s.top(limit: limit));
+        return s.top(limit: limit);
       case SubType.rising:
-        return _parseSubmissionStream(s.rising(limit: limit));
+        return s.rising(limit: limit);
       case SubType.controversial:
-        return _parseSubmissionStream(s.controversial(limit: limit));
+        return s.controversial(limit: limit);
     }
   }
+
+  
 
   Future<User> user(String name) async {
     // final redditorRef = await reddit.redditor(name);
