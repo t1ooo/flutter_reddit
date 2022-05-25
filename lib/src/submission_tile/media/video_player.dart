@@ -106,21 +106,6 @@ abstract class _BaseVideoPlayerState<T extends BaseVideoPlayer>
   // void play();
 }
 
-bool _dartVlcInited = false;
-
-Future<void> _initDartVlc() async {
-  /// dispose and clear players after hot restart
-  if (_dartVlcInited) {
-    return;
-  }
-  _dartVlcInited = true;
-
-  players.forEach((_, p) => p.dispose());
-  players.clear();
-  await DartVLC.initialize(useFlutterNativeView: true);
-  print('init end');
-}
-
 class VideoPlayer extends BaseVideoPlayer {
   VideoPlayer({
     Key? key,
@@ -136,6 +121,21 @@ class VideoPlayer extends BaseVideoPlayer {
   static bool isSupportedPlatform =
       Platform.isLinux || Platform.isMacOS || Platform.isWindows;
 
+  static bool _dartVlcInited = false;
+
+  static Future<void> initDartVlc() async {
+    /// dispose and clear players after hot restart
+    if (_dartVlcInited) {
+      return;
+    }
+    _dartVlcInited = true;
+
+    players.forEach((_, p) => p.dispose());
+    players.clear();
+    await DartVLC.initialize(useFlutterNativeView: true);
+    print('init end');
+  }
+
   @override
   State<VideoPlayer> createState() => _VideoBuilderState();
 }
@@ -146,7 +146,7 @@ class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
 
   @override
   void initState() {
-    _initDartVlc().then((_) {
+    VideoPlayer.initDartVlc().then((_) {
       _player = Player(
         id: Random().nextInt(1000 * 1000),
         registerTexture: true,
