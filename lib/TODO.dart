@@ -1,13 +1,11 @@
-// TODO: media move to dir; split to files
-
-// TODO: add reddit api cache
+// TODO: reddit api cache
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
 // TODO: comment edit|delete
 // TODO: add draw model to model for optimization (.*like|save|...)
 //  or use praw post|get directly
 //  or use draw models with access to fields via notifier
-// TODO: add dart analytics options
+// TODO: dart analytics options
 // TODO: optimistic updates
 // TODO: remove unused containers
 // TODO: remove unused code
