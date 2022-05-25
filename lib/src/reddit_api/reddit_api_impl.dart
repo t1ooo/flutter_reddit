@@ -24,12 +24,14 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
+  // TODO: make fields private
   final userAgent = 'Flutter Client';
   final String clientId;
   // final Uri redirectUri;
   final Auth auth;
   final Credentials credentials;
   static final _log = getLogger('RedditApiImpl');
+  
   draw.Reddit? _reddit;
   draw.Reddit get reddit {
     if (_reddit == null) {
@@ -106,6 +108,7 @@ class RedditApiImpl implements RedditApi {
   //   }
   // }
 
+  // TODO: move outside class
   Submission? _parseSubmission(draw.UserContent v) {
     try {
       return Submission.fromJson(
