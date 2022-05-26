@@ -91,7 +91,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required FrontSubType type,
   }) async {
-    return _parseSubmissionStream(_front(limit: limit, type: type));
+    return _parseSubmissions(await _front(limit: limit, type: type).toList());
   }
 
   Stream<draw.UserContent> _front({
@@ -119,20 +119,17 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return _parseSubmissionStream(
-        _subredditSubmissions('popular', limit: limit, type: type));
+    return _parseSubmissions(
+        await _subredditSubmissions('popular', limit: limit, type: type)
+            .toList());
   }
 
   Future<List<Submission>> all({
     required int limit,
     required SubType type,
   }) async {
-    return _parseSubmissionStream(
-        _subredditSubmissions('all', limit: limit, type: type));
-  }
-
-  Future<List<Subreddit>> currentUserSubreddits({required int limit}) {
-    return _parseSubredditStream(reddit.user.subreddits(limit: limit));
+    return _parseSubmissions(
+        await _subredditSubmissions('all', limit: limit, type: type).toList());
   }
 
   Future<List<Submission>> subredditSubmissions(
@@ -140,10 +137,9 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return _parseSubmissionStream(await _subredditSubmissions(
-        subreddit.displayName,
-        limit: limit,
-        type: type));
+    return _parseSubmissions(await _subredditSubmissions(subreddit.displayName,
+            limit: limit, type: type)
+        .toList());
   }
 
   Stream<draw.UserContent> _subredditSubmissions(
@@ -167,6 +163,11 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
+  Future<List<Subreddit>> currentUserSubreddits({required int limit}) async {
+    return _parseSubreddits(
+        await reddit.user.subreddits(limit: limit).toList());
+  }
+
   Future<User> user(String name) async {
     return _parseUser(await reddit.redditor(name).populate());
   }
@@ -184,22 +185,24 @@ class RedditApiImpl implements RedditApi {
   Future<List<Comment>> userComments(
     User user, {
     required int limit,
-  }) {
-    return _parseCommentStream(
-        user.drawRedditor!.comments.newest(limit: limit));
+  }) async {
+    return _parseComments(
+        await user.drawRedditor!.comments.newest(limit: limit).toList());
   }
 
 // TODO: MAYBE: add type support
-  Future<List<Submission>> userSubmissions(User user, {required int limit}) {
-    return _parseSubmissionStream(
-        user.drawRedditor!.submissions.newest(limit: limit));
+  Future<List<Submission>> userSubmissions(User user,
+      {required int limit}) async {
+    return _parseSubmissions(
+        await user.drawRedditor!.submissions.newest(limit: limit).toList());
   }
 
   Future<List<Trophy>> userTrophies(User user) async {
-    return (await user.drawRedditor!.trophies())
-        .map(_parseTrophy)
-        .whereType<Trophy>()
-        .toList();
+    // return (await user.drawRedditor!.trophies())
+    //     .map(_parseTrophy)
+    //     .whereType<Trophy>()
+    //     .toList();
+    return _parseTrophies(await await user.drawRedditor!.trophies());
   }
 
   Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe) {
@@ -296,17 +299,21 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
-  }) {
+  }) async {
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
-    return _parseSubmissionStream(
-        reddit.subreddit(subreddit).search(query, params: params));
+    return _parseSubmissions(await reddit
+        .subreddit(subreddit)
+        .search(query, params: params)
+        .toList());
   }
 
-  Future<List<Subreddit>> searchSubreddits(String query, {required int limit}) {
-    return _parseSubredditStream(reddit.subreddits
+  Future<List<Subreddit>> searchSubreddits(String query,
+      {required int limit}) async {
+    return _parseSubreddits(await reddit.subreddits
         .search(query, limit: limit)
-        .map((v) => v as draw.Subreddit));
+        .map((v) => v as draw.Subreddit)
+        .toList());
   }
 
   Future<Comment> submissionReply(Submission submission, String body) async {
@@ -349,7 +356,7 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<List<Message>> inboxMessages() async {
-    return _parseMessageStream(reddit.inbox.messages());
+    return _parseMessages(await reddit.inbox.messages().toList());
   }
 
   Future<List<Rule>> subredditRules(Subreddit subreddit) async {
@@ -359,8 +366,7 @@ class RedditApiImpl implements RedditApi {
   }
 
   // TODO: move outside class
-  Submission _parseSubmission(draw.UserContent v) {
-    v = v as draw.Submission;
+  Submission _parseSubmission(draw.Submission v) {
     final comments = v.comments?.comments
         .map((v) => _parseComment(v))
         .whereType<Comment>()
@@ -377,8 +383,7 @@ class RedditApiImpl implements RedditApi {
     return Message.fromJson(v.data! as Map<String, dynamic>);
   }
 
-  Comment _parseComment(draw.UserContent v) {
-    v = v as draw.Comment;
+  Comment _parseComment(draw.Comment v) {
     return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
   }
 
@@ -390,8 +395,8 @@ class RedditApiImpl implements RedditApi {
     return Trophy.fromJson(v.data! as Map<String, dynamic>);
   }
 
-  Future<List<R>> _parseStream<T, R>(Stream<T> s, R Function(T) parser) async {
-    return (await s.toList())
+  List<R> _parse<T, R>(Iterable<T> s, R Function(T) parser) {
+    return s
         .map((v) {
           try {
             return parser(v);
@@ -406,21 +411,27 @@ class RedditApiImpl implements RedditApi {
         .toList();
   }
 
-  Future<List<Submission>> _parseSubmissionStream(
-    Stream<draw.UserContent> s,
+  List<Submission> _parseSubmissions(
+    Iterable<draw.UserContent> s,
   ) {
-    return _parseStream<draw.UserContent, Submission>(s, _parseSubmission);
+    return _parse<draw.Submission, Submission>(
+        s.whereType<draw.Submission>(), _parseSubmission);
   }
 
-  Future<List<Comment>> _parseCommentStream(Stream<draw.UserContent> s) {
-    return _parseStream<draw.UserContent, Comment>(s, _parseComment);
+  List<Comment> _parseComments(Iterable<draw.UserContent> s) {
+    return _parse<draw.Comment, Comment>(
+        s.whereType<draw.Comment>(), _parseComment);
   }
 
-  Future<List<Subreddit>> _parseSubredditStream(Stream<draw.Subreddit> s) {
-    return _parseStream<draw.Subreddit, Subreddit>(s, _parseSubreddit);
+  List<Subreddit> _parseSubreddits(Iterable<draw.Subreddit> s) {
+    return _parse<draw.Subreddit, Subreddit>(s, _parseSubreddit);
   }
 
-  Future<List<Message>> _parseMessageStream(Stream<draw.Message> s) {
-    return _parseStream<draw.Message, Message>(s, _parseMessage);
+  List<Message> _parseMessages(Iterable<draw.Message> s) {
+    return _parse<draw.Message, Message>(s, _parseMessage);
+  }
+
+  List<Trophy> _parseTrophies(Iterable<draw.Trophy> s) {
+    return _parse<draw.Trophy, Trophy>(s, _parseTrophy);
   }
 }
