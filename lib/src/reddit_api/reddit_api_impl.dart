@@ -184,8 +184,9 @@ class RedditApiImpl implements RedditApi {
     if (block) {
       final params = {'name': user.name};
       await reddit.post('/api/block_user/', params);
-    } else {}
-    return user.drawRedditor!.unblock();
+    } else {
+      return user.drawRedditor!.unblock();
+    }
   }
 
   // TODO: MAYBE: add type support
