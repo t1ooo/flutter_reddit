@@ -32,8 +32,6 @@ class RedditApiImpl implements RedditApi {
 
   static final _log = getLogger('RedditApiImpl');
 
-  /// Draw object cache. Only use cached values for actions that unnecessarily fetch objects from the server (e.g. commentLike, commentDislike).
-
   draw.Reddit? _reddit;
   draw.Reddit get reddit {
     if (_reddit == null) {
@@ -142,13 +140,6 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    // return (await _subredditSubmissions(subreddit.displayName,
-    //             limit: limit, type: type)
-    //         .toList())
-    //     .whereType<draw.Submission>()
-    //     .map(_parseSubmission)
-    //     .whereType<Submission>()
-    //     .toList();
     return _parseSubmissionStream(await _subredditSubmissions(
         subreddit.displayName,
         limit: limit,
@@ -211,16 +202,11 @@ class RedditApiImpl implements RedditApi {
         .toList();
   }
 
-  // TODO: rename to subredditSubscribe
   Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe) {
     return subscribe
         ? subreddit.drawSubreddit!.subscribe()
         : subreddit.drawSubreddit!.unsubscribe();
   }
-
-  // Future<void> subredditUnsubscribe(Subreddit subreddit) {
-  //   return subreddit.drawSubreddit!.unsubscribe();
-  // }
 
   // TODO: merge with subredditUnfavorite
   Future<void> subredditFavorite(Subreddit subreddit, bool favorite) {
@@ -235,15 +221,12 @@ class RedditApiImpl implements RedditApi {
     );
   }
 
-  // TODO: parse submission
   Future<Submission> submission(String id) async {
     return _parseSubmission(await reddit.submission(id: id).populate());
   }
 
-  // TODO: parse subreddit
   Future<Subreddit> subreddit(String name) async {
     name = removeSubredditPrefix(name);
-
     return _parseSubreddit(await reddit.subreddit(name).populate());
   }
 
@@ -316,7 +299,6 @@ class RedditApiImpl implements RedditApi {
   }) {
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
-
     return _parseSubmissionStream(
         reddit.subreddit(subreddit).search(query, params: params));
   }
@@ -327,21 +309,8 @@ class RedditApiImpl implements RedditApi {
         .map((v) => v as draw.Subreddit));
   }
 
-  // Future<List<Subreddit>> searchSubredditsByName(
-  //   String query,
-  // ) async {
-  //   return (await reddit.subreddits.searchByName(query))
-  //       .map((v) => v as draw.Subreddit)
-  //       .map(_parseSubreddit)
-  //       .whereType<Subreddit>()
-  //       .toList();
-
-  //   // return _parseSubredditStream(Stream.fromIterable(await reddit.subreddits.searchByName(query)));
-  // }
-
   Future<Comment> submissionReply(Submission submission, String body) async {
-    final comment = await submission.drawSubmission!.reply(body);
-    return _parseComment(comment);
+    return _parseComment(await submission.drawSubmission!.reply(body));
   }
 
   Future<void> submissionReport(Submission submission, String reason) async {
@@ -353,8 +322,7 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<Comment> commentReply(Comment comment, String body) async {
-    final commentReply = await comment.drawComment!.reply(body);
-    return _parseComment(commentReply);
+    return _parseComment(await comment.drawComment!.reply(body));
   }
 
   Future<Submission> submit({
@@ -367,16 +335,17 @@ class RedditApiImpl implements RedditApi {
     bool nsfw = false,
     bool spoiler = false,
   }) async {
-    final sub = await reddit.subreddit(subreddit).submit(
-          title,
-          selftext: selftext,
-          url: url,
-          resubmit: resubmit,
-          sendReplies: sendReplies,
-          nsfw: nsfw,
-          spoiler: spoiler,
-        );
-    return _parseSubmission(sub);
+    return _parseSubmission(
+      await reddit.subreddit(subreddit).submit(
+            title,
+            selftext: selftext,
+            url: url,
+            resubmit: resubmit,
+            sendReplies: sendReplies,
+            nsfw: nsfw,
+            spoiler: spoiler,
+          ),
+    );
   }
 
   Future<List<Message>> inboxMessages() async {
