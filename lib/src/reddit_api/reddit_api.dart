@@ -10,8 +10,10 @@ import 'submission_type.dart';
 import 'subreddit.dart';
 import 'like.dart';
 
+// TODO: move to file
 typedef Sort = draw.Sort;
 
+// TODO: move to subreddit
 String removeSubredditPrefix(String name) {
   const prefix = 'r/';
   if (name.startsWith(prefix)) {
