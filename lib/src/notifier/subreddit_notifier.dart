@@ -34,7 +34,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> subscribe() {
     return try_(() async {
       if (_subreddit.userIsSubscriber) return;
-      await _redditApi.subredditSubscribe(name);
+      await _redditApi.subredditSubscribe(_subreddit);
       _subreddit = _subreddit.copyWith(userIsSubscriber: true);
       notifyListeners();
     }, 'fail to subscribe');
@@ -43,7 +43,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> unsubscribe() {
     return try_(() async {
       if (!(_subreddit.userIsSubscriber)) return;
-      await _redditApi.subredditSubscribe(name);
+      await _redditApi.subredditSubscribe(_subreddit);
       _subreddit = _subreddit.copyWith(userIsSubscriber: false);
       notifyListeners();
     }, 'fail to unsubscribe');
@@ -52,7 +52,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> favorite() {
     return try_(() async {
       if (_subreddit.userHasFavorited) return;
-      await _redditApi.subredditFavorite(name);
+      await _redditApi.subredditFavorite(_subreddit);
       _subreddit = _subreddit.copyWith(userHasFavorited: true);
       notifyListeners();
     }, 'fail to favorite');
@@ -61,7 +61,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> unfavorite() {
     return try_(() async {
       if (!(_subreddit.userHasFavorited)) return;
-      await _redditApi.subredditUnfavorite(name);
+      await _redditApi.subredditUnfavorite(_subreddit);
       _subreddit = _subreddit.copyWith(userHasFavorited: false);
       notifyListeners();
     }, 'fail to unfavorite');
@@ -75,7 +75,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
 
   @override
   Future<List<Submission>> loadSubmissions_() {
-    return _redditApi.subredditSubmissions(name, limit: limit, type: subType);
+    return _redditApi.subredditSubmissions(_subreddit, limit: limit, type: subType);
   }
 
   Future<SubmissionNotifier> submit({
@@ -113,7 +113,7 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> loadRules() {
     return try_(() async {
       if (_rules != null) return;
-      _rules = (await _redditApi.subredditRules(name))
+      _rules = (await _redditApi.subredditRules(_subreddit))
           .map((v) => RuleNotifier(v))
           .toList();
       notifyListeners();

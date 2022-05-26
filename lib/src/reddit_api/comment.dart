@@ -1,10 +1,11 @@
+import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
-import 'parse.dart';
+import 'call.dart';
 import 'like.dart';
+import 'parse.dart';
 
-// TODO: add equatable
-class Comment {
+class Comment extends Equatable {
   Comment({
     required this.subredditId,
     required this.authorIsBlocked,
@@ -52,9 +53,11 @@ class Comment {
     required this.linkUrl,
     required this.submissionId,
     required this.awardIcons,
+    this.drawComment,
   });
 
-  factory Comment.fromJson(Map<String, dynamic> m) {
+  factory Comment.fromJson(Map<String, dynamic> m,
+      {draw.Comment? drawComment}) {
     const f = 'comment';
     return Comment(
       subredditId: parseString(m['subreddit_id'], '$f.subreddit_id'),
@@ -107,6 +110,7 @@ class Comment {
       linkUrl: parseUrl(m['link_url'], '$f.link_url'),
       submissionId: parseSubmissionId(m['link_id'], '$f.link_id'),
       awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
+      drawComment: drawComment,
     );
   }
 
@@ -156,6 +160,7 @@ class Comment {
   final String linkUrl;
   final String submissionId;
   final List<String> awardIcons;
+  final draw.Comment? drawComment;
 
   String get shortLink {
     if (submissionId == '' || id == '') {
@@ -165,7 +170,7 @@ class Comment {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       subredditId,
       authorIsBlocked,
@@ -213,6 +218,7 @@ class Comment {
       linkUrl,
       submissionId,
       awardIcons,
+      drawComment,
     ];
   }
 
@@ -263,6 +269,7 @@ class Comment {
     String? linkUrl,
     String? submissionId,
     List<String>? awardIcons,
+    draw.Comment? Function()? drawComment,
   }) {
     return Comment(
       subredditId: subredditId ?? this.subredditId,
@@ -302,8 +309,7 @@ class Comment {
       subredditType: subredditType ?? this.subredditType,
       linkPermalink: linkPermalink ?? this.linkPermalink,
       name: name ?? this.name,
-      subredditNamePrefixed:
-          subredditNamePrefixed ?? this.subredditNamePrefixed,
+      subredditNamePrefixed: subredditNamePrefixed ?? this.subredditNamePrefixed,
       treatmentTags: treatmentTags ?? this.treatmentTags,
       created: created ?? this.created,
       createdUtc: createdUtc ?? this.createdUtc,
@@ -312,6 +318,7 @@ class Comment {
       linkUrl: linkUrl ?? this.linkUrl,
       submissionId: submissionId ?? this.submissionId,
       awardIcons: awardIcons ?? this.awardIcons,
+      drawComment: tryCall(drawComment) ?? this.drawComment,
     );
   }
 }

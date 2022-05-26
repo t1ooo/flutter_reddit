@@ -28,50 +28,50 @@ class UserSaved {
   List<Comment> comments;
 }
 
+// TODO: merge saved|unaved etc to one method
 abstract class RedditApi {
   Future<List<Submission>> front({
     required int limit,
     required FrontSubType type,
   });
   Future<List<Submission>> popular({required int limit, required SubType type});
-
-  
+  Future<List<Submission>> all({required int limit, required SubType type});
 
   Future<User> user(String name);
-  Future<List<Comment>> userComments(String name, {required int limit});
-  Future<List<Submission>> userSubmissions(String name, {required int limit});
-  Future<List<Trophy>> userTrophies(String name);
-  Future<UserSaved> userSaved(String name, {required int limit});
-  Future<void> userBlock(String name);
-  Future<void> userUnblock(String name);
+  Future<List<Comment>> userComments(User user, {required int limit});
+  Future<List<Submission>> userSubmissions(User user, {required int limit});
+  Future<List<Trophy>> userTrophies(User user);
+  Future<UserSaved> userSaved(User user, {required int limit});
+  Future<void> userBlock(User user);
+  Future<void> userUnblock(User user);
 
   Future<Subreddit> subreddit(String name);
-  // Future<String> subredditIcon(String name);
-  Future<void> subredditSubscribe(String name);
-  Future<void> subredditUnsubscribe(String name);
-  Future<void> subredditFavorite(String name);
-  Future<void> subredditUnfavorite(String name);
+  // Future<String> subredditIcon(Subreddit subreddit);
+  Future<void> subredditSubscribe(Subreddit subreddit);
+  Future<void> subredditUnsubscribe(Subreddit subreddit);
+  Future<void> subredditFavorite(Subreddit subreddit);
+  Future<void> subredditUnfavorite(Subreddit subreddit);
   Future<List<Submission>> subredditSubmissions(
-    String name, {
+    Subreddit subreddit, {
     required int limit,
     required SubType type,
   });
-  Future<List<Rule>> subredditRules(String name);
+  Future<List<Rule>> subredditRules(Subreddit subreddit);
 
   Future<Submission> submission(String id);
-  Future<void> submissionLike(String id, Like like);
-  Future<void> submissionSave(String id);
-  Future<void> submissionUnsave(String id);
-  Future<void> submissionHide(String id);
-  Future<void> submissionUnhide(String id);
-  Future<Comment> submissionReply(String id, String body);
-  Future<void> submissionReport(String id, String reason);
+  Future<void> submissionLike(Submission submission, Like like);
+  Future<void> submissionSave(Submission submission);
+  Future<void> submissionUnsave(Submission submission);
+  Future<void> submissionHide(Submission submission);
+  Future<void> submissionUnhide(Submission submission);
+  Future<Comment> submissionReply(Submission submission, String body);
+  Future<void> submissionReport(Submission submission, String reason);
 
-  Future<void> commentLike(String id, Like like);
-  Future<void> commentSave(String id);
-  Future<void> commentUnsave(String id);
-  Future<Comment> commentReply(String id, String body);
-  Future<void> commentReport(String id, String reason);
+  Future<void> commentLike(Comment comment, Like like);
+  Future<void> commentSave(Comment comment);
+  Future<void> commentUnsave(Comment comment);
+  Future<Comment> commentReply(Comment comment, String body);
+  Future<void> commentReport(Comment comment, String reason);
 
   Future<User?> currentUser();
   Future<List<Subreddit>> currentUserSubreddits({required int limit});

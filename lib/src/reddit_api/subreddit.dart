@@ -1,5 +1,7 @@
+import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
+import 'call.dart';
 import 'parse.dart';
 
 class Subreddit extends Equatable {
@@ -27,6 +29,7 @@ class Subreddit extends Equatable {
     required this.bannerBackgroundColor,
     required this.userIsSubscriber,
     required this.userHasFavorited,
+    required this.drawSubreddit,
   });
 
   final String communityIcon;
@@ -52,12 +55,14 @@ class Subreddit extends Equatable {
   final String bannerBackgroundColor;
   final bool userIsSubscriber;
   final bool userHasFavorited;
+  final draw.Subreddit? drawSubreddit;
 
   String get shortLink {
     return 'https://www.reddit.com/$displayNamePrefixed';
   }
 
-  factory Subreddit.fromJson(Map<String, dynamic> m) {
+  factory Subreddit.fromJson(Map<String, dynamic> m,
+      {draw.Subreddit? drawSubreddit}) {
     const f = 'Subreddit';
     return Subreddit(
       communityIcon: parseUrl(m['community_icon'], '$f.community_icon'),
@@ -91,6 +96,7 @@ class Subreddit extends Equatable {
           parseBool(m['user_is_subscriber'], '$f.user_is_subscriber'),
       userHasFavorited:
           parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
+      drawSubreddit: drawSubreddit,
     );
   }
 
@@ -118,6 +124,7 @@ class Subreddit extends Equatable {
     String? bannerBackgroundColor,
     bool? userIsSubscriber,
     bool? userHasFavorited,
+    draw.Subreddit? Function()? drawSubreddit,
   }) {
     return Subreddit(
       communityIcon: communityIcon ?? this.communityIcon,
@@ -146,11 +153,12 @@ class Subreddit extends Equatable {
           bannerBackgroundColor ?? this.bannerBackgroundColor,
       userIsSubscriber: userIsSubscriber ?? this.userIsSubscriber,
       userHasFavorited: userHasFavorited ?? this.userHasFavorited,
+      drawSubreddit: tryCall(drawSubreddit) ?? this.drawSubreddit,
     );
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       communityIcon,
       created,
@@ -175,6 +183,7 @@ class Subreddit extends Equatable {
       bannerBackgroundColor,
       userIsSubscriber,
       userHasFavorited,
+      drawSubreddit,
     ];
   }
 }

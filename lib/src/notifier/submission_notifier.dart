@@ -77,7 +77,7 @@ class SubmissionNotifier
 
   Future<void> reply(String body) {
     return try_(() async {
-      final commentReply = await _redditApi.submissionReply(id, body);
+      final commentReply = await _redditApi.submissionReply(_submission, body);
 
       _comments ??= [];
       _comments!
@@ -101,7 +101,7 @@ class SubmissionNotifier
     return try_(() async {
       await (save
           ? _redditApi.submissionSave
-          : _redditApi.submissionUnsave)(id);
+          : _redditApi.submissionUnsave)(_submission);
       _submission = _submission.copyWith(saved: save);
       notifyListeners();
     }, 'fail to' + (save ? 'save' : 'unsave'));
@@ -120,7 +120,7 @@ class SubmissionNotifier
       if (_submission.hidden == hide) return;
       await (hide
           ? _redditApi.submissionHide
-          : _redditApi.submissionUnhide)(id);
+          : _redditApi.submissionUnhide)(_submission);
       _submission = _submission.copyWith(hidden: hide);
       notifyListeners();
     }, 'fail to' + (hide ? 'hide' : 'unhide'));
@@ -134,7 +134,7 @@ class SubmissionNotifier
 
   Future<void> updateLike_(Like like) {
     return try_(() async {
-      await _redditApi.submissionLike(id, like);
+      await _redditApi.submissionLike(_submission, like);
       _submission = _submission.copyWith(
         likes: like,
         score: calcScore(_submission.score, _submission.likes, like),
@@ -182,7 +182,7 @@ class SubmissionNotifier
   @override
   Future<void> report(String reason) {
     return try_(() async {
-      await _redditApi.submissionReport(id, reason);
+      await _redditApi.submissionReport(_submission, reason);
       notifyListeners();
     }, 'fail to report');
   }

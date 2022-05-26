@@ -1,12 +1,15 @@
+import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
 import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
 
-import 'parse.dart';
+import 'call.dart';
 import 'comment.dart';
-import 'video.dart';
 import 'like.dart';
+import 'parse.dart';
 import 'submission_type.dart';
+import 'video.dart';
 
 class Submission extends Equatable {
   const Submission({
@@ -34,12 +37,13 @@ class Submission extends Equatable {
     required this.awardIcons,
     required this.totalAwardsReceived,
     required this.likes,
-    required this.comments,
     required this.saved,
+    required this.comments,
     required this.preview,
     required this.video,
     required this.postHint,
     required this.authorIsBlocked,
+    required this.drawSubmission,
   });
 
   final String author;
@@ -72,6 +76,7 @@ class Submission extends Equatable {
   final Video? video;
   final PostHint postHint;
   final bool authorIsBlocked;
+  final draw.Submission? drawSubmission;
 
   String get shortLink {
     if (id == '') {
@@ -83,6 +88,7 @@ class Submission extends Equatable {
   factory Submission.fromJson(
     Map m, {
     List<Comment>? comments,
+    draw.Submission? drawSubmission,
   }) {
     const f = 'Submission';
     return Submission(
@@ -120,6 +126,7 @@ class Submission extends Equatable {
       authorIsBlocked:
           parseBool(m['author_is_blocked'], '$f.author_is_blocked'),
       comments: comments,
+      drawSubmission: drawSubmission,
     );
   }
 
@@ -150,13 +157,13 @@ class Submission extends Equatable {
       awardIcons,
       totalAwardsReceived,
       likes,
-      comments,
       saved,
-      shortLink,
+      comments,
       preview,
       video,
       postHint,
       authorIsBlocked,
+      drawSubmission,
     ];
   }
 
@@ -186,12 +193,12 @@ class Submission extends Equatable {
     int? totalAwardsReceived,
     Like? likes,
     bool? saved,
-    SubType? type,
-    List<Comment>? comments,
+    List<Comment>? Function()? comments,
     List<Preview>? preview,
     Video? Function()? video,
     PostHint? postHint,
     bool? authorIsBlocked,
+    draw.Submission? Function()? drawSubmission,
   }) {
     return Submission(
       author: author ?? this.author,
@@ -220,11 +227,12 @@ class Submission extends Equatable {
       totalAwardsReceived: totalAwardsReceived ?? this.totalAwardsReceived,
       likes: likes ?? this.likes,
       saved: saved ?? this.saved,
-      comments: comments ?? this.comments,
+      comments: tryCall(comments) ?? this.comments,
       preview: preview ?? this.preview,
-      video: video != null ? video() : this.video,
+      video: tryCall(video) ?? this.video,
       postHint: postHint ?? this.postHint,
       authorIsBlocked: authorIsBlocked ?? this.authorIsBlocked,
+      drawSubmission: tryCall(drawSubmission) ?? this.drawSubmission,
     );
   }
 }

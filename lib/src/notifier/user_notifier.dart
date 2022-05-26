@@ -38,7 +38,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadSubmissions() {
     return try_(() async {
       if (_submissions != null) return;
-      _submissions = (await _redditApi.userSubmissions(name, limit: limit))
+      _submissions = (await _redditApi.userSubmissions(_user, limit: limit))
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -56,7 +56,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadComments() {
     return try_(() async {
       if (_comments != null) return;
-      _comments = (await _redditApi.userComments(name, limit: limit))
+      _comments = (await _redditApi.userComments(_user, limit: limit))
           .map((v) => CommentNotifier(_redditApi, v))
           .toList();
       notifyListeners();
@@ -68,7 +68,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadTrophies() {
     return try_(() async {
       if (_trophies != null) return;
-      _trophies = await _redditApi.userTrophies(name);
+      _trophies = await _redditApi.userTrophies(_user);
       notifyListeners();
     }, 'fail to load user comments');
   }
@@ -88,7 +88,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> loadSaved() {
     return try_(() async {
       if (_savedComments != null && _savedSubmissions != null) return;
-      final saved = await _redditApi.userSaved(name, limit: limit);
+      final saved = await _redditApi.userSaved(_user, limit: limit);
       _savedSubmissions = saved.submissions
           .map((v) => SubmissionNotifier(_redditApi, v))
           .toList();
@@ -109,7 +109,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> _updateBlock(bool block) {
     return try_(() async {
       if (_user.isBlocked == block) return;
-      await (block ? _redditApi.userBlock : _redditApi.userUnblock)(name);
+      await (block ? _redditApi.userBlock : _redditApi.userUnblock)(_user);
       _user = _user.copyWith(isBlocked: block);
       notifyListeners();
     }, 'fail to' + (block ? 'block' : 'unblock'));

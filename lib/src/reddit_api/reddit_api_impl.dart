@@ -17,56 +17,56 @@ import 'subreddit.dart';
 import 'like.dart';
 import 'reddit_api.dart';
 
-class DrawCache {
-  DrawCache([int size = 1000]) {
-    _cache = LruMap(maximumSize: size);
-  }
+// class DrawCache {
+//   DrawCache([int size = 1000]) {
+//     _cache = LruMap(maximumSize: size);
+//   }
 
-  static final _log = getLogger('DrawCache');
-  late final LruMap<String, Object> _cache;
+//   static final _log = getLogger('DrawCache');
+//   late final LruMap<String, Object> _cache;
 
-  T set<T extends draw.RedditBase>(String key, T value) {
-    _cache[key] = value;
-    return value;
-  }
+//   T set<T extends draw.RedditBase>(String key, T value) {
+//     _cache[key] = value;
+//     return value;
+//   }
 
-  T? get<T extends draw.RedditBase>(String key) {
-    // _log.info(_cache.containsKey(key) ?  'hit' : 'miss');
-    // return _cache[key] as T?;
+//   T? get<T extends draw.RedditBase>(String key) {
+//     // _log.info(_cache.containsKey(key) ?  'hit' : 'miss');
+//     // return _cache[key] as T?;
 
-    // final value = _cache[key];
-    // if (value == null) {
-    //   _log.info('miss');
-    //   return null;
-    // }
+//     // final value = _cache[key];
+//     // if (value == null) {
+//     //   _log.info('miss');
+//     //   return null;
+//     // }
 
-    // if (!(value is T)) {
-    //   _log.error('type ${value.runtimeType} is not a subtype of type $T?');
-    //   return null;
-    // }
+//     // if (!(value is T)) {
+//     //   _log.error('type ${value.runtimeType} is not a subtype of type $T?');
+//     //   return null;
+//     // }
 
-    // _log.info('hit');
-    // return value;
-    final value = cast<T?>(_cache[key], null);
-    _log.info(value != null ? 'hit' : 'miss');
-    return value;
-  }
+//     // _log.info('hit');
+//     // return value;
+//     final value = cast<T?>(_cache[key], null);
+//     _log.info(value != null ? 'hit' : 'miss');
+//     return value;
+//   }
 
-  // Future<T> getOrAsync<T extends draw.RedditBase>(
-  //   String key,
-  //   Future<T> Function() defaultFn,
-  // ) async {
-  //   final value = get<T>(key);
-  //   if (value != null) {
-  //     return value;
-  //   }
-  //   {
-  //     final value = await defaultFn();
-  //     return set(key, value);
-  //     // return value;
-  //   }
-  // }
-}
+//   // Future<T> getOrAsync<T extends draw.RedditBase>(
+//   //   String key,
+//   //   Future<T> Function() defaultFn,
+//   // ) async {
+//   //   final value = get<T>(key);
+//   //   if (value != null) {
+//   //     return value;
+//   //   }
+//   //   {
+//   //     final value = await defaultFn();
+//   //     return set(key, value);
+//   //     // return value;
+//   //   }
+//   // }
+// }
 
 // class _DrawCache<T extends draw.RedditBase> {
 //   _DrawCache([int size = 1000]) {
@@ -118,36 +118,36 @@ class RedditApiImpl implements RedditApi {
 
   /// Draw object cache. Only use cached values for actions that unnecessarily fetch objects from the server (e.g. commentLike, commentDislike).
   // final _drawCache = LruMap<String, Object>(maximumSize: 1000);
-  final _drawCache = DrawCache();
+  // final _drawCache = DrawCache();
 
-  Future<draw.Submission> _cachedSubmission(String id) async =>
-      // _drawCache.getOrAsync(id, reddit.submission(id: id).populate);
-      _drawCache.get(id) ?? await _loadSubmission(id);
+  // Future<draw.Submission> _cachedSubmission(String id) async =>
+  //     // _drawCache.getOrAsync(id, reddit.submission(id: id).populate);
+  //     _drawCache.get(id) ?? await _loadSubmission(id);
 
-  Future<draw.Comment> _cachedComment(String id) async =>
-      // _drawCache.getOrAsync(id, reddit.comment(id: id).populate);
-      _drawCache.get(id) ?? await _loadComment(id);
+  // Future<draw.Comment> _cachedComment(String id) async =>
+  //     // _drawCache.getOrAsync(id, reddit.comment(id: id).populate);
+  //     _drawCache.get(id) ?? await _loadComment(id);
 
-  Future<draw.Redditor> _cachedRedditor(String name) async =>
-      // _drawCache.getOrAsync(name, reddit.redditor(name).populate);
-      _drawCache.get(name) ?? await _loadRedditor(name);
+  // Future<draw.Redditor> _cachedRedditor(String name) async =>
+  //     // _drawCache.getOrAsync(name, reddit.redditor(name).populate);
+  //     _drawCache.get(name) ?? await _loadRedditor(name);
 
-  Future<draw.Subreddit> _cachedSubreddit(String name) async =>
-      // _drawCache.getOrAsync(name, reddit.subreddit(name).populate);
-      _drawCache.get(name) ?? await _loadSubreddit(name);
+  // Future<draw.Subreddit> _cachedSubreddit(String name) async =>
+  //     // _drawCache.getOrAsync(name, reddit.subreddit(name).populate);
+  //     _drawCache.get(name) ?? await _loadSubreddit(name);
 
-  Future<draw.Submission> _loadSubmission(String id) async =>
-      // _drawCache.set(id, await reddit.submission(id: id).populate());
-      _cacheSubmission(await reddit.submission(id: id).populate());
+  // Future<draw.Submission> _loadSubmission(String id) async =>
+  //     // _drawCache.set(id, await reddit.submission(id: id).populate());
+  //     _cacheSubmission(await reddit.submission(id: id).populate());
 
-  Future<draw.Comment> _loadComment(String id) async =>
-      _drawCache.set(id, await reddit.comment(id: id).populate());
+  // Future<draw.Comment> _loadComment(String id) async =>
+  //     _drawCache.set(id, await reddit.comment(id: id).populate());
 
-  Future<draw.Redditor> _loadRedditor(String name) async =>
-      _drawCache.set(name, await reddit.redditor(name).populate());
+  // Future<draw.Redditor> _loadRedditor(String name) async =>
+  //     _drawCache.set(name, await reddit.redditor(name).populate());
 
-  Future<draw.Subreddit> _loadSubreddit(String name) async =>
-      _drawCache.set(name, await reddit.subreddit(name).populate());
+  // Future<draw.Subreddit> _loadSubreddit(String name) async =>
+  //     _drawCache.set(name, await reddit.subreddit(name).populate());
 
   // Stream<draw.UserContent> _cacheSubmissionStream(
   //   Stream<draw.UserContent> s
@@ -163,10 +163,10 @@ class RedditApiImpl implements RedditApi {
   //   });
   // }
 
-  draw.Submission _cacheSubmission(draw.Submission v) {
-    if (v.id != null) _drawCache.set(v.id!, v);
-    return v;
-  }
+  // draw.Submission _cacheSubmission(draw.Submission v) {
+  //   if (v.id != null) _drawCache.set(v.id!, v);
+  //   return v;
+  // }
 
   draw.Reddit? _reddit;
   draw.Reddit get reddit {
@@ -248,9 +248,13 @@ class RedditApiImpl implements RedditApi {
   // TODO: move outside class
   Submission? _parseSubmission(draw.UserContent v) {
     try {
-      return Submission.fromJson(
-        (v as draw.Submission).data as Map<String, dynamic>,
-      );
+      v = v as draw.Submission;
+      // return Submission.fromJson(v.data as Map<String, dynamic>,
+      //     drawSubmission: v);
+      final comments = v.comments?.comments
+          .map((v) => Comment.fromJson(v as Map<String, dynamic>))
+          .toList();
+      return Submission.fromJson(v.data!, comments: comments);
     } on TypeError catch (_) {
       _log.warning('fail to parse Submission: $v');
     } on Exception catch (_) {
@@ -261,7 +265,8 @@ class RedditApiImpl implements RedditApi {
 
   Subreddit? _parseSubreddit(draw.Subreddit v) {
     try {
-      return Subreddit.fromJson(v.data! as Map<String, dynamic>);
+      return Subreddit.fromJson(v.data! as Map<String, dynamic>,
+          drawSubreddit: v);
     } on TypeError catch (_) {
       _log.warning('fail to parse Subreddit: $v');
     } on Exception catch (_) {
@@ -283,9 +288,8 @@ class RedditApiImpl implements RedditApi {
 
   Comment? _parseComment(draw.UserContent v) {
     try {
-      return Comment.fromJson(
-        (v as draw.Comment).data! as Map<String, dynamic>,
-      );
+      v = v as draw.Comment;
+      return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
     } on TypeError catch (_) {
       _log.warning('fail to parse Comment: $v');
     } on Exception catch (_) {
@@ -296,7 +300,7 @@ class RedditApiImpl implements RedditApi {
 
   User? _parseUser(draw.Redditor v) {
     try {
-      return User.fromJson(v.data! as Map<String, dynamic>);
+      return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
     } on TypeError catch (_) {
       _log.warning('fail to parse Comment: $v');
     } on Exception catch (_) {
@@ -322,20 +326,19 @@ class RedditApiImpl implements RedditApi {
 
   Future<List<Submission>> _parseSubmissionStream(
     Stream<draw.UserContent> s,
-  ) async {
+  ) {
     return _parseStream<draw.UserContent, Submission>(s, _parseSubmission);
   }
 
-  Future<List<Comment>> _parseCommentStream(Stream<draw.UserContent> s) async {
+  Future<List<Comment>> _parseCommentStream(Stream<draw.UserContent> s) {
     return _parseStream<draw.UserContent, Comment>(s, _parseComment);
   }
 
-  Future<List<Subreddit>> _parseSubredditStream(
-      Stream<draw.Subreddit> s) async {
+  Future<List<Subreddit>> _parseSubredditStream(Stream<draw.Subreddit> s) {
     return _parseStream<draw.Subreddit, Subreddit>(s, _parseSubreddit);
   }
 
-  Future<List<Message>> _parseMessageStream(Stream<draw.Message> s) async {
+  Future<List<Message>> _parseMessageStream(Stream<draw.Message> s) {
     return _parseStream<draw.Message, Message>(s, _parseMessage);
   }
 
@@ -369,12 +372,14 @@ class RedditApiImpl implements RedditApi {
     //   }),
     // );
 
-    return (await _front(limit: limit, type: type).toList())
-        .whereType<draw.Submission>()
-        .map(_cacheSubmission)
-        .map(_parseSubmission)
-        .whereType<Submission>()
-        .toList();
+    // return (await _front(limit: limit, type: type).toList())
+    //     .whereType<draw.Submission>()
+    //     // .map(_cacheSubmission)
+    //     .map(_parseSubmission)
+    //     .whereType<Submission>()
+    //     .toList();
+
+    return _parseSubmissionStream(_front(limit: limit, type: type));
   }
 
   Stream<draw.UserContent> _front({
@@ -398,9 +403,37 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Future<List<Submission>> popular(
-      {required int limit, required SubType type}) {
-    return subredditSubmissions('popular', limit: limit, type: type);
+  Future<List<Submission>> popular({
+    required int limit,
+    required SubType type,
+  }) async {
+    // // return subredditSubmissions('popular', limit: limit, type: type);
+    // return (await _subredditSubmissions('popular', limit: limit, type: type)
+    //         .toList())
+    //     .whereType<draw.Submission>()
+    //     // .map(_cacheSubmission)
+    //     .map(_parseSubmission)
+    //     .whereType<Submission>()
+    //     .toList();
+    return _parseSubmissionStream(
+        _subredditSubmissions('popular', limit: limit, type: type));
+  }
+
+  Future<List<Submission>> all({
+    required int limit,
+    required SubType type,
+  }) async {
+    // // return subredditSubmissions('popular', limit: limit, type: type);
+    // return (await _subredditSubmissions('all', limit: limit, type: type)
+    //         .toList())
+    //     .whereType<draw.Submission>()
+    //     // .map(_cacheSubmission)
+    //     .map(_parseSubmission)
+    //     .whereType<Submission>()
+    //     .toList();
+
+    return _parseSubmissionStream(
+        _subredditSubmissions('all', limit: limit, type: type));
   }
 
   Future<List<Subreddit>> currentUserSubreddits({required int limit}) {
@@ -429,14 +462,16 @@ class RedditApiImpl implements RedditApi {
   // }
 
   Future<List<Submission>> subredditSubmissions(
-    String name, {
+    Subreddit subreddit, {
     required int limit,
     required SubType type,
   }) async {
-    name = removeSubredditPrefix(name);
-    return (await _subredditSubmissions(name, limit: limit, type: type).toList())
+    // name = removeSubredditPrefix(name);
+    return (await _subredditSubmissions(subreddit.displayName,
+                limit: limit, type: type)
+            .toList())
         .whereType<draw.Submission>()
-        .map(_cacheSubmission)
+        // .map(_cacheSubmission)
         .map(_parseSubmission)
         .whereType<Submission>()
         .toList();
@@ -463,22 +498,20 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  
-
   Future<User> user(String name) async {
     // final redditorRef = await reddit.redditor(name);
     // final redditor = await reddit.redditor(name).populate();
     // _drawCache.set(name, redditor);
     // return User.fromJson(redditor.data! as Map<String, dynamic>);
-    return _parseUser(await _loadRedditor(name))!;
+    return _parseUser(await reddit.redditor(name).populate())!;
   }
 
-  Future<void> userBlock(String name) async {
-    final params = {'name': name};
+  Future<void> userBlock(User user) async {
+    final params = {'name': user.name};
     await reddit.post('/api/block_user/', params);
   }
 
-  Future<void> userUnblock(String name) async {
+  Future<void> userUnblock(User user) async {
     // final redditorRef = await reddit.redditor(name);
     // // final redditor = await redditorRef.populate();
     // // return User.fromJson(redditor.data! as Map<String, dynamic>);
@@ -491,12 +524,13 @@ class RedditApiImpl implements RedditApi {
     //   name,
     //   reddit.redditor(name).populate,
     // );
-    return (await _cachedRedditor(name)).unblock();
+    // return (await _cachedRedditor(name)).unblock();
+    return user.drawRedditor!.unblock();
   }
 
   // TODO: MAYBE: add type support
   Future<List<Comment>> userComments(
-    String name, {
+    User user, {
     required int limit,
   }) {
     // await for (final v in reddit.redditor(name).comments.newest(limit: limit)) {
@@ -525,12 +559,13 @@ class RedditApiImpl implements RedditApi {
     //   }
     // }
     // return _commentsStream(reddit.redditor(name).comments.newest(limit: limit));
+    // return _parseCommentStream(reddit.redditor(name).comments.newest(limit: limit));
     return _parseCommentStream(
-        reddit.redditor(name).comments.newest(limit: limit));
+        user.drawRedditor!.comments.newest(limit: limit));
   }
 
 // TODO: MAYBE: add type support
-  Future<List<Submission>> userSubmissions(String name, {required int limit}) {
+  Future<List<Submission>> userSubmissions(User user, {required int limit}) {
     // await for (final v
     // in reddit.redditor(name).submissions.newest(limit: limit)) {
     // final dsub = cast<draw.Comment?>(v, null);
@@ -545,13 +580,15 @@ class RedditApiImpl implements RedditApi {
     // final sub = Submission.fromJson(dsub.data! as Map<String, dynamic>);
     // yield sub;
     // }
+    // return _parseSubmissionStream(
+    //     reddit.redditor(name).submissions.newest(limit: limit));
     return _parseSubmissionStream(
-        reddit.redditor(name).submissions.newest(limit: limit));
+        user.drawRedditor!.submissions.newest(limit: limit));
   }
 
-  Future<List<Trophy>> userTrophies(String name) async {
+  Future<List<Trophy>> userTrophies(User user) async {
     // final drawTrophies = await reddit.redditor('foo').trophies();
-    return (await reddit.redditor(name).trophies())
+    return (await user.drawRedditor!.trophies())
         .map(_parseTrophy)
         .whereType<Trophy>()
         .toList();
@@ -576,36 +613,37 @@ class RedditApiImpl implements RedditApi {
   }
 
   // TODO: rename to subredditSubscribe
-  Future<void> subredditSubscribe(String name) {
-    name = removeSubredditPrefix(name);
-    return reddit.subreddit(name).subscribe();
+  Future<void> subredditSubscribe(Subreddit subreddit) {
+    // name = removeSubredditPrefix(name);
+    return subreddit.drawSubreddit!.subscribe();
   }
 
-  Future<void> subredditUnsubscribe(String name) {
-    name = removeSubredditPrefix(name);
-    return reddit.subreddit(name).unsubscribe();
+  Future<void> subredditUnsubscribe(Subreddit subreddit) {
+    // name = removeSubredditPrefix(name);
+    return subreddit.drawSubreddit!.unsubscribe();
   }
 
-  Future<void> subredditFavorite(String name) {
-    name = removeSubredditPrefix(name);
+  // TODO: merge with subredditUnfavorite
+  Future<void> subredditFavorite(Subreddit subreddit) {
+    // name = removeSubredditPrefix(name);
     return reddit.post(
       '/api/favorite/',
       {
         'make_favorite': 'true',
-        'sr_name': name,
+        'sr_name': subreddit.displayName,
         'api_type': 'json',
       },
       objectify: false,
     );
   }
 
-  Future<void> subredditUnfavorite(String name) {
-    name = removeSubredditPrefix(name);
+  Future<void> subredditUnfavorite(Subreddit subreddit) {
+    // name = removeSubredditPrefix(name);
     return reddit.post(
       '/api/favorite/',
       {
         'make_favorite': 'false',
-        'sr_name': name,
+        'sr_name': subreddit.displayName,
         'api_type': 'json',
       },
       objectify: false,
@@ -615,13 +653,14 @@ class RedditApiImpl implements RedditApi {
   // TODO: parse submission
   Future<Submission> submission(String id) async {
     // final subRef = reddit.submission(id: id);
-    final submission = await _loadSubmission(id);
     // final submission = await reddit.submission(id: id).populate();
-    // _drawCache.set(id, submission);
-    final comments = (submission.comments!.comments)
-        .map((v) => Comment.fromJson(v as Map<String, dynamic>))
-        .toList();
-    return Submission.fromJson(submission.data!, comments: comments);
+    // // final submission = await reddit.submission(id: id).populate();
+    // // _drawCache.set(id, submission);
+    // final comments = submission.comments?.comments
+    //     .map((v) => Comment.fromJson(v as Map<String, dynamic>))
+    //     .toList();
+    // return Submission.fromJson(submission.data!, comments: comments);
+    return _parseSubmission(await reddit.submission(id: id).populate())!;
   }
 
   // TODO: parse subreddit
@@ -630,31 +669,32 @@ class RedditApiImpl implements RedditApi {
     // final subRef = reddit.subreddit(name);
     // final subreddit = await reddit.subreddit(name).populate();
     // _drawCache.set(name, subreddit);
-    return Subreddit.fromJson(
-        (await _loadSubreddit(name)).data! as Map<String, dynamic>);
+    // return Subreddit.fromJson(
+    // (await _loadSubreddit(name)).data! as Map<String, dynamic>);
+    return _parseSubreddit(await reddit.subreddit(name).populate())!;
   }
 
-  // Future<String> subredditIcon(String name) async {
+  // Future<String> subredditIcon(Subreddit subreddit) async {
   //   name = removeSubredditPrefix(name);
   //   final subRef = reddit.subreddit(name);
   //   final sub = await subRef.populate();
   //   return Subreddit.fromJson(sub.data! as Map<String, dynamic>).communityIcon;
   // }
 
-  Future<void> submissionLike(String id, Like like) async {
+  Future<void> submissionLike(Submission submission, Like like) async {
     // final s = await reddit.submission(id: id).populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    return _like(await _cachedSubmission(id), like);
+    return _like(submission.drawSubmission!, like);
   }
 
-  Future<void> commentLike(String id, Like like) async {
+  Future<void> commentLike(Comment comment, Like like) async {
     // final s = await reddit.comment(id: id).populate();
     // final comment = await _drawCache.getOrAsync<draw.Comment>(
     // id, reddit.comment(id: id).populate);
-    return _like(await _cachedComment(id), like);
+    return _like(comment.drawComment!, like);
   }
 
   Future<void> _like(draw.VoteableMixin s, Like like) async {
@@ -668,58 +708,58 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Future<void> submissionSave(String id) async {
+  Future<void> submissionSave(Submission submission) async {
     // final s = await reddit.submission(id: id).populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    return (await _cachedSubmission(id)).save();
+    return submission.drawSubmission!.save();
   }
 
-  Future<void> submissionUnsave(String id) async {
+  Future<void> submissionUnsave(Submission submission) async {
     // final s = await reddit.submission(id: id).populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    return (await _cachedSubmission(id)).unsave();
+    return submission.drawSubmission!.unsave();
   }
 
-  Future<void> submissionHide(String id) async {
+  Future<void> submissionHide(Submission submission) async {
     // final s = await reddit.submission(id: id).populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    return (await _cachedSubmission(id)).hide();
+    return submission.drawSubmission!.hide();
   }
 
-  Future<void> submissionUnhide(String id) async {
+  Future<void> submissionUnhide(Submission submission) async {
     // final s = await reddit.submission(id: id).populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    return (await _cachedSubmission(id)).unhide();
+    return submission.drawSubmission!.unhide();
   }
 
-  Future<void> commentSave(String id) async {
+  Future<void> commentSave(Comment comment) async {
     // final s = await reddit.comment(id: id).populate();
     // final comment = await _drawCache.getOrAsync<draw.Comment>(
     //   id,
     //   reddit.comment(id: id).populate,
     // );
-    return (await _cachedComment(id)).save();
+    return comment.drawComment!.save();
   }
 
-  Future<void> commentUnsave(String id) async {
+  Future<void> commentUnsave(Comment comment) async {
     // final s = await reddit.comment(id: id).populate();
     // final comment = await _drawCache.getOrAsync<draw.Comment>(
     //   id,
     //   reddit.comment(id: id).populate,
     // );
-    return (await _cachedComment(id)).unsave();
+    return comment.drawComment!.unsave();
   }
 
   Future<User?> currentUser() async {
@@ -727,31 +767,29 @@ class RedditApiImpl implements RedditApi {
     if (redditor == null) {
       return null;
     }
-    _drawCache.set(redditor.displayName, redditor);
-    return User.fromJson(redditor.data! as Map<String, dynamic>);
+    // _drawCache.set(redditor.displayName, redditor);
+    // return User.fromJson(redditor.data! as Map<String, dynamic>);
+    return _parseUser(redditor);
   }
 
-  Future<UserSaved> userSaved(String name, {required int limit}) async {
-    final redditorRef = reddit.redditor(name);
+  Future<UserSaved> userSaved(User user, {required int limit}) async {
+    // final redditorRef = reddit.redditor(name);
 
-    final submissions = <Submission>[];
-    final comments = <Comment>[];
-    await for (final v in redditorRef.saved(limit: limit)) {
-      try {
-        if (v is draw.Submission)
-          submissions.add(_parseSubmission(v)!);
-        else if (v is draw.Comment)
-          comments.add(_parseComment(v)!);
-        else
-          _log.warning('undefined type');
-      } on TypeError catch (e, st) {
-        _log.error('', e, st);
-      } on Exception catch (e, st) {
-        _log.error('', e, st);
-      }
+    final submissions = <Submission?>[];
+    final comments = <Comment?>[];
+    await for (final v in user.drawRedditor!.saved(limit: limit)) {
+      if (v is draw.Submission)
+        submissions.add(_parseSubmission(v));
+      else if (v is draw.Comment)
+        comments.add(_parseComment(v));
+      else
+        _log.warning('undefined type');
     }
 
-    return UserSaved(submissions, comments);
+    return UserSaved(
+      submissions.whereType<Submission>().toList(),
+      comments.whereType<Comment>().toList(),
+    );
   }
 
   Future<List<Submission>> search(
@@ -819,47 +857,47 @@ class RedditApiImpl implements RedditApi {
     // }
   }
 
-  Future<Comment> submissionReply(String id, String body) async {
+  Future<Comment> submissionReply(Submission submission, String body) async {
     // final subRef = reddit.submission(id: id);
     // final sub = await subRef.populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    final comment = await (await _cachedSubmission(id)).reply(body);
+    final comment = await submission.drawSubmission!.reply(body);
     return _parseComment(comment)!;
   }
 
-  Future<void> submissionReport(String id, String reason) async {
+  Future<void> submissionReport(Submission submission, String reason) async {
     // final subRef = reddit.submission(id: id);
     // final sub = await subRef.populate();
     // final submission = await _drawCache.getOrAsync<draw.Submission>(
     //   id,
     //   reddit.submission(id: id).populate,
     // );
-    return (await _cachedSubmission(id)).report(reason);
+    return submission.drawSubmission!.report(reason);
     // final comment = await sub.reply(body);
     // return _parseComment(comment)!;
   }
 
-  Future<void> commentReport(String id, String reason) async {
+  Future<void> commentReport(Comment comment, String reason) async {
     // final commentRef = reddit.comment(id: id);
     // final comment = await commentRef.populate();
     // final comment = await _drawCache.getOrAsync<draw.Comment>(
     //   id,
     //   reddit.comment(id: id).populate,
     // );
-    return (await _cachedComment(id)).report(reason);
+    return comment.drawComment!.report(reason);
   }
 
-  Future<Comment> commentReply(String id, String body) async {
+  Future<Comment> commentReply(Comment comment, String body) async {
     // final commentRef = reddit.comment(id: id);
     // final comment = await commentRef.populate();
     // final comment = await _drawCache.getOrAsync<draw.Comment>(
     //   id,
     //   reddit.comment(id: id).populate,
     // );
-    final commentReply = await (await _cachedComment(id)).reply(body);
+    final commentReply = await comment.drawComment!.reply(body);
     return _parseComment(commentReply)!;
   }
 
@@ -901,9 +939,10 @@ class RedditApiImpl implements RedditApi {
     return _parseMessageStream(reddit.inbox.messages());
   }
 
-  Future<List<Rule>> subredditRules(String name) async {
-    name = removeSubredditPrefix(name);
-    final resp = await reddit.get('/r/$name/about/rules', objectify: false);
+  Future<List<Rule>> subredditRules(Subreddit subreddit) async {
+    // name = removeSubredditPrefix(name);
+    final resp = await reddit.get('/r/${subreddit.displayName}/about/rules',
+        objectify: false);
     return parseRules(resp)!;
   }
 }

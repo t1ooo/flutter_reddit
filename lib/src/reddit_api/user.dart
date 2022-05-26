@@ -1,3 +1,4 @@
+import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
 import 'parse.dart';
@@ -27,6 +28,7 @@ class User extends Equatable {
     required this.acceptFollowers,
     required this.hasSubscribed,
     required this.subreddit,
+    required this.drawRedditor,
   });
 
   final bool isEmployee;
@@ -44,7 +46,6 @@ class User extends Equatable {
   final int totalKarma;
   final bool acceptChats;
   final String name;
-
   final DateTime created;
   final DateTime createdUtc;
   final String snoovatarImg;
@@ -52,8 +53,9 @@ class User extends Equatable {
   final bool acceptFollowers;
   final bool hasSubscribed;
   final Subreddit subreddit;
+  final draw.Redditor? drawRedditor;
 
-  factory User.fromJson(Map<String, dynamic> m) {
+  factory User.fromJson(Map<String, dynamic> m, {draw.Redditor? drawRedditor}) {
     const f = 'User';
     return User(
       isEmployee: parseBool(m['is_employee'], '$f.is_employee'),
@@ -79,11 +81,12 @@ class User extends Equatable {
       acceptFollowers: parseBool(m['accept_followers'], '$f.accept_followers'),
       hasSubscribed: parseBool(m['has_subscribed'], '$f.has_subscribed'),
       subreddit: Subreddit.fromJson(cast(m['subreddit'], {}, '$f.subreddit')),
+      drawRedditor: drawRedditor,
     );
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       isEmployee,
       isFriend,
@@ -107,6 +110,7 @@ class User extends Equatable {
       acceptFollowers,
       hasSubscribed,
       subreddit,
+      drawRedditor,
     ];
   }
 
@@ -133,6 +137,7 @@ class User extends Equatable {
     bool? acceptFollowers,
     bool? hasSubscribed,
     Subreddit? subreddit,
+    draw.Redditor? Function()? drawRedditor,
   }) {
     return User(
       isEmployee: isEmployee ?? this.isEmployee,
@@ -157,6 +162,7 @@ class User extends Equatable {
       acceptFollowers: acceptFollowers ?? this.acceptFollowers,
       hasSubscribed: hasSubscribed ?? this.hasSubscribed,
       subreddit: subreddit ?? this.subreddit,
+      drawRedditor: drawRedditor != null ? drawRedditor() : this.drawRedditor,
     );
   }
 }

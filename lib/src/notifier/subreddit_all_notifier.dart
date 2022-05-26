@@ -19,7 +19,7 @@ class SubredditAllNotifier extends SubmissionsNotifier<SubType> {
 
   @override
   Future<List<Submission>> loadSubmissions_() {
-    return _redditApi.subredditSubmissions(name, limit: limit, type: subType);
+    return _redditApi.all(limit: limit, type: subType);
   }
 
   @override
