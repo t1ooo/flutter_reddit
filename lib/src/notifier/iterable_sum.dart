@@ -1,5 +1,5 @@
 extension IterableSum<T extends num> on Iterable<T> {
   T sum() {
-    return this.reduce((r, v) => r + v as T);
+    return this.isEmpty ? (0 as T) : this.reduce((r, v) => r + v as T);
   }
 }
