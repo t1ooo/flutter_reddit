@@ -1,21 +1,20 @@
 import 'package:draw/draw.dart' as draw;
-import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
-import 'package:quiver/collection.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 
 import '../logging.dart';
+import 'auth.dart';
+import 'comment.dart';
 import 'credentials.dart';
+import 'like.dart';
 import 'message.dart';
 import 'parse.dart';
-import 'auth.dart';
-import 'trophy.dart';
-import 'user.dart';
-import 'comment.dart';
+import 'reddit_api.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
-import 'like.dart';
-import 'reddit_api.dart';
+import 'trophy.dart';
+import 'user.dart';
 
 class RedditApiImpl implements RedditApi {
   RedditApiImpl(this.clientId, this.auth, this.credentials) {
