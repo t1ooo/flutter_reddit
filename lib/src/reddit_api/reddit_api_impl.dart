@@ -246,96 +246,143 @@ class RedditApiImpl implements RedditApi {
   // }
 
   // TODO: move outside class
-  Submission? _parseSubmission(draw.UserContent v) {
-    try {
-      final submission  = v as draw.Submission;
-      // return Submission.fromJson(v.data as Map<String, dynamic>,
-      //     drawSubmission: v);
-      final comments = submission.comments?.comments
-          // .map((v) => Comment.fromJson(v as Map<String, dynamic>))
-          .map((v) => _parseComment(v))
-          .whereType<Comment>()
-          .toList();
-      return Submission.fromJson(submission.data!, comments: comments);
-    } on TypeError catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    }
-    return null;
+  // Submission? _parseSubmission(draw.UserContent v) {
+  //   try {
+  //     final submission = v as draw.Submission;
+  //     // return Submission.fromJson(v.data as Map<String, dynamic>,
+  //     //     drawSubmission: v);
+  //     final comments = submission.comments?.comments
+  //         // .map((v) => Comment.fromJson(v as Map<String, dynamic>))
+  //         .map((v) => _parseComment(v))
+  //         .whereType<Comment>()
+  //         .toList();
+  //     return Submission.fromJson(submission.data!, comments: comments);
+  //   } on TypeError catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
+
+  // Subreddit? _parseSubreddit(draw.Subreddit v) {
+  //   try {
+  //     return Subreddit.fromJson(v.data! as Map<String, dynamic>,
+  //         drawSubreddit: v);
+  //   } on TypeError catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
+
+  // Message? _parseMessage(draw.Message v) {
+  //   try {
+  //     return Message.fromJson(v.data! as Map<String, dynamic>);
+  //   } on TypeError catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
+
+  // Comment? _parseComment(draw.UserContent v) {
+  //   try {
+  //     v = v as draw.Comment;
+  //     return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
+  //   } on TypeError catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
+
+  // User? _parseUser(draw.Redditor v) {
+  //   try {
+  //     return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
+  //   } on TypeError catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
+
+  // Trophy? _parseTrophy(draw.Trophy v) {
+  //   try {
+  //     return Trophy.fromJson(v.data! as Map<String, dynamic>);
+  //   } on TypeError catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     // _log.warning('fail to parse Submission: $v');
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
+
+  // Future<List<R>> _parseStream<T, R>(Stream<T> s, R? Function(T) parser) async {
+  //   return (await s.toList()).map(parser).whereType<R>().toList();
+  // }
+
+  Submission _parseSubmission(draw.UserContent v) {
+    v = v as draw.Submission;
+    final comments = v.comments?.comments
+        .map((v) => _parseComment(v))
+        .whereType<Comment>()
+        .toList();
+    return Submission.fromJson(v.data!, comments: comments);
   }
 
-  Subreddit? _parseSubreddit(draw.Subreddit v) {
-    try {
-      return Subreddit.fromJson(v.data! as Map<String, dynamic>,
-          drawSubreddit: v);
-    } on TypeError catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    }
-    return null;
+  Subreddit _parseSubreddit(draw.Subreddit v) {
+    return Subreddit.fromJson(v.data! as Map<String, dynamic>,
+        drawSubreddit: v);
   }
 
-  Message? _parseMessage(draw.Message v) {
-    try {
-      return Message.fromJson(v.data! as Map<String, dynamic>);
-    } on TypeError catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    }
-    return null;
+  Message _parseMessage(draw.Message v) {
+    return Message.fromJson(v.data! as Map<String, dynamic>);
   }
 
-  Comment? _parseComment(draw.UserContent v) {
-    try {
-      v = v as draw.Comment;
-      return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
-    } on TypeError catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    }
-    return null;
+  Comment _parseComment(draw.UserContent v) {
+    v = v as draw.Comment;
+    return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
   }
 
   User? _parseUser(draw.Redditor v) {
-    try {
-      return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
-   } on TypeError catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    }
-    return null;
+    return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
   }
 
   Trophy? _parseTrophy(draw.Trophy v) {
-    try {
-      return Trophy.fromJson(v.data! as Map<String, dynamic>);
-    } on TypeError catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      // _log.warning('fail to parse Submission: $v');
-      _log.warning('', e, st);
-    }
-    return null;
+    return Trophy.fromJson(v.data! as Map<String, dynamic>);
   }
 
-  Future<List<R>> _parseStream<T, R>(Stream<T> s, R? Function(T) parser) async {
-    return (await s.toList()).map(parser).whereType<R>().toList();
+  Future<List<R>> _parseStream<T, R>(Stream<T> s, R Function(T) parser) async {
+    return (await s.toList())
+        .map((v) {
+          try {
+            return parser(v);
+          } on TypeError catch (e, st) {
+            _log.warning('', e, st);
+          } on Exception catch (e, st) {
+            _log.warning('', e, st);
+          }
+          return null;
+        })
+        .whereType<R>()
+        .toList();
   }
 
   Future<List<Submission>> _parseSubmissionStream(
@@ -674,7 +721,7 @@ class RedditApiImpl implements RedditApi {
     //     .map((v) => Comment.fromJson(v as Map<String, dynamic>))
     //     .toList();
     // return Submission.fromJson(submission.data!, comments: comments);
-    return _parseSubmission(await reddit.submission(id: id).populate())!;
+    return _parseSubmission(await reddit.submission(id: id).populate());
   }
 
   // TODO: parse subreddit
@@ -685,7 +732,7 @@ class RedditApiImpl implements RedditApi {
     // _drawCache.set(name, subreddit);
     // return Subreddit.fromJson(
     // (await _loadSubreddit(name)).data! as Map<String, dynamic>);
-    return _parseSubreddit(await reddit.subreddit(name).populate())!;
+    return _parseSubreddit(await reddit.subreddit(name).populate());
   }
 
   // Future<String> subredditIcon(Subreddit subreddit) async {
@@ -879,7 +926,7 @@ class RedditApiImpl implements RedditApi {
     //   reddit.submission(id: id).populate,
     // );
     final comment = await submission.drawSubmission!.reply(body);
-    return _parseComment(comment)!;
+    return _parseComment(comment);
   }
 
   Future<void> submissionReport(Submission submission, String reason) async {
@@ -912,7 +959,7 @@ class RedditApiImpl implements RedditApi {
     //   reddit.comment(id: id).populate,
     // );
     final commentReply = await comment.drawComment!.reply(body);
-    return _parseComment(commentReply)!;
+    return _parseComment(commentReply);
   }
 
   Future<Submission> submit({
@@ -934,7 +981,7 @@ class RedditApiImpl implements RedditApi {
           nsfw: nsfw,
           spoiler: spoiler,
         );
-    return _parseSubmission(sub)!;
+    return _parseSubmission(sub);
   }
 
   Future<List<Message>> inboxMessages() async {
