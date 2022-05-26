@@ -248,17 +248,21 @@ class RedditApiImpl implements RedditApi {
   // TODO: move outside class
   Submission? _parseSubmission(draw.UserContent v) {
     try {
-      v = v as draw.Submission;
+      final submission  = v as draw.Submission;
       // return Submission.fromJson(v.data as Map<String, dynamic>,
       //     drawSubmission: v);
-      final comments = v.comments?.comments
-          .map((v) => Comment.fromJson(v as Map<String, dynamic>))
+      final comments = submission.comments?.comments
+          // .map((v) => Comment.fromJson(v as Map<String, dynamic>))
+          .map((v) => _parseComment(v))
+          .whereType<Comment>()
           .toList();
-      return Submission.fromJson(v.data!, comments: comments);
-    } on TypeError catch (_) {
-      _log.warning('fail to parse Submission: $v');
-    } on Exception catch (_) {
-      _log.warning('fail to parse Submission: $v');
+      return Submission.fromJson(submission.data!, comments: comments);
+    } on TypeError catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
     }
     return null;
   }
@@ -267,10 +271,12 @@ class RedditApiImpl implements RedditApi {
     try {
       return Subreddit.fromJson(v.data! as Map<String, dynamic>,
           drawSubreddit: v);
-    } on TypeError catch (_) {
-      _log.warning('fail to parse Subreddit: $v');
-    } on Exception catch (_) {
-      _log.warning('fail to parse Subreddit: $v');
+    } on TypeError catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
     }
     return null;
   }
@@ -278,10 +284,12 @@ class RedditApiImpl implements RedditApi {
   Message? _parseMessage(draw.Message v) {
     try {
       return Message.fromJson(v.data! as Map<String, dynamic>);
-    } on TypeError catch (_) {
-      _log.warning('fail to parse Message: $v');
-    } on Exception catch (_) {
-      _log.warning('fail to parse Message: $v');
+    } on TypeError catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
     }
     return null;
   }
@@ -290,10 +298,12 @@ class RedditApiImpl implements RedditApi {
     try {
       v = v as draw.Comment;
       return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
-    } on TypeError catch (_) {
-      _log.warning('fail to parse Comment: $v');
-    } on Exception catch (_) {
-      _log.warning('fail to parse Comment: $v');
+    } on TypeError catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
     }
     return null;
   }
@@ -301,10 +311,12 @@ class RedditApiImpl implements RedditApi {
   User? _parseUser(draw.Redditor v) {
     try {
       return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
-    } on TypeError catch (_) {
-      _log.warning('fail to parse Comment: $v');
-    } on Exception catch (_) {
-      _log.warning('fail to parse Comment: $v');
+   } on TypeError catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
     }
     return null;
   }
@@ -312,10 +324,12 @@ class RedditApiImpl implements RedditApi {
   Trophy? _parseTrophy(draw.Trophy v) {
     try {
       return Trophy.fromJson(v.data! as Map<String, dynamic>);
-    } on TypeError catch (_) {
-      _log.warning('fail to parse Trophy: $v');
-    } on Exception catch (_) {
-      _log.warning('fail to parse Trophy: $v');
+    } on TypeError catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      // _log.warning('fail to parse Submission: $v');
+      _log.warning('', e, st);
     }
     return null;
   }
