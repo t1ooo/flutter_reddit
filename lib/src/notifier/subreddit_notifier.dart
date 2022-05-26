@@ -57,25 +57,36 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
       await _redditApi.subredditSubscribe(_subreddit, subscribe);
       _subreddit = _subreddit.copyWith(userIsSubscriber: subscribe);
       notifyListeners();
-    }, 'fail to subscribe');
+    }, 'fail to' + (subscribe ? 'subscribe' : 'unsubscribe'));
   }
 
   Future<void> favorite() {
-    return try_(() async {
-      if (_subreddit.userHasFavorited) return;
-      await _redditApi.subredditFavorite(_subreddit, true);
-      _subreddit = _subreddit.copyWith(userHasFavorited: true);
-      notifyListeners();
-    }, 'fail to favorite');
+    // return try_(() async {
+    //   if (_subreddit.userHasFavorited) return;
+    //   await _redditApi.subredditFavorite(_subreddit, true);
+    //   _subreddit = _subreddit.copyWith(userHasFavorited: true);
+    //   notifyListeners();
+    // }, 'fail to favorite');
+    return _updateFavorite(true);
   }
 
   Future<void> unfavorite() {
+    // return try_(() async {
+    //   if (!(_subreddit.userHasFavorited)) return;
+    //   await _redditApi.subredditFavorite(_subreddit, false);
+    //   _subreddit = _subreddit.copyWith(userHasFavorited: false);
+    //   notifyListeners();
+    // }, 'fail to unfavorite');
+    return _updateFavorite(false);
+  }
+
+  Future<void> _updateFavorite(bool favorite) {
     return try_(() async {
-      if (!(_subreddit.userHasFavorited)) return;
-      await _redditApi.subredditFavorite(_subreddit, false);
-      _subreddit = _subreddit.copyWith(userHasFavorited: false);
+      if (_subreddit.userHasFavorited == favorite) return;
+      await _redditApi.subredditFavorite(_subreddit, favorite);
+      _subreddit = _subreddit.copyWith(userHasFavorited: favorite);
       notifyListeners();
-    }, 'fail to unfavorite');
+    }, 'fail to' + (favorite ? 'favorite' : 'unfavorite'));
   }
 
   Future<void> share() {
@@ -83,6 +94,8 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
       await Share.share('${_subreddit.title} ${_subreddit.shortLink}');
     }, 'fail to share');
   }
+
+  
 
   @override
   Future<List<Submission>> loadSubmissions_() {
