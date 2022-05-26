@@ -64,7 +64,11 @@ class SubmissionNotifier
   }
 
   Future<void> loadComments() {
-    return _loadSubmission();
+    return try_(() async {
+      if (_comments != null) return;
+      _setComments((await _redditApi.submission(id)).comments);
+      notifyListeners();
+    }, 'fail to load comments');
   }
 
   void _setComments(List<Comment>? comments) {
