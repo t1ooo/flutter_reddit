@@ -367,10 +367,8 @@ class RedditApiImpl implements RedditApi {
 
   // TODO: move outside class
   Submission _parseSubmission(draw.Submission v) {
-    final comments = v.comments?.comments
-        .map((v) => _parseComment(v))
-        .whereType<Comment>()
-        .toList();
+    final drawComments = v.comments?.comments;
+    final comments = drawComments == null ? null : _parseComments(drawComments);
     return Submission.fromJson(v.data!, comments: comments);
   }
 
@@ -396,19 +394,7 @@ class RedditApiImpl implements RedditApi {
   }
 
   List<R> _parse<T, R>(Iterable<T> s, R Function(T) parser) {
-    return s
-        .map((v) {
-          try {
-            return parser(v);
-          } on TypeError catch (e, st) {
-            _log.warning('', e, st);
-          } on Exception catch (e, st) {
-            _log.warning('', e, st);
-          }
-          return null;
-        })
-        .whereType<R>()
-        .toList();
+    return s.map((v) => _try(() => parser(v))).whereType<R>().toList();
   }
 
   List<Submission> _parseSubmissions(
@@ -418,9 +404,13 @@ class RedditApiImpl implements RedditApi {
         s.whereType<draw.Submission>(), _parseSubmission);
   }
 
-  List<Comment> _parseComments(Iterable<draw.UserContent> s) {
+  List<Comment> _parseComments(Iterable<dynamic> s) {
     return _parse<draw.Comment, Comment>(
-        s.whereType<draw.Comment>(), _parseComment);
+        s.map((v) {
+          if (v is draw.MoreComments) print('VVVVVVVVVVVVVVVVVVVVVVVVVV');
+          return v;
+        }).whereType<draw.Comment>(),
+        _parseComment);
   }
 
   List<Subreddit> _parseSubreddits(Iterable<draw.Subreddit> s) {
@@ -433,5 +423,16 @@ class RedditApiImpl implements RedditApi {
 
   List<Trophy> _parseTrophies(Iterable<draw.Trophy> s) {
     return _parse<draw.Trophy, Trophy>(s, _parseTrophy);
+  }
+
+  T? _try<T>(T Function() fn) {
+    try {
+      return fn();
+    } on TypeError catch (e, st) {
+      _log.warning('', e, st);
+    } on Exception catch (e, st) {
+      _log.warning('', e, st);
+    }
+    return null;
   }
 }
