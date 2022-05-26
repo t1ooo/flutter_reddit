@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/submission/submission_screen.dart';
+import 'package:flutter_reddit_prototype/src/widget/markdown.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/auth_notifier.dart';
@@ -75,7 +76,7 @@ class UserComment extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10),
-              Text(comment.body),
+              Markdown(comment.body),
               Text(comment.isSubmitter.toString()),
               Divider(),
             ],
