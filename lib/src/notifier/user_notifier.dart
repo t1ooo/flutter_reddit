@@ -109,7 +109,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   Future<void> _updateBlock(bool block) {
     return try_(() async {
       if (_user.isBlocked == block) return;
-      await (block ? _redditApi.userBlock : _redditApi.userUnblock)(_user);
+      await (_redditApi.userBlock)(_user, true);
       _user = _user.copyWith(isBlocked: block);
       notifyListeners();
     }, 'fail to' + (block ? 'block' : 'unblock'));

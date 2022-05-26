@@ -164,30 +164,17 @@ class FakeRedditApi implements RedditApi {
         .toList();
   }
 
-  Future<void> subredditSubscribe(Subreddit subreddit) async {
-    _log.info('subscribe(${subreddit.name})');
+  Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe) async {
+    _log.info('subscribe(${subreddit.name}, $subscribe)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     // name = removeSubredditPrefix(name);
     return;
   }
 
-  Future<void> subredditUnsubscribe(Subreddit subreddit) async {
-    _log.info('unsubscribe(${subreddit.name})');
-    await Future.delayed(_delay);
-    _mustLoggedIn();
-    // name = removeSubredditPrefix(name);
-    return;
-  }
 
-  Future<void> subredditFavorite(Subreddit subreddit) async {
-    await Future.delayed(_delay);
-    _log.info('subredditFavorite(${subreddit.name})');
-    return;
-  }
-
-  Future<void> subredditUnfavorite(Subreddit subreddit) async {
-    _log.info('subredditUnfavorite(${subreddit.name})');
+  Future<void> subredditFavorite(Subreddit subreddit, bool favorite) async {
+    _log.info('subredditFavorite(${subreddit.name}, $favorite)');
     await Future.delayed(_delay);
     return;
   }
@@ -238,46 +225,25 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
-  Future<void> submissionSave(Submission submission) async {
-    _log.info('submissionSave(${submission.id})');
+  Future<void> submissionSave(Submission submission, bool save) async {
+    _log.info('submissionSave(${submission.id}), $save');
     await Future.delayed(_delay);
     _mustLoggedIn();
     return;
   }
 
-  Future<void> submissionUnsave(Submission submission) async {
-    _log.info('submissionUnsave(${submission.id})');
+  Future<void> submissionHide(Submission submission, bool hide) async {
+    _log.info('submissionHide(${submission.id}), $hide');
     await Future.delayed(_delay);
     _mustLoggedIn();
     return;
   }
 
-  Future<void> submissionHide(Submission submission) async {
-    _log.info('submissionHide(${submission.id})');
-    await Future.delayed(_delay);
-    _mustLoggedIn();
-    return;
-  }
-
-  Future<void> submissionUnhide(Submission submission) async {
-    _log.info('submissionUnhide(${submission.id})');
-    await Future.delayed(_delay);
-    _mustLoggedIn();
-    return;
-  }
-
-  Future<void> commentSave(Comment comment) async {
-    _log.info('commentSave(${comment.id})');
+  Future<void> commentSave(Comment comment, bool save) async {
+    _log.info('commentSave(${comment.id}, $save)');
     await Future.delayed(_delay);
     _mustLoggedIn();
 
-    return;
-  }
-
-  Future<void> commentUnsave(Comment comment) async {
-    _log.info('commentUnsave(${comment.id})');
-    await Future.delayed(_delay);
-    _mustLoggedIn();
     return;
   }
 
@@ -356,15 +322,15 @@ class FakeRedditApi implements RedditApi {
         .toList();
   }
 
-  Future<List<Subreddit>> searchSubredditsByName(String query) async {
-    _log.info('searchSubredditsByName($query)');
-    await Future.delayed(_delay);
-    _mustLoggedIn();
-    final data = await _readFile('subreddits.search.by.name.json');
-    return (jsonDecode(data) as List<dynamic>)
-        .map((v) => Subreddit.fromJson(v))
-        .toList();
-  }
+  // Future<List<Subreddit>> searchSubredditsByName(String query) async {
+  //   _log.info('searchSubredditsByName($query)');
+  //   await Future.delayed(_delay);
+  //   _mustLoggedIn();
+  //   final data = await _readFile('subreddits.search.by.name.json');
+  //   return (jsonDecode(data) as List<dynamic>)
+  //       .map((v) => Subreddit.fromJson(v))
+  //       .toList();
+  // }
 
   Future<Comment> submissionReply(Submission submission, String body) async {
     _log.info('submissionReply(${submission.id}, $body)');
@@ -449,19 +415,13 @@ class FakeRedditApi implements RedditApi {
         .toList();
   }
 
-  Future<void> userBlock(User user) async {
-    _log.info('userBlock(${user.name})');
+  Future<void> userBlock(User user, bool block) async {
+    _log.info('userBlock(${user.name}, $block)');
     _mustLoggedIn();
     await Future.delayed(_delay);
     return;
   }
 
-  Future<void> userUnblock(User user) async {
-    _log.info('userUnblock(${user.name})');
-    _mustLoggedIn();
-    await Future.delayed(_delay);
-    return;
-  }
 
   Future<void> submissionReport(Submission submission, String reason) async {
     _log.info('submissionReport(${submission.id}, $reason)');

@@ -142,13 +142,17 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return (await _subredditSubmissions(subreddit.displayName,
-                limit: limit, type: type)
-            .toList())
-        .whereType<draw.Submission>()
-        .map(_parseSubmission)
-        .whereType<Submission>()
-        .toList();
+    // return (await _subredditSubmissions(subreddit.displayName,
+    //             limit: limit, type: type)
+    //         .toList())
+    //     .whereType<draw.Submission>()
+    //     .map(_parseSubmission)
+    //     .whereType<Submission>()
+    //     .toList();
+    return _parseSubmissionStream(await _subredditSubmissions(
+        subreddit.displayName,
+        limit: limit,
+        type: type));
   }
 
   Stream<draw.UserContent> _subredditSubmissions(
@@ -173,15 +177,14 @@ class RedditApiImpl implements RedditApi {
   }
 
   Future<User> user(String name) async {
-    return _parseUser(await reddit.redditor(name).populate())!;
+    return _parseUser(await reddit.redditor(name).populate());
   }
 
-  Future<void> userBlock(User user) async {
-    final params = {'name': user.name};
-    await reddit.post('/api/block_user/', params);
-  }
-
-  Future<void> userUnblock(User user) async {
+  Future<void> userBlock(User user, bool block) async {
+    if (block) {
+      final params = {'name': user.name};
+      await reddit.post('/api/block_user/', params);
+    } else {}
     return user.drawRedditor!.unblock();
   }
 
@@ -208,32 +211,22 @@ class RedditApiImpl implements RedditApi {
   }
 
   // TODO: rename to subredditSubscribe
-  Future<void> subredditSubscribe(Subreddit subreddit) {
-    return subreddit.drawSubreddit!.subscribe();
+  Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe) {
+    return subscribe
+        ? subreddit.drawSubreddit!.subscribe()
+        : subreddit.drawSubreddit!.unsubscribe();
   }
 
-  Future<void> subredditUnsubscribe(Subreddit subreddit) {
-    return subreddit.drawSubreddit!.unsubscribe();
-  }
+  // Future<void> subredditUnsubscribe(Subreddit subreddit) {
+  //   return subreddit.drawSubreddit!.unsubscribe();
+  // }
 
   // TODO: merge with subredditUnfavorite
-  Future<void> subredditFavorite(Subreddit subreddit) {
+  Future<void> subredditFavorite(Subreddit subreddit, bool favorite) {
     return reddit.post(
       '/api/favorite/',
       {
-        'make_favorite': 'true',
-        'sr_name': subreddit.displayName,
-        'api_type': 'json',
-      },
-      objectify: false,
-    );
-  }
-
-  Future<void> subredditUnfavorite(Subreddit subreddit) {
-    return reddit.post(
-      '/api/favorite/',
-      {
-        'make_favorite': 'false',
+        'make_favorite': favorite.toString(),
         'sr_name': subreddit.displayName,
         'api_type': 'json',
       },
@@ -272,28 +265,20 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  Future<void> submissionSave(Submission submission) async {
-    return submission.drawSubmission!.save();
+  Future<void> submissionSave(Submission submission, bool save) async {
+    return save
+        ? submission.drawSubmission!.save()
+        : submission.drawSubmission!.unsave();
   }
 
-  Future<void> submissionUnsave(Submission submission) async {
-    return submission.drawSubmission!.unsave();
+  Future<void> submissionHide(Submission submission, bool hide) async {
+    return hide
+        ? submission.drawSubmission!.hide()
+        : submission.drawSubmission!.unhide();
   }
 
-  Future<void> submissionHide(Submission submission) async {
-    return submission.drawSubmission!.hide();
-  }
-
-  Future<void> submissionUnhide(Submission submission) async {
-    return submission.drawSubmission!.unhide();
-  }
-
-  Future<void> commentSave(Comment comment) async {
-    return comment.drawComment!.save();
-  }
-
-  Future<void> commentUnsave(Comment comment) async {
-    return comment.drawComment!.unsave();
+  Future<void> commentSave(Comment comment, bool save) async {
+    return save ? comment.drawComment!.save() : comment.drawComment!.unsave();
   }
 
   Future<User?> currentUser() async {
@@ -301,7 +286,6 @@ class RedditApiImpl implements RedditApi {
     if (redditor == null) {
       return null;
     }
-
     return _parseUser(redditor);
   }
 
@@ -342,15 +326,17 @@ class RedditApiImpl implements RedditApi {
         .map((v) => v as draw.Subreddit));
   }
 
-  Future<List<Subreddit>> searchSubredditsByName(
-    String query,
-  ) async {
-    return (await reddit.subreddits.searchByName(query))
-        .map((v) => v as draw.Subreddit)
-        .map(_parseSubreddit)
-        .whereType<Subreddit>()
-        .toList();
-  }
+  // Future<List<Subreddit>> searchSubredditsByName(
+  //   String query,
+  // ) async {
+  //   return (await reddit.subreddits.searchByName(query))
+  //       .map((v) => v as draw.Subreddit)
+  //       .map(_parseSubreddit)
+  //       .whereType<Subreddit>()
+  //       .toList();
+
+  //   // return _parseSubredditStream(Stream.fromIterable(await reddit.subreddits.searchByName(query)));
+  // }
 
   Future<Comment> submissionReply(Submission submission, String body) async {
     final comment = await submission.drawSubmission!.reply(body);
@@ -426,11 +412,11 @@ class RedditApiImpl implements RedditApi {
     return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
   }
 
-  User? _parseUser(draw.Redditor v) {
+  User _parseUser(draw.Redditor v) {
     return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
   }
 
-  Trophy? _parseTrophy(draw.Trophy v) {
+  Trophy _parseTrophy(draw.Trophy v) {
     return Trophy.fromJson(v.data! as Map<String, dynamic>);
   }
 

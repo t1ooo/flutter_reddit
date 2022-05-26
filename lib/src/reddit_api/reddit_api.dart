@@ -42,15 +42,15 @@ abstract class RedditApi {
   Future<List<Submission>> userSubmissions(User user, {required int limit});
   Future<List<Trophy>> userTrophies(User user);
   Future<UserSaved> userSaved(User user, {required int limit});
-  Future<void> userBlock(User user);
-  Future<void> userUnblock(User user);
+  Future<void> userBlock(User user, bool block);
+  // Future<void> userUnblock(User user);
 
   Future<Subreddit> subreddit(String name);
   // Future<String> subredditIcon(Subreddit subreddit);
-  Future<void> subredditSubscribe(Subreddit subreddit);
-  Future<void> subredditUnsubscribe(Subreddit subreddit);
-  Future<void> subredditFavorite(Subreddit subreddit);
-  Future<void> subredditUnfavorite(Subreddit subreddit);
+  Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe);
+  // Future<void> subredditUnsubscribe(Subreddit subreddit);
+  Future<void> subredditFavorite(Subreddit subreddit, bool favorite);
+  // Future<void> subredditUnfavorite(Subreddit subreddit);
   Future<List<Submission>> subredditSubmissions(
     Subreddit subreddit, {
     required int limit,
@@ -60,16 +60,16 @@ abstract class RedditApi {
 
   Future<Submission> submission(String id);
   Future<void> submissionLike(Submission submission, Like like);
-  Future<void> submissionSave(Submission submission);
-  Future<void> submissionUnsave(Submission submission);
-  Future<void> submissionHide(Submission submission);
-  Future<void> submissionUnhide(Submission submission);
+  Future<void> submissionSave(Submission submission, bool save);
+  // Future<void> submissionUnsave(Submission submission);
+  Future<void> submissionHide(Submission submission, bool hide);
+  // Future<void> submissionUnhide(Submission submission);
   Future<Comment> submissionReply(Submission submission, String body);
   Future<void> submissionReport(Submission submission, String reason);
 
   Future<void> commentLike(Comment comment, Like like);
-  Future<void> commentSave(Comment comment);
-  Future<void> commentUnsave(Comment comment);
+  Future<void> commentSave(Comment comment, bool save);
+  // Future<void> commentUnsave(Comment comment);
   Future<Comment> commentReply(Comment comment, String body);
   Future<void> commentReport(Comment comment, String reason);
 
@@ -83,7 +83,7 @@ abstract class RedditApi {
     String subreddit = 'all',
   });
   Future<List<Subreddit>> searchSubreddits(String query, {required int limit});
-  Future<List<Subreddit>> searchSubredditsByName(String query);
+  // Future<List<Subreddit>> searchSubredditsByName(String query);
 
   Future<Submission> submit({
     required String subreddit,

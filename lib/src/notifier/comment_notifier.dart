@@ -54,7 +54,7 @@ class CommentNotifier
 
   Future<void> _updateSave(bool save) {
     return try_(() async {
-      await (save ? _redditApi.commentSave : _redditApi.commentUnsave)(_comment);
+      await _redditApi.commentSave(_comment, save);
       _comment = comment.copyWith(saved: save);
       notifyListeners();
     }, 'fail to ' + (save ? 'save' : 'unsave'));

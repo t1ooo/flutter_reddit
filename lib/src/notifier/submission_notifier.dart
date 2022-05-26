@@ -103,9 +103,7 @@ class SubmissionNotifier
 
   Future<void> _updateSave(bool save) {
     return try_(() async {
-      await (save
-          ? _redditApi.submissionSave
-          : _redditApi.submissionUnsave)(_submission);
+      await _redditApi.submissionSave(_submission, save);
       _submission = _submission.copyWith(saved: save);
       notifyListeners();
     }, 'fail to' + (save ? 'save' : 'unsave'));
@@ -122,9 +120,7 @@ class SubmissionNotifier
   Future<void> _updateHide(bool hide) {
     return try_(() async {
       if (_submission.hidden == hide) return;
-      await (hide
-          ? _redditApi.submissionHide
-          : _redditApi.submissionUnhide)(_submission);
+      await _redditApi.submissionHide(_submission, hide);
       _submission = _submission.copyWith(hidden: hide);
       notifyListeners();
     }, 'fail to' + (hide ? 'hide' : 'unhide'));
