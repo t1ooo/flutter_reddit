@@ -1,4 +1,3 @@
-// TODO: comment body markdown
 // TODO: load all submission comment with CommentForest.replaceMore
 // TODO: reddit api cache
 // TODO: subreddit custom feed

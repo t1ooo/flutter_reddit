@@ -407,7 +407,10 @@ class RedditApiImpl implements RedditApi {
   List<Comment> _parseComments(Iterable<dynamic> s) {
     return _parse<draw.Comment, Comment>(
         s.map((v) {
-          if (v is draw.MoreComments) print('VVVVVVVVVVVVVVVVVVVVVVVVVV');
+          if (v is draw.MoreComments) {
+            print('VVVVVVVVVVVVVVVVVVVVVVVVVV');
+            return null;
+          }
           return v;
         }).whereType<draw.Comment>(),
         _parseComment);

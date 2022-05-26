@@ -73,7 +73,9 @@ List<Comment> parseReplies(dynamic data, [String? name]) {
     final comments = <Comment>[];
     for (final v in (data['data']?['children'] as List<dynamic>)) {
       try {
-        comments.add(Comment.fromJson(v['data']));
+        if (v['children'] == 't1') {
+          comments.add(Comment.fromJson(v['data']));
+        }
       } on TypeError catch (e) {
         _log('$e: $v', name);
       }
@@ -90,7 +92,7 @@ String parseUrl(dynamic data, [String? name]) {
       data == '' ||
       data == 'self' ||
       data == 'default' ||
-      data == 'image' || 
+      data == 'image' ||
       data == 'spoiler') {
     return '';
   }
@@ -206,7 +208,7 @@ Video? parseVideo(dynamic data, [String? name]) {
 }
 
 List<Rule>? parseRules(dynamic data, [String? name]) {
-   try {
+  try {
     if (data == null) {
       return [];
     }
