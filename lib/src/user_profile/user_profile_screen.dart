@@ -142,7 +142,8 @@ class _UserProfileScreen extends StatelessWidget {
           ),
           label: user.isBlocked ? 'Unblock' : 'Block',
           onTap: () {
-            return (user.isBlocked ? notifier.unblock() : notifier.block())
+            return notifier
+                .block(!user.isBlocked)
                 .catchError((e) => showErrorSnackBar(context, e));
           },
         ),

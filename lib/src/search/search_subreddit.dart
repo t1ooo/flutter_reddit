@@ -38,21 +38,20 @@ class SearchSubreddit extends StatelessWidget {
   }) : super(key: key);
 
   Widget build(BuildContext context) {
-    final subredditN = context.watch<SubredditNotifier>();
-    final subreddit = subredditN.subreddit;
+    final notifier = context.watch<SubredditNotifier>();
+    final subreddit = notifier.subreddit;
 
     return ListTile(
       leading: SizedBox.square(
         dimension: 40,
         child: SubredditIcon(icon: subreddit.communityIcon),
       ),
-      title: Text(subredditN.name),
+      title: Text(notifier.name),
       subtitle: Text('${subreddit.subscribers} members'),
       trailing: IconButton(
         onPressed: () {
-          (subreddit.userIsSubscriber
-                  ? subredditN.unsubscribe()
-                  : subredditN.subscribe())
+          notifier
+              .subscribe(!subreddit.userIsSubscriber)
               .catchError((e) => showErrorSnackBar(context, e));
         },
         icon: Icon(

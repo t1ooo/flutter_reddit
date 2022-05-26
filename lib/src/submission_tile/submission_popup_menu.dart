@@ -88,11 +88,12 @@ class SubmissionPopupMenu extends StatelessWidget {
             //           }))
             //     .catchError((e) => showErrorSnackBar(context, e));
 
-            return submission.hidden
-                ? notifier.unhide()
-                : notifier.hide().then((_) {
-                    if (fullpage) Navigator.pop(context);
-                  }, onError: (e) => showErrorSnackBar(context, e),);
+            return notifier.hide(!submission.hidden).then(
+              (_) {
+                if (fullpage && submission.hidden) Navigator.pop(context);
+              },
+              onError: (e) => showErrorSnackBar(context, e),
+            );
           },
         ),
         // CustomPopupMenuItem(

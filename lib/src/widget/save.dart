@@ -37,7 +37,8 @@ CustomPopupMenuItem savePopupMenuItem(BuildContext context, Savable savable) {
     ),
     label: savable.saved ? 'Unsave' : 'Save',
     onTap: () {
-      return (savable.saved ? savable.unsave() : savable.save())
+      return savable
+          .save(!savable.saved)
           .catchError((e) => showErrorSnackBar(context, e));
     },
   );

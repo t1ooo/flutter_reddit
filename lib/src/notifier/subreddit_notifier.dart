@@ -31,27 +31,27 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Subreddit _subreddit;
   Subreddit get subreddit => _subreddit;
 
-  Future<void> subscribe() {
-    // return try_(() async {
-    //   if (_subreddit.userIsSubscriber) return;
-    //   await _redditApi.subredditSubscribe(_subreddit, true);
-    //   _subreddit = _subreddit.copyWith(userIsSubscriber: true);
-    //   notifyListeners();
-    // }, 'fail to subscribe');
-    return _updateSubscribe(true);
-  }
+  // Future<void> subscribe() {
+  //   // return try_(() async {
+  //   //   if (_subreddit.userIsSubscriber) return;
+  //   //   await _redditApi.subredditSubscribe(_subreddit, true);
+  //   //   _subreddit = _subreddit.copyWith(userIsSubscriber: true);
+  //   //   notifyListeners();
+  //   // }, 'fail to subscribe');
+  //   return _updateSubscribe(true);
+  // }
 
-  Future<void> unsubscribe() {
-    // return try_(() async {
-    //   if (!(_subreddit.userIsSubscriber)) return;
-    //   await _redditApi.subredditSubscribe(_subreddit, false);
-    //   _subreddit = _subreddit.copyWith(userIsSubscriber: false);
-    //   notifyListeners();
-    // }, 'fail to unsubscribe');
-    return _updateSubscribe(false);
-  }
+  // Future<void> unsubscribe() {
+  //   // return try_(() async {
+  //   //   if (!(_subreddit.userIsSubscriber)) return;
+  //   //   await _redditApi.subredditSubscribe(_subreddit, false);
+  //   //   _subreddit = _subreddit.copyWith(userIsSubscriber: false);
+  //   //   notifyListeners();
+  //   // }, 'fail to unsubscribe');
+  //   return _updateSubscribe(false);
+  // }
 
-  Future<void> _updateSubscribe(bool subscribe) {
+  Future<void> subscribe(bool subscribe) {
     return try_(() async {
       if (_subreddit.userIsSubscriber == subscribe) return;
       await _redditApi.subredditSubscribe(_subreddit, subscribe);
@@ -60,27 +60,27 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
     }, 'fail to' + (subscribe ? 'subscribe' : 'unsubscribe'));
   }
 
-  Future<void> favorite() {
-    // return try_(() async {
-    //   if (_subreddit.userHasFavorited) return;
-    //   await _redditApi.subredditFavorite(_subreddit, true);
-    //   _subreddit = _subreddit.copyWith(userHasFavorited: true);
-    //   notifyListeners();
-    // }, 'fail to favorite');
-    return _updateFavorite(true);
-  }
+  // Future<void> favorite() {
+  //   // return try_(() async {
+  //   //   if (_subreddit.userHasFavorited) return;
+  //   //   await _redditApi.subredditFavorite(_subreddit, true);
+  //   //   _subreddit = _subreddit.copyWith(userHasFavorited: true);
+  //   //   notifyListeners();
+  //   // }, 'fail to favorite');
+  //   return _updateFavorite(true);
+  // }
 
-  Future<void> unfavorite() {
-    // return try_(() async {
-    //   if (!(_subreddit.userHasFavorited)) return;
-    //   await _redditApi.subredditFavorite(_subreddit, false);
-    //   _subreddit = _subreddit.copyWith(userHasFavorited: false);
-    //   notifyListeners();
-    // }, 'fail to unfavorite');
-    return _updateFavorite(false);
-  }
+  // Future<void> unfavorite() {
+  //   // return try_(() async {
+  //   //   if (!(_subreddit.userHasFavorited)) return;
+  //   //   await _redditApi.subredditFavorite(_subreddit, false);
+  //   //   _subreddit = _subreddit.copyWith(userHasFavorited: false);
+  //   //   notifyListeners();
+  //   // }, 'fail to unfavorite');
+  //   return _updateFavorite(false);
+  // }
 
-  Future<void> _updateFavorite(bool favorite) {
+  Future<void> favorite(bool favorite) {
     return try_(() async {
       if (_subreddit.userHasFavorited == favorite) return;
       await _redditApi.subredditFavorite(_subreddit, favorite);

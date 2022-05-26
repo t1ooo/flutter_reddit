@@ -52,8 +52,9 @@ class CommentNotifier
 
   bool get saved => _comment.saved;
 
-  Future<void> _updateSave(bool save) {
+  Future<void> save(bool save) {
     return try_(() async {
+      if (_comment.saved == save) return;
       await _redditApi.commentSave(_comment, save);
       _comment = comment.copyWith(saved: save);
       notifyListeners();

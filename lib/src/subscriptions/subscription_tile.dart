@@ -9,7 +9,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../subreddit/subreddit_all_screen.dart';
 import '../subreddit/subreddit_screen.dart';
 
-const _contentPadding = EdgeInsets.symmetric(horizontal:16, vertical: 5);
+const _contentPadding = EdgeInsets.symmetric(horizontal: 16, vertical: 5);
 
 class SubscriptionTile extends StatelessWidget {
   const SubscriptionTile({Key? key}) : super(key: key);
@@ -27,9 +27,8 @@ class SubscriptionTile extends StatelessWidget {
       title: Text(subreddit.displayNamePrefixed),
       trailing: IconButton(
         onPressed: () {
-          (subreddit.userHasFavorited
-                  ? notifier.unfavorite()
-                  : notifier.favorite())
+          notifier
+              .favorite(!subreddit.userHasFavorited)
               .catchError((e) => showErrorSnackBar(context, e));
         },
         icon: Icon(Icons.star,

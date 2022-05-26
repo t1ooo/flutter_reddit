@@ -98,15 +98,15 @@ class UserNotifier with TryMixin, ChangeNotifier {
     }, 'fail to load saved');
   }
 
-  Future<void> block() {
-    return _updateBlock(true);
-  }
+  // Future<void> block() {
+  //   return _updateBlock(true);
+  // }
 
-  Future<void> unblock() {
-    return _updateBlock(false);
-  }
+  // Future<void> unblock() {
+  //   return _updateBlock(false);
+  // }
 
-  Future<void> _updateBlock(bool block) {
+  Future<void> block(bool block) {
     return try_(() async {
       if (_user.isBlocked == block) return;
       await (_redditApi.userBlock)(_user, true);

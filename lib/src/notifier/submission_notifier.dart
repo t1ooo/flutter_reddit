@@ -95,29 +95,30 @@ class SubmissionNotifier
   }
 
   // TODO: save unsave
-  Future<void> save() {
-    return _updateSave(true);
-  }
+  // Future<void> save() {
+  //   return _updateSave(true);
+  // }
 
   bool get saved => _submission.saved;
 
-  Future<void> _updateSave(bool save) {
+  Future<void> save(bool save) {
     return try_(() async {
+      if (_submission.saved == save) return;
       await _redditApi.submissionSave(_submission, save);
       _submission = _submission.copyWith(saved: save);
       notifyListeners();
     }, 'fail to' + (save ? 'save' : 'unsave'));
   }
 
-  Future<void> hide() {
-    return _updateHide(true);
-  }
+  // Future<void> hide() {
+  //   return _updateHide(true);
+  // }
 
-  Future<void> unhide() {
-    return _updateHide(false);
-  }
+  // Future<void> unhide() {
+  //   return _updateHide(false);
+  // }
 
-  Future<void> _updateHide(bool hide) {
+  Future<void> hide(bool hide) {
     return try_(() async {
       if (_submission.hidden == hide) return;
       await _redditApi.submissionHide(_submission, hide);
