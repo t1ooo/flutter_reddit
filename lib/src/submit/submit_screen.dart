@@ -87,15 +87,12 @@ class _SubmitScreenState extends State<SubmitScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) =>
-                    ChangeNotifierProvider<CurrentUserNotifier>.value(
-                  value: context.read<CurrentUserNotifier>(),
-                  child: ChooseSubredditScreen(onChanged: (v) {
-                    setState(() {
-                      _subreddit = v;
-                    });
-                  }),
-                ),
+                builder: (_) => ChooseSubredditScreen(onChanged: (v) {
+                  // TODO: remove bracket
+                  setState(() {
+                    _subreddit = v;
+                  });
+                }),
               ),
             );
           },
