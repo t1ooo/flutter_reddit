@@ -6,7 +6,7 @@ Color? colorFromHex(String hex) {
   if (hex == '') {
     return null;
   }
-  final value = int.tryParse('FF' + hex.replaceFirst('#', ''), radix: 16);
+  final value = int.tryParse('FF${hex.replaceFirst('#', '')}', radix: 16);
   if (value != null) {
     return Color(value);
   }

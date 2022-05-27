@@ -1,45 +1,17 @@
-import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reddit_prototype/src/logging.dart';
 import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:provider/provider.dart';
 
 import '../ui_logger.dart';
-import '../notifier/auth_notifier.dart';
-import '../notifier/collapsible.dart';
-import '../notifier/comment_notifier.dart';
-import '../notifier/current_user_notifier.dart';
-import '../notifier/home_front_notifier.dart';
-import '../notifier/home_popular_notifier.dart';
-import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
-import '../notifier/const.dart';
-import '../notifier/list_notifier.dart';
-import '../notifier/message_notifier.dart';
-import '../notifier/property_listener.dart';
-import '../notifier/replyable.dart';
-import '../notifier/reportable.dart';
-import '../notifier/rule_notifier.dart';
-import '../notifier/savable.dart';
-import '../notifier/score.dart';
-import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits_notifier.dart';
-import '../notifier/submission_loader_notifier.dart';
 import '../notifier/submission_notifier.dart';
-import '../notifier/submissions_notifier.dart';
-import '../notifier/subreddit_loader_notifier.dart';
-import '../notifier/subreddit_notifier.dart';
-import '../notifier/try_mixin.dart';
-import '../notifier/user_loader_notifier.dart';
-import '../notifier/user_notifier.dart';
-import '../reddit_api/submission_type.dart';
 import '../style.dart';
 import '../widget/icon_text.dart';
 import '../widget/list.dart';
 import 'submission_tile.dart';
 
 class SubmissionTiles<T> extends StatelessWidget {
-  SubmissionTiles({
+  const SubmissionTiles({
     Key? key,
     required this.type,
     required this.types,
@@ -64,8 +36,6 @@ class SubmissionTiles<T> extends StatelessWidget {
       data: (_) => submissions,
       onData: (context, submissions) {
         return CustomListView(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
           children: [
             _typeSelector(context),
             for (final sub in submissions)
@@ -85,13 +55,15 @@ class SubmissionTiles<T> extends StatelessWidget {
   Widget _typeSelector(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: ButtonTheme( // TODO: remove
+      child: ButtonTheme(
+        // TODO: remove
         // height: 200,
         child: TextButton(
           style: ButtonStyle(
             padding: MaterialStateProperty.all(
               // EdgeInsets.symmetric(vertical: 20),
-              EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width/30),
+              EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.width / 30),
             ),
           ),
           onPressed: () {
@@ -120,7 +92,6 @@ class SubmissionTiles<T> extends StatelessWidget {
 
   Widget _modal(BuildContext context) {
     return CustomListView(
-      shrinkWrap: true,
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
@@ -172,7 +143,7 @@ class SubmissionTiles<T> extends StatelessWidget {
 }
 
 class _RadioList<T> extends StatefulWidget {
-  _RadioList({
+  const _RadioList({
     Key? key,
     required this.initialValue,
     required this.values,
@@ -208,6 +179,7 @@ class _RadioListState<T> extends State<_RadioList<T>> {
           ListTile(
             minLeadingWidth: 0,
             leading:
+                // ignore: prefer_null_aware_method_calls
                 widget.iconBuilder != null ? widget.iconBuilder!(value) : null,
             title: widget.titleBuilder(value),
             onTap: () {

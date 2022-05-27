@@ -1,40 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/util/date_time.dart';
-import 'package:flutter_reddit_prototype/src/widget/save.dart';
 import 'package:provider/provider.dart';
 
-import '../reply/reply_screen.dart';
-import '../notifier/auth_notifier.dart';
-import '../notifier/collapsible.dart';
 import '../notifier/comment_notifier.dart';
-import '../notifier/current_user_notifier.dart';
-import '../notifier/home_front_notifier.dart';
-import '../notifier/home_popular_notifier.dart';
-import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
-import '../notifier/const.dart';
-import '../notifier/list_notifier.dart';
-import '../notifier/message_notifier.dart';
-import '../notifier/property_listener.dart';
 import '../notifier/replyable.dart';
-import '../notifier/reportable.dart';
-import '../notifier/rule_notifier.dart';
-import '../notifier/savable.dart';
-import '../notifier/score.dart';
-import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits_notifier.dart';
-import '../notifier/submission_loader_notifier.dart';
-import '../notifier/submission_notifier.dart';
-import '../notifier/submissions_notifier.dart';
-import '../notifier/subreddit_loader_notifier.dart';
-import '../notifier/subreddit_notifier.dart';
-import '../notifier/try_mixin.dart';
-import '../notifier/user_loader_notifier.dart';
-import '../notifier/user_notifier.dart';
+import '../reply/reply_screen.dart';
 import '../style.dart';
 import '../submission/comment_popup_menu.dart';
 import '../submission/submission_screen.dart';
-import '../widget/custom_popup_menu_button.dart';
+import '../util/date_time.dart';
 import '../widget/like.dart';
 
 class SavedComment extends StatelessWidget {
@@ -116,7 +89,7 @@ class SavedComment extends StatelessWidget {
         CommentPopupMenu(showCollapse: false),
         SizedBox(width: 20),
         TextButton.icon(
-          onPressed: () async {
+          onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(

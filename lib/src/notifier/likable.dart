@@ -1,18 +1,18 @@
 import '../reddit_api/like.dart';
 
 abstract class Likable {
-  Future<void> like() async {
+  Future<void> like() {
     if (likes == Like.up) {
       return updateLike_(Like.none);
     }
-    return await updateLike_(Like.up);
+    return updateLike_(Like.up);
   }
 
-  Future<void> dislike() async {
+  Future<void> dislike() {
     if (likes == Like.down) {
       return updateLike_(Like.none);
     }
-    return await updateLike_(Like.down);
+    return updateLike_(Like.down);
   }
 
   Like get likes;

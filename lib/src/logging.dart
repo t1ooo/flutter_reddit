@@ -29,7 +29,6 @@ final _levels = <String, Level>{};
 final _loggers = <String, Logger>{};
 
 Logger getLogger(String name) {
-  print('getLogger: $name');
   final logger = Logger('$_rootName.$name');
   final level = _levels[name];
   if (level != null) {

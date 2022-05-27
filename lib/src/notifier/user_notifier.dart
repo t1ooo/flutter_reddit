@@ -17,6 +17,7 @@ class UserNotifier with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('UserNotifier');
+  @override
   Logger get log => _log;
 
   String get name => _user.name;
@@ -36,13 +37,16 @@ class UserNotifier with TryMixin, ChangeNotifier {
   }
 
   Future<void> loadSubmissions() {
-    return try_(() async {
-      if (_submissions != null) return;
-      _submissions = (await _redditApi.userSubmissions(_user, limit: limit))
-          .map((v) => SubmissionNotifier(_redditApi, v))
-          .toList();
-      notifyListeners();
-    }, 'fail to load user submissions');
+    return try_(
+      () async {
+        if (_submissions != null) return;
+        _submissions = (await _redditApi.userSubmissions(_user, limit: limit))
+            .map((v) => SubmissionNotifier(_redditApi, v))
+            .toList();
+        notifyListeners();
+      },
+      'fail to load user submissions',
+    );
   }
 
   List<CommentNotifier>? _comments;
@@ -54,23 +58,29 @@ class UserNotifier with TryMixin, ChangeNotifier {
   }
 
   Future<void> loadComments() {
-    return try_(() async {
-      if (_comments != null) return;
-      _comments = (await _redditApi.userComments(_user, limit: limit))
-          .map((v) => CommentNotifier(_redditApi, v))
-          .toList();
-      notifyListeners();
-    }, 'fail to load user comments');
+    return try_(
+      () async {
+        if (_comments != null) return;
+        _comments = (await _redditApi.userComments(_user, limit: limit))
+            .map((v) => CommentNotifier(_redditApi, v))
+            .toList();
+        notifyListeners();
+      },
+      'fail to load user comments',
+    );
   }
 
   List<Trophy>? _trophies;
   List<Trophy>? get trophies => _trophies;
   Future<void> loadTrophies() {
-    return try_(() async {
-      if (_trophies != null) return;
-      _trophies = await _redditApi.userTrophies(_user);
-      notifyListeners();
-    }, 'fail to load user comments');
+    return try_(
+      () async {
+        if (_trophies != null) return;
+        _trophies = await _redditApi.userTrophies(_user);
+        notifyListeners();
+      },
+      'fail to load user comments',
+    );
   }
 
   List<CommentNotifier>? _savedComments;
@@ -86,16 +96,19 @@ class UserNotifier with TryMixin, ChangeNotifier {
   }
 
   Future<void> loadSaved() {
-    return try_(() async {
-      if (_savedComments != null && _savedSubmissions != null) return;
-      final saved = await _redditApi.userSaved(_user, limit: limit);
-      _savedSubmissions = saved.submissions
-          .map((v) => SubmissionNotifier(_redditApi, v))
-          .toList();
-      _savedComments =
-          saved.comments.map((v) => CommentNotifier(_redditApi, v)).toList();
-      notifyListeners();
-    }, 'fail to load saved');
+    return try_(
+      () async {
+        if (_savedComments != null && _savedSubmissions != null) return;
+        final saved = await _redditApi.userSaved(_user, limit: limit);
+        _savedSubmissions = saved.submissions
+            .map((v) => SubmissionNotifier(_redditApi, v))
+            .toList();
+        _savedComments =
+            saved.comments.map((v) => CommentNotifier(_redditApi, v)).toList();
+        notifyListeners();
+      },
+      'fail to load saved',
+    );
   }
 
   // Future<void> block() {
@@ -107,12 +120,15 @@ class UserNotifier with TryMixin, ChangeNotifier {
   // }
 
   Future<void> block(bool block) {
-    return try_(() async {
-      if (_user.isBlocked == block) return;
-      await (_redditApi.userBlock)(_user, true);
-      _user = _user.copyWith(isBlocked: block);
-      notifyListeners();
-    }, 'fail to' + (block ? 'block' : 'unblock'));
+    return try_(
+      () async {
+        if (_user.isBlocked == block) return;
+        await (_redditApi.userBlock)(_user, true);
+        _user = _user.copyWith(isBlocked: block);
+        notifyListeners();
+      },
+      'fail to' + (block ? 'block' : 'unblock'),
+    );
   }
 
   @override

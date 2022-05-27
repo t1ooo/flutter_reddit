@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';

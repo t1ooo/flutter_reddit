@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
-import '../ui_logger.dart';
 import '../logging.dart';
+import '../ui_logger.dart';
 
 class CustomNetworkImage extends StatelessWidget {
-  CustomNetworkImage(
+  const CustomNetworkImage(
     this.src, {
     Key? key,
     this.onData,
@@ -17,7 +17,7 @@ class CustomNetworkImage extends StatelessWidget {
 
   final String src;
   final Widget Function(BuildContext, ImageProvider<Object>)? onData;
-  final Widget Function(BuildContext, Object)? onError;
+  final Widget Function(BuildContext, dynamic)? onError;
   final Widget Function(BuildContext)? onLoading;
 
   @override
@@ -47,7 +47,7 @@ class CustomNetworkImage extends StatelessWidget {
     return Container();
   }
 
-  Widget onErrorDefault(BuildContext context, Object error) {
+  Widget onErrorDefault(BuildContext context, dynamic error) {
     uiLogger.error('$error');
     return Container();
   }

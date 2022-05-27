@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/user.dart';
@@ -15,6 +13,7 @@ class CurrentUserNotifier extends UserNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('CurrentUserNotifier');
+  @override
   Logger get log => _log;
 
   // SubredditNotifier? _all;
@@ -66,18 +65,9 @@ class CurrentUserNotifier extends UserNotifier {
   SubredditNotifier _addListener(SubredditNotifier t) {
     return t
       ..addPropertyListener<bool>(() => t.subreddit.userHasFavorited, () {
-        print('update');
         notifyListeners();
       });
   }
-
-  static List<SubredditNotifier> filterFavorite(
-          List<SubredditNotifier> subreddits) =>
-      subreddits.where((v) => v.subreddit.userHasFavorited).toList();
-
-  static List<SubredditNotifier> filterUnfavorite(
-          List<SubredditNotifier> subreddits) =>
-      subreddits.where((v) => !v.subreddit.userHasFavorited).toList();
 
   List<MessageNotifier>? _inboxMessages;
   List<MessageNotifier>? get inboxMessages => _inboxMessages;

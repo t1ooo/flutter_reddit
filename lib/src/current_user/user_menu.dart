@@ -2,44 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
-import 'package:flutter_reddit_prototype/src/user_profile/user_profile_screen.dart';
-import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
-import 'saved_screen.dart';
-import '../ui_logger.dart';
+import '../logging.dart';
 import '../notifier/auth_notifier.dart';
-import '../notifier/collapsible.dart';
-import '../notifier/comment_notifier.dart';
 import '../notifier/current_user_notifier.dart';
-import '../notifier/home_front_notifier.dart';
-import '../notifier/home_popular_notifier.dart';
-import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
-import '../notifier/const.dart';
-import '../notifier/list_notifier.dart';
-import '../notifier/message_notifier.dart';
-import '../notifier/property_listener.dart';
-import '../notifier/replyable.dart';
-import '../notifier/reportable.dart';
-import '../notifier/rule_notifier.dart';
-import '../notifier/savable.dart';
-import '../notifier/score.dart';
-import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits_notifier.dart';
-import '../notifier/submission_loader_notifier.dart';
-import '../notifier/submission_notifier.dart';
-import '../notifier/submissions_notifier.dart';
-import '../notifier/subreddit_loader_notifier.dart';
-import '../notifier/subreddit_notifier.dart';
-import '../notifier/try_mixin.dart';
-import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
+import '../ui_logger.dart';
+import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
+import '../widget/snackbar.dart';
+import 'saved_screen.dart';
 
 class UserMenu extends StatelessWidget {
-  UserMenu({
+  const UserMenu({
     Key? key,
   }) : super(key: key);
 
@@ -47,6 +23,9 @@ class UserMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<CurrentUserNotifier>();
     final user = notifier.user;
+
+    final navigator = Navigator.of(context);
+    void closeDrawer() => navigator.pop();
 
     return Drawer(
       child: Column(
@@ -77,7 +56,7 @@ class UserMenu extends StatelessWidget {
                 ],
               ),
               TableRow(
-                children: [
+                children: const [
                   Center(child: Text('Karma')),
                   Center(child: Text('Reddit age')),
                 ],
@@ -99,7 +78,7 @@ class UserMenu extends StatelessWidget {
                   ),
                 ),
               );
-              Navigator.pop(context);
+              closeDrawer();
             },
           ),
           if (kDebugMode)
@@ -109,7 +88,7 @@ class UserMenu extends StatelessWidget {
               title: Text('Reddit coins'),
               onTap: () {
                 showTodoSnackBar(context); // TODO
-                Navigator.pop(context);
+                closeDrawer();
               },
             ),
           ListTile(
@@ -126,7 +105,7 @@ class UserMenu extends StatelessWidget {
                   ),
                 ),
               );
-              Navigator.pop(context);
+              closeDrawer();
             },
           ),
           if (kDebugMode)
@@ -136,7 +115,7 @@ class UserMenu extends StatelessWidget {
               title: Text('History'),
               onTap: () {
                 showTodoSnackBar(context); // TODO
-                Navigator.pop(context);
+                closeDrawer();
               },
             ),
           ListTile(
@@ -144,10 +123,11 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Log out'),
             onTap: () async {
-              await context.read<AuthNotifier>()
+              await context
+                  .read<AuthNotifier>()
                   .logout()
                   .catchError((e) => showErrorSnackBar(context, e));
-              Navigator.pop(context);
+              closeDrawer();
             },
           ),
           Spacer(),
@@ -158,7 +138,7 @@ class UserMenu extends StatelessWidget {
               title: Text('Settings'),
               onTap: () {
                 showTodoSnackBar(context); // TODO
-                Navigator.pop(context);
+                closeDrawer();
               },
             ),
         ],

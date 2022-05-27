@@ -1,14 +1,12 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/preview_images.dart';
-
 import 'call.dart';
 import 'comment.dart';
 import 'like.dart';
 import 'parse.dart';
-import 'submission_type.dart';
+import 'post_hint.dart';
+import 'preview_images.dart';
 import 'video.dart';
 
 class Submission extends Equatable {
@@ -46,47 +44,8 @@ class Submission extends Equatable {
     required this.drawSubmission,
   });
 
-  final String author;
-  final DateTime created;
-  final DateTime createdUtc;
-  final String domain;
-  final int downs;
-  final bool hidden;
-  final String id;
-  final bool isVideo;
-  final String linkFlairText;
-  final String authorFlairText;
-  final int numComments;
-  final bool over18;
-  final bool pinned;
-  final int score;
-  final String selftext;
-  final String subreddit;
-  final String subredditNamePrefixed;
-  final String thumbnail;
-  final String title;
-  final int ups;
-  final String url;
-  final List<String> awardIcons;
-  final int totalAwardsReceived;
-  final Like likes;
-  final bool saved;
-  final List<Comment>? comments;
-  final List<Preview> preview;
-  final Video? video;
-  final PostHint postHint;
-  final bool authorIsBlocked;
-  final draw.Submission? drawSubmission;
-
-  String get shortLink {
-    if (id == '') {
-      return '';
-    }
-    return 'https://redd.it/$id';
-  }
-
   factory Submission.fromJson(
-    Map m, {
+    Map<String, dynamic> m, {
     List<Comment>? comments,
     draw.Submission? drawSubmission,
   }) {
@@ -129,6 +88,40 @@ class Submission extends Equatable {
       drawSubmission: drawSubmission,
     );
   }
+
+  final String author;
+  final DateTime created;
+  final DateTime createdUtc;
+  final String domain;
+  final int downs;
+  final bool hidden;
+  final String id;
+  final bool isVideo;
+  final String linkFlairText;
+  final String authorFlairText;
+  final int numComments;
+  final bool over18;
+  final bool pinned;
+  final int score;
+  final String selftext;
+  final String subreddit;
+  final String subredditNamePrefixed;
+  final String thumbnail;
+  final String title;
+  final int ups;
+  final String url;
+  final List<String> awardIcons;
+  final int totalAwardsReceived;
+  final Like likes;
+  final bool saved;
+  final List<Comment>? comments;
+  final List<Preview> preview;
+  final Video? video;
+  final PostHint postHint;
+  final bool authorIsBlocked;
+  final draw.Submission? drawSubmission;
+
+  String get shortLink => id == '' ? '' : 'https://redd.it/$id';
 
   @override
   List<Object?> get props {

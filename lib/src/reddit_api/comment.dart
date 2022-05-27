@@ -6,7 +6,7 @@ import 'like.dart';
 import 'parse.dart';
 
 class Comment extends Equatable {
-  Comment({
+  const Comment({
     required this.subredditId,
     required this.authorIsBlocked,
     required this.commentType,
@@ -162,12 +162,9 @@ class Comment extends Equatable {
   final List<String> awardIcons;
   final draw.Comment? drawComment;
 
-  String get shortLink {
-    if (submissionId == '' || id == '') {
-      return '';
-    }
-    return 'https://www.reddit.com/comments/$submissionId/_/$id';
-  }
+  String get shortLink => submissionId == '' || id == ''
+      ? ''
+      : 'https://www.reddit.com/comments/$submissionId/_/$id';
 
   @override
   List<Object?> get props {
@@ -309,7 +306,8 @@ class Comment extends Equatable {
       subredditType: subredditType ?? this.subredditType,
       linkPermalink: linkPermalink ?? this.linkPermalink,
       name: name ?? this.name,
-      subredditNamePrefixed: subredditNamePrefixed ?? this.subredditNamePrefixed,
+      subredditNamePrefixed:
+          subredditNamePrefixed ?? this.subredditNamePrefixed,
       treatmentTags: treatmentTags ?? this.treatmentTags,
       created: created ?? this.created,
       createdUtc: createdUtc ?? this.createdUtc,

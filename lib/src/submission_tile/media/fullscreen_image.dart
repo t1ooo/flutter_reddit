@@ -4,7 +4,7 @@ import '../../widget/sliver_app_bar.dart';
 import 'sized_network_image.dart';
 
 class FullScreenImage extends StatelessWidget {
-  FullScreenImage({
+  const FullScreenImage({
     Key? key,
     required this.imageUrl,
     required this.previewImageUrl,
@@ -37,7 +37,7 @@ class FullScreenImage extends StatelessWidget {
 }
 
 class ImageScreen extends StatelessWidget {
-  ImageScreen({
+  const ImageScreen({
     Key? key,
     required this.imageUrl,
   }) : super(key: key);

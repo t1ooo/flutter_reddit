@@ -31,30 +31,6 @@ class User extends Equatable {
     required this.drawRedditor,
   });
 
-  final bool isEmployee;
-  final bool isFriend;
-  final int awardeeKarma;
-  final String id;
-  final bool verified;
-  final bool isGold;
-  final bool isMod;
-  final int awarderKarma;
-  final bool hasVerifiedEmail;
-  final String iconImg;
-  final int linkKarma;
-  final bool isBlocked;
-  final int totalKarma;
-  final bool acceptChats;
-  final String name;
-  final DateTime created;
-  final DateTime createdUtc;
-  final String snoovatarImg;
-  final int commentKarma;
-  final bool acceptFollowers;
-  final bool hasSubscribed;
-  final Subreddit subreddit;
-  final draw.Redditor? drawRedditor;
-
   factory User.fromJson(Map<String, dynamic> m, {draw.Redditor? drawRedditor}) {
     const f = 'User';
     return User(
@@ -84,6 +60,30 @@ class User extends Equatable {
       drawRedditor: drawRedditor,
     );
   }
+
+  final bool isEmployee;
+  final bool isFriend;
+  final int awardeeKarma;
+  final String id;
+  final bool verified;
+  final bool isGold;
+  final bool isMod;
+  final int awarderKarma;
+  final bool hasVerifiedEmail;
+  final String iconImg;
+  final int linkKarma;
+  final bool isBlocked;
+  final int totalKarma;
+  final bool acceptChats;
+  final String name;
+  final DateTime created;
+  final DateTime createdUtc;
+  final String snoovatarImg;
+  final int commentKarma;
+  final bool acceptFollowers;
+  final bool hasSubscribed;
+  final Subreddit subreddit;
+  final draw.Redditor? drawRedditor;
 
   @override
   List<Object?> get props {

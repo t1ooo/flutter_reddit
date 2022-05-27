@@ -1,9 +1,10 @@
+// ignore_for_file: flutter_style_todos
+
 // TODO: load all submission comment with CommentForest.replaceMore
 // TODO: reddit api cache
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
 // TODO: comment edit|delete
-// TODO: dart analytics options
 // TODO: optimistic updates
 // TODO: remove unused containers
 // TODO: remove unused code

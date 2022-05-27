@@ -5,14 +5,6 @@ import 'parse.dart';
 // import 'parse.dart';
 
 class Rule extends Equatable {
-  final String kind;
-  final String description;
-  final String shortName;
-  final String violationReason;
-  final DateTime createdUtc;
-  final int priority;
-  final String descriptionHtml;
-
   Rule({
     required this.kind,
     required this.description,
@@ -23,7 +15,7 @@ class Rule extends Equatable {
     required this.descriptionHtml,
   });
 
-  factory Rule.fromJson(Map m) {
+  factory Rule.fromJson(Map<String, dynamic> m) {
     const f = 'Rule';
     return Rule(
       kind: parseString(m['kind'], '$f.kind'),
@@ -38,8 +30,15 @@ class Rule extends Equatable {
     );
   }
 
+  final String kind;
+  final String description;
+  final String shortName;
+  final String violationReason;
+  final DateTime createdUtc;
+  final int priority;
+  final String descriptionHtml;
+
   @override
-  // TODO: implement props
   List<Object> get props {
     return [
       kind,

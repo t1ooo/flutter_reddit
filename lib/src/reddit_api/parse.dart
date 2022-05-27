@@ -1,13 +1,14 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:clock/clock.dart';
 
 import '../logging.dart';
-
 import 'comment.dart';
+import 'like.dart';
 import 'post_hint.dart';
 import 'preview_images.dart';
 import 'rule.dart';
 import 'video.dart';
-import 'like.dart';
 
 final _parserLog = getLogger('parse');
 
@@ -24,6 +25,7 @@ T cast<T>(dynamic data, T defaultValue, [String? name]) {
     }
 
     return data as T;
+    // ignore: avoid_catching_errors
   } on TypeError catch (_) {
     _log('fail to cast: <${data.runtimeType}> to <$T>', name);
     return defaultValue;
@@ -71,16 +73,18 @@ List<Comment> parseReplies(dynamic data, [String? name]) {
     }
 
     final comments = <Comment>[];
-    for (final v in (data['data']?['children'] as List<dynamic>)) {
+    for (final v in data['data']?['children'] as List<dynamic>) {
       try {
         if (v['children'] == 't1') {
-          comments.add(Comment.fromJson(v['data']));
+          comments.add(Comment.fromJson(v['data'] as Map<String, dynamic>));
         }
+        // ignore: avoid_catching_errors
       } on TypeError catch (e) {
         _log('$e: $v', name);
       }
     }
     return comments;
+    // ignore: avoid_catching_errors
   } on TypeError catch (e) {
     _log('$e: $data', name);
     return [];
@@ -94,6 +98,11 @@ String parseUrl(dynamic data, [String? name]) {
       data == 'default' ||
       data == 'image' ||
       data == 'spoiler') {
+    return '';
+  }
+
+  if (data is! String) {
+    _log('fail to parse uri: $data', name);
     return '';
   }
 
@@ -145,32 +154,35 @@ List<String> parseAwardIcons(dynamic data, [String? name]) {
     }).where((v) {
       return v != '';
     }).toList();
+    // ignore: avoid_catching_errors
   } on TypeError catch (e) {
     _log('$e: $data', name);
     return [];
   }
 }
 
-List<Previews> parsePreviews(dynamic data, [String? name]) {
-  try {
-    if (data == null) {
-      return [];
-    }
+// List<Previews> parsePreviews(dynamic data, [String? name]) {
+//   try {
+//     if (data == null) {
+//       return [];
+//     }
 
-    final images = <Previews>[];
-    for (final v in (data['images'] as List<dynamic>)) {
-      try {
-        images.add(Previews.fromJson(v));
-      } on TypeError catch (e) {
-        _log('$e: $v', name);
-      }
-    }
-    return images;
-  } on TypeError catch (e) {
-    _log('$e: $data', name);
-    return [];
-  }
-}
+//     final images = <Previews>[];
+//     for (final v in data['images'] as List<dynamic>) {
+//       try {
+//         images.add(Previews.fromJson(v as Map<String, dynamic>));
+//         // ignore: avoid_catching_errors
+//       } on TypeError catch (e) {
+//         _log('$e: $v', name);
+//       }
+//     }
+//     return images;
+//     // ignore: avoid_catching_errors
+//   } on TypeError catch (e) {
+//     _log('$e: $data', name);
+//     return [];
+//   }
+// }
 
 List<Preview> parsePreview(dynamic data, [String? name]) {
   try {
@@ -180,14 +192,26 @@ List<Preview> parsePreview(dynamic data, [String? name]) {
 
     final images = <Preview>[];
 
-    for (final v in (data['images'] as List<dynamic>)) {
+    for (var v in data['images'] as List<dynamic>) {
       try {
-        images.add(Preview.fromJson(v['variants']?['gif'] ?? v));
+        v ??= v['variants']?['gif'];
+        final source =
+            PreviewItem.fromJson(v['source'] as Map<String, dynamic>);
+        final resolutions = ((v['resolutions'] as List<dynamic>?) ?? [])
+            .map((x) => PreviewItem.fromJson(x as Map<String, dynamic>))
+            .cast<PreviewItem>()
+            .toList();
+        images.add(Preview(source: source, resolutions: resolutions));
+        // images.add(Preview.fromJson(
+        //   (v['variants']?['gif'] ?? v) as Map<String, dynamic>,
+        // ));
+        // ignore: avoid_catching_errors
       } on TypeError catch (e) {
         _log('$e: $v', name);
       }
     }
     return images;
+    // ignore: avoid_catching_errors
   } on TypeError catch (e) {
     _log('$e: $data', name);
     return [];
@@ -200,7 +224,8 @@ Video? parseVideo(dynamic data, [String? name]) {
     if (video == null) {
       return null;
     }
-    return Video.fromJson(video);
+    return Video.fromJson(video as Map<String, dynamic>);
+    // ignore: avoid_catching_errors
   } on TypeError catch (e) {
     _log('$e: $data', name);
     return null;
@@ -214,14 +239,16 @@ List<Rule>? parseRules(dynamic data, [String? name]) {
     }
 
     final rules = <Rule>[];
-    for (final v in (data['rules'] as List<dynamic>)) {
+    for (final v in data['rules'] as List<dynamic>) {
       try {
-        rules.add(Rule.fromJson(v));
+        rules.add(Rule.fromJson(v as Map<String, dynamic>));
+        // ignore: avoid_catching_errors
       } on TypeError catch (e) {
         _log('$e: $v', name);
       }
     }
     return rules;
+    // ignore: avoid_catching_errors
   } on TypeError catch (e) {
     _log('$e: $data', name);
     return [];
@@ -295,11 +322,11 @@ String parseString(dynamic data, [String? name]) {
   return defaultValue;
 }
 
-final markdownRegExp = RegExp(r'#+');
+final markdownRegExp = RegExp('#+');
 
 String parseMarkdown(dynamic data, [String? name]) {
   final text = parseBody(data, name);
-  return text.replaceAllMapped(RegExp(r'#+'), (m) {
+  return text.replaceAllMapped(RegExp('#+'), (m) {
     return ' ${m.group(0)} ';
   });
 }
@@ -321,7 +348,7 @@ List<String> parseListString(dynamic data, [String? name]) {
   if (data == null) {
     return [];
   }
-  if (!(data is List)) {
+  if (data is! List) {
     _log('fail to parse List<string>: $data', name);
     return [];
   }

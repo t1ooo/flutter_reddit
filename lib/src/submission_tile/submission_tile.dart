@@ -4,29 +4,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_reddit_prototype/src/reddit_api/post_hint.dart';
-import 'package:flutter_reddit_prototype/src/subreddit/subreddit_screen.dart';
-import 'package:flutter_reddit_prototype/src/widget/awards.dart';
-import 'package:flutter_reddit_prototype/src/widget/debug.dart';
-
 import '../notifier/submission_notifier.dart';
+import '../reddit_api/post_hint.dart';
 import '../style.dart';
 import '../submission/submission_screen.dart';
+import '../subreddit/subreddit_screen.dart';
 import '../user_profile/user_profile_screen.dart';
 import '../util/date_time.dart';
 import '../util/size.dart';
 import '../util/youtube.dart';
+import '../widget/awards.dart';
+import '../widget/debug.dart';
 import '../widget/icon_text.dart';
 import '../widget/like.dart';
 import '../widget/snackbar.dart';
-
-import 'submission_popup_menu.dart';
 import 'media/external_link.dart';
 import 'media/fullscreen_image.dart';
+import 'media/image_link.dart';
 import 'media/image_slider.dart';
 import 'media/video_player.dart';
 import 'media/youtube_player.dart';
-import 'media/image_link.dart';
+import 'submission_popup_menu.dart';
 
 class SubmissionTile extends StatelessWidget {
   const SubmissionTile({

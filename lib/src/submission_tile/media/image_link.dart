@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'sized_network_image.dart';
 
 class ImageLink extends StatelessWidget {
-  ImageLink({
+  const ImageLink({
     Key? key,
     required this.size,
     required this.imageUrl,

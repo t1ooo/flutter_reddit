@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExternalLink extends StatelessWidget {
-  ExternalLink({
+  const ExternalLink({
     Key? key,
     required this.url,
   }) : super(key: key);
@@ -15,16 +15,18 @@ class ExternalLink extends StatelessWidget {
       onTap: () {
         launch(url);
       },
-      child: Row(children: [
-        Flexible(
-          child: Text(
-            url,
-            overflow: TextOverflow.ellipsis,
+      child: Row(
+        children: [
+          Flexible(
+            child: Text(
+              url,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-        SizedBox(width: 5),
-        Icon(Icons.open_in_new),
-      ]),
+          SizedBox(width: 5),
+          Icon(Icons.open_in_new),
+        ],
+      ),
     );
   }
 }

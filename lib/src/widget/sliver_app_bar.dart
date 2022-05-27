@@ -21,7 +21,7 @@ double _safeAreaTopPadding(BuildContext context) =>
 //     _appBarCollapsedHeight(context) * 0.1;
 
 class PrimarySliverAppBar extends StatelessWidget {
-  PrimarySliverAppBar({
+  const PrimarySliverAppBar({
     Key? key,
     this.flexibleSpace,
     this.elevation = 0,
@@ -38,7 +38,6 @@ class PrimarySliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
-      primary: true,
       automaticallyImplyLeading: false,
       leadingWidth: 0,
       toolbarHeight: _appBarCollapsedHeight(context),
@@ -72,23 +71,20 @@ class SliverTabBar extends StatelessWidget {
 }
 
 class SpaceBarIcon extends StatelessWidget {
-  SpaceBarIcon(
+  const SpaceBarIcon(
     this.icon, {
     Key? key,
   }) : super(key: key);
 
   final IconData icon;
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
+      padding: EdgeInsets.symmetric(), // TODO: remove padding
       child: Container(
-        child: IconTheme(
-          data: appBarIconThemeDark,
-          child: Icon(icon),
-        ),
         decoration: ShapeDecoration(
-          shadows: [
+          shadows: const [
             BoxShadow(
               color: Colors.white54,
               blurRadius: 15,
@@ -96,6 +92,10 @@ class SpaceBarIcon extends StatelessWidget {
             )
           ],
           shape: CircleBorder(),
+        ),
+        child: IconTheme(
+          data: appBarIconThemeDark,
+          child: Icon(icon),
         ),
       ),
     );
@@ -110,20 +110,21 @@ class AppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 0), // TODO: remove padding
+      padding: const EdgeInsets.only(), // TODO: remove padding
       child: Text(text, style: Theme.of(context).textTheme.titleLarge),
     );
   }
 }
 
 class AppBarBackButton extends StatelessWidget {
-  AppBarBackButton({
+  const AppBarBackButton({
     Key? key,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
+      padding: EdgeInsets.symmetric(), // TODO: remove padding
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {
@@ -136,13 +137,14 @@ class AppBarBackButton extends StatelessWidget {
 }
 
 class AppBarAccountButton extends StatelessWidget {
-  AppBarAccountButton({
+  const AppBarAccountButton({
     Key? key,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
+      padding: EdgeInsets.symmetric(), // TODO: remove padding
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {
@@ -155,13 +157,14 @@ class AppBarAccountButton extends StatelessWidget {
 }
 
 class AppBarCloseButton extends StatelessWidget {
-  AppBarCloseButton({
+  const AppBarCloseButton({
     Key? key,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0), // TODO: remove padding
+      padding: EdgeInsets.symmetric(), // TODO: remove padding
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {
@@ -174,7 +177,7 @@ class AppBarCloseButton extends StatelessWidget {
 }
 
 class SpaceBar extends StatelessWidget {
-  SpaceBar({
+  const SpaceBar({
     Key? key,
     this.src, // TODO: rename to backgroundImage
     this.backgroundColor,
@@ -191,7 +194,7 @@ class SpaceBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxFlex = 10;
+    const maxFlex = 10;
     final titleFlex =
         maxFlex - (leading != null ? 1 : 0) - (trailing != null ? 1 : 0);
 
@@ -253,8 +256,7 @@ class SpaceBar extends StatelessWidget {
                 children: [
                   if (leading != null)
                     Expanded(
-                      flex: 1,
-                      child: Center(child: leading!),
+                      child: Center(child: leading),
                     )
                   else
                     SizedBox(width: 5),
@@ -264,8 +266,7 @@ class SpaceBar extends StatelessWidget {
                   ),
                   if (trailing != null)
                     Expanded(
-                      flex: 1,
-                      child: Center(child: trailing!),
+                      child: Center(child: trailing),
                     )
                   else
                     SizedBox(width: 5)
@@ -289,7 +290,7 @@ class SearchForm extends StatelessWidget {
   final String? query;
   final String? subreddit;
   static final _controller = TextEditingController();
-  static final routeName = 'SearchForm';
+  static const routeName = 'SearchForm';
 
   @override
   Widget build(BuildContext context) {
@@ -298,11 +299,11 @@ class SearchForm extends StatelessWidget {
     });
     return WillPopScope(
       onWillPop: () async {
-        print('pop');
         _controller.clear();
         return true;
       },
-      child: SizedBox(// TODO: remove
+      child: SizedBox(
+        // TODO: remove
         // height: 50,
         // height: _searchFormHeight(context),
         child: TextField(
@@ -317,7 +318,9 @@ class SearchForm extends StatelessWidget {
                   settings: RouteSettings(name: routeName),
                   builder: (_) => subreddit != null
                       ? SearchBySubredditScreen(
-                          query: query, subreddit: subreddit!)
+                          query: query,
+                          subreddit: subreddit!,
+                        )
                       : SearchScreen(query: query),
                 ),
               );
@@ -343,7 +346,8 @@ class SearchForm extends StatelessWidget {
   }
 }
 
-void navigatorPushOrReplace(context, MaterialPageRoute route) {
+void navigatorPushOrReplace(
+    BuildContext context, MaterialPageRoute<dynamic> route) {
   final name = route.settings.name;
   if (name == null || name == '') {
     throw Exception('route name must not be empty');

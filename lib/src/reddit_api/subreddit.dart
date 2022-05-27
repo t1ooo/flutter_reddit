@@ -32,35 +32,6 @@ class Subreddit extends Equatable {
     required this.drawSubreddit,
   });
 
-  final String communityIcon;
-  final DateTime created;
-  final DateTime createdUtc;
-  final String description;
-  final String descriptionHtml;
-  final String displayName;
-  final String displayNamePrefixed;
-  final String id;
-  final String lang;
-  final String name;
-  final String publicDescription;
-  final String publicDescriptionHtml;
-  final String submitTextHtml;
-  final String submitText;
-  final String subredditType;
-  final int subscribers;
-  final String title;
-  final String url;
-  final String headerImg;
-  final String bannerBackgroundImage;
-  final String bannerBackgroundColor;
-  final bool userIsSubscriber;
-  final bool userHasFavorited;
-  final draw.Subreddit? drawSubreddit;
-
-  String get shortLink {
-    return 'https://www.reddit.com/$displayNamePrefixed';
-  }
-
   factory Subreddit.fromJson(Map<String, dynamic> m,
       {draw.Subreddit? drawSubreddit}) {
     const f = 'Subreddit';
@@ -98,6 +69,35 @@ class Subreddit extends Equatable {
           parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
       drawSubreddit: drawSubreddit,
     );
+  }
+
+  final String communityIcon;
+  final DateTime created;
+  final DateTime createdUtc;
+  final String description;
+  final String descriptionHtml;
+  final String displayName;
+  final String displayNamePrefixed;
+  final String id;
+  final String lang;
+  final String name;
+  final String publicDescription;
+  final String publicDescriptionHtml;
+  final String submitTextHtml;
+  final String submitText;
+  final String subredditType;
+  final int subscribers;
+  final String title;
+  final String url;
+  final String headerImg;
+  final String bannerBackgroundImage;
+  final String bannerBackgroundColor;
+  final bool userIsSubscriber;
+  final bool userHasFavorited;
+  final draw.Subreddit? drawSubreddit;
+
+  String get shortLink {
+    return 'https://www.reddit.com/$displayNamePrefixed';
   }
 
   Subreddit copyWith({

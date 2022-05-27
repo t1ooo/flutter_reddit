@@ -10,9 +10,10 @@ class MessageNotifier with TryMixin, ChangeNotifier {
 
   final RedditApi _redditApi;
   static final _log = getLogger('MessageNotifier');
+  @override
   Logger get log => _log;
 
-  Message _message;
+  final Message _message;
   Message get message => _message;
 
   @override

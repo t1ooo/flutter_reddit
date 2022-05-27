@@ -1,14 +1,14 @@
 import 'package:draw/draw.dart' as draw;
-import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
+import 'rule.dart';
 
-import 'message.dart';
-import 'trophy.dart';
-import 'user.dart';
 import 'comment.dart';
+import 'like.dart';
+import 'message.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
-import 'like.dart';
+import 'trophy.dart';
+import 'user.dart';
 
 // TODO: move to file
 typedef Sort = draw.Sort;

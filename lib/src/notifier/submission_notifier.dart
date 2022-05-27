@@ -1,10 +1,4 @@
 import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import 'package:flutter_reddit_prototype/src/notifier/iterable_sum.dart';
-import 'package:flutter_reddit_prototype/src/notifier/replyable.dart';
-import 'package:flutter_reddit_prototype/src/notifier/reportable.dart';
-import 'package:flutter_reddit_prototype/src/notifier/savable.dart';
-import 'package:flutter_reddit_prototype/src/notifier/try_mixin.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../logging.dart';
@@ -14,14 +8,19 @@ import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import 'comment_notifier.dart';
+import 'iterable_sum.dart';
 import 'likable.dart';
 import 'property_listener.dart';
+import 'replyable.dart';
+import 'reportable.dart';
+import 'savable.dart';
 import 'score.dart';
+import 'try_mixin.dart';
 
 class PreviewImage {
+  PreviewImage(this.image, this.preview);
   final PreviewItem image;
   final PreviewItem preview;
-  PreviewImage(this.image, this.preview);
 }
 
 class SubmissionNotifier
@@ -35,6 +34,7 @@ class SubmissionNotifier
 
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionNotifier');
+  @override
   Logger get log => _log;
 
   List<CommentNotifier>? _comments;
@@ -77,8 +77,10 @@ class SubmissionNotifier
     }).toList();
   }
 
+  @override
   String get replyToMessage => _submission.title;
 
+  @override
   Future<void> reply(String body) {
     return try_(() async {
       final commentReply = await _redditApi.submissionReply(_submission, body);
@@ -99,8 +101,10 @@ class SubmissionNotifier
   //   return _updateSave(true);
   // }
 
+  @override
   bool get saved => _submission.saved;
 
+  @override
   Future<void> save(bool save) {
     return try_(() async {
       if (_submission.saved == save) return;
@@ -133,6 +137,7 @@ class SubmissionNotifier
   @override
   int get score => _submission.score;
 
+  @override
   Future<void> updateLike_(Like like) {
     return try_(() async {
       await _redditApi.submissionLike(_submission, like);
@@ -158,8 +163,8 @@ class SubmissionNotifier
     return _submission.preview
         .map(
           (v) {
-            final resolutions = [v.source, ...v.resolutions.reversed];
-            resolutions.sort((a, b) => (b.width - a.width).toInt());
+            final resolutions = [v.source, ...v.resolutions.reversed]
+              ..sort((a, b) => (b.width - a.width).toInt());
 
             for (final img in resolutions) {
               if (img.width <= maxWidth && img.width <= maxHeight) {

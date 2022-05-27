@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'snackbar.dart';
 
 class Loader<T> extends StatelessWidget {
-  Loader({
+  const Loader({
     Key? key,
     required this.load,
     required this.data,
@@ -14,7 +14,7 @@ class Loader<T> extends StatelessWidget {
     this.onLoading,
   }) : super(key: key);
 
-  final Future Function(BuildContext) load;
+  final Future<dynamic> Function(BuildContext) load;
   final T? Function(BuildContext) data;
 
   final Widget Function(BuildContext, T) onData;
@@ -39,25 +39,25 @@ class Loader<T> extends StatelessWidget {
     );
   }
 
-  Widget onErrorDefault(context, error) {
+  Widget onErrorDefault(BuildContext context, Object error) {
     showErrorSnackBar(context, error);
     return Container();
   }
 
-  Widget onLoadingDefault(context) {
+  Widget onLoadingDefault(BuildContext context) {
     return Center(child: CircularProgressIndicator());
   }
 }
 
 class LoaderBuilder<T> extends StatelessWidget {
-  LoaderBuilder({
+  const LoaderBuilder({
     Key? key,
     required this.load,
     required this.data,
     required this.builder,
   }) : super(key: key);
 
-  final Future Function(BuildContext) load;
+  final Future<dynamic> Function(BuildContext) load;
   final T Function(BuildContext) data;
   final Widget Function(BuildContext, T, Object?) builder;
 
@@ -66,7 +66,7 @@ class LoaderBuilder<T> extends StatelessWidget {
     return FutureBuilder<void>(
       future: load(context),
       builder: (context, snap) {
-        return builder(context, this.data(context), snap.error);
+        return builder(context, data(context), snap.error);
       },
     );
   }

@@ -14,15 +14,6 @@ class Trophy extends Equatable {
     required this.description,
   });
 
-  final String icon70;
-  final DateTime grantedAt;
-  final String url;
-  final String icon40;
-  final String name;
-  final String awardId;
-  final String id;
-  final String description;
-
   factory Trophy.fromJson(Map<String, dynamic> m) {
     const f = 'Trophy';
     return Trophy(
@@ -36,6 +27,15 @@ class Trophy extends Equatable {
       description: parseString(m['description'], '$f.description'),
     );
   }
+
+  final String icon70;
+  final DateTime grantedAt;
+  final String url;
+  final String icon40;
+  final String name;
+  final String awardId;
+  final String id;
+  final String description;
 
   @override
   List<Object> get props {

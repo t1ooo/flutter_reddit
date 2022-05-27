@@ -1,39 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/widget/loader.dart';
-
 import 'package:provider/provider.dart';
 
-import '../notifier/auth_notifier.dart';
-import '../notifier/collapsible.dart';
-import '../notifier/comment_notifier.dart';
-import '../notifier/current_user_notifier.dart';
-import '../notifier/home_front_notifier.dart';
-import '../notifier/home_popular_notifier.dart';
-import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
-import '../notifier/const.dart';
-import '../notifier/list_notifier.dart';
-import '../notifier/message_notifier.dart';
-import '../notifier/property_listener.dart';
-import '../notifier/replyable.dart';
-import '../notifier/reportable.dart';
-import '../notifier/rule_notifier.dart';
-import '../notifier/savable.dart';
-import '../notifier/score.dart';
-import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits_notifier.dart';
-import '../notifier/submission_loader_notifier.dart';
-import '../notifier/submission_notifier.dart';
-import '../notifier/submissions_notifier.dart';
-import '../notifier/subreddit_loader_notifier.dart';
-import '../notifier/subreddit_notifier.dart';
-import '../notifier/try_mixin.dart';
 import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
-import '../style.dart';
 import '../util/color.dart';
 import '../widget/custom_popup_menu_button.dart';
+import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/snackbar.dart';
 import 'user_about.dart';
@@ -103,7 +75,7 @@ class _UserProfileScreen extends StatelessWidget {
               ),
               SliverList(delegate: SliverChildListDelegate([UserInfo()])),
               SliverTabBar(
-                tabs: [
+                tabs: const [
                   Tab(text: 'Posts'),
                   Tab(text: 'Comments'),
                   Tab(text: 'About'),
@@ -112,7 +84,7 @@ class _UserProfileScreen extends StatelessWidget {
             ];
           },
           body: TabBarView(
-            children: [
+            children: const [
               UserSubmissions(),
               UserComments(),
               UserAbout(),

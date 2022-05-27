@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
@@ -8,7 +6,7 @@ import 'const.dart';
 import 'submissions_notifier.dart';
 
 class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
- HomeFrontNotifier(this._redditApi)
+  HomeFrontNotifier(this._redditApi)
       : super(_redditApi, FrontSubType.values.first);
 
   final RedditApi _redditApi;
@@ -17,6 +15,7 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
 
   @override
   Future<List<Submission>> loadSubmissions_() {
+    throw Exception();
     return _redditApi.front(limit: limit, type: subType);
   }
 

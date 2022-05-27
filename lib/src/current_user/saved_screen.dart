@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style.dart';
 
 import '../widget/sliver_app_bar.dart';
 import 'saved_comments.dart';
 import 'saved_submissions.dart';
 
 class SavedScreen extends StatelessWidget {
+  const SavedScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +22,7 @@ class SavedScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: [
+                tabs: const [
                   Tab(child: Text('Posts')),
                   Tab(child: Text('Comments')),
                 ],
@@ -29,7 +30,7 @@ class SavedScreen extends StatelessWidget {
             ];
           },
           body: TabBarView(
-            children: [
+            children: const [
               SavedSubmissions(),
               SavedComments(),
             ],

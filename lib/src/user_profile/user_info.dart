@@ -2,40 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
-import 'package:flutter_reddit_prototype/src/widget/snackbar.dart';
 import 'package:provider/provider.dart';
 
-import '../ui_logger.dart';
-import '../notifier/auth_notifier.dart';
-import '../notifier/collapsible.dart';
-import '../notifier/comment_notifier.dart';
+import '../logging.dart';
 import '../notifier/current_user_notifier.dart';
-import '../notifier/home_front_notifier.dart';
-import '../notifier/home_popular_notifier.dart';
-import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
-import '../notifier/const.dart';
-import '../notifier/list_notifier.dart';
-import '../notifier/message_notifier.dart';
-import '../notifier/property_listener.dart';
-import '../notifier/replyable.dart';
-import '../notifier/reportable.dart';
-import '../notifier/rule_notifier.dart';
-import '../notifier/savable.dart';
-import '../notifier/score.dart';
-import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits_notifier.dart';
-import '../notifier/submission_loader_notifier.dart';
-import '../notifier/submission_notifier.dart';
-import '../notifier/submissions_notifier.dart';
-import '../notifier/subreddit_loader_notifier.dart';
 import '../notifier/subreddit_notifier.dart';
-import '../notifier/try_mixin.dart';
-import '../notifier/user_loader_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../style.dart';
+import '../ui_logger.dart';
 import '../util/date_time.dart';
+import '../widget/snackbar.dart';
 import '../widget/subscribe_button.dart';
 
 class UserInfo extends StatelessWidget {
@@ -87,7 +63,8 @@ class UserInfo extends StatelessWidget {
               ],
             ),
             Text(
-                '${user.totalKarma} karma • ${formatDateTime(user.created)} • ${'${user.subreddit.subscribers} followers'}'),
+              '${user.totalKarma} karma • ${formatDateTime(user.created)} • ${'${user.subreddit.subscribers} followers'}',
+            ),
             SizedBox(height: 20),
             if (subreddit.publicDescription != '') ...[
               Text(subreddit.publicDescription),

@@ -2,14 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
-import 'package:flutter_reddit_prototype/src/util/uri.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'src/app.dart';
+import 'src/logging.dart';
 import 'src/notifier/auth_notifier.dart';
 import 'src/notifier/current_user_notifier.dart';
 import 'src/notifier/home_front_notifier.dart';
@@ -25,6 +22,7 @@ import 'src/reddit_api/credentials.dart';
 import 'src/reddit_api/reddit_api.dart';
 import 'src/reddit_api/reddit_api_fake.dart';
 import 'src/reddit_api/reddit_api_impl.dart';
+import 'src/util/uri.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,11 +82,15 @@ Future<void> main() async {
 }
 
 Future<RedditApi> createRedditApi() async {
-  final clientId = const String.fromEnvironment('REDDIT_CLIENT_ID');
+  // ignore: do_not_use_environment
+  const clientId = String.fromEnvironment('REDDIT_CLIENT_ID');
   final redirectUri =
+      // ignore: do_not_use_environment
       Uri.tryParse(const String.fromEnvironment('REDDIT_REDIRECT_URI'));
   if (clientId != '' && redirectUri != null && redirectUri.isNotEmpty) {
-    print('use reddit api');
+    if (kDebugMode) {
+      print('use reddit api');
+    }
     final auth = Platform.isAndroid
         ? AndroidAuth(redirectUri)
         : Platform.isLinux
@@ -101,7 +103,9 @@ Future<RedditApi> createRedditApi() async {
     // return RedditApiImpl(clientId, redirectUri, credentials);
   }
 
-  print('use fake reddit api');
+  if (kDebugMode) {
+    print('use fake reddit api');
+  }
   return FakeRedditApi();
 }
 

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import 'logging.dart';
 import 'login/login_screen.dart';
 import 'notifier/auth_notifier.dart';
 import 'style.dart';
 import 'tabs.dart';
+import 'ui_logger.dart';
 import 'widget/custom_future_builder.dart';
 import 'widget/custom_scroll.dart';
 
@@ -73,7 +75,7 @@ class StartScreen extends StatelessWidget {
             return LoginScreen();
           },
           onError: (_, e) {
-            print('$e');
+            uiLogger.error('$e');
             return LoginScreen();
           },
         );

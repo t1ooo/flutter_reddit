@@ -5,7 +5,7 @@ import '../widget/sliver_app_bar.dart';
 import 'messages.dart';
 
 class InboxScreen extends StatelessWidget {
-  InboxScreen({Key? key}) : super(key: key);
+  const InboxScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

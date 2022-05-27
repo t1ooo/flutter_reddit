@@ -1,6 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style.dart';
+import '../style.dart';
 
 class SwipeToRefresh extends StatelessWidget {
   const SwipeToRefresh({

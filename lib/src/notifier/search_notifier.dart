@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 
 import '../logging.dart';
@@ -43,22 +45,29 @@ class SearchNotifier with TryMixin, ChangeNotifier {
     Sort sort = Sort.relevance,
     String subredditName = 'all',
   ]) {
-    return try_(() async {
-      if (_submissions != null &&
-          _query == query &&
-          _sort == sort &&
-          _subredditName == subredditName) return;
+    return try_(
+      () async {
+        if (_submissions != null &&
+            _query == query &&
+            _sort == sort &&
+            _subredditName == subredditName) return;
 
-      _query = query;
-      _sort = sort;
-      _subredditName = subredditName;
+        _query = query;
+        _sort = sort;
+        _subredditName = subredditName;
 
-      _submissions = (await _redditApi.search(query,
-              limit: limit, sort: _sort, subreddit: _subredditName))
-          .map((v) => SubmissionNotifier(_redditApi, v))
-          .toList();
-      notifyListeners();
-    }, 'fail to search');
+        _submissions = (await _redditApi.search(
+          query,
+          limit: limit,
+          sort: _sort,
+          subreddit: _subredditName,
+        ))
+            .map((v) => SubmissionNotifier(_redditApi, v))
+            .toList();
+        notifyListeners();
+      },
+      'fail to search',
+    );
   }
 
   @override

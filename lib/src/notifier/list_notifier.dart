@@ -12,5 +12,7 @@ class ListNotifier<T extends ChangeNotifier> extends ChangeNotifier {
   }
 
   UnmodifiableListView<T> get values => UnmodifiableListView(_values);
+  
+  // ignore: prefer_final_fields
   List<T> _values;
 }

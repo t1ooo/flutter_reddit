@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../style.dart';
 import '../widget/sliver_app_bar.dart';
 import 'search_posts.dart';
 import 'search_subreddits.dart';
 
 class SearchScreen extends StatelessWidget {
-  SearchScreen({
+  const SearchScreen({
     Key? key,
     required this.query,
   }) : super(key: key);
@@ -42,7 +41,7 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: [
+                tabs: const [
                   Tab(text: 'Posts'),
                   Tab(text: 'Subreddits'),
                 ],
@@ -62,7 +61,7 @@ class SearchScreen extends StatelessWidget {
 }
 
 class SearchBySubredditScreen extends StatelessWidget {
-  SearchBySubredditScreen({
+  const SearchBySubredditScreen({
     Key? key,
     required this.query,
     required this.subreddit,

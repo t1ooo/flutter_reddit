@@ -3,29 +3,29 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../logging.dart';
+import 'comment.dart';
+import 'like.dart';
 import 'message.dart';
 import 'parse.dart';
-import 'trophy.dart';
-import 'user.dart';
-import 'comment.dart';
+import 'reddit_api.dart';
+import 'rule.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
-import 'like.dart';
-import 'reddit_api.dart';
+import 'trophy.dart';
+import 'user.dart';
 
 class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
   static final _log = getLogger('FakeRedditApi');
 
-  Duration _delay = Duration(seconds: 1 ~/ 2);
+  static final _delay = Duration(seconds: 1 ~/ 2);
 
-  Map _addType(Map v, Enum type) {
+  Map<String, dynamic> _addType(Map<String, dynamic> v, Enum type) {
     v['title'] = '$type: ${v['title']}';
     return v;
   }
@@ -41,6 +41,7 @@ class FakeRedditApi implements RedditApi {
     return list[Random().nextInt(list.length)];
   }
 
+  @override
   Future<List<Submission>> front({
     required int limit,
     required FrontSubType type,
@@ -50,14 +51,16 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     final data = await _readFile('user.front.json');
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit)
         .toList();
   }
 
-  Random _random = Random(42);
+  static final _random = Random(42);
 
+  @override
   Future<List<Submission>> popular({
     required int limit,
     required SubType type,
@@ -68,12 +71,14 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('popular.json');
 
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit)
         .toList();
   }
 
+  @override
   Future<List<Submission>> all({
     required int limit,
     required SubType type,
@@ -84,6 +89,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('popular.json');
 
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit)
@@ -97,11 +103,13 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     final data = await _readFile('user.subreddits.json');
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .take(limit)
         .toList();
   }
 
+  @override
   Future<List<Submission>> subredditSubmissions(
     Subreddit subreddit, {
     required int limit,
@@ -113,20 +121,23 @@ class FakeRedditApi implements RedditApi {
     // name = removeSubredditPrefix(name);
     final data = await _readFile('subreddit.submissions.json');
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
         .map((v) => Submission.fromJson(v))
         .take(limit)
         .toList();
   }
 
+  @override
   Future<User> user(String name) async {
     _log.info('user($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await _readFile('user.info.json');
-    return User.fromJson(jsonDecode(data));
+    return User.fromJson(jsonDecode(data) as Map<String, dynamic>);
   }
 
+  @override
   Future<List<Comment>> userComments(User user, {required int limit}) async {
     _log.info('userComments(${user.name}, $limit)');
     await Future.delayed(_delay);
@@ -139,6 +150,7 @@ class FakeRedditApi implements RedditApi {
         .toList();
   }
 
+  @override
   Future<List<Submission>> userSubmissions(
     User user, {
     required int limit,
@@ -148,11 +160,13 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     final data = await _readFile('user.submissions.json');
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Submission.fromJson(v))
         .take(limit)
         .toList();
   }
 
+  @override
   Future<List<Trophy>> userTrophies(User user) async {
     _log.info('userTrophies(${user.name})');
     await Future.delayed(_delay);
@@ -164,6 +178,7 @@ class FakeRedditApi implements RedditApi {
         .toList();
   }
 
+  @override
   Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe) async {
     _log.info('subscribe(${subreddit.name}, $subscribe)');
     await Future.delayed(_delay);
@@ -172,13 +187,14 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
-
+  @override
   Future<void> subredditFavorite(Subreddit subreddit, bool favorite) async {
     _log.info('subredditFavorite(${subreddit.name}, $favorite)');
     await Future.delayed(_delay);
     return;
   }
 
+  @override
   Future<Submission> submission(String id) async {
     _log.info('submission($id)');
     await Future.delayed(_delay);
@@ -193,11 +209,12 @@ class FakeRedditApi implements RedditApi {
         .toList();
 
     return Submission.fromJson(
-      jsonDecode(subData) as Map,
+      jsonDecode(subData) as Map<String, dynamic>,
       comments: comments,
     );
   }
 
+  @override
   Future<Subreddit> subreddit(String name) async {
     _log.info('subreddit($name)');
     await Future.delayed(_delay);
@@ -210,6 +227,7 @@ class FakeRedditApi implements RedditApi {
     return Subreddit.fromJson(map as Map<String, dynamic>);
   }
 
+  @override
   Future<void> submissionLike(Submission submission, Like like) async {
     _log.info('submissionLike(${submission.id}, $like)');
     await Future.delayed(_delay);
@@ -225,6 +243,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<void> submissionSave(Submission submission, bool save) async {
     _log.info('submissionSave(${submission.id}), $save');
     await Future.delayed(_delay);
@@ -232,6 +251,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<void> submissionHide(Submission submission, bool hide) async {
     _log.info('submissionHide(${submission.id}), $hide');
     await Future.delayed(_delay);
@@ -239,6 +259,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<void> commentSave(Comment comment, bool save) async {
     _log.info('commentSave(${comment.id}, $save)');
     await Future.delayed(_delay);
@@ -247,16 +268,19 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<User?> currentUser() async {
     _log.info('currentUser()');
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await _readFile('user.current.info.json');
     final json = jsonDecode(data);
-    json['name'] = json['name'] + '_' + Random().nextInt(1000).toString();
-    return User.fromJson(json);
+    // ignore: avoid_dynamic_calls
+    json['name'] += '_${Random().nextInt(1000)}';
+    return User.fromJson(json as Map<String, dynamic>);
   }
 
+  @override
   Future<UserSaved> userSaved(User user, {required int limit}) async {
     _log.info('userSaved(${user.name}, $limit)');
     await Future.delayed(_delay);
@@ -269,10 +293,11 @@ class FakeRedditApi implements RedditApi {
         .take(limit)
         .map((v) => v as Map<String, dynamic>)
         .forEach((v) {
-      if (v['name']?.contains('t1_'))
+      if ((v['name'] as String).contains('t1_')) {
         comments.add(Comment.fromJson(v));
-      else
+      } else {
         submissions.add(Submission.fromJson(v));
+      }
     });
 
     return UserSaved(
@@ -289,6 +314,7 @@ class FakeRedditApi implements RedditApi {
   //   return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
   // }
 
+  @override
   Future<List<Submission>> search(
     String query, {
     required int limit,
@@ -298,16 +324,19 @@ class FakeRedditApi implements RedditApi {
     _log.info('search($query, $limit, $sort, $subreddit)');
     await Future.delayed(_delay);
     _mustLoggedIn();
+    // ignore: parameter_assignments
     subreddit = removeSubredditPrefix(subreddit);
     final data = await _readFile('search.json');
 
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, sort))
         .map((v) => Submission.fromJson(v))
         .take(limit)
         .toList();
   }
 
+  @override
   Future<List<Subreddit>> searchSubreddits(
     String query, {
     required int limit,
@@ -317,6 +346,7 @@ class FakeRedditApi implements RedditApi {
     _mustLoggedIn();
     final data = await _readFile('subreddits.search.json');
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Subreddit.fromJson(v))
         .take(limit)
         .toList();
@@ -332,6 +362,7 @@ class FakeRedditApi implements RedditApi {
   //       .toList();
   // }
 
+  @override
   Future<Comment> submissionReply(Submission submission, String body) async {
     _log.info('submissionReply(${submission.id}, $body)');
     _mustLoggedIn();
@@ -339,6 +370,7 @@ class FakeRedditApi implements RedditApi {
     return Comment.fromJson({'body': body});
   }
 
+  @override
   Future<Comment> commentReply(Comment comment, String body) async {
     _log.info('commentReply(${comment.id}, $body)');
     _mustLoggedIn();
@@ -347,7 +379,7 @@ class FakeRedditApi implements RedditApi {
   }
 
   Future<String> _loginPath() async {
-    return (await getTemporaryDirectory()).path + '/fake_reddit_api.login';
+    return '${(await getTemporaryDirectory()).path}/fake_reddit_api.login';
   }
 
   void _mustLoggedIn() {
@@ -358,8 +390,10 @@ class FakeRedditApi implements RedditApi {
 
   bool _isLoggedIn = false;
 
+  @override
   bool get isLoggedIn => _isLoggedIn;
 
+  @override
   Future<void> login() async {
     _log.info('login()');
 
@@ -368,13 +402,16 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<bool> loginSilently() async {
     await Future.delayed(_delay);
+    // ignore: avoid_slow_async_io
     _isLoggedIn = await File(await _loginPath()).exists();
     _log.info('loginSilently: $_isLoggedIn');
     return _isLoggedIn;
   }
 
+  @override
   Future<void> logout() async {
     _log.info('logout()');
     await File(await _loginPath()).delete();
@@ -382,6 +419,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<Submission> submit({
     required String subreddit,
     required String title,
@@ -404,6 +442,7 @@ class FakeRedditApi implements RedditApi {
     });
   }
 
+  @override
   Future<List<Message>> inboxMessages() async {
     _log.info('inboxMessages()');
     await Future.delayed(_delay);
@@ -411,10 +450,12 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('inbox.messages.json');
 
     return (jsonDecode(data) as List<dynamic>)
+        .map((v) => v as Map<String, dynamic>)
         .map((v) => Message.fromJson(v))
         .toList();
   }
 
+  @override
   Future<void> userBlock(User user, bool block) async {
     _log.info('userBlock(${user.name}, $block)');
     _mustLoggedIn();
@@ -422,7 +463,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
-
+  @override
   Future<void> submissionReport(Submission submission, String reason) async {
     _log.info('submissionReport(${submission.id}, $reason)');
     _mustLoggedIn();
@@ -430,6 +471,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<void> commentReport(Comment comment, String reason) async {
     _log.info('commentReport(${comment.id}, $reason)');
     _mustLoggedIn();
@@ -437,6 +479,7 @@ class FakeRedditApi implements RedditApi {
     return;
   }
 
+  @override
   Future<List<Rule>> subredditRules(Subreddit subreddit) async {
     _log.info('subredditRules(${subreddit.name})');
     await Future.delayed(_delay);

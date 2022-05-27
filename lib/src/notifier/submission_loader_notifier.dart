@@ -10,6 +10,7 @@ class SubmissionLoaderNotifier with TryMixin, ChangeNotifier {
 
   final RedditApi _redditApi;
   static final _log = getLogger('SubmissionLoaderNotifier');
+  @override
   Logger get log => _log;
 
   // void reset() {

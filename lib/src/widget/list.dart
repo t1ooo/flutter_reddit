@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../style.dart';
 
 class PrimaryColorListView extends StatelessWidget {
-  PrimaryColorListView({
+  const PrimaryColorListView({
     Key? key,
     required this.children,
     this.padding,
@@ -18,7 +18,6 @@ class PrimaryColorListView extends StatelessWidget {
       color: primaryColor,
       padding: padding,
       child: CustomListView(
-        shrinkWrap: true,
         children: children,
       ),
     );
@@ -26,11 +25,11 @@ class PrimaryColorListView extends StatelessWidget {
 }
 
 class CustomListView extends StatelessWidget {
-  CustomListView({
+  const CustomListView({
     Key? key,
     required this.children,
     this.padding = EdgeInsets.zero,
-    this.shrinkWrap=true,
+    this.shrinkWrap = true,
   }) : super(key: key);
 
   final List<Widget> children;
@@ -48,7 +47,7 @@ class CustomListView extends StatelessWidget {
 }
 
 class ListTitle extends StatelessWidget {
-  ListTitle(
+  const ListTitle(
     this.text, {
     Key? key,
   }) : super(key: key);
@@ -69,7 +68,7 @@ class ListTitle extends StatelessWidget {
 }
 
 class ListDivider extends StatelessWidget {
-  ListDivider({
+  const ListDivider({
     Key? key,
     required this.height,
   }) : super(key: key);

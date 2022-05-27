@@ -32,13 +32,13 @@ linter:
   # producing the lint.
   rules:
     - always_declare_return_types
-    - always_put_control_body_on_new_line
+    # - always_put_control_body_on_new_line
     # - always_put_required_named_parameters_first
     - always_require_non_null_named_parameters
     # - always_specify_types # adds verbosity
     # - always_use_package_imports
     - annotate_overrides
-    - avoid_annotating_with_dynamic
+    # - avoid_annotating_with_dynamic
     # - avoid_as # deprecated
     - avoid_bool_literals_in_conditional_expressions
     - avoid_catches_without_on_clauses
@@ -56,7 +56,7 @@ linter:
     - avoid_js_rounded_ints
     - avoid_multiple_declarations_per_line
     - avoid_null_checks_in_equality_operators
-    - avoid_positional_boolean_parameters
+    # - avoid_positional_boolean_parameters
     - avoid_print
     - avoid_private_typedef_functions
     - avoid_redundant_argument_values
@@ -163,7 +163,7 @@ linter:
     - prefer_is_not_empty
     - prefer_is_not_operator
     - prefer_iterable_whereType
-    - prefer_mixin
+    # - prefer_mixin
     - prefer_null_aware_method_calls
     - prefer_null_aware_operators
     - prefer_relative_imports

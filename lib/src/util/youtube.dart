@@ -58,9 +58,6 @@ int _parseStartAt(String s) {
 }
 
 class YoutubeVideo {
-  String id;
-  int startAt;
-
   YoutubeVideo({
     required this.id,
     required this.startAt,
@@ -72,4 +69,7 @@ class YoutubeVideo {
       throw Exception('startAt < 0');
     }
   }
+
+  String id;
+  int startAt;
 }

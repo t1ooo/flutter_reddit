@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
-  CustomDropdownButton({
+  const CustomDropdownButton({
     Key? key,
     required this.value,
     required this.values,
     required this.onChanged,
   }) : super(key: key);
 
-  T value;
-  List<T> values;
+  final T value;
+  final List<T> values;
   final Function(T) onChanged;
 
   @override

@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:youtube_player_flutter/youtube_player_flutter.dart' as yp;
 import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart' as yp;
 
 import '../../util/youtube.dart';
 
 class YoutubePlayer extends StatefulWidget {
-  YoutubePlayer({
+  const YoutubePlayer({
     Key? key,
     required this.youtubeVideo,
   }) : super(key: key);

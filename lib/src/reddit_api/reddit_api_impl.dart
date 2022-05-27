@@ -1,6 +1,5 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_reddit_prototype/src/reddit_api/rule.dart';
 
 import '../logging.dart';
 import 'auth.dart';
@@ -10,6 +9,7 @@ import 'like.dart';
 import 'message.dart';
 import 'parse.dart';
 import 'reddit_api.dart';
+import 'rule.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
@@ -40,13 +40,16 @@ class RedditApiImpl implements RedditApi {
     return _reddit!;
   }
 
+  @override
   bool get isLoggedIn => _reddit != null;
 
+  @override
   Future<void> logout() async {
     _reddit = null;
     await credentials.delete();
   }
 
+  @override
   Future<bool> loginSilently() async {
     if (_reddit != null) {
       return true;
@@ -67,6 +70,7 @@ class RedditApiImpl implements RedditApi {
     return true;
   }
 
+  @override
   Future<void> login() async {
     if (_reddit != null) {
       return;
@@ -79,6 +83,7 @@ class RedditApiImpl implements RedditApi {
     );
 
     final authUrl = reddit.auth.url(['*'], 'state');
+    // ignore: unawaited_futures
     launch(authUrl.toString());
 
     final authCode = await auth.stream.first;
@@ -87,6 +92,7 @@ class RedditApiImpl implements RedditApi {
     await credentials.write(reddit.auth.credentials.toJson());
   }
 
+  @override
   Future<List<Submission>> front({
     required int limit,
     required FrontSubType type,
@@ -115,6 +121,7 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
+  @override
   Future<List<Submission>> popular({
     required int limit,
     required SubType type,
@@ -124,6 +131,7 @@ class RedditApiImpl implements RedditApi {
             .toList());
   }
 
+  @override
   Future<List<Submission>> all({
     required int limit,
     required SubType type,
@@ -132,6 +140,7 @@ class RedditApiImpl implements RedditApi {
         await _subredditSubmissions('all', limit: limit, type: type).toList());
   }
 
+  @override
   Future<List<Submission>> subredditSubmissions(
     Subreddit subreddit, {
     required int limit,
@@ -147,6 +156,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) {
+    // ignore: parameter_assignments
     name = removeSubredditPrefix(name);
     final s = reddit.subreddit(name);
     switch (type) {
@@ -163,15 +173,18 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
+  @override
   Future<List<Subreddit>> currentUserSubreddits({required int limit}) async {
     return _parseSubreddits(
         await reddit.user.subreddits(limit: limit).toList());
   }
 
+  @override
   Future<User> user(String name) async {
     return _parseUser(await reddit.redditor(name).populate());
   }
 
+  @override
   Future<void> userBlock(User user, bool block) async {
     if (block) {
       final params = {'name': user.name};
@@ -182,6 +195,7 @@ class RedditApiImpl implements RedditApi {
   }
 
   // TODO: MAYBE: add type support
+  @override
   Future<List<Comment>> userComments(
     User user, {
     required int limit,
@@ -191,12 +205,14 @@ class RedditApiImpl implements RedditApi {
   }
 
 // TODO: MAYBE: add type support
+  @override
   Future<List<Submission>> userSubmissions(User user,
       {required int limit}) async {
     return _parseSubmissions(
         await user.drawRedditor!.submissions.newest(limit: limit).toList());
   }
 
+  @override
   Future<List<Trophy>> userTrophies(User user) async {
     // return (await user.drawRedditor!.trophies())
     //     .map(_parseTrophy)
@@ -205,6 +221,7 @@ class RedditApiImpl implements RedditApi {
     return _parseTrophies(await await user.drawRedditor!.trophies());
   }
 
+  @override
   Future<void> subredditSubscribe(Subreddit subreddit, bool subscribe) {
     return subscribe
         ? subreddit.drawSubreddit!.subscribe()
@@ -212,6 +229,7 @@ class RedditApiImpl implements RedditApi {
   }
 
   // TODO: merge with subredditUnfavorite
+  @override
   Future<void> subredditFavorite(Subreddit subreddit, bool favorite) {
     return reddit.post(
       '/api/favorite/',
@@ -224,19 +242,24 @@ class RedditApiImpl implements RedditApi {
     );
   }
 
+  @override
   Future<Submission> submission(String id) async {
     return _parseSubmission(await reddit.submission(id: id).populate());
   }
 
+  @override
   Future<Subreddit> subreddit(String name) async {
+    // ignore: parameter_assignments
     name = removeSubredditPrefix(name);
     return _parseSubreddit(await reddit.subreddit(name).populate());
   }
 
+  @override
   Future<void> submissionLike(Submission submission, Like like) async {
     return _like(submission.drawSubmission!, like);
   }
 
+  @override
   Future<void> commentLike(Comment comment, Like like) async {
     return _like(comment.drawComment!, like);
   }
@@ -252,22 +275,26 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
+  @override
   Future<void> submissionSave(Submission submission, bool save) async {
     return save
         ? submission.drawSubmission!.save()
         : submission.drawSubmission!.unsave();
   }
 
+  @override
   Future<void> submissionHide(Submission submission, bool hide) async {
     return hide
         ? submission.drawSubmission!.hide()
         : submission.drawSubmission!.unhide();
   }
 
+  @override
   Future<void> commentSave(Comment comment, bool save) async {
     return save ? comment.drawComment!.save() : comment.drawComment!.unsave();
   }
 
+  @override
   Future<User?> currentUser() async {
     final redditor = await reddit.user.me();
     if (redditor == null) {
@@ -276,16 +303,18 @@ class RedditApiImpl implements RedditApi {
     return _parseUser(redditor);
   }
 
+  @override
   Future<UserSaved> userSaved(User user, {required int limit}) async {
     final submissions = <Submission?>[];
     final comments = <Comment?>[];
     await for (final v in user.drawRedditor!.saved(limit: limit)) {
-      if (v is draw.Submission)
+      if (v is draw.Submission) {
         submissions.add(_parseSubmission(v));
-      else if (v is draw.Comment)
+      } else if (v is draw.Comment) {
         comments.add(_parseComment(v));
-      else
+      } else {
         _log.warning('undefined type');
+      }
     }
 
     return UserSaved(
@@ -294,12 +323,14 @@ class RedditApiImpl implements RedditApi {
     );
   }
 
+  @override
   Future<List<Submission>> search(
     String query, {
     required int limit,
     required Sort sort,
     String subreddit = 'all',
   }) async {
+    // ignore: parameter_assignments
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
     return _parseSubmissions(await reddit
@@ -308,30 +339,38 @@ class RedditApiImpl implements RedditApi {
         .toList());
   }
 
+  @override
   Future<List<Subreddit>> searchSubreddits(String query,
       {required int limit}) async {
-    return _parseSubreddits(await reddit.subreddits
-        .search(query, limit: limit)
-        .map((v) => v as draw.Subreddit)
-        .toList());
+    return _parseSubreddits(
+      await reddit.subreddits
+          .search(query, limit: limit)
+          .map((v) => v as draw.Subreddit)
+          .toList(),
+    );
   }
 
+  @override
   Future<Comment> submissionReply(Submission submission, String body) async {
     return _parseComment(await submission.drawSubmission!.reply(body));
   }
 
+  @override
   Future<void> submissionReport(Submission submission, String reason) async {
     return submission.drawSubmission!.report(reason);
   }
 
+  @override
   Future<void> commentReport(Comment comment, String reason) async {
     return comment.drawComment!.report(reason);
   }
 
+  @override
   Future<Comment> commentReply(Comment comment, String body) async {
     return _parseComment(await comment.drawComment!.reply(body));
   }
 
+  @override
   Future<Submission> submit({
     required String subreddit,
     required String title,
@@ -355,10 +394,12 @@ class RedditApiImpl implements RedditApi {
     );
   }
 
+  @override
   Future<List<Message>> inboxMessages() async {
     return _parseMessages(await reddit.inbox.messages().toList());
   }
 
+  @override
   Future<List<Rule>> subredditRules(Subreddit subreddit) async {
     final resp = await reddit.get('/r/${subreddit.displayName}/about/rules',
         objectify: false);
@@ -369,12 +410,17 @@ class RedditApiImpl implements RedditApi {
   Submission _parseSubmission(draw.Submission v) {
     final drawComments = v.comments?.comments;
     final comments = drawComments == null ? null : _parseComments(drawComments);
-    return Submission.fromJson(v.data!, comments: comments);
+    return Submission.fromJson(
+      v.data! as Map<String, dynamic>,
+      comments: comments,
+    );
   }
 
   Subreddit _parseSubreddit(draw.Subreddit v) {
-    return Subreddit.fromJson(v.data! as Map<String, dynamic>,
-        drawSubreddit: v);
+    return Subreddit.fromJson(
+      v.data! as Map<String, dynamic>,
+      drawSubreddit: v,
+    );
   }
 
   Message _parseMessage(draw.Message v) {
@@ -408,7 +454,7 @@ class RedditApiImpl implements RedditApi {
     return _parse<draw.Comment, Comment>(
         s.map((v) {
           if (v is draw.MoreComments) {
-            print('VVVVVVVVVVVVVVVVVVVVVVVVVV');
+            _log.warning('MoreComments'); // TODO
             return null;
           }
           return v;
@@ -431,6 +477,7 @@ class RedditApiImpl implements RedditApi {
   T? _try<T>(T Function() fn) {
     try {
       return fn();
+      // ignore: avoid_catching_errors
     } on TypeError catch (e, st) {
       _log.warning('', e, st);
     } on Exception catch (e, st) {

@@ -54,7 +54,6 @@ class _ImageSliderState extends State<ImageSlider> {
         CarouselSlider(
           items: widget.items,
           options: CarouselOptions(
-            enlargeCenterPage: false,
             height: widget.height,
             viewportFraction: 1.0,
             enableInfiniteScroll: false,
@@ -63,7 +62,6 @@ class _ImageSliderState extends State<ImageSlider> {
         ),
         Positioned.fill(
           child: Align(
-            alignment: Alignment.center,
             child: Row(
               children: [
                 if (_hasPrev)
@@ -87,12 +85,8 @@ class _ImageSliderState extends State<ImageSlider> {
 
   Widget _icon(IconData icon) {
     return Container(
-      child: Icon(
-        Icons.arrow_forward_ios,
-        color: Colors.black87,
-      ),
       decoration: ShapeDecoration(
-        shadows: [
+        shadows: const [
           BoxShadow(
             color: Colors.white,
             blurRadius: 15,
@@ -100,6 +94,10 @@ class _ImageSliderState extends State<ImageSlider> {
           )
         ],
         shape: CircleBorder(),
+      ),
+      child: Icon(
+        Icons.arrow_forward_ios,
+        color: Colors.black87,
       ),
     );
   }

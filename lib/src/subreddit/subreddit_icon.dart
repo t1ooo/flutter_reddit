@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
+import '../logging.dart';
 
 import '../ui_logger.dart';
 import '../widget/network_image.dart';
 
 class SubredditIcon extends StatelessWidget {
-  const SubredditIcon(
-      {Key? key,
-      required this.icon,
-      this.fallbackIcon = 'communityIcon.png',
-      this.radius = 20})
-      : super(key: key);
+  const SubredditIcon({
+    Key? key,
+    required this.icon,
+    this.fallbackIcon = 'communityIcon.png',
+    this.radius = 20,
+  }) : super(key: key);
 
   final String icon;
   final String fallbackIcon;

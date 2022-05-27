@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
+import '../../logging.dart';
 
 import '../../style.dart';
 import '../../ui_logger.dart';
@@ -37,7 +37,7 @@ class SizedNetworkImage extends StatelessWidget {
           if (error != null) {
             return errorBuilder(context, error);
           }
-          return Container(width: size.width, height: size.height);
+          return SizedBox(width: size.width, height: size.height);
         },
       ),
     );

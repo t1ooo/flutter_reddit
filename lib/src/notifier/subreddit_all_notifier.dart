@@ -1,4 +1,3 @@
-
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
@@ -13,6 +12,7 @@ class SubredditAllNotifier extends SubmissionsNotifier<SubType> {
   final RedditApi _redditApi;
 
   static final _log = getLogger('SubredditAllNotifier');
+  @override
   Logger get log => _log;
 
   String get name => 'all';

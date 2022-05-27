@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style.dart';
 
 import '../current_user/user_menu.dart';
 import '../widget/sliver_app_bar.dart';
@@ -7,6 +6,8 @@ import 'home.dart';
 import 'popular.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: [
+                tabs: const [
                   Tab(text: 'Home'),
                   Tab(text: 'Popular'),
                 ],
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
             ];
           },
           body: TabBarView(
-            children: [
+            children: const [
               Home(),
               Popular(),
             ],

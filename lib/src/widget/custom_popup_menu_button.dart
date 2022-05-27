@@ -11,12 +11,12 @@ class CustomPopupMenuItem {
 
   final Widget? icon;
   final String label;
-  final FutureOr Function() onTap;
+  final FutureOr<dynamic> Function() onTap;
 }
 
 /// PopupMenuButton doesn't work correctly with navigation
 class CustomPopupMenuButton extends StatefulWidget {
-  CustomPopupMenuButton({
+  const CustomPopupMenuButton({
     Key? key,
     required this.items,
     this.child,
@@ -59,7 +59,7 @@ class _CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
                 if (widget.items[i].icon != null)
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: widget.items[i].icon!,
+                    child: widget.items[i].icon,
                   ),
                 Flexible(
                   child: Text(

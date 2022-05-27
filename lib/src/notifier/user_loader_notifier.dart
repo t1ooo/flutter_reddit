@@ -11,6 +11,7 @@ class UserLoaderNotifier with TryMixin, ChangeNotifier {
   final RedditApi _redditApi;
 
   static final _log = getLogger('UserLoaderNotifier');
+  @override
   Logger get log => _log;
 
   // void reset() {
@@ -25,13 +26,16 @@ class UserLoaderNotifier with TryMixin, ChangeNotifier {
   UserNotifier? get user => _user;
 
   Future<void> loadUser(String name) {
-    return try_(() async {
-      if (_user != null && _name == name) return;
-      _name = name;
+    return try_(
+      () async {
+        if (_user != null && _name == name) return;
+        _name = name;
 
-      _user = UserNotifier(_redditApi, await _redditApi.user(_name!));
-      notifyListeners();
-    }, 'fail to load user');
+        _user = UserNotifier(_redditApi, await _redditApi.user(_name!));
+        notifyListeners();
+      },
+      'fail to load user',
+    );
   }
 
   @override

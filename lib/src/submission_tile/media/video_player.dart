@@ -5,17 +5,13 @@ import 'package:chewie/chewie.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../style.dart';
-import '../../ui_logger.dart';
-import '../../widget/network_image.dart';
 import 'const.dart';
 import 'sized_network_image.dart';
 
 abstract class BaseVideoPlayer extends StatefulWidget {
-  BaseVideoPlayer({
+  const BaseVideoPlayer({
     Key? key,
     required this.videoUrl,
     required this.size,
@@ -84,7 +80,6 @@ abstract class _BaseVideoPlayerState<T extends BaseVideoPlayer>
               ),
               Positioned.fill(
                 child: Align(
-                  alignment: Alignment.center,
                   child: Container(
                     color: Colors.black54,
                     child: Icon(
@@ -107,7 +102,7 @@ abstract class _BaseVideoPlayerState<T extends BaseVideoPlayer>
 }
 
 class VideoPlayer extends BaseVideoPlayer {
-  VideoPlayer({
+  const VideoPlayer({
     Key? key,
     required String videoUrl,
     required Size size,
@@ -130,10 +125,10 @@ class VideoPlayer extends BaseVideoPlayer {
     }
     _dartVlcInited = true;
 
-    players.forEach((_, p) => p.dispose());
-    players.clear();
+    players
+      ..forEach((_, p) => p.dispose())
+      ..clear();
     await DartVLC.initialize(useFlutterNativeView: true);
-    print('init end');
   }
 
   @override
@@ -149,7 +144,6 @@ class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
     VideoPlayer.initDartVlc().then((_) {
       _player = Player(
         id: Random().nextInt(1000 * 1000),
-        registerTexture: true,
       );
       _player!.open(
         Playlist(medias: [Media.network(widget.videoUrl)]),
@@ -185,21 +179,19 @@ class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
     }
     return Center(
       child: Video(
-        player: _player!,
+        player: _player,
         width: widget.size.width,
         height: widget.size.height,
         volumeThumbColor: Colors.blue,
         volumeActiveColor: Colors.blue,
         fillColor: Colors.white,
-        showControls: true,
-        fit: fit,
       ),
     );
   }
 }
 
 class MobileVideoPlayer extends BaseVideoPlayer {
-  MobileVideoPlayer({
+  const MobileVideoPlayer({
     Key? key,
     required String videoUrl,
     required Size size,
@@ -227,9 +219,6 @@ class _MobileVideoBuilderState
     _videoController = VideoPlayerController.network(widget.videoUrl);
     _chewieController = ChewieController(
       videoPlayerController: _videoController,
-      // isLive: true,
-      autoInitialize: false,
-      autoPlay: false,
       aspectRatio: widget.size.width / widget.size.height,
     );
     super.initState();
@@ -250,6 +239,7 @@ class _MobileVideoBuilderState
         await _videoController.initialize();
       }
       if (autoPlay) {
+        // ignore: unawaited_futures
         _chewieController.play();
       }
     });

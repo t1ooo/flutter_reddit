@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    markdown
     quiver
     youtube_player_flutter
     flutter_secure_storage

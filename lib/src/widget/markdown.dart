@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:markdown/markdown.dart' show ExtensionSet;
 import 'package:flutter_markdown/flutter_markdown.dart'
     show MarkdownBody, MarkdownStyleSheet;
+import 'package:markdown/markdown.dart' show ExtensionSet;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../style.dart';
 
 class Markdown extends StatelessWidget {
-  Markdown(
+  const Markdown(
     this.markdown, {
     Key? key,
     this.baseUrl = '',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class IconText extends StatelessWidget {
-  IconText({
+  const IconText({
     Key? key,
     required this.icon,
     required this.text,
@@ -23,7 +23,7 @@ class IconText extends StatelessWidget {
 }
 
 class TextIcon extends StatelessWidget {
-  TextIcon({
+  const TextIcon({
     Key? key,
     required this.icon,
     required this.text,

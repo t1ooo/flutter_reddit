@@ -1,38 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
-import '../notifier/auth_notifier.dart';
-import '../notifier/collapsible.dart';
-import '../notifier/comment_notifier.dart';
 import '../notifier/current_user_notifier.dart';
-import '../notifier/home_front_notifier.dart';
-import '../notifier/home_popular_notifier.dart';
-import '../notifier/iterable_sum.dart';
-import '../notifier/likable.dart';
-import '../notifier/const.dart';
-import '../notifier/list_notifier.dart';
-import '../notifier/message_notifier.dart';
-import '../notifier/property_listener.dart';
-import '../notifier/replyable.dart';
-import '../notifier/reportable.dart';
-import '../notifier/rule_notifier.dart';
-import '../notifier/savable.dart';
-import '../notifier/score.dart';
-import '../notifier/search_notifier.dart';
-import '../notifier/search_subreddits_notifier.dart';
-import '../notifier/submission_loader_notifier.dart';
-import '../notifier/submission_notifier.dart';
-import '../notifier/submissions_notifier.dart';
-import '../notifier/subreddit_loader_notifier.dart';
 import '../notifier/subreddit_notifier.dart';
-import '../notifier/try_mixin.dart';
-import '../notifier/user_loader_notifier.dart';
-import '../notifier/user_notifier.dart';
-import '../subreddit/subreddit_icon.dart';
-import '../widget/snackbar.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
+import '../widget/snackbar.dart';
 import '../widget/swipe_to_refresh.dart';
 import 'subscription_tile.dart';
 
@@ -41,6 +14,7 @@ class Subscriptions extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     final notifier = context.watch<CurrentUserNotifier>();
 
@@ -52,8 +26,8 @@ class Subscriptions extends StatelessWidget {
         load: (_) => notifier.loadSubreddits(),
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
-          final favorite = CurrentUserNotifier.filterFavorite(subreddits);
-          final unfavorite = CurrentUserNotifier.filterUnfavorite(subreddits);
+          final favorite = _filterFavorite(subreddits);
+          final unfavorite = _filterUnfavorite(subreddits);
 
           return PrimaryColorListView(
             children: [
@@ -84,4 +58,11 @@ class Subscriptions extends StatelessWidget {
       ),
     );
   }
+
+  List<SubredditNotifier> _filterFavorite(List<SubredditNotifier> subreddits) =>
+      subreddits.where((v) => v.subreddit.userHasFavorited).toList();
+
+  List<SubredditNotifier> _filterUnfavorite(
+          List<SubredditNotifier> subreddits) =>
+      subreddits.where((v) => !v.subreddit.userHasFavorited).toList();
 }
