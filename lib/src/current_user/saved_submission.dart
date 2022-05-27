@@ -33,35 +33,18 @@ import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import '../widget/swipe_to_refresh.dart';
-import 'saved_submission.dart';
 
-class SavedSubmissions extends StatelessWidget {
-  const SavedSubmissions({Key? key}) : super(key: key);
+class SavedSubmission extends StatelessWidget {
+  const SavedSubmission({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<UserNotifier>();
+    final notifier = context.watch<SubmissionNotifier>();
+    final submission = notifier.submission;
 
-    return SwipeToRefresh(
-      onRefresh: () => notifier
-          .reloadSaved()
-          .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<SubmissionNotifier>>(
-        load: (_) => notifier.loadSaved(),
-        data: (_) => notifier.savedSubmissions,
-        onData: (_, submissions) {
-          return CustomListView(
-            shrinkWrap: true,
-            children: [
-              for (final sub in submissions)
-                ChangeNotifierProvider<SubmissionNotifier>.value(
-                  value: sub,
-                  child: SavedSubmission(),
-                ),
-            ],
-          );
-        },
-      ),
-    );
+    if (!submission.saved) {
+      return Container();
+    }
+    return SubmissionTile();
   }
 }
