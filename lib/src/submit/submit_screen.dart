@@ -89,7 +89,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
               MaterialPageRoute(
                 builder: (_) =>
                     ChangeNotifierProvider<CurrentUserNotifier>.value(
-                  value: context.read<AuthNotifier>().user!,
+                  value: context.read<CurrentUserNotifier>(),
                   child: ChooseSubredditScreen(onChanged: (v) {
                     setState(() {
                       _subreddit = v;

@@ -45,8 +45,8 @@ class UserMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<AuthNotifier>();
-    final user = notifier.user!;
+    final notifier = context.watch<CurrentUserNotifier>();
+    final user = notifier.user;
 
     return Drawer(
       child: Column(
@@ -58,12 +58,12 @@ class UserMenu extends StatelessWidget {
                 CircleAvatar(
                   radius: 50,
                   foregroundImage: CachedNetworkImageProvider(
-                    user.user.iconImg,
+                    user.iconImg,
                     cacheManager: context.read<CacheManager>(),
                   ),
                   onForegroundImageError: (e, _) => uiLogger.error('$e'),
                 ),
-                Text('u/${user.user.name}'),
+                Text('u/${user.name}'),
               ],
             ),
           ),
@@ -72,8 +72,8 @@ class UserMenu extends StatelessWidget {
             children: [
               TableRow(
                 children: [
-                  Center(child: Text(user.user.totalKarma.toString())),
-                  Center(child: Text(formatDateTime(user.user.created))),
+                  Center(child: Text(user.totalKarma.toString())),
+                  Center(child: Text(formatDateTime(user.created))),
                 ],
               ),
               TableRow(
@@ -94,7 +94,7 @@ class UserMenu extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => ChangeNotifierProvider<UserNotifier>.value(
-                    value: user,
+                    value: notifier,
                     child: UserProfileScreen(),
                   ),
                 ),
@@ -121,7 +121,7 @@ class UserMenu extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => ChangeNotifierProvider<UserNotifier>.value(
-                    value: user,
+                    value: notifier,
                     child: SavedScreen(),
                   ),
                 ),
@@ -144,7 +144,7 @@ class UserMenu extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Log out'),
             onTap: () async {
-              await notifier
+              await context.read<AuthNotifier>()
                   .logout()
                   .catchError((e) => showErrorSnackBar(context, e));
               Navigator.pop(context);

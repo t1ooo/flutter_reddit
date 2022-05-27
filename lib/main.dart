@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'src/app.dart';
 import 'src/notifier/auth_notifier.dart';
+import 'src/notifier/current_user_notifier.dart';
 import 'src/notifier/home_front_notifier.dart';
 import 'src/notifier/home_popular_notifier.dart';
 import 'src/notifier/search_notifier.dart';
@@ -39,13 +40,11 @@ Future<void> main() async {
         if (notifier.user == null) {
           return MyApp();
         }
-        
+
         return MultiProvider(
           providers: [
-            Provider<CacheManager>(
-              create: (context) => CacheManager(
-                Config('flutter_reddit_cache'),
-              ),
+            ChangeNotifierProvider<CurrentUserNotifier>.value(
+              value: notifier.user!,
             ),
             ChangeNotifierProvider<SubmissionLoaderNotifier>(
               create: (context) => SubmissionLoaderNotifier(redditApi),
@@ -70,6 +69,11 @@ Future<void> main() async {
             ),
             ChangeNotifierProvider<SubredditAllNotifier>(
               create: (context) => SubredditAllNotifier(redditApi),
+            ),
+            Provider<CacheManager>(
+              create: (context) => CacheManager(
+                Config('flutter_reddit_cache'),
+              ),
             ),
           ],
           child: MyApp(),

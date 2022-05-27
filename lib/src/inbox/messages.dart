@@ -40,7 +40,7 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<AuthNotifier>().user!;
+    final notifier = context.watch<CurrentUserNotifier>();
 
     return SwipeToRefresh(
       onRefresh: () => notifier
