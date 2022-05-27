@@ -56,8 +56,10 @@ class Comment extends Equatable {
     this.drawComment,
   });
 
-  factory Comment.fromJson(Map<String, dynamic> m,
-      {draw.Comment? drawComment}) {
+  factory Comment.fromJson(
+    Map<String, dynamic> m, {
+    draw.Comment? drawComment,
+  }) {
     const f = 'comment';
     return Comment(
       subredditId: parseString(m['subreddit_id'], '$f.subreddit_id'),
