@@ -31,10 +31,6 @@ class Subscriptions extends StatelessWidget {
 
           return PrimaryColorListView(
             children: [
-              // ChangeNotifierProvider<SubredditNotifier>.value(
-              //   value: notifier.all!,
-              //   child: SubscriptionTile(favorite: false),
-              // ),
               SubscriptionAllTile(),
               if (favorite.isNotEmpty) ...[
                 ListTitle('favorited'),

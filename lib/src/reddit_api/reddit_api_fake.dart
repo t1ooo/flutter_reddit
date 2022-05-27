@@ -34,9 +34,6 @@ class FakeRedditApi implements RedditApi {
     return rootBundle.loadString('assets/fake_reddit_api/$path');
   }
 
-  // Future<String> _readRandFile(List<String> paths) {
-  //   return _readFile(paths[Random().nextInt(paths.length)]);
-  // }
   T _randValue<T>(List<T> list) {
     return list[Random().nextInt(list.length)];
   }
@@ -118,7 +115,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('subredditSubmissions(${subreddit.name}, $limit, $type)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    // name = removeSubredditPrefix(name);
+
     final data = await _readFile('subreddit.submissions.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
@@ -183,7 +180,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('subscribe(${subreddit.name}, $subscribe)');
     await Future.delayed(_delay);
     _mustLoggedIn();
-    // name = removeSubredditPrefix(name);
+
     return;
   }
 
@@ -219,11 +216,12 @@ class FakeRedditApi implements RedditApi {
     _log.info('subreddit($name)');
     await Future.delayed(_delay);
     _mustLoggedIn();
+    // ignore: parameter_assignments
     name = removeSubredditPrefix(name);
     final files = ['subreddit.1.json', 'subreddit.2.json'];
     final data = await _readFile(_randValue(files));
     final map = jsonDecode(data) as Map;
-    map['user_is_subscriber'] = _random.nextInt(1000) % 2 == 0;
+    map['user_is_subscriber'] = _random.nextInt(1000).isEven;
     return Subreddit.fromJson(map as Map<String, dynamic>);
   }
 
@@ -306,14 +304,6 @@ class FakeRedditApi implements RedditApi {
     );
   }
 
-  // Future<String> subredditIcon(Subreddit subreddit) async {
-  //   _log.info('subredditIcon($name)');
-  //   await Future.delayed(_delay);
-  //   _mustLoggedIn();
-  //   name = removeSubredditPrefix(name);
-  //   return 'https://styles.redditmedia.com/t5_2ql8s/styles/communityIcon_42dkzkktri741.png?width=256&s=be327c0205feb19fef8a00fe88e53683b2f81adf';
-  // }
-
   @override
   Future<List<Submission>> search(
     String query, {
@@ -351,16 +341,6 @@ class FakeRedditApi implements RedditApi {
         .take(limit)
         .toList();
   }
-
-  // Future<List<Subreddit>> searchSubredditsByName(String query) async {
-  //   _log.info('searchSubredditsByName($query)');
-  //   await Future.delayed(_delay);
-  //   _mustLoggedIn();
-  //   final data = await _readFile('subreddits.search.by.name.json');
-  //   return (jsonDecode(data) as List<dynamic>)
-  //       .map((v) => Subreddit.fromJson(v))
-  //       .toList();
-  // }
 
   @override
   Future<Comment> submissionReply(Submission submission, String body) async {

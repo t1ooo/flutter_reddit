@@ -1,4 +1,3 @@
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import 'base_notifier.dart';
 import 'const.dart';
@@ -8,12 +7,6 @@ class SearchSubredditsNotifier extends BaseNotifier {
   SearchSubredditsNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-
-  // void reset() {
-  //   _query = '';
-  //   _subreddits = null;
-  //   // notifyListeners();
-  // }
 
   String _query = '';
 

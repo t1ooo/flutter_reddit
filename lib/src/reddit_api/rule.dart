@@ -2,10 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import 'parse.dart';
 
-// import 'parse.dart';
-
 class Rule extends Equatable {
-  Rule({
+  const Rule({
     required this.kind,
     required this.description,
     required this.shortName,

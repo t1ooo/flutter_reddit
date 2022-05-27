@@ -85,7 +85,6 @@ class SavedComment extends StatelessWidget {
     return Row(
       children: [
         Spacer(),
-        // _popupMenuButton(context, notifier),
         CommentPopupMenu(showCollapse: false),
         SizedBox(width: 20),
         TextButton.icon(
@@ -108,38 +107,4 @@ class SavedComment extends StatelessWidget {
       ],
     );
   }
-
-  // CustomPopupMenuButton _popupMenuButton(
-  //   BuildContext context,
-  //   CommentNotifier notifier,
-  // ) {
-  //   final comment = notifier.comment;
-
-  //   return CustomPopupMenuButton(
-  //     icon: Icon(Icons.more_vert),
-  //     items: [
-  //       savePopupMenuItem(context, notifier),
-
-  //       CustomPopupMenuItem(
-  //         icon: Icon(Icons.share),
-  //         label: 'Share',
-  //         onTap: () async {
-  //           return notifier.share();
-  //         },
-  //       ),
-
-  //       CustomPopupMenuItem(
-  //         icon: Icon(Icons.content_copy),
-  //         label: 'Copy Text',
-  //         onTap: () async {
-  //           return notifier.copyText();
-  //         },
-  //       ),
-
-  //       // TODO
-  //       CustomPopupMenuItem(
-  //           icon: Icon(Icons.circle), label: 'Report', onTap: () {}),
-  //     ],
-  //   );
-  // }
 }

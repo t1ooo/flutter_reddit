@@ -126,24 +126,4 @@ class CommentNotifier extends BaseNotifier
       'fail to report',
     );
   }
-
-  // Future<void> userBlock() {
-  //   return _updateUserBlock(true);
-  // }
-
-  // Future<void> userUnblock() {
-  //   return _updateUserBlock(false);
-  // }
-
-  // Future<void> _updateUserBlock(bool block) {
-  //   return try_(() async {
-  //     if (_comment.authorIsBlocked == block) return;
-  //     await (block
-  //         ? _redditApi.userBlock
-  //         : _redditApi.userUnblock)(_comment.author);
-  //     _comment = _comment.copyWith(authorIsBlocked: block);
-  //     notifyListeners();
-  //   }, 'fail to' + (block ? 'block' : 'unblock'));
-  // }
-
 }

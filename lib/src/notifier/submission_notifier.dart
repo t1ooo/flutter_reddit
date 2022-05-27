@@ -49,20 +49,26 @@ class SubmissionNotifier extends BaseNotifier
   }
 
   Future<void> _loadSubmission() {
-    return try_(() async {
-      if (_comments != null) return;
-      _submission = await _redditApi.submission(id);
-      _setComments(_submission.comments);
-      notifyListeners();
-    }, 'fail to load comments');
+    return try_(
+      () async {
+        if (_comments != null) return;
+        _submission = await _redditApi.submission(id);
+        _setComments(_submission.comments);
+        notifyListeners();
+      },
+      'fail to load comments',
+    );
   }
 
   Future<void> loadComments() {
-    return try_(() async {
-      if (_comments != null) return;
-      _setComments((await _redditApi.submission(id)).comments);
-      notifyListeners();
-    }, 'fail to load comments');
+    return try_(
+      () async {
+        if (_comments != null) return;
+        _setComments((await _redditApi.submission(id)).comments);
+        notifyListeners();
+      },
+      'fail to load comments',
+    );
   }
 
   void _setComments(List<Comment>? comments) {
@@ -76,53 +82,50 @@ class SubmissionNotifier extends BaseNotifier
 
   @override
   Future<void> reply(String body) {
-    return try_(() async {
-      final commentReply = await _redditApi.submissionReply(_submission, body);
+    return try_(
+      () async {
+        final commentReply =
+            await _redditApi.submissionReply(_submission, body);
 
-      _comments ??= [];
-      _comments!
-          .insert(0, _addListener(CommentNotifier(_redditApi, commentReply)));
-      notifyListeners();
-    }, 'fail to reply');
+        _comments ??= [];
+        _comments!
+            .insert(0, _addListener(CommentNotifier(_redditApi, commentReply)));
+        notifyListeners();
+      },
+      'fail to reply',
+    );
   }
 
   CommentNotifier _addListener(CommentNotifier t) {
     return t..addPropertyListener<int>(() => t.numReplies, notifyListeners);
   }
 
-  // TODO: save unsave
-  // Future<void> save() {
-  //   return _updateSave(true);
-  // }
-
   @override
   bool get saved => _submission.saved;
 
   @override
   Future<void> save(bool save) {
-    return try_(() async {
-      if (_submission.saved == save) return;
-      await _redditApi.submissionSave(_submission, save);
-      _submission = _submission.copyWith(saved: save);
-      notifyListeners();
-    }, 'fail to' + (save ? 'save' : 'unsave'));
+    return try_(
+      () async {
+        if (_submission.saved == save) return;
+        await _redditApi.submissionSave(_submission, save);
+        _submission = _submission.copyWith(saved: save);
+        notifyListeners();
+      },
+      'fail to${save ? 'save' : 'unsave'}',
+    );
   }
 
-  // Future<void> hide() {
-  //   return _updateHide(true);
-  // }
-
-  // Future<void> unhide() {
-  //   return _updateHide(false);
-  // }
-
   Future<void> hide(bool hide) {
-    return try_(() async {
-      if (_submission.hidden == hide) return;
-      await _redditApi.submissionHide(_submission, hide);
-      _submission = _submission.copyWith(hidden: hide);
-      notifyListeners();
-    }, 'fail to' + (hide ? 'hide' : 'unhide'));
+    return try_(
+      () async {
+        if (_submission.hidden == hide) return;
+        await _redditApi.submissionHide(_submission, hide);
+        _submission = _submission.copyWith(hidden: hide);
+        notifyListeners();
+      },
+      'fail to${hide ? 'hide' : 'unhide'}',
+    );
   }
 
   @override
@@ -133,23 +136,28 @@ class SubmissionNotifier extends BaseNotifier
 
   @override
   Future<void> updateLike_(Like like) {
-    return try_(() async {
-      await _redditApi.submissionLike(_submission, like);
-      _submission = _submission.copyWith(
-        likes: like,
-        score: calcScore(_submission.score, _submission.likes, like),
-      );
-      notifyListeners();
-    }, 'fail to like');
+    return try_(
+      () async {
+        await _redditApi.submissionLike(_submission, like);
+        _submission = _submission.copyWith(
+          likes: like,
+          score: calcScore(_submission.score, _submission.likes, like),
+        );
+        notifyListeners();
+      },
+      'fail to like',
+    );
   }
 
   Future<void> share() {
-    return try_(() async {
-      await Share.share('${_submission.title} ${_submission.shortLink}');
-    }, 'fail to share');
+    return try_(
+      () async {
+        await Share.share('${_submission.title} ${_submission.shortLink}');
+      },
+      'fail to share',
+    );
   }
 
-  // TODO: add height
   List<PreviewImage> images([
     double maxWidth = double.infinity,
     double maxHeight = double.infinity,
@@ -175,28 +183,12 @@ class SubmissionNotifier extends BaseNotifier
 
   @override
   Future<void> report(String reason) {
-    return try_(() async {
-      await _redditApi.submissionReport(_submission, reason);
-      notifyListeners();
-    }, 'fail to report');
+    return try_(
+      () async {
+        await _redditApi.submissionReport(_submission, reason);
+        notifyListeners();
+      },
+      'fail to report',
+    );
   }
-
-  // Future<void> userBlock() {
-  //   return _updateUserBlock(true);
-  // }
-
-  // Future<void> userUnblock() {
-  //   return _updateUserBlock(false);
-  // }
-
-  // Future<void> _updateUserBlock(bool block) {
-  //   return try_(() async {
-  //     if (_submission.authorIsBlocked == block) return;
-  //     await (block
-  //         ? _redditApi.userBlock
-  //         : _redditApi.userUnblock)(_submission.author);
-  //     _submission = _submission.copyWith(authorIsBlocked: block);
-  //     notifyListeners();
-  //   }, 'fail to' + (block ? 'block' : 'unblock'));
-  // }
 }

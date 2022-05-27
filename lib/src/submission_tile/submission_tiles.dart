@@ -17,7 +17,6 @@ class SubmissionTiles<T> extends StatelessWidget {
     required this.types,
     required this.load,
     required this.submissions,
-    // this.activeLink = true,
     this.showTypeSelector = true,
   }) : super(key: key);
 
@@ -25,7 +24,6 @@ class SubmissionTiles<T> extends StatelessWidget {
   final List<T> types;
   final List<SubmissionNotifier>? submissions;
   final Future<void> Function(T) load;
-  // final bool activeLink;
 
   final bool showTypeSelector;
 
@@ -55,36 +53,31 @@ class SubmissionTiles<T> extends StatelessWidget {
   Widget _typeSelector(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: ButtonTheme(
-        // TODO: remove
-        // height: 200,
-        child: TextButton(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-              // EdgeInsets.symmetric(vertical: 20),
-              EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.width / 30),
-            ),
+      child: TextButton(
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(
+            EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.width / 30),
           ),
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: _modal,
-            );
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: IconText(
-                  icon: _typeIcon(type),
-                  text: Text(_typeToString(type) + ' POSTS'),
-                ),
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: _modal,
+          );
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: IconText(
+                icon: _typeIcon(type),
+                text: Text(_typeToString(type) + ' POSTS'),
               ),
-              Icon(Icons.expand_more),
-            ],
-          ),
+            ),
+            Icon(Icons.expand_more),
+          ],
         ),
       ),
     );
@@ -92,7 +85,6 @@ class SubmissionTiles<T> extends StatelessWidget {
 
   Widget _modal(BuildContext context) {
     return CustomListView(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
           minLeadingWidth: 0,

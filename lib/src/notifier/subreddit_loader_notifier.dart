@@ -7,12 +7,6 @@ class SubredditLoaderNotifier extends BaseNotifier {
 
   final RedditApi _redditApi;
 
-  // void reset() {
-  //   _name = null;
-  //   _subreddit = null;
-  //   // notifyListeners();
-  // }
-
   String? _name;
 
   SubredditNotifier? _subreddit;

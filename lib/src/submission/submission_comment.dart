@@ -107,7 +107,6 @@ class SubmissionComment extends StatelessWidget {
     return Row(
       children: [
         Spacer(),
-        // _popupMenuButton(context, notifier),
         CommentPopupMenu(),
         SizedBox(width: 20),
         Icon(Icons.star_outline),
@@ -131,48 +130,6 @@ class SubmissionComment extends StatelessWidget {
       ],
     );
   }
-
-  // CustomPopupMenuButton _popupMenuButton(
-  //   BuildContext context,
-  //   CommentNotifier notifier,
-  // ) {
-  //   return CustomPopupMenuButton(
-  //     icon: Icon(Icons.more_vert),
-  //     items: [
-  //       savePopupMenuItem(context, notifier),
-
-  //       CustomPopupMenuItem(
-  //         icon: Icon(Icons.share),
-  //         label: 'Share',
-  //         onTap: () async {
-  //           return notifier.share();
-  //         },
-  //       ),
-
-  //       CustomPopupMenuItem(
-  //         icon: Icon(Icons.content_copy),
-  //         label: 'Copy Text',
-  //         onTap: () async {
-  //           return notifier.copyText();
-  //         },
-  //       ),
-
-  //       CustomPopupMenuItem(
-  //         icon: Icon(Icons.expand_less),
-  //         label: 'Collapse thread',
-  //         onTap: () {
-  //           notifier.collapse();
-  //         },
-  //       ),
-
-  //       // TODO
-  //       CustomPopupMenuItem(
-  //           icon: Icon(Icons.circle), label: 'Report', onTap: () {}),
-  //       // CustomPopupMenuItem(
-  //           // icon: Icon(Icons.circle), label: 'Block user', onTap: () {}),
-  //     ],
-  //   );
-  // }
 
   EdgeInsets _commentPadding([int depth = 0]) {
     const padding = 5.0;

@@ -15,10 +15,10 @@ void baseConfigure() {
   Logger.root.level = Level.OFF;
 }
 
-final _rootName = 'app';
+const _rootName = 'app';
 final _root = Logger(_rootName);
 
-setLevel(Level level) => _root.level = level;
+void setLevel(Level level) => _root.level = level;
 
 void setLevelByName(String name, Level level) {
   _loggers[name]?.level = level;

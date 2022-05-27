@@ -10,22 +10,16 @@ class CurrentUserNotifier extends UserNotifier {
 
   final RedditApi _redditApi;
 
-  // SubredditNotifier? _all;
-  // SubredditNotifier? get all => _all;
-
   List<SubredditNotifier>? _subreddits;
   List<SubredditNotifier>? get subreddits => _subreddits;
 
   Future<void> reloadSubreddits() {
-    // _all = null;
     _subreddits = null;
     return loadSubreddits();
   }
 
   Future<void> loadSubreddits() {
     return try_(() async {
-      // await _loadSubredditAll();
-      // await _loadSubreddits();
       if (_subreddits != null) return;
 
       _subreddits = (await _redditApi.currentUserSubreddits(limit: limit))
@@ -36,25 +30,6 @@ class CurrentUserNotifier extends UserNotifier {
       notifyListeners();
     }, 'fail to load subreddits');
   }
-
-  // Future<void> _loadSubredditAll() async {
-  //   if (_all != null) {
-  //     return;
-  //   }
-  //   _all = _addListener(
-  //       SubredditNotifier(_redditApi, await _redditApi.subreddit('all')));
-  //   notifyListeners();
-  // }
-
-  // Future<void> _loadSubreddits() async {
-  //   if (_subreddits != null) {
-  //     return;
-  //   }
-  //   _subreddits = (await _redditApi.currentUserSubreddits(limit: limit))
-  //       .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
-  //       .toList();
-  //   notifyListeners();
-  // }
 
   SubredditNotifier _addListener(SubredditNotifier t) {
     return t

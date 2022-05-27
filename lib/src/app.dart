@@ -20,19 +20,6 @@ class MyApp extends StatelessWidget {
       title: 'Reddit App',
       theme: theme,
       home: CustomScroll(child: StartScreen()),
-      // Container(
-      // color: primaryColor,
-      // SafeArea(
-      // child:
-      //   Builder(builder: (context) {
-      // return MediaQuery(
-      //   data: MediaQuery.of(context).copyWith(
-      //       viewPadding: MediaQuery.of(context).viewPadding.copyWith(top: 0)),
-      //   child: CustomScroll(child: StartScreen()),
-      // );
-      // }),
-      // ),
-      // ),
     );
   }
 }

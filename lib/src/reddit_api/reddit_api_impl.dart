@@ -204,7 +204,7 @@ class RedditApiImpl implements RedditApi {
         await user.drawRedditor!.comments.newest(limit: limit).toList());
   }
 
-// TODO: MAYBE: add type support
+  // TODO: MAYBE: add type support
   @override
   Future<List<Submission>> userSubmissions(User user,
       {required int limit}) async {
@@ -214,10 +214,6 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<List<Trophy>> userTrophies(User user) async {
-    // return (await user.drawRedditor!.trophies())
-    //     .map(_parseTrophy)
-    //     .whereType<Trophy>()
-    //     .toList();
     return _parseTrophies(await await user.drawRedditor!.trophies());
   }
 

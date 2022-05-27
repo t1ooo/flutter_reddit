@@ -2,43 +2,6 @@ import 'package:equatable/equatable.dart';
 
 import 'parse.dart';
 
-// class Previews extends Equatable {
-//   const Previews({
-//     required this.images,
-//     required this.gifs,
-//     required this.mp4,
-//   });
-
-//   factory Previews.fromJson(Map<String, dynamic> map) {
-//     return Previews(
-//       images: Preview.fromJsonN(map),
-//       // ignore: avoid_dynamic_calls
-//       gifs: Preview.fromJsonN(map['variants']?['gif']),
-//       // ignore: avoid_dynamic_calls
-//       mp4: Preview.fromJsonN(map['variants']?['mp4']),
-//     );
-//   }
-
-//   final Preview? images;
-//   final Preview? gifs;
-//   final Preview? mp4;
-
-//   @override
-//   List<Object?> get props => [images, gifs, mp4];
-
-//   Previews copyWith({
-//     Preview? Function()? images,
-//     Preview? Function()? gifs,
-//     Preview? Function()? mp4,
-//   }) {
-//     return Previews(
-//       images: images != null ? images() : this.images,
-//       gifs: gifs != null ? gifs() : this.gifs,
-//       mp4: mp4 != null ? mp4() : this.mp4,
-//     );
-//   }
-// }
-
 class Preview extends Equatable {
   const Preview({
     required this.source,
@@ -57,18 +20,6 @@ class Preview extends Equatable {
       resolutions: resolutions ?? this.resolutions,
     );
   }
-
-  // factory Preview.fromJson(Map<String, dynamic> m) {
-  //   return Preview(
-  //     source: PreviewItem.fromJson(m['source']),
-  //     resolutions: List<PreviewItem>.from(
-  //         m['resolutions']?.map((x) => PreviewItem.fromJson(x as Map<String, dynamic>))),
-  //   );
-  // }
-
-  // static Preview? fromJsonN(dynamic m) {
-  //   return (m is Map<String, dynamic>) ? Preview.fromJson(m) : null;
-  // }
 
   @override
   List<Object> get props => [source, resolutions];

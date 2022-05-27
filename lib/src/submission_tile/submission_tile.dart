@@ -106,7 +106,6 @@ class SubmissionTile extends StatelessWidget {
 
     final maxHeight = MediaQuery.of(context).size.height * 0.7;
     final maxWidth = constraints.maxWidth;
-    // final minWidth = 200.0;
 
     final images = notifier.images(maxWidth, maxHeight);
     final previewImage = images.isEmpty ? null : images.first.preview;
@@ -139,16 +138,6 @@ class SubmissionTile extends StatelessWidget {
       }
 
       return _link();
-
-      // if (previewImage == null) {
-      //   return ExternalLink(url: submission.url);
-      // }
-
-      // return ImageLink(
-      //   imageUrl: previewImage.url,
-      //   url: notifier.submission.url,
-      //   size: _adjustSize(previewImage.width, previewImage.height),
-      // );
     }
 
     Widget? _hostedVideo() {
@@ -251,10 +240,8 @@ class SubmissionTile extends StatelessWidget {
             Text(' • '),
             Text(formatDateTime(submission.created)),
           ],
-          // .map((v) => Flexible(child: v, flex:1)).toList(),
         ),
       ),
-      // trailing: activeLink ? _popupMenuButton(context, notifier) : null,
       trailing: !fullpage ? SubmissionPopupMenu() : null,
     );
   }
@@ -289,157 +276,4 @@ class SubmissionTile extends StatelessWidget {
       ],
     );
   }
-
-  // CustomPopupMenuButton _popupMenuButton(
-  //   BuildContext context,
-  //   SubmissionNotifier notifier,
-  // ) {
-  //   return CustomPopupMenuButton(
-  //     icon: Icon(Icons.more_vert),
-  //     items: [
-  //       savePopupMenuItem(context, notifier),
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.visibility_off),
-  //           label: 'Hide Post',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.report),
-  //           label: 'Report',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.block),
-  //           label: 'Block user',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //     ],
-  //   );
-  // }
 }
-
-
-
-// class Media extends StatelessWidget {
-//   Media({
-//     Key? key,
-//     required this.constraints,
-//   }) : super(key: key);
-
-//   final BoxConstraints constraints;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final notifier = context.read<SubmissionNotifier>();
-//     final submission = notifier.submission;
-
-//     final maxHeight = MediaQuery.of(context).size.height * 0.7;
-//     final maxWidth = constraints.maxWidth;
-//     final minWidth = 200.0;
-
-//     final images = notifier.images(maxWidth, maxHeight);
-//     final previewImage = images.isEmpty ? null : images.first.preview;
-
-//     Size _adjustSize(double width, double height) => adjustSize(
-//           maxWidth: maxWidth,
-//           maxHeight: maxHeight,
-//           width: width,
-//           height: height,
-//         );
-
-//     switch (submission.postHint) {
-//       case PostHint.hostedVideo:
-//         final video = submission.video;
-//         if (video == null || video.fallbackUrl == '') {
-//           return Container();
-//         }
-
-//         if (Platform.isLinux) {
-//           return VideoPlayer(
-//             videoUrl: video.fallbackUrl,
-//             previewImageUrl: previewImage?.url,
-//             size: _adjustSize(video.width, video.height),
-//           );
-//         } else if (Platform.isAndroid || Platform.isIOS || kIsWeb) {
-//           return AndroidVideoPlayer(
-//             videoUrl: video.fallbackUrl,
-//             previewImageUrl: previewImage?.url,
-//             size: _adjustSize(video.width, video.height),
-//           );
-//         } else {
-//           continue linkLabel;
-//         }
-
-//       case PostHint.image:
-//         if (images == []) {
-//           return Container();
-//         }
-
-//         final sizes = images
-//             .map((v) => _adjustSize(v.preview.width, v.preview.height))
-//             .toList();
-//         final maxHeight = sizes.map((v) => v.height).reduce(max);
-
-//         return ImageSlider(
-//           items: [
-//             for (int i = 0; i < images.length; i++)
-//               FullScreenImage(
-//                 imageUrl: images[i].image.url,
-//                 previewImageUrl: images[i].preview.url,
-//                 previewSize: sizes[i],
-//               ),
-//           ],
-//           height: maxHeight,
-//         );
-
-//       linkLabel:
-//       case PostHint.link:
-//       case PostHint.richVideo:
-//         if (previewImage == null) {
-//           return ExternalLink(url: submission.url);
-//         }
-
-//         return ImageLink(
-//           imageUrl: previewImage.url,
-//           url: notifier.submission.url,
-//           size: _adjustSize(previewImage.width, previewImage.height),
-//         );
-
-//       case PostHint.none:
-//       case PostHint.self:
-//         return Container();
-//     }
-//   }
-
-//   _video() {
-//     final video = submission.video;
-//         if (video == null || video.fallbackUrl == '') {
-//           return Container();
-//         }
-
-//         if (Platform.isLinux) {
-//           return VideoPlayer(
-//             videoUrl: video.fallbackUrl,
-//             previewImageUrl: previewImage?.url,
-//             size: _adjustSize(video.width, video.height),
-//           );
-//         } else if (Platform.isAndroid || Platform.isIOS || kIsWeb) {
-//           return AndroidVideoPlayer(
-//             videoUrl: video.fallbackUrl,
-//             previewImageUrl: previewImage?.url,
-//             size: _adjustSize(video.width, video.height),
-//           );
-//         } else {
-//           return _link();
-//         }
-//   }
-// }

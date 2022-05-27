@@ -38,13 +38,12 @@ class DesktopAuth implements Auth {
 
   static final _log = getLogger('AuthServer');
   final _s = StreamController<String>();
+  late final Alfred _app;
   @override
   final Uri redirectUri;
-  late final Alfred _app;
-
-  late final Stream<String> _stream;
   @override
   Stream<String> get stream => _stream;
+  late final Stream<String> _stream;
 
   void _onError(dynamic e) {
     _log.error(e);
@@ -72,14 +71,12 @@ class AndroidAuth implements Auth {
 
   static final _log = getLogger('AndroidAuth');
   final _s = StreamController<String>();
+  StreamSubscription<String?>? _sub;
   @override
   final Uri redirectUri;
-  // late final Stream<String> stream;
-  StreamSubscription<String?>? _sub;
-
-  late final Stream<String> _stream;
   @override
   Stream<String> get stream => _stream;
+  late final Stream<String> _stream;
 
   void _add(String? link, [bool isInitialLink = false]) {
     final authCode = Uri.parse(link ?? '').queryParameters['code'] ?? '';

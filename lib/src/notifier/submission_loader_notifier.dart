@@ -7,25 +7,22 @@ class SubmissionLoaderNotifier extends BaseNotifier {
 
   final RedditApi _redditApi;
 
-  // void reset() {
-  //   _id = null;
-  //   _submission = null;
-  //   // notifyListeners();
-  // }
-
   String? _id;
 
   SubmissionNotifier? _submission;
   SubmissionNotifier? get submission => _submission;
 
   Future<void> loadSubmission(String id) {
-    return try_(() async {
-      if (_submission != null && _id == id) return;
-      _id = id;
+    return try_(
+      () async {
+        if (_submission != null && _id == id) return;
+        _id = id;
 
-      _submission =
-          SubmissionNotifier(_redditApi, await _redditApi.submission(_id!));
-      notifyListeners();
-    }, 'fail to load submission');
+        _submission =
+            SubmissionNotifier(_redditApi, await _redditApi.submission(_id!));
+        notifyListeners();
+      },
+      'fail to load submission',
+    );
   }
 }

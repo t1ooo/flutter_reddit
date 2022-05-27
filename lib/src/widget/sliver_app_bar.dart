@@ -6,19 +6,12 @@ import '../search/search_screen.dart';
 import '../style.dart';
 import 'network_image.dart';
 
-// const appBarCollapsedHeight = 120.0;
-// const appBarExpandedHeight = 200.0;
-
 double _appBarCollapsedHeight(BuildContext context) =>
     MediaQuery.of(context).size.height / 12.5;
 double _appBarExpandedHeight(BuildContext context) =>
     MediaQuery.of(context).size.height / 6;
 double _safeAreaTopPadding(BuildContext context) =>
     MediaQuery.of(context).viewPadding.top;
-// double _spaceBarHeight(BuildContext context) =>
-//     _appBarCollapsedHeight(context) * 0.8;
-// double _spaceBarTopPadding(BuildContext context) =>
-//     _appBarCollapsedHeight(context) * 0.1;
 
 class PrimarySliverAppBar extends StatelessWidget {
   const PrimarySliverAppBar({
@@ -41,9 +34,6 @@ class PrimarySliverAppBar extends StatelessWidget {
       automaticallyImplyLeading: false,
       leadingWidth: 0,
       toolbarHeight: _appBarCollapsedHeight(context),
-      // collapsedHeight: appBarCollapsedHeight,
-      // expandedHeight: collapsed ? null : appBarExpandedHeight,
-      // collapsedHeight: collapsed ? null : appBarCollapsedHeight,
       expandedHeight: collapsed ? null : _appBarExpandedHeight(context),
       elevation: elevation,
       forceElevated: forceElevated,
@@ -246,9 +236,6 @@ class SpaceBar extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(
               top: spaceBarTopPadding + _safeAreaTopPadding(context),
-              // top: 5 + safeAreaTopPadding(context),
-              // right: 0,
-              // bottom: 5,
             ),
             child: SizedBox(
               height: spaceBarHeight,
@@ -304,8 +291,7 @@ class SearchForm extends StatelessWidget {
       },
       child: SizedBox(
         // TODO: remove
-        // height: 50,
-        // height: _searchFormHeight(context),
+
         child: TextField(
           controller: _controller,
           textInputAction: TextInputAction.search,

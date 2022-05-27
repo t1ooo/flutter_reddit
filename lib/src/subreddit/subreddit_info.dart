@@ -27,7 +27,6 @@ class SubredditInfo extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // SizedBox(height: 100),
                 Flexible(
                   child: Row(
                     children: [
@@ -37,7 +36,6 @@ class SubredditInfo extends StatelessWidget {
                         child: Text(
                           subreddit.displayNamePrefixed,
                           textScaleFactor: 2,
-                          // overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           softWrap: false,
@@ -46,7 +44,6 @@ class SubredditInfo extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Spacer(),
                 SubscribeButton(),
               ],
             ),

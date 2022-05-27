@@ -23,7 +23,6 @@ class CommentPopupMenu extends StatelessWidget {
       icon: Icon(Icons.more_vert),
       items: [
         savePopupMenuItem(context, notifier),
-
         CustomPopupMenuItem(
           icon: Icon(Icons.share),
           label: 'Share',
@@ -31,7 +30,6 @@ class CommentPopupMenu extends StatelessWidget {
             return notifier.share();
           },
         ),
-
         CustomPopupMenuItem(
           icon: Icon(Icons.content_copy),
           label: 'Copy Text',
@@ -39,7 +37,6 @@ class CommentPopupMenu extends StatelessWidget {
             return notifier.copyText();
           },
         ),
-
         if (showCollapse)
           CustomPopupMenuItem(
             icon: Icon(Icons.expand_less),
@@ -48,7 +45,6 @@ class CommentPopupMenu extends StatelessWidget {
               notifier.collapse();
             },
           ),
-
         CustomPopupMenuItem(
           icon: Icon(Icons.circle),
           label: 'Report',
@@ -64,8 +60,6 @@ class CommentPopupMenu extends StatelessWidget {
             );
           },
         ),
-        // CustomPopupMenuItem(
-        // icon: Icon(Icons.circle), label: 'Block user', onTap: () {}),
       ],
     );
   }

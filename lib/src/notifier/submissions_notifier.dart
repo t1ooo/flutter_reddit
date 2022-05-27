@@ -8,12 +8,6 @@ abstract class SubmissionsNotifier<T> extends BaseNotifier {
 
   final RedditApi _redditApi;
 
-  // void reset() {
-  //   _submissions = null;
-  //   _subType = _initialSubType;
-  //   // notifyListeners();
-  // }
-
   T _subType;
   T get subType => _subType;
 

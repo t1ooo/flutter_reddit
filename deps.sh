@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    logging
     markdown
     quiver
     youtube_player_flutter

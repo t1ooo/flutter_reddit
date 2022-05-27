@@ -60,7 +60,6 @@ class _SubmissionScreen extends StatelessWidget {
                 flexibleSpace: SpaceBar(
                   backgroundColor: generateColor(submission.id),
                   leading: AppBarBackButton(),
-                  // trailing: _submissionMenu(context),
                   trailing: SubmissionPopupMenu(fullpage: true),
                 ),
               ),
@@ -71,44 +70,4 @@ class _SubmissionScreen extends StatelessWidget {
       ),
     );
   }
-
-  // Widget _submissionMenu(BuildContext context) {
-  //   return CustomPopupMenuButton(
-  //     icon: SpaceBarIcon(Icons.more_vert),
-  //     items: [
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.circle),
-  //           label: 'Share',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.circle),
-  //           label: 'Hide post',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.circle),
-  //           label: 'Report',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //       if (kDebugMode)
-  //         CustomPopupMenuItem(
-  //           icon: Icon(Icons.circle),
-  //           label: 'Block user',
-  //           onTap: () {
-  //             showTodoSnackBar(context); // TODO
-  //           },
-  //         ),
-  //     ],
-  //   );
-  // }
 }

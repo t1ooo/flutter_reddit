@@ -7,12 +7,6 @@ class UserLoaderNotifier extends BaseNotifier {
 
   final RedditApi _redditApi;
 
-  // void reset() {
-  //   _name = null;
-  //   _user = null;
-  //   // notifyListeners();
-  // }
-
   String? _name;
 
   UserNotifier? _user;

@@ -1,5 +1,3 @@
-// ignore_for_file: annotate_overrides
-
 import '../reddit_api/reddit_api.dart';
 import 'base_notifier.dart';
 import 'const.dart';
@@ -9,14 +7,6 @@ class SearchNotifier extends BaseNotifier {
   SearchNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-
-  // void reset() {
-  //   _subredditName = '';
-  //   _query = '';
-  //   _sort = Sort.relevance;
-  //   _submissions = null;
-  //   // notifyListeners();
-  // }
 
   String _subredditName = '';
   String _query = '';

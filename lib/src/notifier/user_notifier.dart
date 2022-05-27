@@ -104,14 +104,6 @@ class UserNotifier extends BaseNotifier {
     );
   }
 
-  // Future<void> block() {
-  //   return _updateBlock(true);
-  // }
-
-  // Future<void> unblock() {
-  //   return _updateBlock(false);
-  // }
-
   Future<void> block(bool block) {
     return try_(
       () async {
@@ -120,7 +112,7 @@ class UserNotifier extends BaseNotifier {
         _user = _user.copyWith(isBlocked: block);
         notifyListeners();
       },
-      'fail to' + (block ? 'block' : 'unblock'),
+      'fail to ${block ? 'block' : 'unblock'}',
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,33 +31,6 @@ class SubmissionPopupMenu extends StatelessWidget {
           ),
           label: submission.hidden ? 'Unhide' : 'Hide',
           onTap: () {
-            // return (submission.hidden ? notifier.unhide() : notifier.hide())
-            //     .catchError((e) => showErrorSnackBar(context, e));
-
-            // final hidden = submission.hidden;
-            // return (submission.hidden ? notifier.unhide() : notifier.hide())
-            //     .then(
-            //   (_) {
-            //     if (!hidden && fullpage) Navigator.pop(context);
-            //   },
-            //   onError: (e) => (e) => showErrorSnackBar(context, e),
-            // );
-
-            // final catchError = (e) => showErrorSnackBar(context, e);
-
-            // return submission.hidden
-            //     ? notifier.unhide().catchError(catchError)
-            //     : notifier.hide().then((_) {
-            //         if (fullpage) Navigator.pop(context);
-            //       }, onError: catchError);
-
-            // return (submission.hidden
-            //         ? notifier.unhide()
-            //         : notifier.hide().then((_) {
-            //             if (fullpage) Navigator.pop(context);
-            //           }))
-            //     .catchError((e) => showErrorSnackBar(context, e));
-
             return notifier.hide(!submission.hidden).then(
               (_) {
                 if (fullpage && submission.hidden) Navigator.pop(context);
@@ -67,14 +39,6 @@ class SubmissionPopupMenu extends StatelessWidget {
             );
           },
         ),
-        // CustomPopupMenuItem(
-        //   icon: Icon(Icons.visibility_off),
-        //   label: 'Hide Post',
-        //   onTap: () {
-        //     showTodoSnackBar(context); // TODO
-        //   },
-        // ),
-
         CustomPopupMenuItem(
           icon: Icon(Icons.report),
           label: 'Report',
@@ -90,14 +54,6 @@ class SubmissionPopupMenu extends StatelessWidget {
             );
           },
         ),
-        // if (kDebugMode)
-        //   CustomPopupMenuItem(
-        //     icon: Icon(Icons.block),
-        //     label: 'Block user',
-        //     onTap: () {
-        //       showTodoSnackBar(context); // TODO
-        //     },
-        //   ),
       ],
     );
   }
