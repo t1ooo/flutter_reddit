@@ -33,8 +33,8 @@ import '../notifier/user_notifier.dart';
 import '../reddit_api/submission_type.dart';
 import '../widget/snackbar.dart';
 
-class SubredditWidget extends StatelessWidget {
-  const SubredditWidget({
+class SubredditSubmission extends StatelessWidget {
+  const SubredditSubmission({
     Key? key,
   }) : super(key: key);
 

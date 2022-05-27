@@ -37,29 +37,48 @@ import '../util/date_time.dart';
 import '../widget/list.dart';
 import '../widget/markdown.dart';
 import '../widget/sliver_app_bar.dart';
-import 'message.dart';
 
-class MessageScreen extends StatelessWidget {
-  MessageScreen({Key? key}) : super(key: key);
+class MessageWidget extends StatelessWidget {
+  MessageWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: UserMenu(),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, _) {
-          return [
-            PrimarySliverAppBar(
-              collapsed: true,
-              flexibleSpace: SpaceBar(
-                leading: AppBarBackButton(),
-                title: AppBarTitle('Inbox'),
+    final notifier = context.read<MessageNotifier>();
+    final message = notifier.message;
+
+    return PrimaryColorListView(
+      padding: pagePadding,
+      children: [
+        SizedBox(height: 20),
+        Text(
+          message.subject,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10),
+        Divider(),
+        Row(
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => UserProfileScreen(name: message.author),
+                  ),
+                );
+              },
+              child: Text(
+                'u/${message.author}',
+                style: TextStyle(color: Colors.red),
               ),
             ),
-          ];
-        },
-        body: MessageWidget(),
-      ),
+            Text(' • '),
+            Text(formatDateTime(message.created)),
+          ],
+        ),
+        SizedBox(height: 10),
+        Markdown(message.body, baseUrl: redditBaseUrl),
+      ],
     );
   }
 }

@@ -35,7 +35,7 @@ import '../widget/snackbar.dart';
 import '../widget/custom_popup_menu_button.dart';
 import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
-import 'subreddit.dart';
+import 'subreddit_submission.dart';
 import 'subreddit_about.dart';
 import 'subreddit_info.dart';
 
@@ -112,7 +112,7 @@ class _SubredditScreen extends StatelessWidget {
           },
           body: TabBarView(
             children: [
-              SubredditWidget(),
+              SubredditSubmission(),
               SubredditAbout(),
               Text('todo'),
             ],

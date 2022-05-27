@@ -34,36 +34,50 @@ import '../widget/list.dart';
 import '../widget/snackbar.dart';
 import '../widget/loader.dart';
 import 'message_screen.dart';
-import 'message_tile.dart';
 
-class Messages extends StatelessWidget {
-  Messages({Key? key}) : super(key: key);
+class MessageTile extends StatelessWidget {
+  MessageTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<CurrentUserNotifier>();
+    final notifier = context.read<MessageNotifier>();
+    final message = notifier.message;
 
-    return SwipeToRefresh(
-      onRefresh: () => notifier
-          .reloadInboxMessages()
-          .catchError((e) => showErrorSnackBar(context, e)),
-      child: Loader<List<MessageNotifier>>(
-        load: (_) => notifier.loadInboxMessages(),
-        data: (_) => notifier.inboxMessages,
-        onData: (_, messages) {
-          return CustomListView(
-            shrinkWrap: true,
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ChangeNotifierProvider<MessageNotifier>.value(
+              value: notifier,
+              child: MessageScreen(),
+            ),
+          ),
+        );
+      },
+      leading: Icon(Icons.mail),
+      title: Text(message.subject),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            message.body,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(height: 5),
+          Row(
             children: [
-              for (final message in messages) ...[
-                ChangeNotifierProvider<MessageNotifier>.value(
-                  value: message,
-                  child: MessageTile(),
-                ),
-                Divider(height: 0),
-              ],
+              Text(
+                'u/${message.author}',
+                style: TextStyle(color: Colors.red),
+              ),
+              Text(' • '),
+              Text(formatDateTime(message.created)),
             ],
-          );
-        },
+          ),
+        ],
       ),
     );
   }
