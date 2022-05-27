@@ -1,6 +1,5 @@
 import 'package:share_plus/share_plus.dart';
 
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
@@ -18,10 +17,6 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   ]) : super(_redditApi, SubType.values.first);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('SubredditNotifier');
-  @override
-  Logger get log => _log;
 
   final bool isUserSubreddit;
 
@@ -174,10 +169,4 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
   Future<void> loadWiki() => throw UnimplementedError();
   Object? _wiki;
   get wiki => _wiki;
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
-  }
 }

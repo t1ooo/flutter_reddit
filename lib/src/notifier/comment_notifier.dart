@@ -1,23 +1,20 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../logging.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/like.dart';
 import '../reddit_api/reddit_api.dart';
+import 'base_notifier.dart';
 import 'collapsible.dart';
 import 'iterable_sum.dart';
 import 'likable.dart';
-import 'property_listener.dart';
 import 'replyable.dart';
 import 'reportable.dart';
 import 'savable.dart';
 import 'score.dart';
-import 'try_mixin.dart';
 
-class CommentNotifier
-    with TryMixin, Collapsible, ChangeNotifier, Likable, Savable
+class CommentNotifier extends BaseNotifier
+    with Collapsible, Likable, Savable
     implements Reportable, Replyable {
   CommentNotifier(this._redditApi, this._comment) {
     _replies = _comment.replies
@@ -28,10 +25,6 @@ class CommentNotifier
   String get id => _comment.id;
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('CommentNotifier');
-  @override
-  Logger get log => _log;
 
   Comment _comment;
   Comment get comment => _comment;
@@ -78,7 +71,6 @@ class CommentNotifier
 
   @override
   Future<void> updateLike_(Like like) {
-    _log.info('updateLike_($like)');
     return try_(
       () async {
         await _redditApi.commentLike(_comment, like);
@@ -154,9 +146,4 @@ class CommentNotifier
   //   }, 'fail to' + (block ? 'block' : 'unblock'));
   // }
 
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
-  }
 }

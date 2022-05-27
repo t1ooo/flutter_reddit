@@ -1,18 +1,13 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
 import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
+import 'base_notifier.dart';
 import 'const.dart';
 import 'subreddit_notifier.dart';
-import 'try_mixin.dart';
 
-class SearchSubredditsNotifier with TryMixin, ChangeNotifier {
+class SearchSubredditsNotifier extends BaseNotifier {
   SearchSubredditsNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('SearchSubredditsNotifier');
-  Logger get log => _log;
 
   // void reset() {
   //   _query = '';
@@ -40,11 +35,5 @@ class SearchSubredditsNotifier with TryMixin, ChangeNotifier {
           .toList();
       notifyListeners();
     }, 'fail to search subreddits');
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

@@ -1,24 +1,17 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/trophy.dart';
 import '../reddit_api/user.dart';
+import 'base_notifier.dart';
 import 'comment_notifier.dart';
 import 'const.dart';
 import 'submission_notifier.dart';
 import 'subreddit_notifier.dart';
-import 'try_mixin.dart';
 
-class UserNotifier with TryMixin, ChangeNotifier {
+class UserNotifier extends BaseNotifier {
   UserNotifier(this._redditApi, this._user)
       : _subreddit = SubredditNotifier(_redditApi, _user.subreddit, true);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('UserNotifier');
-  @override
-  Logger get log => _log;
 
   String get name => _user.name;
 
@@ -129,11 +122,5 @@ class UserNotifier with TryMixin, ChangeNotifier {
       },
       'fail to' + (block ? 'block' : 'unblock'),
     );
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

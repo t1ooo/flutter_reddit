@@ -1,20 +1,14 @@
 // ignore_for_file: annotate_overrides
 
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
+import 'base_notifier.dart';
 import 'const.dart';
 import 'submission_notifier.dart';
-import 'try_mixin.dart';
 
-class SearchNotifier with TryMixin, ChangeNotifier {
+class SearchNotifier extends BaseNotifier {
   SearchNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('SearchNotifier');
-  Logger get log => _log;
 
   // void reset() {
   //   _subredditName = '';
@@ -68,11 +62,5 @@ class SearchNotifier with TryMixin, ChangeNotifier {
       },
       'fail to search',
     );
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

@@ -10,18 +10,10 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
       : super(_redditApi, SubType.values.first);
 
   final RedditApi _redditApi;
-  static final _log = getLogger('HomeFrontNotifier');
-  Logger get log => _log;
 
   // TODO: remove
   @override
   Future<List<Submission>> loadSubmissions_() {
     return _redditApi.popular(limit: limit, type: subType);
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

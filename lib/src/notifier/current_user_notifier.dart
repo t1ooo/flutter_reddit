@@ -1,9 +1,7 @@
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/user.dart';
 import 'const.dart';
 import 'message_notifier.dart';
-import 'property_listener.dart';
 import 'subreddit_notifier.dart';
 import 'user_notifier.dart';
 
@@ -11,10 +9,6 @@ class CurrentUserNotifier extends UserNotifier {
   CurrentUserNotifier(this._redditApi, User user) : super(_redditApi, user);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('CurrentUserNotifier');
-  @override
-  Logger get log => _log;
 
   // SubredditNotifier? _all;
   // SubredditNotifier? get all => _all;
@@ -87,11 +81,5 @@ class CurrentUserNotifier extends UserNotifier {
           .toList();
       notifyListeners();
     }, 'fail to load inbox messages');
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

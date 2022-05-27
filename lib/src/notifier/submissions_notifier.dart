@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
+import 'base_notifier.dart';
 import 'submission_notifier.dart';
-import 'try_mixin.dart';
 
-abstract class SubmissionsNotifier<T> with TryMixin, ChangeNotifier {
+abstract class SubmissionsNotifier<T> extends BaseNotifier {
   SubmissionsNotifier(this._redditApi, this._subType);
 
   final RedditApi _redditApi;

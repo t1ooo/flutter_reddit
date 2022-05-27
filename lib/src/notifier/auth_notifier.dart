@@ -1,18 +1,11 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
+import 'base_notifier.dart';
 import 'current_user_notifier.dart';
-import 'try_mixin.dart';
 
-class AuthNotifier with TryMixin, ChangeNotifier {
+class AuthNotifier extends BaseNotifier {
   AuthNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('AuthNotifier');
-  @override
-  Logger get log => _log;
 
   CurrentUserNotifier? _user;
   CurrentUserNotifier? get user => _user;
@@ -64,11 +57,5 @@ class AuthNotifier with TryMixin, ChangeNotifier {
       _user = null;
       notifyListeners();
     }, 'fail to logout');
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

@@ -1,18 +1,11 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
-import 'try_mixin.dart';
+import 'base_notifier.dart';
 import 'user_notifier.dart';
 
-class UserLoaderNotifier with TryMixin, ChangeNotifier {
+class UserLoaderNotifier extends BaseNotifier {
   UserLoaderNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-
-  static final _log = getLogger('UserLoaderNotifier');
-  @override
-  Logger get log => _log;
 
   // void reset() {
   //   _name = null;
@@ -36,11 +29,5 @@ class UserLoaderNotifier with TryMixin, ChangeNotifier {
       },
       'fail to load user',
     );
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

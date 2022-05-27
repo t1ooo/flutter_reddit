@@ -10,18 +10,9 @@ class HomeFrontNotifier extends SubmissionsNotifier<FrontSubType> {
       : super(_redditApi, FrontSubType.values.first);
 
   final RedditApi _redditApi;
-  static final _log = getLogger('HomeFrontNotifier');
-  Logger get log => _log;
 
   @override
   Future<List<Submission>> loadSubmissions_() {
-    throw Exception();
     return _redditApi.front(limit: limit, type: subType);
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

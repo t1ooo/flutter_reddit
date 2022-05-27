@@ -1,21 +1,18 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:share_plus/share_plus.dart';
 
-import '../logging.dart';
 import '../reddit_api/comment.dart';
 import '../reddit_api/like.dart';
 import '../reddit_api/preview_images.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
+import 'base_notifier.dart';
 import 'comment_notifier.dart';
 import 'iterable_sum.dart';
 import 'likable.dart';
-import 'property_listener.dart';
 import 'replyable.dart';
 import 'reportable.dart';
 import 'savable.dart';
 import 'score.dart';
-import 'try_mixin.dart';
 
 class PreviewImage {
   PreviewImage(this.image, this.preview);
@@ -23,8 +20,8 @@ class PreviewImage {
   final PreviewItem preview;
 }
 
-class SubmissionNotifier
-    with TryMixin, Likable, Savable, ChangeNotifier
+class SubmissionNotifier extends BaseNotifier
+    with Likable, Savable
     implements Reportable, Replyable {
   SubmissionNotifier(this._redditApi, this._submission) {
     _setComments(_submission.comments);
@@ -33,9 +30,6 @@ class SubmissionNotifier
   String get id => _submission.id;
 
   final RedditApi _redditApi;
-  static final _log = getLogger('SubmissionNotifier');
-  @override
-  Logger get log => _log;
 
   List<CommentNotifier>? _comments;
   List<CommentNotifier>? get comments => _comments;
@@ -177,12 +171,6 @@ class SubmissionNotifier
         )
         .whereType<PreviewImage>()
         .toList();
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 
   @override

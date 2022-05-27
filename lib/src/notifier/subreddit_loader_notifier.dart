@@ -1,17 +1,11 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
+import 'base_notifier.dart';
 import 'subreddit_notifier.dart';
-import 'try_mixin.dart';
 
-class SubredditLoaderNotifier with TryMixin, ChangeNotifier {
+class SubredditLoaderNotifier extends BaseNotifier {
   SubredditLoaderNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-  static final _log = getLogger('SubredditNotifier');
-  @override
-  Logger get log => _log;
 
   // void reset() {
   //   _name = null;
@@ -36,11 +30,5 @@ class SubredditLoaderNotifier with TryMixin, ChangeNotifier {
       },
       'fail to load subreddit',
     );
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }

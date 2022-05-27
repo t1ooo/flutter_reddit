@@ -1,17 +1,11 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
-
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
+import 'base_notifier.dart';
 import 'submission_notifier.dart';
-import 'try_mixin.dart';
 
-class SubmissionLoaderNotifier with TryMixin, ChangeNotifier {
+class SubmissionLoaderNotifier extends BaseNotifier {
   SubmissionLoaderNotifier(this._redditApi);
 
   final RedditApi _redditApi;
-  static final _log = getLogger('SubmissionLoaderNotifier');
-  @override
-  Logger get log => _log;
 
   // void reset() {
   //   _id = null;
@@ -33,11 +27,5 @@ class SubmissionLoaderNotifier with TryMixin, ChangeNotifier {
           SubmissionNotifier(_redditApi, await _redditApi.submission(_id!));
       notifyListeners();
     }, 'fail to load submission');
-  }
-
-  @override
-  void notifyListeners() {
-    _log.info('notifyListeners');
-    super.notifyListeners();
   }
 }
