@@ -39,12 +39,20 @@ class CommentParser with RedditParser {
   }
 
   Comment parseDraw(draw.Comment v) {
-    return parseJson(v.data! as Map<String, dynamic>, drawComment: v);
+    final drawComments = v.replies?.comments;
+    final replies =
+        drawComments != null ? commentParser.parseDraws(drawComments) : null;
+    return parseJson(
+      v.data! as Map<String, dynamic>,
+      drawComment: v,
+      replies: replies,
+    );
   }
 
   Comment parseJson(
     Map<String, dynamic> m, {
     draw.Comment? drawComment,
+    List<Comment>? replies,
   }) {
     return Comment(
       subredditId: _parseString(m, ['subreddit_id']),
@@ -57,7 +65,7 @@ class CommentParser with RedditParser {
       subreddit: _parseString(m, ['subreddit']),
       linkAuthor: _parseString(m, ['link_author']),
       likes: _parseLikes(m, ['likes']),
-      replies: _parseReplies(m, ['replies']),
+      replies: replies ?? _parseReplies(m, ['replies']),
       saved: _parseBool(m, ['saved']),
       id: _parseString(m, ['id']),
       gilded: _parseInt(m, ['gilded']),
