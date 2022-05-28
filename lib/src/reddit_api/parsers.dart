@@ -101,22 +101,14 @@ class CommentParser with RedditParser {
     // ignore: parameter_assignments
     keys = keys + ['data', 'children'];
 
-    final value = _get<List<dynamic>?>(map, keys, null);
-    if (value == null) {
-      return [];
-    }
-
+    final value = _getN<List<dynamic>>(map, keys) ?? [];
     return _parseIterable<dynamic, Comment>(value, (v) {
       return commentParser.parseJson(v['data'] as Map<String, dynamic>);
     });
   }
 
   String _parseSubmissionId(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null || value == '') {
-      return '';
-    }
-    return value.split('_').last;
+    return (_getN<String>(map, keys) ?? '').split('_').last;
   }
 }
 
@@ -245,12 +237,10 @@ class SubmissionParser with RedditParser {
   List<Preview> _parsePreview(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['images'];
-    final value = _get<List<dynamic>?>(map, keys, null);
-    if (value == null) {
-      return [];
-    }
+
+    final value = _getN<List<dynamic>>(map, keys) ?? [];
     return _parseIterable<dynamic, Preview>(value, (v) {
-      v ??= _get<dynamic>(v, ['variants', 'gif'], null);
+      v ??= _getN<dynamic>(v, ['variants', 'gif']);
       final source =
           previewItemParser.parseJson(v['source'] as Map<String, dynamic>);
       final resolutions = ((v['resolutions'] as List<dynamic>?) ?? [])
@@ -265,7 +255,7 @@ class SubmissionParser with RedditParser {
     // ignore: parameter_assignments
     keys = keys + ['reddit_video'];
 
-    final value = _get<Map<String, dynamic>?>(map, keys, null);
+    final value = _getN<Map<String, dynamic>>(map, keys);
     if (value == null) {
       return null;
     }
@@ -273,7 +263,7 @@ class SubmissionParser with RedditParser {
   }
 
   PostHint _parsePostHint(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
+    final value = _getN<String>(map, keys) ?? '';
     switch (value) {
       case 'hosted:video':
         return PostHint.hostedVideo;
@@ -287,7 +277,6 @@ class SubmissionParser with RedditParser {
       case 'self':
         return PostHint.self;
       case '':
-      case null:
         return PostHint.none;
     }
     _log.warning('fail to parse postHint: $keys: $value');
@@ -339,8 +328,8 @@ class SubredditParser with RedditParser {
   final _colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive: false);
 
   String _parseColor(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null || value == '') {
+    final value = _getN<String>(map, keys) ?? '';
+    if (value == '') {
       return '';
     }
     if (_colorRegExp.hasMatch(value)) {
@@ -405,7 +394,7 @@ class UserParser with RedditParser {
       commentKarma: _parseInt(m, ['comment_karma']),
       acceptFollowers: _parseBool(m, ['accept_followers']),
       hasSubscribed: _parseBool(m, ['has_subscribed']),
-      subreddit: subredditParser.parseJson(_get(m, ['subreddit'], {})),
+      subreddit: subredditParser.parseJson(_getN(m, ['subreddit']) ?? {}),
       drawRedditor: drawRedditor,
     );
   }
@@ -429,7 +418,7 @@ mixin RedditParser {
   late final _log = getLogger(runtimeType.toString());
 
   Like _parseLikes(dynamic map, List<dynamic> keys) {
-    final value = _get<bool?>(map, keys, null);
+    final value = _getN<bool>(map, keys);
     if (value == null) {
       return Like.none;
     }
@@ -451,7 +440,7 @@ mixin RedditParser {
   ) {
     final defaultValue = clock.now();
 
-    final value = _get<dynamic>(map, keys, null);
+    final value = _getN<dynamic>(map, keys);
     if (value == null) {
       return defaultValue;
     }
@@ -469,13 +458,9 @@ mixin RedditParser {
   }
 
   List<String> _parseAwardIcons(dynamic map, List<dynamic> keys) {
-    // ignore: parameter_assignments
-    keys = keys + ['data', 'children'];
+    // keys = keys + ['data', 'children'];
 
-    final value = _get<List<dynamic>?>(map, keys, null);
-    if (value == null) {
-      return [];
-    }
+    final value = _getN<List<dynamic>>(map, keys) ?? [];
     return value
         .map((v) => _parseUrl(v, ['resized_icons', 0, 'url']))
         .where((v) => v != '')
@@ -483,9 +468,8 @@ mixin RedditParser {
   }
 
   String _parseUrl(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null ||
-        value == '' ||
+    final value = _getN<String>(map, keys) ?? '';
+    if (value == '' ||
         value == 'self' ||
         value == 'default' ||
         value == 'image' ||
@@ -502,7 +486,7 @@ mixin RedditParser {
   double _parseDouble(dynamic map, List<dynamic> keys) {
     const defaultValue = 0.0;
 
-    final value = _get<dynamic>(map, keys, null);
+    final value = _getN<dynamic>(map, keys);
     if (value == null) {
       return defaultValue;
     }
@@ -522,7 +506,7 @@ mixin RedditParser {
   int _parseInt(dynamic map, List<dynamic> keys) {
     const defaultValue = 0;
 
-    final value = _get<dynamic>(map, keys, null);
+    final value = _getN<dynamic>(map, keys);
     if (value == null) {
       return defaultValue;
     }
@@ -540,16 +524,13 @@ mixin RedditParser {
   }
 
   String _parseString(dynamic map, List<dynamic> keys) {
-    return _get<String?>(map, keys, null) ?? '';
+    return _getN<String>(map, keys) ?? '';
   }
 
   final _markdownRegExp = RegExp('#+');
 
   String _parseMarkdown(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null || value == '') {
-      return '';
-    }
+    final value = _getN<String>(map, keys) ?? '';
     return value
         .replaceAll('&lt;', '<')
         .replaceAll('&gt;', '>')
@@ -559,25 +540,24 @@ mixin RedditParser {
   }
 
   bool _parseBool(dynamic map, List<dynamic> keys) {
-    final value = _get<bool?>(map, keys, null);
-    if (value == null) {
-      return false;
-    }
-    return value;
+    return _getN<bool>(map, keys) ?? false;
   }
 
   List<String> _parseListString(dynamic map, List<dynamic> keys) {
-    final value = _get<List<dynamic>?>(map, keys, null);
-    if (value == null) {
-      return [];
-    }
-    return value
-        .map((v) => _cast<String>(v, ''))
-        .where((v) => v != '')
-        .toList();
+    final value = _getN<List<dynamic>>(map, keys) ?? [];
+    return value.map((v) => _castN<String>(v)).whereType<String>().toList();
   }
 
-  dynamic _getNestedValue(dynamic map, List<dynamic> keys) {
+  T? _getN<T>(dynamic map, List<dynamic> keys) {
+    final value = __getNested(map, keys);
+    if (value is T?) {
+      return value;
+    }
+    _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
+    return null;
+  }
+
+  dynamic __getNested(dynamic map, List<dynamic> keys) {
     dynamic current = map;
     for (final key in keys) {
       if (current is List && key is int) {
@@ -585,26 +565,18 @@ mixin RedditParser {
       } else if (current is Map) {
         current = current[key];
       } else {
+        /* _log.warning('key not found: $keys: $key in $current'); */
         return null;
       }
     }
     return current;
   }
 
-  T _get<T>(dynamic map, List<dynamic> keys, T defaultValue) {
-    final value = _getNestedValue(map, keys);
-    if (value is T) {
+  T? _castN<T>(dynamic value) {
+    if (value is T?) {
       return value;
     }
-    _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
-    return defaultValue;
-  }
-
-  T _cast<T>(dynamic value, T defaultValue) {
-    if (value is T) {
-      return value;
-    }
-    return defaultValue;
+    return null;
   }
 
   List<R> _parseIterable<T, R>(Iterable<T> s, R Function(T) parser) {
