@@ -100,8 +100,8 @@ class CommentParser with RedditParser {
   List<Comment> parseReplies(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['data', 'children'];
-    final value = _get<List<dynamic>?>(map, keys, null);
 
+    final value = _get<List<dynamic>?>(map, keys, null);
     if (value == null) {
       return [];
     }
@@ -116,9 +116,7 @@ class CommentParser with RedditParser {
     if (value == null || value == '') {
       return '';
     }
-
-    final s = value.split('_');
-    return s.isEmpty ? '' : s.last;
+    return value.split('_').last;
   }
 }
 
@@ -166,10 +164,6 @@ class PreviewItemParser with RedditParser {
 
 class RuleParser with RedditParser {
   List<Rule> fromResponse(dynamic resp) {
-    // final value = _get<List<dynamic>?>(resp, ['rules'], null);
-    // if (value == null) {
-    //   return [];
-    // }
     return _parseIterable<dynamic, Rule>(resp['rules'] as List<dynamic>, (v) {
       return fromJson(v as Map<String, dynamic>);
     });
@@ -256,7 +250,6 @@ class SubmissionParser with RedditParser {
     if (value == null) {
       return [];
     }
-
     return _parseIterable<dynamic, Preview>(value, (v) {
       v ??= _get<dynamic>(v, ['variants', 'gif'], null);
       final source =
@@ -272,6 +265,7 @@ class SubmissionParser with RedditParser {
   Video? parseVideo(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['reddit_video'];
+    
     final value = _get<Map<String, dynamic>?>(map, keys, null);
     if (value == null) {
       return null;
@@ -297,7 +291,6 @@ class SubmissionParser with RedditParser {
       case null:
         return PostHint.none;
     }
-
     _log.warning('fail to parse postHint: $keys: $value');
     return PostHint.none;
   }
@@ -351,7 +344,6 @@ class SubredditParser with RedditParser {
     if (value == null || value == '') {
       return '';
     }
-
     if (_colorRegExp.hasMatch(value)) {
       return value;
     }
@@ -458,13 +450,21 @@ mixin RedditParser {
     List<dynamic> keys,
     bool isUtc,
   ) {
-    final value = double.tryParse(_get<dynamic>(map, keys, null).toString());
+    final defaultValue = clock.now();
+
+    final value = _get<dynamic>(map, keys, null);
     if (value == null) {
-      return clock.now();
+      return defaultValue;
+    }
+
+    final parsed = double.tryParse(value.toString());
+    if (parsed == null) {
+      _log.warning('fail to parse time: $keys, value');
+      return defaultValue;
     }
 
     return DateTime.fromMillisecondsSinceEpoch(
-      value.round() * 1000,
+      parsed.round() * 1000,
       isUtc: isUtc,
     );
   }
@@ -476,7 +476,6 @@ mixin RedditParser {
     if (value == null) {
       return [];
     }
-
     return value
         .map((v) => _parseUrl(v, ['resized_icons', 0, 'url']))
         .where((v) => v != '')
@@ -493,7 +492,6 @@ mixin RedditParser {
         value == 'spoiler') {
       return '';
     }
-
     if (value.startsWith('http://') || value.startsWith('https://')) {
       return value.replaceAll('&amp;', '&');
     }
@@ -502,9 +500,9 @@ mixin RedditParser {
   }
 
   double _parseDouble(dynamic map, List<dynamic> keys) {
-    final value = _get<dynamic>(map, keys, null);
-
     const defaultValue = 0.0;
+
+    final value = _get<dynamic>(map, keys, null);
     if (value == null) {
       return defaultValue;
     }
@@ -522,9 +520,9 @@ mixin RedditParser {
   }
 
   int _parseInt(dynamic map, List<dynamic> keys) {
-    final value = _get<dynamic>(map, keys, null);
-    
     const defaultValue = 0;
+
+    final value = _get<dynamic>(map, keys, null);
     if (value == null) {
       return defaultValue;
     }
