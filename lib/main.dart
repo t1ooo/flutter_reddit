@@ -33,50 +33,52 @@ Future<void> main() async {
   return runApp(
     ChangeNotifierProvider<AuthNotifier>(
       create: (context) => AuthNotifier(redditApi),
-      child: Builder(builder: (context) {
-        final notifier = context.watch<AuthNotifier>();
-        if (notifier.user == null) {
-          return MyApp();
-        }
+      child: Builder(
+        builder: (context) {
+          final notifier = context.watch<AuthNotifier>();
+          if (notifier.user == null) {
+            return MyApp();
+          }
 
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider<CurrentUserNotifier>.value(
-              value: notifier.user!,
-            ),
-            ChangeNotifierProvider<SubmissionLoaderNotifier>(
-              create: (context) => SubmissionLoaderNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<SearchNotifier>(
-              create: (context) => SearchNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<SubredditLoaderNotifier>(
-              create: (context) => SubredditLoaderNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<UserLoaderNotifier>(
-              create: (context) => UserLoaderNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<HomeFrontNotifier>(
-              create: (context) => HomeFrontNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<HomePopularNotifier>(
-              create: (context) => HomePopularNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<SearchSubredditsNotifier>(
-              create: (context) => SearchSubredditsNotifier(redditApi),
-            ),
-            ChangeNotifierProvider<SubredditAllNotifier>(
-              create: (context) => SubredditAllNotifier(redditApi),
-            ),
-            Provider<CacheManager>(
-              create: (context) => CacheManager(
-                Config('flutter_reddit_cache'),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<CurrentUserNotifier>.value(
+                value: notifier.user!,
               ),
-            ),
-          ],
-          child: MyApp(),
-        );
-      }),
+              ChangeNotifierProvider<SubmissionLoaderNotifier>(
+                create: (context) => SubmissionLoaderNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<SearchNotifier>(
+                create: (context) => SearchNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<SubredditLoaderNotifier>(
+                create: (context) => SubredditLoaderNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<UserLoaderNotifier>(
+                create: (context) => UserLoaderNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<HomeFrontNotifier>(
+                create: (context) => HomeFrontNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<HomePopularNotifier>(
+                create: (context) => HomePopularNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<SearchSubredditsNotifier>(
+                create: (context) => SearchSubredditsNotifier(redditApi),
+              ),
+              ChangeNotifierProvider<SubredditAllNotifier>(
+                create: (context) => SubredditAllNotifier(redditApi),
+              ),
+              Provider<CacheManager>(
+                create: (context) => CacheManager(
+                  Config('flutter_reddit_cache'),
+                ),
+              ),
+            ],
+            child: MyApp(),
+          );
+        },
+      ),
     ),
   );
 }
@@ -98,9 +100,6 @@ Future<RedditApi> createRedditApi() async {
             : throw Exception('unsupported platform');
     final credentials = SecureCredentials();
     return RedditApiImpl(clientId, auth, credentials);
-    // final credentials = Credentials(
-    //     File((await getTemporaryDirectory()).path + '/credentials.json'));
-    // return RedditApiImpl(clientId, redirectUri, credentials);
   }
 
   if (kDebugMode) {
