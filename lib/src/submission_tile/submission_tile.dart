@@ -118,13 +118,17 @@ class SubmissionTile extends StatelessWidget {
         );
 
     Widget? _link() {
+      if (submission.url == '') {
+        return null;
+      }
+
       if (previewImage == null) {
         return ExternalLink(url: submission.url);
       }
 
       return ImageLink(
         imageUrl: previewImage.url,
-        url: notifier.submission.url,
+        url: submission.url,
         size: _adjustSize(previewImage.width, previewImage.height),
       );
     }
@@ -137,7 +141,8 @@ class SubmissionTile extends StatelessWidget {
         }
       }
 
-      return _link();
+      // return _link();
+      return null;
     }
 
     Widget? _hostedVideo() {
@@ -159,7 +164,8 @@ class SubmissionTile extends StatelessWidget {
           size: _adjustSize(video.width, video.height),
         );
       } else {
-        return _link();
+        // return _link();
+        return null;
       }
     }
 
@@ -192,12 +198,13 @@ class SubmissionTile extends StatelessWidget {
       case PostHint.image:
         return _image();
       case PostHint.richVideo:
-        return _richVideo();
+        return _richVideo() ?? _link();
       case PostHint.link:
         return _link();
       case PostHint.none:
       case PostHint.self:
-        return null;
+        // return null;
+        return _richVideo() ?? _link();
     }
   }
 

@@ -270,8 +270,7 @@ class SubmissionParser with RedditParser {
       case 'image':
         return PostHint.image;
       case 'link':
-        // TODO: move to view
-        return (_parseUrl(map, ['url']) != '') ? PostHint.link : PostHint.self;
+        return PostHint.link;
       case 'rich:video':
         return PostHint.richVideo;
       case 'self':
