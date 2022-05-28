@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'call.dart';
 import 'like.dart';
-import 'parse.dart';
+// 
 
 class Comment extends Equatable {
   const Comment({
@@ -56,65 +56,65 @@ class Comment extends Equatable {
     this.drawComment,
   });
 
-  factory Comment.fromJson(
-    Map<String, dynamic> m, {
-    draw.Comment? drawComment,
-  }) {
-    const f = 'comment';
-    return Comment(
-      subredditId: parseString(m['subreddit_id'], '$f.subreddit_id'),
-      authorIsBlocked:
-          parseBool(m['author_is_blocked'], '$f.author_is_blocked'),
-      commentType: parseString(m['comment_type'], '$f.comment_type'),
-      linkTitle: parseString(m['link_title'], '$f.link_title'),
-      ups: parseInt(m['ups'], '$f.ups'),
-      authorFlairType:
-          parseString(m['author_flair_type'], '$f.author_flair_type'),
-      totalAwardsReceived:
-          parseInt(m['total_awards_received'], '$f.total_awards_received'),
-      subreddit: parseString(m['subreddit'], '$f.subreddit'),
-      linkAuthor: parseString(m['link_author'], '$f.link_author'),
-      likes: parseLikes(m['likes'], '$f.likes'),
-      replies: parseReplies(m['replies'], '$f.replies'),
-      saved: parseBool(m['saved'], '$f.saved'),
-      id: parseString(m['id'], '$f.id'),
-      gilded: parseInt(m['gilded'], '$f.gilded'),
-      archived: parseBool(m['archived'], '$f.archived'),
-      noFollow: parseBool(m['no_follow'], '$f.no_follow'),
-      author: parseString(m['author'], '$f.author'),
-      numComments: parseInt(m['num_comments'], '$f.num_comments'),
-      sendReplies: parseBool(m['send_replies'], '$f.send_replies'),
-      parentId: parseString(m['parent_id'], '$f.parent_id'),
-      score: parseInt(m['score'], '$f.score'),
-      authorFullname: parseString(m['author_fullname'], '$f.author_fullname'),
-      over18: parseBool(m['over_18'], '$f.over_18'),
-      controversiality: parseInt(m['controversiality'], '$f.controversiality'),
-      body: parseBody(m['body'], '$f.body'),
-      downs: parseInt(m['downs'], '$f.downs'),
-      isSubmitter: parseBool(m['is_submitter'], '$f.is_submitter'),
-      collapsed: parseBool(m['collapsed'], '$f.collapsed'),
-      bodyHtml: parseString(m['body_html'], '$f.body_html'),
-      distinguished: parseBool(m['distinguished'], '$f.distinguished'),
-      stickied: parseBool(m['stickied'], '$f.stickied'),
-      authorPremium: parseBool(m['author_premium'], '$f.author_premium'),
-      linkId: parseString(m['link_id'], '$f.link_id'),
-      permalink: parseString(m['permalink'], '$f.permalink'),
-      subredditType: parseString(m['subreddit_type'], '$f.subreddit_type'),
-      linkPermalink: parseUrl(m['link_permalink'], '$f.link_permalink'),
-      name: parseString(m['name'], '$f.name'),
-      subredditNamePrefixed: parseString(
-          m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
-      treatmentTags: parseListString(m['treatment_tags'], '$f.treatment_tags'),
-      created: parseTime(m['created'], '$f.created'),
-      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-      locked: parseBool(m['locked'], '$f.locked'),
-      quarantine: parseBool(m['quarantine'], '$f.quarantine'),
-      linkUrl: parseUrl(m['link_url'], '$f.link_url'),
-      submissionId: parseSubmissionId(m['link_id'], '$f.link_id'),
-      awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
-      drawComment: drawComment,
-    );
-  }
+  // factory Comment.fromJson(
+  //   Map<String, dynamic> m, {
+  //   draw.Comment? drawComment,
+  // }) {
+  //   const f = 'comment';
+  //   return Comment(
+  //     subredditId: parseString(m['subreddit_id'], '$f.subreddit_id'),
+  //     authorIsBlocked:
+  //         parseBool(m['author_is_blocked'], '$f.author_is_blocked'),
+  //     commentType: parseString(m['comment_type'], '$f.comment_type'),
+  //     linkTitle: parseString(m['link_title'], '$f.link_title'),
+  //     ups: parseInt(m['ups'], '$f.ups'),
+  //     authorFlairType:
+  //         parseString(m['author_flair_type'], '$f.author_flair_type'),
+  //     totalAwardsReceived:
+  //         parseInt(m['total_awards_received'], '$f.total_awards_received'),
+  //     subreddit: parseString(m['subreddit'], '$f.subreddit'),
+  //     linkAuthor: parseString(m['link_author'], '$f.link_author'),
+  //     likes: parseLikes(m['likes'], '$f.likes'),
+  //     replies: parseReplies(m['replies'], '$f.replies'),
+  //     saved: parseBool(m['saved'], '$f.saved'),
+  //     id: parseString(m['id'], '$f.id'),
+  //     gilded: parseInt(m['gilded'], '$f.gilded'),
+  //     archived: parseBool(m['archived'], '$f.archived'),
+  //     noFollow: parseBool(m['no_follow'], '$f.no_follow'),
+  //     author: parseString(m['author'], '$f.author'),
+  //     numComments: parseInt(m['num_comments'], '$f.num_comments'),
+  //     sendReplies: parseBool(m['send_replies'], '$f.send_replies'),
+  //     parentId: parseString(m['parent_id'], '$f.parent_id'),
+  //     score: parseInt(m['score'], '$f.score'),
+  //     authorFullname: parseString(m['author_fullname'], '$f.author_fullname'),
+  //     over18: parseBool(m['over_18'], '$f.over_18'),
+  //     controversiality: parseInt(m['controversiality'], '$f.controversiality'),
+  //     body: parseBody(m['body'], '$f.body'),
+  //     downs: parseInt(m['downs'], '$f.downs'),
+  //     isSubmitter: parseBool(m['is_submitter'], '$f.is_submitter'),
+  //     collapsed: parseBool(m['collapsed'], '$f.collapsed'),
+  //     bodyHtml: parseString(m['body_html'], '$f.body_html'),
+  //     distinguished: parseBool(m['distinguished'], '$f.distinguished'),
+  //     stickied: parseBool(m['stickied'], '$f.stickied'),
+  //     authorPremium: parseBool(m['author_premium'], '$f.author_premium'),
+  //     linkId: parseString(m['link_id'], '$f.link_id'),
+  //     permalink: parseString(m['permalink'], '$f.permalink'),
+  //     subredditType: parseString(m['subreddit_type'], '$f.subreddit_type'),
+  //     linkPermalink: parseUrl(m['link_permalink'], '$f.link_permalink'),
+  //     name: parseString(m['name'], '$f.name'),
+  //     subredditNamePrefixed: parseString(
+  //         m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
+  //     treatmentTags: parseListString(m['treatment_tags'], '$f.treatment_tags'),
+  //     created: parseTime(m['created'], '$f.created'),
+  //     createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+  //     locked: parseBool(m['locked'], '$f.locked'),
+  //     quarantine: parseBool(m['quarantine'], '$f.quarantine'),
+  //     linkUrl: parseUrl(m['link_url'], '$f.link_url'),
+  //     submissionId: parseSubmissionId(m['link_id'], '$f.link_id'),
+  //     awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
+  //     drawComment: drawComment,
+  //   );
+  // }
 
   final String subredditId;
   final bool authorIsBlocked;
@@ -322,3 +322,60 @@ class Comment extends Equatable {
     );
   }
 }
+
+// class CommentParser with RedditParser {
+//   Comment fromJson(
+//     Map<String, dynamic> m, {
+//     draw.Comment? drawComment,
+//   }) {
+//     return Comment(
+//       subredditId: parseString(m, ['subreddit_id']),
+//       authorIsBlocked: parseBool(m, ['author_is_blocked']),
+//       commentType: parseString(m, ['comment_type']),
+//       linkTitle: parseString(m, ['link_title']),
+//       ups: parseInt(m, ['ups']),
+//       authorFlairType: parseString(m, ['author_flair_type']),
+//       totalAwardsReceived: parseInt(m, ['total_awards_received']),
+//       subreddit: parseString(m, ['subreddit']),
+//       linkAuthor: parseString(m, ['link_author']),
+//       likes: parseLikes(m, ['likes']),
+//       replies: parseReplies(m, ['replies']),
+//       saved: parseBool(m, ['saved']),
+//       id: parseString(m, ['id']),
+//       gilded: parseInt(m, ['gilded']),
+//       archived: parseBool(m, ['archived']),
+//       noFollow: parseBool(m, ['no_follow']),
+//       author: parseString(m, ['author']),
+//       numComments: parseInt(m, ['num_comments']),
+//       sendReplies: parseBool(m, ['send_replies']),
+//       parentId: parseString(m, ['parent_id']),
+//       score: parseInt(m, ['score']),
+//       authorFullname: parseString(m, ['author_fullname']),
+//       over18: parseBool(m, ['over_18']),
+//       controversiality: parseInt(m, ['controversiality']),
+//       body: parseBody(m, ['body']),
+//       downs: parseInt(m, ['downs']),
+//       isSubmitter: parseBool(m, ['is_submitter']),
+//       collapsed: parseBool(m, ['collapsed']),
+//       bodyHtml: parseString(m, ['body_html']),
+//       distinguished: parseBool(m, ['distinguished']),
+//       stickied: parseBool(m, ['stickied']),
+//       authorPremium: parseBool(m, ['author_premium']),
+//       linkId: parseString(m, ['link_id']),
+//       permalink: parseString(m, ['permalink']),
+//       subredditType: parseString(m, ['subreddit_type']),
+//       linkPermalink: parseUrl(m, ['link_permalink']),
+//       name: parseString(m, ['name']),
+//       subredditNamePrefixed: parseString(m, ['subreddit_name_prefixed']),
+//       treatmentTags: parseListString(m, ['treatment_tags']),
+//       created: parseTime(m, ['created']),
+//       createdUtc: parseTimeUtc(m, ['created_utc']),
+//       locked: parseBool(m, ['locked']),
+//       quarantine: parseBool(m, ['quarantine']),
+//       linkUrl: parseUrl(m, ['link_url']),
+//       submissionId: parseSubmissionId(m, ['link_id']),
+//       awardIcons: parseAwardIcons(m, ['all_awardings']),
+//       drawComment: drawComment,
+//     );
+//   }
+// }

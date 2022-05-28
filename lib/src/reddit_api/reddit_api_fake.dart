@@ -9,7 +9,8 @@ import '../logging.dart';
 import 'comment.dart';
 import 'like.dart';
 import 'message.dart';
-import 'parse.dart';
+
+import 'parsers.dart';
 import 'reddit_api.dart';
 import 'rule.dart';
 import 'submission.dart';
@@ -50,7 +51,7 @@ class FakeRedditApi implements RedditApi {
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
-        .map((v) => Submission.fromJson(v))
+        .map((v) => submissionParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -70,7 +71,7 @@ class FakeRedditApi implements RedditApi {
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
-        .map((v) => Submission.fromJson(v))
+        .map((v) => submissionParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -88,7 +89,7 @@ class FakeRedditApi implements RedditApi {
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
-        .map((v) => Submission.fromJson(v))
+        .map((v) => submissionParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -101,7 +102,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('user.subreddits.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Subreddit.fromJson(v))
+        .map((v) => subredditParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -120,7 +121,7 @@ class FakeRedditApi implements RedditApi {
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, type))
-        .map((v) => Submission.fromJson(v))
+        .map((v) => submissionParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -131,7 +132,7 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await _readFile('user.info.json');
-    return User.fromJson(jsonDecode(data) as Map<String, dynamic>);
+    return userParser.fromJson(jsonDecode(data) as Map<String, dynamic>);
   }
 
   @override
@@ -142,7 +143,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('user.comments.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Comment.fromJson(v))
+        .map((v) => commentParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -158,7 +159,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('user.submissions.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Submission.fromJson(v))
+        .map((v) => submissionParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -171,7 +172,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('user.trophies.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Trophy.fromJson(v))
+        .map((v) => trophyParser.fromJson(v))
         .toList();
   }
 
@@ -202,10 +203,10 @@ class FakeRedditApi implements RedditApi {
 
     final comments = (jsonDecode(comData) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Comment.fromJson(v))
+        .map((v) => commentParser.fromJson(v))
         .toList();
 
-    return Submission.fromJson(
+    return submissionParser.fromJson(
       jsonDecode(subData) as Map<String, dynamic>,
       comments: comments,
     );
@@ -222,7 +223,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile(_randValue(files));
     final map = jsonDecode(data) as Map;
     map['user_is_subscriber'] = _random.nextInt(1000).isEven;
-    return Subreddit.fromJson(map as Map<String, dynamic>);
+    return subredditParser.fromJson(map as Map<String, dynamic>);
   }
 
   @override
@@ -275,7 +276,7 @@ class FakeRedditApi implements RedditApi {
     final json = jsonDecode(data);
     // ignore: avoid_dynamic_calls
     json['name'] += '_${Random().nextInt(1000)}';
-    return User.fromJson(json as Map<String, dynamic>);
+    return userParser.fromJson(json as Map<String, dynamic>);
   }
 
   @override
@@ -292,9 +293,9 @@ class FakeRedditApi implements RedditApi {
         .map((v) => v as Map<String, dynamic>)
         .forEach((v) {
       if ((v['name'] as String).contains('t1_')) {
-        comments.add(Comment.fromJson(v));
+        comments.add(commentParser.fromJson(v));
       } else {
-        submissions.add(Submission.fromJson(v));
+        submissions.add(submissionParser.fromJson(v));
       }
     });
 
@@ -321,7 +322,7 @@ class FakeRedditApi implements RedditApi {
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
         .map((v) => _addType(v, sort))
-        .map((v) => Submission.fromJson(v))
+        .map((v) => submissionParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -337,7 +338,7 @@ class FakeRedditApi implements RedditApi {
     final data = await _readFile('subreddits.search.json');
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Subreddit.fromJson(v))
+        .map((v) => subredditParser.fromJson(v))
         .take(limit)
         .toList();
   }
@@ -347,7 +348,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('submissionReply(${submission.id}, $body)');
     _mustLoggedIn();
     await Future.delayed(_delay);
-    return Comment.fromJson({'body': body});
+    return commentParser.fromJson({'body': body});
   }
 
   @override
@@ -355,7 +356,7 @@ class FakeRedditApi implements RedditApi {
     _log.info('commentReply(${comment.id}, $body)');
     _mustLoggedIn();
     await Future.delayed(_delay);
-    return Comment.fromJson({'body': body});
+    return commentParser.fromJson({'body': body});
   }
 
   Future<String> _loginPath() async {
@@ -411,7 +412,7 @@ class FakeRedditApi implements RedditApi {
     bool spoiler = false,
   }) async {
     await Future.delayed(_delay);
-    return Submission.fromJson({
+    return submissionParser.fromJson({
       'subreddit': subreddit,
       'title': title,
       'selftext': selftext,
@@ -431,7 +432,7 @@ class FakeRedditApi implements RedditApi {
 
     return (jsonDecode(data) as List<dynamic>)
         .map((v) => v as Map<String, dynamic>)
-        .map((v) => Message.fromJson(v))
+        .map((v) => messageParser.fromJson(v))
         .toList();
   }
 
@@ -465,6 +466,6 @@ class FakeRedditApi implements RedditApi {
     await Future.delayed(_delay);
     _mustLoggedIn();
     final data = await _readFile('subreddit.2.rules.json');
-    return parseRules(jsonDecode(data))!;
+    return ruleParser.fromResponse(jsonDecode(data));
   }
 }

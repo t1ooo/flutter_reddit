@@ -1,11 +1,11 @@
 import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
-import 'parse.dart';
+
 import 'subreddit.dart';
 
 class User extends Equatable {
-  User({
+  const User({
     required this.isEmployee,
     required this.isFriend,
     required this.awardeeKarma,
@@ -31,35 +31,35 @@ class User extends Equatable {
     required this.drawRedditor,
   });
 
-  factory User.fromJson(Map<String, dynamic> m, {draw.Redditor? drawRedditor}) {
-    const f = 'User';
-    return User(
-      isEmployee: parseBool(m['is_employee'], '$f.is_employee'),
-      isFriend: parseBool(m['is_friend'], '$f.is_friend'),
-      awardeeKarma: parseInt(m['awardee_karma'], '$f.awardee_karma'),
-      id: parseString(m['id'], '$f.id'),
-      verified: parseBool(m['verified'], '$f.verified'),
-      isGold: parseBool(m['is_gold'], '$f.is_gold'),
-      isMod: parseBool(m['is_mod'], '$f.is_mod'),
-      awarderKarma: parseInt(m['awarder_karma'], '$f.awarder_karma'),
-      hasVerifiedEmail:
-          parseBool(m['has_verified_email'], '$f.has_verified_email'),
-      iconImg: parseUrl(m['icon_img'], '$f.icon_img'),
-      linkKarma: parseInt(m['link_karma'], '$f.link_karma'),
-      isBlocked: parseBool(m['is_blocked'], '$f.is_blocked'),
-      totalKarma: parseInt(m['total_karma'], '$f.total_karma'),
-      acceptChats: parseBool(m['accept_chats'], '$f.accept_chats'),
-      name: parseString(m['name'], '$f.name'),
-      created: parseTime(m['created'], '$f.created'),
-      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-      snoovatarImg: parseString(m['snoovatar_img'], '$f.snoovatar_img'),
-      commentKarma: parseInt(m['comment_karma'], '$f.comment_karma'),
-      acceptFollowers: parseBool(m['accept_followers'], '$f.accept_followers'),
-      hasSubscribed: parseBool(m['has_subscribed'], '$f.has_subscribed'),
-      subreddit: Subreddit.fromJson(cast(m['subreddit'], {}, '$f.subreddit')),
-      drawRedditor: drawRedditor,
-    );
-  }
+  // factory User.fromJson(Map<String, dynamic> m, {draw.Redditor? drawRedditor}) {
+  //   const f = 'User';
+  //   return User(
+  //     isEmployee: parseBool(m['is_employee'], '$f.is_employee'),
+  //     isFriend: parseBool(m['is_friend'], '$f.is_friend'),
+  //     awardeeKarma: parseInt(m['awardee_karma'], '$f.awardee_karma'),
+  //     id: parseString(m['id'], '$f.id'),
+  //     verified: parseBool(m['verified'], '$f.verified'),
+  //     isGold: parseBool(m['is_gold'], '$f.is_gold'),
+  //     isMod: parseBool(m['is_mod'], '$f.is_mod'),
+  //     awarderKarma: parseInt(m['awarder_karma'], '$f.awarder_karma'),
+  //     hasVerifiedEmail:
+  //         parseBool(m['has_verified_email'], '$f.has_verified_email'),
+  //     iconImg: parseUrl(m['icon_img'], '$f.icon_img'),
+  //     linkKarma: parseInt(m['link_karma'], '$f.link_karma'),
+  //     isBlocked: parseBool(m['is_blocked'], '$f.is_blocked'),
+  //     totalKarma: parseInt(m['total_karma'], '$f.total_karma'),
+  //     acceptChats: parseBool(m['accept_chats'], '$f.accept_chats'),
+  //     name: parseString(m['name'], '$f.name'),
+  //     created: parseTime(m['created'], '$f.created'),
+  //     createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+  //     snoovatarImg: parseString(m['snoovatar_img'], '$f.snoovatar_img'),
+  //     commentKarma: parseInt(m['comment_karma'], '$f.comment_karma'),
+  //     acceptFollowers: parseBool(m['accept_followers'], '$f.accept_followers'),
+  //     hasSubscribed: parseBool(m['has_subscribed'], '$f.has_subscribed'),
+  //     subreddit: Subreddit.fromJson(cast(m['subreddit'], {}, '$f.subreddit')),
+  //     drawRedditor: drawRedditor,
+  //   );
+  // }
 
   final bool isEmployee;
   final bool isFriend;

@@ -7,7 +7,8 @@ import 'comment.dart';
 import 'credentials.dart';
 import 'like.dart';
 import 'message.dart';
-import 'parse.dart';
+// 
+import 'parsers.dart';
 import 'reddit_api.dart';
 import 'rule.dart';
 import 'submission.dart';
@@ -97,7 +98,8 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required FrontSubType type,
   }) async {
-    return _parseSubmissions(await _front(limit: limit, type: type).toList());
+    return submissionParser
+        .fromDraws(await _front(limit: limit, type: type).toList());
   }
 
   Stream<draw.UserContent> _front({
@@ -126,9 +128,9 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return _parseSubmissions(
-        await _subredditSubmissions('popular', limit: limit, type: type)
-            .toList());
+    return submissionParser.fromDraws(
+      await _subredditSubmissions('popular', limit: limit, type: type).toList(),
+    );
   }
 
   @override
@@ -136,8 +138,9 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return _parseSubmissions(
-        await _subredditSubmissions('all', limit: limit, type: type).toList());
+    return submissionParser.fromDraws(
+      await _subredditSubmissions('all', limit: limit, type: type).toList(),
+    );
   }
 
   @override
@@ -146,9 +149,13 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return _parseSubmissions(await _subredditSubmissions(subreddit.displayName,
-            limit: limit, type: type)
-        .toList());
+    return submissionParser.fromDraws(
+      await _subredditSubmissions(
+        subreddit.displayName,
+        limit: limit,
+        type: type,
+      ).toList(),
+    );
   }
 
   Stream<draw.UserContent> _subredditSubmissions(
@@ -175,13 +182,13 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<List<Subreddit>> currentUserSubreddits({required int limit}) async {
-    return _parseSubreddits(
-        await reddit.user.subreddits(limit: limit).toList());
+    return subredditParser
+        .fromDraws(await reddit.user.subreddits(limit: limit).toList());
   }
 
   @override
   Future<User> user(String name) async {
-    return _parseUser(await reddit.redditor(name).populate());
+    return userParser.fromDraw(await reddit.redditor(name).populate());
   }
 
   @override
@@ -200,21 +207,23 @@ class RedditApiImpl implements RedditApi {
     User user, {
     required int limit,
   }) async {
-    return _parseComments(
-        await user.drawRedditor!.comments.newest(limit: limit).toList());
+    return commentParser.fromDraws(
+      await user.drawRedditor!.comments.newest(limit: limit).toList(),
+    );
   }
 
   // TODO: MAYBE: add type support
   @override
   Future<List<Submission>> userSubmissions(User user,
       {required int limit}) async {
-    return _parseSubmissions(
-        await user.drawRedditor!.submissions.newest(limit: limit).toList());
+    return submissionParser.fromDraws(
+      await user.drawRedditor!.submissions.newest(limit: limit).toList(),
+    );
   }
 
   @override
   Future<List<Trophy>> userTrophies(User user) async {
-    return _parseTrophies(await await user.drawRedditor!.trophies());
+    return trophyParser.fromDraws(await user.drawRedditor!.trophies());
   }
 
   @override
@@ -240,14 +249,15 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<Submission> submission(String id) async {
-    return _parseSubmission(await reddit.submission(id: id).populate());
+    return submissionParser
+        .fromDraw(await reddit.submission(id: id).populate());
   }
 
   @override
   Future<Subreddit> subreddit(String name) async {
     // ignore: parameter_assignments
     name = removeSubredditPrefix(name);
-    return _parseSubreddit(await reddit.subreddit(name).populate());
+    return subredditParser.fromDraw(await reddit.subreddit(name).populate());
   }
 
   @override
@@ -296,7 +306,7 @@ class RedditApiImpl implements RedditApi {
     if (redditor == null) {
       return null;
     }
-    return _parseUser(redditor);
+    return userParser.fromDraw(redditor);
   }
 
   @override
@@ -305,9 +315,9 @@ class RedditApiImpl implements RedditApi {
     final comments = <Comment?>[];
     await for (final v in user.drawRedditor!.saved(limit: limit)) {
       if (v is draw.Submission) {
-        submissions.add(_parseSubmission(v));
+        submissions.add(submissionParser.fromDraw(v));
       } else if (v is draw.Comment) {
-        comments.add(_parseComment(v));
+        comments.add(commentParser.fromDraw(v));
       } else {
         _log.warning('undefined type');
       }
@@ -329,16 +339,15 @@ class RedditApiImpl implements RedditApi {
     // ignore: parameter_assignments
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
-    return _parseSubmissions(await reddit
-        .subreddit(subreddit)
-        .search(query, params: params)
-        .toList());
+    return submissionParser.fromDraws(
+      await reddit.subreddit(subreddit).search(query, params: params).toList(),
+    );
   }
 
   @override
   Future<List<Subreddit>> searchSubreddits(String query,
       {required int limit}) async {
-    return _parseSubreddits(
+    return subredditParser.fromDraws(
       await reddit.subreddits
           .search(query, limit: limit)
           .map((v) => v as draw.Subreddit)
@@ -348,7 +357,7 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<Comment> submissionReply(Submission submission, String body) async {
-    return _parseComment(await submission.drawSubmission!.reply(body));
+    return commentParser.fromDraw(await submission.drawSubmission!.reply(body));
   }
 
   @override
@@ -363,7 +372,7 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<Comment> commentReply(Comment comment, String body) async {
-    return _parseComment(await comment.drawComment!.reply(body));
+    return commentParser.fromDraw(await comment.drawComment!.reply(body));
   }
 
   @override
@@ -377,7 +386,7 @@ class RedditApiImpl implements RedditApi {
     bool nsfw = false,
     bool spoiler = false,
   }) async {
-    return _parseSubmission(
+    return submissionParser.fromDraw(
       await reddit.subreddit(subreddit).submit(
             title,
             selftext: selftext,
@@ -392,93 +401,97 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<List<Message>> inboxMessages() async {
-    return _parseMessages(await reddit.inbox.messages().toList());
+    return messageParser.fromDraws(await reddit.inbox.messages().toList());
   }
 
   @override
   Future<List<Rule>> subredditRules(Subreddit subreddit) async {
-    final resp = await reddit.get('/r/${subreddit.displayName}/about/rules',
-        objectify: false);
-    return parseRules(resp)!;
-  }
-
-  // TODO: move outside class
-  Submission _parseSubmission(draw.Submission v) {
-    final drawComments = v.comments?.comments;
-    final comments = drawComments == null ? null : _parseComments(drawComments);
-    return Submission.fromJson(
-      v.data! as Map<String, dynamic>,
-      comments: comments,
+    final resp = await reddit.get(
+      '/r/${subreddit.displayName}/about/rules',
+      objectify: false,
     );
+    return ruleParser.fromResponse(resp);
   }
 
-  Subreddit _parseSubreddit(draw.Subreddit v) {
-    return Subreddit.fromJson(
-      v.data! as Map<String, dynamic>,
-      drawSubreddit: v,
-    );
-  }
+  // Submission _parseSubmission(draw.Submission v) {
+  //   final drawComments = v.comments?.comments;
+  //   final comments = drawComments == null ? null : _parseComments(drawComments);
+  //   return submissionParser.fromJson(
+  //     v.data! as Map<String, dynamic>,
+  //     comments: comments,
+  //   );
+  // }
 
-  Message _parseMessage(draw.Message v) {
-    return Message.fromJson(v.data! as Map<String, dynamic>);
-  }
+  // Subreddit _parseSubreddit(draw.Subreddit v) {
+  //   return subredditParser.fromJson(
+  //     v.data! as Map<String, dynamic>,
+  //     drawSubreddit: v,
+  //   );
+  // }
 
-  Comment _parseComment(draw.Comment v) {
-    return Comment.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
-  }
+  // Message _parseMessage(draw.Message v) {
+  //   return messageParser.fromJson(v.data! as Map<String, dynamic>);
+  // }
 
-  User _parseUser(draw.Redditor v) {
-    return User.fromJson(v.data! as Map<String, dynamic>, drawRedditor: v);
-  }
+  // Comment _parseComment(draw.Comment v) {
+  //   return commentParser.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
+  // }
 
-  Trophy _parseTrophy(draw.Trophy v) {
-    return Trophy.fromJson(v.data! as Map<String, dynamic>);
-  }
+  // User _parseUser(draw.Redditor v) {
+  //   return userParser.fromJson(v.data! as Map<String, dynamic>,
+  //       drawRedditor: v);
+  // }
 
-  List<R> _parse<T, R>(Iterable<T> s, R Function(T) parser) {
-    return s.map((v) => _try(() => parser(v))).whereType<R>().toList();
-  }
+  // Trophy _parseTrophy(draw.Trophy v) {
+  //   return trophyParser.fromJson(v.data! as Map<String, dynamic>);
+  // }
 
-  List<Submission> _parseSubmissions(
-    Iterable<draw.UserContent> s,
-  ) {
-    return _parse<draw.Submission, Submission>(
-        s.whereType<draw.Submission>(), _parseSubmission);
-  }
+  // List<R> _parse<T, R>(Iterable<T> s, R Function(T) parser) {
+  //   return s.map((v) => _try(() => parser(v))).whereType<R>().toList();
+  // }
 
-  List<Comment> _parseComments(Iterable<dynamic> s) {
-    return _parse<draw.Comment, Comment>(
-        s.map((v) {
-          if (v is draw.MoreComments) {
-            _log.warning('MoreComments'); // TODO
-            return null;
-          }
-          return v;
-        }).whereType<draw.Comment>(),
-        _parseComment);
-  }
+  // List<Submission> submissionParser
+  // .fromDraws(
+  //   Iterable<draw.UserContent> s,
+  // ) {
+  //   return _parse<draw.Submission, Submission>(
+  //       s.whereType<draw.Submission>(), _parseSubmission);
+  // }
 
-  List<Subreddit> _parseSubreddits(Iterable<draw.Subreddit> s) {
-    return _parse<draw.Subreddit, Subreddit>(s, _parseSubreddit);
-  }
+  // List<Comment> _parseComments(Iterable<dynamic> s) {
+  //   return _parse<draw.Comment, Comment>(
+  //     s.map((v) {
+  //       if (v is draw.MoreComments) {
+  //         _log.warning('MoreComments'); // TODO
+  //         return null;
+  //       }
+  //       return v;
+  //     }).whereType<draw.Comment>(),
+  //     commentParser.fromDraw,
+  //   );
+  // }
 
-  List<Message> _parseMessages(Iterable<draw.Message> s) {
-    return _parse<draw.Message, Message>(s, _parseMessage);
-  }
+  // List<Subreddit> _parseSubreddits(Iterable<draw.Subreddit> s) {
+  //   return _parse<draw.Subreddit, Subreddit>(s, _parseSubreddit);
+  // }
 
-  List<Trophy> _parseTrophies(Iterable<draw.Trophy> s) {
-    return _parse<draw.Trophy, Trophy>(s, _parseTrophy);
-  }
+  // List<Message> _parseMessages(Iterable<draw.Message> s) {
+  //   return _parse<draw.Message, Message>(s, _parseMessage);
+  // }
 
-  T? _try<T>(T Function() fn) {
-    try {
-      return fn();
-      // ignore: avoid_catching_errors
-    } on TypeError catch (e, st) {
-      _log.warning('', e, st);
-    } on Exception catch (e, st) {
-      _log.warning('', e, st);
-    }
-    return null;
-  }
+  // List<Trophy> _parseTrophies(Iterable<draw.Trophy> s) {
+  //   return _parse<draw.Trophy, Trophy>(s, _parseTrophy);
+  // }
+
+  // T? _try<T>(T Function() fn) {
+  //   try {
+  //     return fn();
+  //     // ignore: avoid_catching_errors
+  //   } on TypeError catch (e, st) {
+  //     _log.warning('', e, st);
+  //   } on Exception catch (e, st) {
+  //     _log.warning('', e, st);
+  //   }
+  //   return null;
+  // }
 }

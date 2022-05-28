@@ -2,10 +2,10 @@ import 'package:draw/draw.dart' as draw;
 import 'package:equatable/equatable.dart';
 
 import 'call.dart';
-import 'parse.dart';
+
 
 class Subreddit extends Equatable {
-  Subreddit({
+  const Subreddit({
     required this.communityIcon,
     required this.created,
     required this.createdUtc,
@@ -32,44 +32,44 @@ class Subreddit extends Equatable {
     required this.drawSubreddit,
   });
 
-  factory Subreddit.fromJson(Map<String, dynamic> m,
-      {draw.Subreddit? drawSubreddit}) {
-    const f = 'Subreddit';
-    return Subreddit(
-      communityIcon: parseUrl(m['community_icon'], '$f.community_icon'),
-      created: parseTime(m['created'], '$f.created'),
-      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-      description: parseMarkdown(m['description'], '$f.description'),
-      descriptionHtml:
-          parseString(m['description_html'], '$f.description_html'),
-      displayName: parseString(m['display_name'], '$f.display_name'),
-      displayNamePrefixed:
-          parseString(m['display_name_prefixed'], '$f.display_name_prefixed'),
-      id: parseString(m['id'], '$f.id'),
-      lang: parseString(m['lang'], '$f.lang'),
-      name: parseString(m['name'], '$f.name'),
-      publicDescription:
-          parseString(m['public_description'], '$f.public_description'),
-      publicDescriptionHtml: parseString(
-          m['public_description_html'], '$f.public_description_html'),
-      submitTextHtml: parseString(m['submit_text_html'], '$f.submit_text_html'),
-      submitText: parseString(m['submit_text'], '$f.submit_text'),
-      subredditType: parseString(m['subreddit_type'], '$f.subreddit_type'),
-      subscribers: parseInt(m['subscribers'], '$f.subscribers'),
-      title: parseString(m['title'], '$f.title'),
-      url: parseString(m['url'], '$f.url'),
-      headerImg: parseUrl(m['header_img'], '$f.header_img'),
-      bannerBackgroundImage:
-          parseUrl(m['banner_background_image'], '$f.banner_background_image'),
-      bannerBackgroundColor: parseColor(
-          m['banner_background_color'], '$f.banner_background_color'),
-      userIsSubscriber:
-          parseBool(m['user_is_subscriber'], '$f.user_is_subscriber'),
-      userHasFavorited:
-          parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
-      drawSubreddit: drawSubreddit,
-    );
-  }
+  // factory Subreddit.fromJson(Map<String, dynamic> m,
+  //     {draw.Subreddit? drawSubreddit}) {
+  //   const f = 'Subreddit';
+  //   return Subreddit(
+  //     communityIcon: parseUrl(m['community_icon'], '$f.community_icon'),
+  //     created: parseTime(m['created'], '$f.created'),
+  //     createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+  //     description: parseMarkdown(m['description'], '$f.description'),
+  //     descriptionHtml:
+  //         parseString(m['description_html'], '$f.description_html'),
+  //     displayName: parseString(m['display_name'], '$f.display_name'),
+  //     displayNamePrefixed:
+  //         parseString(m['display_name_prefixed'], '$f.display_name_prefixed'),
+  //     id: parseString(m['id'], '$f.id'),
+  //     lang: parseString(m['lang'], '$f.lang'),
+  //     name: parseString(m['name'], '$f.name'),
+  //     publicDescription:
+  //         parseString(m['public_description'], '$f.public_description'),
+  //     publicDescriptionHtml: parseString(
+  //         m['public_description_html'], '$f.public_description_html'),
+  //     submitTextHtml: parseString(m['submit_text_html'], '$f.submit_text_html'),
+  //     submitText: parseString(m['submit_text'], '$f.submit_text'),
+  //     subredditType: parseString(m['subreddit_type'], '$f.subreddit_type'),
+  //     subscribers: parseInt(m['subscribers'], '$f.subscribers'),
+  //     title: parseString(m['title'], '$f.title'),
+  //     url: parseString(m['url'], '$f.url'),
+  //     headerImg: parseUrl(m['header_img'], '$f.header_img'),
+  //     bannerBackgroundImage:
+  //         parseUrl(m['banner_background_image'], '$f.banner_background_image'),
+  //     bannerBackgroundColor: parseColor(
+  //         m['banner_background_color'], '$f.banner_background_color'),
+  //     userIsSubscriber:
+  //         parseBool(m['user_is_subscriber'], '$f.user_is_subscriber'),
+  //     userHasFavorited:
+  //         parseBool(m['user_has_favorited'], '$f.user_has_favorited'),
+  //     drawSubreddit: drawSubreddit,
+  //   );
+  // }
 
   final String communityIcon;
   final DateTime created;

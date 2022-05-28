@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'parse.dart';
+
 
 class Message extends Equatable {
   const Message({
@@ -23,29 +23,29 @@ class Message extends Equatable {
     required this.distinguished,
   });
 
-  factory Message.fromJson(Map<String, dynamic> m) {
-    const f = 'message';
-    return Message(
-      subreddit: parseString(m['subreddit_id'], '$f.subreddit_id'),
-      authorFullname: parseString(m['author_fullname'], '$f.author_fullname'),
-      id: parseString(m['id'], '$f.id'),
-      subject: parseString(m['subject'], '$f.subject'),
-      author: parseString(m['author'], '$f.author'),
-      numComments: parseInt(m['num_comments'], '$f.num_comments'),
-      parentId: parseInt(m['parent_Id'], '$f.parent_Id'),
-      subredditNamePrefixed: parseString(
-          m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
-      new_: parseBool(m['new'], '$f.new'),
-      body: parseMarkdown(m['body'], '$f.body'),
-      dest: parseString(m['dest'], '$f.dest'),
-      wasComment: parseBool(m['was_comment'], '$f.wasComment'),
-      bodyHtml: parseString(m['body_html'], '$f.bodyHtml'),
-      name: parseString(m['name'], '$f.name'),
-      created: parseTime(m['created'], '$f.created'),
-      createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-      distinguished: parseString(m['distinguished'], '$f.distinguished'),
-    );
-  }
+  // factory Message.fromJson(Map<String, dynamic> m) {
+  //   const f = 'message';
+  //   return Message(
+  //     subreddit: parseString(m['subreddit_id'], '$f.subreddit_id'),
+  //     authorFullname: parseString(m['author_fullname'], '$f.author_fullname'),
+  //     id: parseString(m['id'], '$f.id'),
+  //     subject: parseString(m['subject'], '$f.subject'),
+  //     author: parseString(m['author'], '$f.author'),
+  //     numComments: parseInt(m['num_comments'], '$f.num_comments'),
+  //     parentId: parseInt(m['parent_Id'], '$f.parent_Id'),
+  //     subredditNamePrefixed: parseString(
+  //         m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
+  //     new_: parseBool(m['new'], '$f.new'),
+  //     body: parseMarkdown(m['body'], '$f.body'),
+  //     dest: parseString(m['dest'], '$f.dest'),
+  //     wasComment: parseBool(m['was_comment'], '$f.wasComment'),
+  //     bodyHtml: parseString(m['body_html'], '$f.bodyHtml'),
+  //     name: parseString(m['name'], '$f.name'),
+  //     created: parseTime(m['created'], '$f.created'),
+  //     createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
+  //     distinguished: parseString(m['distinguished'], '$f.distinguished'),
+  //   );
+  // }
 
   final String subreddit;
   final String authorFullname;

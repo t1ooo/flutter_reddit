@@ -1,9 +1,9 @@
 import 'package:draw/draw.dart' as draw;
-import 'rule.dart';
 
 import 'comment.dart';
 import 'like.dart';
 import 'message.dart';
+import 'rule.dart';
 import 'submission.dart';
 import 'submission_type.dart';
 import 'subreddit.dart';
