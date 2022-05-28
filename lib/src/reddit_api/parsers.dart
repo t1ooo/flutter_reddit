@@ -199,6 +199,7 @@ class SubmissionParser with RedditParser {
     return parseJson(
       v.data! as Map<String, dynamic>,
       comments: comments,
+      drawSubmission: v,
     );
   }
 
