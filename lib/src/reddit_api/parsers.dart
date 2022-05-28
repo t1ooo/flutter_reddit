@@ -26,7 +26,7 @@ final videoParser = VideoParser();
 
 class CommentParser with RedditParser {
   List<Comment> fromDraws(Iterable<dynamic> s) {
-    return __parseIterable<draw.Comment, Comment>(
+    return _parseIterable<draw.Comment, Comment>(
       s.map((v) {
         if (v is draw.MoreComments) {
           _log.warning('MoreComments'); // TODO
@@ -106,11 +106,9 @@ class CommentParser with RedditParser {
       return [];
     }
 
-    return __parseIterable<dynamic, Comment>(value, (v) {
+    return _parseIterable<dynamic, Comment>(value, (v) {
       return commentParser.fromJson(v['data'] as Map<String, dynamic>);
     });
-
-    // ignore: avoid_catching_errors
   }
 
   String parseSubmissionId(dynamic map, List<dynamic> keys) {
@@ -126,7 +124,7 @@ class CommentParser with RedditParser {
 
 class MessageParser with RedditParser {
   List<Message> fromDraws(Iterable<draw.Message> s) {
-    return __parseIterable<draw.Message, Message>(s, fromDraw);
+    return _parseIterable<draw.Message, Message>(s, fromDraw);
   }
 
   Message fromDraw(draw.Message v) {
@@ -168,11 +166,11 @@ class PreviewItemParser with RedditParser {
 
 class RuleParser with RedditParser {
   List<Rule> fromResponse(dynamic resp) {
-    final value = _get<List<dynamic>?>(resp, ['rules'], null);
-    if (value == null) {
-      return [];
-    }
-    return __parseIterable<dynamic, Rule>(value, (v) {
+    // final value = _get<List<dynamic>?>(resp, ['rules'], null);
+    // if (value == null) {
+    //   return [];
+    // }
+    return _parseIterable<dynamic, Rule>(resp['rules'] as List<dynamic>, (v) {
       return fromJson(v as Map<String, dynamic>);
     });
   }
@@ -195,7 +193,7 @@ class SubmissionParser with RedditParser {
   List<Submission> fromDraws(
     Iterable<draw.UserContent> s,
   ) {
-    return __parseIterable<draw.Submission, Submission>(
+    return _parseIterable<draw.Submission, Submission>(
       s.whereType<draw.Submission>(),
       fromDraw,
     );
@@ -252,14 +250,14 @@ class SubmissionParser with RedditParser {
   }
 
   List<Preview> parsePreview(dynamic map, List<dynamic> keys) {
+    // ignore: parameter_assignments
     keys = keys + ['images'];
     final value = _get<List<dynamic>?>(map, keys, null);
-
     if (value == null) {
       return [];
     }
 
-    return __parseIterable<dynamic, Preview>(value, (v) {
+    return _parseIterable<dynamic, Preview>(value, (v) {
       v ??= _get<dynamic>(v, ['variants', 'gif'], null);
       final source =
           previewItemParser.fromJson(v['source'] as Map<String, dynamic>);
@@ -268,25 +266,21 @@ class SubmissionParser with RedditParser {
           .cast<PreviewItem>()
           .toList();
       return Preview(source: source, resolutions: resolutions);
-      // ignore: avoid_catching_errors
     });
-    // ignore: avoid_catching_errors
   }
 
   Video? parseVideo(dynamic map, List<dynamic> keys) {
+    // ignore: parameter_assignments
     keys = keys + ['reddit_video'];
     final value = _get<Map<String, dynamic>?>(map, keys, null);
-
     if (value == null) {
       return null;
     }
     return videoParser.fromJson(value);
-    // ignore: avoid_catching_errors
   }
 
   PostHint parsePostHint(dynamic map, List<dynamic> keys) {
     final value = _get<String?>(map, keys, null);
-
     switch (value) {
       case 'hosted:video':
         return PostHint.hostedVideo;
@@ -311,7 +305,7 @@ class SubmissionParser with RedditParser {
 
 class SubredditParser with RedditParser {
   List<Subreddit> fromDraws(Iterable<draw.Subreddit> s) {
-    return __parseIterable<draw.Subreddit, Subreddit>(s, fromDraw);
+    return _parseIterable<draw.Subreddit, Subreddit>(s, fromDraw);
   }
 
   Subreddit fromDraw(draw.Subreddit v) {
@@ -368,7 +362,7 @@ class SubredditParser with RedditParser {
 
 class TrophyParser with RedditParser {
   List<Trophy> fromDraws(Iterable<draw.Trophy> s) {
-    return __parseIterable<draw.Trophy, Trophy>(s, fromDraw);
+    return _parseIterable<draw.Trophy, Trophy>(s, fromDraw);
   }
 
   Trophy fromDraw(draw.Trophy v) {
@@ -443,6 +437,152 @@ class VideoParser with RedditParser {
 mixin RedditParser {
   late final _log = getLogger(runtimeType.toString());
 
+  Like _parseLikes(dynamic map, List<dynamic> keys) {
+    final value = _get<bool?>(map, keys, null);
+    if (value == null) {
+      return Like.none;
+    }
+    return value ? Like.up : Like.down;
+  }
+
+  DateTime _parseTime(dynamic map, List<dynamic> keys) {
+    return __parseTime(map, keys, true);
+  }
+
+  DateTime _parseTimeUtc(dynamic map, List<dynamic> keys) {
+    return __parseTime(map, keys, false);
+  }
+
+  DateTime __parseTime(
+    dynamic map,
+    List<dynamic> keys,
+    bool isUtc,
+  ) {
+    final value = double.tryParse(_get<dynamic>(map, keys, null).toString());
+    if (value == null) {
+      return clock.now();
+    }
+
+    return DateTime.fromMillisecondsSinceEpoch(
+      value.round() * 1000,
+      isUtc: isUtc,
+    );
+  }
+
+  List<String> _parseAwardIcons(dynamic map, List<dynamic> keys) {
+    // ignore: parameter_assignments
+    keys = keys + ['data', 'children'];
+    final value = _get<List<dynamic>?>(map, keys, null);
+    if (value == null) {
+      return [];
+    }
+
+    return value
+        .map((v) => _parseUrl(v, ['resized_icons', 0, 'url']))
+        .where((v) => v != '')
+        .toList();
+  }
+
+  String _parseUrl(dynamic map, List<dynamic> keys) {
+    final value = _get<String?>(map, keys, null);
+    if (value == null ||
+        value == '' ||
+        value == 'self' ||
+        value == 'default' ||
+        value == 'image' ||
+        value == 'spoiler') {
+      return '';
+    }
+
+    if (value.startsWith('http://') || value.startsWith('https://')) {
+      return value.replaceAll('&amp;', '&');
+    }
+    _log.warning('fail to parse url: $keys: $value');
+    return '';
+  }
+
+  double _parseDouble(dynamic map, List<dynamic> keys) {
+    final value = _get<dynamic>(map, keys, null);
+
+    const defaultValue = 0.0;
+    if (value == null) {
+      return defaultValue;
+    }
+    if (value is double) {
+      return value;
+    }
+    if (value is num) {
+      return value.toDouble();
+    }
+    if (value is String) {
+      return double.tryParse(value) ?? defaultValue;
+    }
+    _log.warning('fail to parse double: $keys: $value');
+    return defaultValue;
+  }
+
+  int _parseInt(dynamic map, List<dynamic> keys) {
+    final value = _get<dynamic>(map, keys, null);
+    
+    const defaultValue = 0;
+    if (value == null) {
+      return defaultValue;
+    }
+    if (value is int) {
+      return value;
+    }
+    if (value is num) {
+      return value.toInt();
+    }
+    if (value is String) {
+      return int.tryParse(value) ?? defaultValue;
+    }
+    _log.warning('fail to parse int: $keys: $value');
+    return defaultValue;
+  }
+
+  String _parseString(dynamic map, List<dynamic> keys) {
+    final value = _get<String?>(map, keys, null);
+    if (value == null) {
+      return '';
+    }
+    return value;
+  }
+
+  final _markdownRegExp = RegExp('#+');
+
+  String _parseMarkdown(dynamic map, List<dynamic> keys) {
+    final value = _get<String?>(map, keys, null);
+    if (value == null || value == '') {
+      return '';
+    }
+    return value
+        .replaceAll('&lt;', '<')
+        .replaceAll('&gt;', '>')
+        .replaceAllMapped(_markdownRegExp, (m) {
+      return ' ${m.group(0)} ';
+    });
+  }
+
+  bool _parseBool(dynamic map, List<dynamic> keys) {
+    final value = _get<bool?>(map, keys, null);
+    if (value == null) {
+      return false;
+    }
+    return value;
+  }
+
+  List<String> _parseListString(dynamic map, List<dynamic> keys) {
+    final value = _get<List<dynamic>?>(map, keys, null);
+    if (value == null) {
+      return [];
+    }
+    return value
+        .map((v) => _cast<String>(v, ''))
+        .where((v) => v != '')
+        .toList();
+  }
+
   dynamic _getNestedValue(dynamic map, List<dynamic> keys) {
     dynamic current = map;
     for (final key in keys) {
@@ -473,162 +613,7 @@ mixin RedditParser {
     return defaultValue;
   }
 
-  Like _parseLikes(dynamic map, List<dynamic> keys) {
-    final value = _get<bool?>(map, keys, null);
-    if (value == null) {
-      return Like.none;
-    }
-    return value ? Like.up : Like.down;
-  }
-
-  String _parseUrl(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null ||
-        value == '' ||
-        value == 'self' ||
-        value == 'default' ||
-        value == 'image' ||
-        value == 'spoiler') {
-      return '';
-    }
-
-    if (value.startsWith('http://') || value.startsWith('https://')) {
-      return value.replaceAll('&amp;', '&');
-    }
-    _log.warning('fail to parse url: $keys: $value');
-    return '';
-  }
-
-  DateTime _parseTime(dynamic map, List<dynamic> keys) {
-    return __parseTime(map, keys, true);
-  }
-
-  DateTime _parseTimeUtc(dynamic map, List<dynamic> keys) {
-    return __parseTime(map, keys, false);
-  }
-
-  DateTime __parseTime(
-    dynamic map,
-    List<dynamic> keys,
-    bool isUtc,
-  ) {
-    final value = double.tryParse(_get<dynamic>(map, keys, null).toString());
-
-    if (value == null) {
-      return clock.now();
-    }
-
-    return DateTime.fromMillisecondsSinceEpoch(
-      value.round() * 1000,
-      isUtc: isUtc,
-    );
-    // ignore: avoid_catching_errors
-  }
-
-  List<String> _parseAwardIcons(dynamic map, List<dynamic> keys) {
-    // ignore: parameter_assignments
-    keys = keys + ['data', 'children'];
-    final value = _get<List<dynamic>?>(map, keys, null);
-    if (value == null) {
-      return [];
-    }
-
-    return value
-        .map((v) => _parseUrl(v, ['resized_icons', 0, 'url']))
-        .where((v) => v != '')
-        .toList();
-    // ignore: avoid_catching_errors
-  }
-
-  double _parseDouble(dynamic map, List<dynamic> keys) {
-    final value = _get<dynamic>(map, keys, null);
-
-    const defaultValue = 0.0;
-    if (value == null) {
-      return defaultValue;
-    }
-    if (value is double) {
-      return value;
-    }
-    if (value is num) {
-      return value.toDouble();
-    }
-    if (value is String) {
-      return double.tryParse(value) ?? defaultValue;
-    }
-    _log.warning('fail to parse double: $keys: $value');
-    return defaultValue;
-  }
-
-  int _parseInt(dynamic map, List<dynamic> keys) {
-    final value = _get<dynamic>(map, keys, null);
-
-    const defaultValue = 0;
-    if (value == null) {
-      return defaultValue;
-    }
-    if (value is int) {
-      return value;
-    }
-    if (value is num) {
-      return value.toInt();
-    }
-    if (value is String) {
-      return int.tryParse(value) ?? defaultValue;
-    }
-    _log.warning('fail to parse int: $keys: $value');
-    return defaultValue;
-  }
-
-  String _parseString(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-
-    if (value == null) {
-      return '';
-    }
-
-    return value;
-  }
-
-  final _markdownRegExp = RegExp('#+');
-
-  String _parseMarkdown(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null || value == '') {
-      return '';
-    }
-
-    return value
-        .replaceAll('&lt;', '<')
-        .replaceAll('&gt;', '>')
-        .replaceAllMapped(_markdownRegExp, (m) {
-      return ' ${m.group(0)} ';
-    });
-  }
-
-  bool _parseBool(dynamic map, List<dynamic> keys) {
-    final value = _get<bool?>(map, keys, null);
-
-    if (value == null) {
-      return false;
-    }
-
-    return value;
-  }
-
-  List<String> _parseListString(dynamic map, List<dynamic> keys) {
-    final value = _get<List<dynamic>?>(map, keys, null);
-    if (value == null) {
-      return [];
-    }
-    return value
-        .map((v) => _cast<String>(v, ''))
-        .where((v) => v != '')
-        .toList();
-  }
-
-  ////////////////////////////
-  List<R> __parseIterable<T, R>(Iterable<T> s, R Function(T) parser) {
+  List<R> _parseIterable<T, R>(Iterable<T> s, R Function(T) parser) {
     return s.map((v) => _try(() => parser(v))).whereType<R>().toList();
   }
 
