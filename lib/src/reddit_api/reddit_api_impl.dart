@@ -99,7 +99,7 @@ class RedditApiImpl implements RedditApi {
     required FrontSubType type,
   }) async {
     return submissionParser
-        .fromDraws(await _front(limit: limit, type: type).toList());
+        .parseDraws(await _front(limit: limit, type: type).toList());
   }
 
   Stream<draw.UserContent> _front({
@@ -128,7 +128,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return submissionParser.fromDraws(
+    return submissionParser.parseDraws(
       await _subredditSubmissions('popular', limit: limit, type: type).toList(),
     );
   }
@@ -138,7 +138,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return submissionParser.fromDraws(
+    return submissionParser.parseDraws(
       await _subredditSubmissions('all', limit: limit, type: type).toList(),
     );
   }
@@ -149,7 +149,7 @@ class RedditApiImpl implements RedditApi {
     required int limit,
     required SubType type,
   }) async {
-    return submissionParser.fromDraws(
+    return submissionParser.parseDraws(
       await _subredditSubmissions(
         subreddit.displayName,
         limit: limit,
@@ -183,12 +183,12 @@ class RedditApiImpl implements RedditApi {
   @override
   Future<List<Subreddit>> currentUserSubreddits({required int limit}) async {
     return subredditParser
-        .fromDraws(await reddit.user.subreddits(limit: limit).toList());
+        .parseDraws(await reddit.user.subreddits(limit: limit).toList());
   }
 
   @override
   Future<User> user(String name) async {
-    return userParser.fromDraw(await reddit.redditor(name).populate());
+    return userParser.parseDraw(await reddit.redditor(name).populate());
   }
 
   @override
@@ -207,7 +207,7 @@ class RedditApiImpl implements RedditApi {
     User user, {
     required int limit,
   }) async {
-    return commentParser.fromDraws(
+    return commentParser.parseDraws(
       await user.drawRedditor!.comments.newest(limit: limit).toList(),
     );
   }
@@ -216,14 +216,14 @@ class RedditApiImpl implements RedditApi {
   @override
   Future<List<Submission>> userSubmissions(User user,
       {required int limit}) async {
-    return submissionParser.fromDraws(
+    return submissionParser.parseDraws(
       await user.drawRedditor!.submissions.newest(limit: limit).toList(),
     );
   }
 
   @override
   Future<List<Trophy>> userTrophies(User user) async {
-    return trophyParser.fromDraws(await user.drawRedditor!.trophies());
+    return trophyParser.parseDraws(await user.drawRedditor!.trophies());
   }
 
   @override
@@ -250,14 +250,14 @@ class RedditApiImpl implements RedditApi {
   @override
   Future<Submission> submission(String id) async {
     return submissionParser
-        .fromDraw(await reddit.submission(id: id).populate());
+        .parseDraw(await reddit.submission(id: id).populate());
   }
 
   @override
   Future<Subreddit> subreddit(String name) async {
     // ignore: parameter_assignments
     name = removeSubredditPrefix(name);
-    return subredditParser.fromDraw(await reddit.subreddit(name).populate());
+    return subredditParser.parseDraw(await reddit.subreddit(name).populate());
   }
 
   @override
@@ -306,7 +306,7 @@ class RedditApiImpl implements RedditApi {
     if (redditor == null) {
       return null;
     }
-    return userParser.fromDraw(redditor);
+    return userParser.parseDraw(redditor);
   }
 
   @override
@@ -315,9 +315,9 @@ class RedditApiImpl implements RedditApi {
     final comments = <Comment?>[];
     await for (final v in user.drawRedditor!.saved(limit: limit)) {
       if (v is draw.Submission) {
-        submissions.add(submissionParser.fromDraw(v));
+        submissions.add(submissionParser.parseDraw(v));
       } else if (v is draw.Comment) {
-        comments.add(commentParser.fromDraw(v));
+        comments.add(commentParser.parseDraw(v));
       } else {
         _log.warning('undefined type');
       }
@@ -339,7 +339,7 @@ class RedditApiImpl implements RedditApi {
     // ignore: parameter_assignments
     subreddit = removeSubredditPrefix(subreddit);
     final params = {'limit': limit.toString()};
-    return submissionParser.fromDraws(
+    return submissionParser.parseDraws(
       await reddit.subreddit(subreddit).search(query, params: params).toList(),
     );
   }
@@ -347,7 +347,7 @@ class RedditApiImpl implements RedditApi {
   @override
   Future<List<Subreddit>> searchSubreddits(String query,
       {required int limit}) async {
-    return subredditParser.fromDraws(
+    return subredditParser.parseDraws(
       await reddit.subreddits
           .search(query, limit: limit)
           .map((v) => v as draw.Subreddit)
@@ -357,7 +357,7 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<Comment> submissionReply(Submission submission, String body) async {
-    return commentParser.fromDraw(await submission.drawSubmission!.reply(body));
+    return commentParser.parseDraw(await submission.drawSubmission!.reply(body));
   }
 
   @override
@@ -372,7 +372,7 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<Comment> commentReply(Comment comment, String body) async {
-    return commentParser.fromDraw(await comment.drawComment!.reply(body));
+    return commentParser.parseDraw(await comment.drawComment!.reply(body));
   }
 
   @override
@@ -386,7 +386,7 @@ class RedditApiImpl implements RedditApi {
     bool nsfw = false,
     bool spoiler = false,
   }) async {
-    return submissionParser.fromDraw(
+    return submissionParser.parseDraw(
       await reddit.subreddit(subreddit).submit(
             title,
             selftext: selftext,
@@ -401,7 +401,7 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<List<Message>> inboxMessages() async {
-    return messageParser.fromDraws(await reddit.inbox.messages().toList());
+    return messageParser.parseDraws(await reddit.inbox.messages().toList());
   }
 
   @override
@@ -410,6 +410,6 @@ class RedditApiImpl implements RedditApi {
       '/r/${subreddit.displayName}/about/rules',
       objectify: false,
     );
-    return ruleParser.fromResponse(resp);
+    return ruleParser.parse(resp);
   }
 }

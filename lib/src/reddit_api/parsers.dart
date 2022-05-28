@@ -25,7 +25,7 @@ final userParser = UserParser();
 final videoParser = VideoParser();
 
 class CommentParser with RedditParser {
-  List<Comment> fromDraws(Iterable<dynamic> s) {
+  List<Comment> parseDraws(Iterable<dynamic> s) {
     return _parseIterable<draw.Comment, Comment>(
       s.map((v) {
         if (v is draw.MoreComments) {
@@ -34,15 +34,15 @@ class CommentParser with RedditParser {
         }
         return v;
       }).whereType<draw.Comment>(),
-      commentParser.fromDraw,
+      commentParser.parseDraw,
     );
   }
 
-  Comment fromDraw(draw.Comment v) {
-    return fromJson(v.data! as Map<String, dynamic>, drawComment: v);
+  Comment parseDraw(draw.Comment v) {
+    return parseJson(v.data! as Map<String, dynamic>, drawComment: v);
   }
 
-  Comment fromJson(
+  Comment parseJson(
     Map<String, dynamic> m, {
     draw.Comment? drawComment,
   }) {
@@ -57,7 +57,7 @@ class CommentParser with RedditParser {
       subreddit: _parseString(m, ['subreddit']),
       linkAuthor: _parseString(m, ['link_author']),
       likes: _parseLikes(m, ['likes']),
-      replies: parseReplies(m, ['replies']),
+      replies: _parseReplies(m, ['replies']),
       saved: _parseBool(m, ['saved']),
       id: _parseString(m, ['id']),
       gilded: _parseInt(m, ['gilded']),
@@ -91,13 +91,13 @@ class CommentParser with RedditParser {
       locked: _parseBool(m, ['locked']),
       quarantine: _parseBool(m, ['quarantine']),
       linkUrl: _parseUrl(m, ['link_url']),
-      submissionId: parseSubmissionId(m, ['link_id']),
+      submissionId: _parseSubmissionId(m, ['link_id']),
       awardIcons: _parseAwardIcons(m, ['all_awardings']),
       drawComment: drawComment,
     );
   }
 
-  List<Comment> parseReplies(dynamic map, List<dynamic> keys) {
+  List<Comment> _parseReplies(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['data', 'children'];
 
@@ -107,11 +107,11 @@ class CommentParser with RedditParser {
     }
 
     return _parseIterable<dynamic, Comment>(value, (v) {
-      return commentParser.fromJson(v['data'] as Map<String, dynamic>);
+      return commentParser.parseJson(v['data'] as Map<String, dynamic>);
     });
   }
 
-  String parseSubmissionId(dynamic map, List<dynamic> keys) {
+  String _parseSubmissionId(dynamic map, List<dynamic> keys) {
     final value = _get<String?>(map, keys, null);
     if (value == null || value == '') {
       return '';
@@ -121,15 +121,15 @@ class CommentParser with RedditParser {
 }
 
 class MessageParser with RedditParser {
-  List<Message> fromDraws(Iterable<draw.Message> s) {
-    return _parseIterable<draw.Message, Message>(s, fromDraw);
+  List<Message> parseDraws(Iterable<draw.Message> s) {
+    return _parseIterable<draw.Message, Message>(s, parseDraw);
   }
 
-  Message fromDraw(draw.Message v) {
-    return fromJson(v.data! as Map<String, dynamic>);
+  Message parseDraw(draw.Message v) {
+    return parseJson(v.data! as Map<String, dynamic>);
   }
 
-  Message fromJson(Map<String, dynamic> m) {
+  Message parseJson(Map<String, dynamic> m) {
     return Message(
       subreddit: _parseString(m, ['subreddit_id']),
       authorFullname: _parseString(m, ['author_fullname']),
@@ -153,7 +153,7 @@ class MessageParser with RedditParser {
 }
 
 class PreviewItemParser with RedditParser {
-  PreviewItem fromJson(Map<String, dynamic> m) {
+  PreviewItem parseJson(Map<String, dynamic> m) {
     return PreviewItem(
       url: _parseUrl(m, ['url']),
       width: _parseDouble(m, ['width']),
@@ -163,13 +163,13 @@ class PreviewItemParser with RedditParser {
 }
 
 class RuleParser with RedditParser {
-  List<Rule> fromResponse(dynamic resp) {
-    return _parseIterable<dynamic, Rule>(resp['rules'] as List<dynamic>, (v) {
-      return fromJson(v as Map<String, dynamic>);
+  List<Rule> parse(dynamic v) {
+    return _parseIterable<dynamic, Rule>(v['rules'] as List<dynamic>, (v) {
+      return parseJson(v as Map<String, dynamic>);
     });
   }
 
-  Rule fromJson(Map<String, dynamic> m) {
+  Rule parseJson(Map<String, dynamic> m) {
     return Rule(
       kind: _parseString(m, ['kind']),
       description: _parseString(m, ['description']),
@@ -184,26 +184,26 @@ class RuleParser with RedditParser {
 
 // TODO: rename from to parse
 class SubmissionParser with RedditParser {
-  List<Submission> fromDraws(
+  List<Submission> parseDraws(
     Iterable<draw.UserContent> s,
   ) {
     return _parseIterable<draw.Submission, Submission>(
       s.whereType<draw.Submission>(),
-      fromDraw,
+      parseDraw,
     );
   }
 
-  Submission fromDraw(draw.Submission v) {
+  Submission parseDraw(draw.Submission v) {
     final drawComments = v.comments?.comments;
     final comments =
-        drawComments != null ? commentParser.fromDraws(drawComments) : null;
-    return fromJson(
+        drawComments != null ? commentParser.parseDraws(drawComments) : null;
+    return parseJson(
       v.data! as Map<String, dynamic>,
       comments: comments,
     );
   }
 
-  Submission fromJson(
+  Submission parseJson(
     Map<String, dynamic> m, {
     List<Comment>? comments,
     draw.Submission? drawSubmission,
@@ -234,16 +234,16 @@ class SubmissionParser with RedditParser {
       url: _parseUrl(m, ['url']),
       likes: _parseLikes(m, ['likes']),
       saved: _parseBool(m, ['saved']),
-      preview: parsePreview(m, ['preview']),
-      video: parseVideo(m, ['media']),
-      postHint: parsePostHint(m, ['post_hint']),
+      preview: _parsePreview(m, ['preview']),
+      video: _parseVideo(m, ['media']),
+      postHint: _parsePostHint(m, ['post_hint']),
       authorIsBlocked: _parseBool(m, ['author_is_blocked']),
       comments: comments,
       drawSubmission: drawSubmission,
     );
   }
 
-  List<Preview> parsePreview(dynamic map, List<dynamic> keys) {
+  List<Preview> _parsePreview(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['images'];
     final value = _get<List<dynamic>?>(map, keys, null);
@@ -253,27 +253,27 @@ class SubmissionParser with RedditParser {
     return _parseIterable<dynamic, Preview>(value, (v) {
       v ??= _get<dynamic>(v, ['variants', 'gif'], null);
       final source =
-          previewItemParser.fromJson(v['source'] as Map<String, dynamic>);
+          previewItemParser.parseJson(v['source'] as Map<String, dynamic>);
       final resolutions = ((v['resolutions'] as List<dynamic>?) ?? [])
-          .map((x) => previewItemParser.fromJson(x as Map<String, dynamic>))
+          .map((x) => previewItemParser.parseJson(x as Map<String, dynamic>))
           .cast<PreviewItem>()
           .toList();
       return Preview(source: source, resolutions: resolutions);
     });
   }
 
-  Video? parseVideo(dynamic map, List<dynamic> keys) {
+  Video? _parseVideo(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['reddit_video'];
-    
+
     final value = _get<Map<String, dynamic>?>(map, keys, null);
     if (value == null) {
       return null;
     }
-    return videoParser.fromJson(value);
+    return videoParser.parseJson(value);
   }
 
-  PostHint parsePostHint(dynamic map, List<dynamic> keys) {
+  PostHint _parsePostHint(dynamic map, List<dynamic> keys) {
     final value = _get<String?>(map, keys, null);
     switch (value) {
       case 'hosted:video':
@@ -297,18 +297,18 @@ class SubmissionParser with RedditParser {
 }
 
 class SubredditParser with RedditParser {
-  List<Subreddit> fromDraws(Iterable<draw.Subreddit> s) {
-    return _parseIterable<draw.Subreddit, Subreddit>(s, fromDraw);
+  List<Subreddit> parseDraws(Iterable<draw.Subreddit> s) {
+    return _parseIterable<draw.Subreddit, Subreddit>(s, parseDraw);
   }
 
-  Subreddit fromDraw(draw.Subreddit v) {
-    return subredditParser.fromJson(
+  Subreddit parseDraw(draw.Subreddit v) {
+    return subredditParser.parseJson(
       v.data! as Map<String, dynamic>,
       drawSubreddit: v,
     );
   }
 
-  Subreddit fromJson(Map<String, dynamic> m, {draw.Subreddit? drawSubreddit}) {
+  Subreddit parseJson(Map<String, dynamic> m, {draw.Subreddit? drawSubreddit}) {
     return Subreddit(
       communityIcon: _parseUrl(m, ['community_icon']),
       created: _parseTime(m, ['created']),
@@ -330,7 +330,7 @@ class SubredditParser with RedditParser {
       url: _parseString(m, ['url']),
       headerImg: _parseUrl(m, ['header_img']),
       bannerBackgroundImage: _parseUrl(m, ['banner_background_image']),
-      bannerBackgroundColor: parseColor(m, ['banner_background_color']),
+      bannerBackgroundColor: _parseColor(m, ['banner_background_color']),
       userIsSubscriber: _parseBool(m, ['user_is_subscriber']),
       userHasFavorited: _parseBool(m, ['user_has_favorited']),
       drawSubreddit: drawSubreddit,
@@ -339,7 +339,7 @@ class SubredditParser with RedditParser {
 
   final _colorRegExp = RegExp(r'^#[0-9abcdef]{3,8}$', caseSensitive: false);
 
-  String parseColor(dynamic map, List<dynamic> keys) {
+  String _parseColor(dynamic map, List<dynamic> keys) {
     final value = _get<String?>(map, keys, null);
     if (value == null || value == '') {
       return '';
@@ -353,15 +353,15 @@ class SubredditParser with RedditParser {
 }
 
 class TrophyParser with RedditParser {
-  List<Trophy> fromDraws(Iterable<draw.Trophy> s) {
-    return _parseIterable<draw.Trophy, Trophy>(s, fromDraw);
+  List<Trophy> parseDraws(Iterable<draw.Trophy> s) {
+    return _parseIterable<draw.Trophy, Trophy>(s, parseDraw);
   }
 
-  Trophy fromDraw(draw.Trophy v) {
-    return trophyParser.fromJson(v.data! as Map<String, dynamic>);
+  Trophy parseDraw(draw.Trophy v) {
+    return trophyParser.parseJson(v.data! as Map<String, dynamic>);
   }
 
-  Trophy fromJson(Map<String, dynamic> m) {
+  Trophy parseJson(Map<String, dynamic> m) {
     return Trophy(
       icon70: _parseString(m, ['icon_70']),
       grantedAt: _parseTime(m, ['granted_at']),
@@ -376,14 +376,14 @@ class TrophyParser with RedditParser {
 }
 
 class UserParser with RedditParser {
-  User fromDraw(draw.Redditor v) {
-    return userParser.fromJson(
+  User parseDraw(draw.Redditor v) {
+    return userParser.parseJson(
       v.data! as Map<String, dynamic>,
       drawRedditor: v,
     );
   }
 
-  User fromJson(Map<String, dynamic> m, {draw.Redditor? drawRedditor}) {
+  User parseJson(Map<String, dynamic> m, {draw.Redditor? drawRedditor}) {
     return User(
       isEmployee: _parseBool(m, ['is_employee']),
       isFriend: _parseBool(m, ['is_friend']),
@@ -406,14 +406,14 @@ class UserParser with RedditParser {
       commentKarma: _parseInt(m, ['comment_karma']),
       acceptFollowers: _parseBool(m, ['accept_followers']),
       hasSubscribed: _parseBool(m, ['has_subscribed']),
-      subreddit: subredditParser.fromJson(_get(m, ['subreddit'], {})),
+      subreddit: subredditParser.parseJson(_get(m, ['subreddit'], {})),
       drawRedditor: drawRedditor,
     );
   }
 }
 
 class VideoParser with RedditParser {
-  Video fromJson(Map<String, dynamic> m) {
+  Video parseJson(Map<String, dynamic> m) {
     return Video(
       bitrateKbps: _parseInt(m, ['bitrate_kbps']),
       fallbackUrl: _parseUrl(m, ['fallback_url']),
