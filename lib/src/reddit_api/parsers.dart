@@ -101,40 +101,16 @@ class CommentParser with RedditParser {
     // ignore: parameter_assignments
     keys = keys + ['data', 'children'];
     final value = _get<List<dynamic>?>(map, keys, null);
-    // try {
-    // if (value == null || value == '') {
+
     if (value == null) {
       return [];
     }
 
-    // final list = _get<List<dynamic>?>(value, ['data', 'children'], null);
-    // if (list == null) {
-    //   _log.warning('fail to parse replies: $keys: $value');
-    // }
     return __parseIterable<dynamic, Comment>(value, (v) {
-      // if (v['children'] == 't1') {
       return commentParser.fromJson(v['data'] as Map<String, dynamic>);
-      // }
     });
 
-    // final comments = <Comment>[];
-    // for (final v in value['data']?['children'] as List<dynamic>) {
-    //   try {
-    //     if (v['children'] == 't1') {
-    //       comments
-    //           .add(commentParser.fromJson(v['data'] as Map<String, dynamic>));
-    //     }
-    //     // ignore: avoid_catching_errors
-    //   } on TypeError catch (e) {
-    //     _log.warning('$e: $v');
-    //   }
-    // }
-    // return comments;
     // ignore: avoid_catching_errors
-    // } on TypeError catch (e) {
-    //   _log.warning('$e: $value');
-    //   return [];
-    // }
   }
 
   String parseSubmissionId(dynamic map, List<dynamic> keys) {
@@ -142,12 +118,9 @@ class CommentParser with RedditParser {
     if (value == null || value == '') {
       return '';
     }
-    // if (value is String) {
+
     final s = value.split('_');
     return s.isEmpty ? '' : s.last;
-    // }
-    // _log.warning('fail to parse submissionId: $keys: $value');
-    // return '';
   }
 }
 
@@ -202,15 +175,6 @@ class RuleParser with RedditParser {
     return __parseIterable<dynamic, Rule>(value, (v) {
       return fromJson(v as Map<String, dynamic>);
     });
-    // try {
-    //   return _parseIterable<dynamic, Rule>(resp['rules'] as List<dynamic>, (v) {
-    //     return fromJson(v as Map<String, dynamic>);
-    //   });
-    //   // ignore: avoid_catching_errors
-    // } on TypeError catch (_) {
-    //   _log.warning('fail to parse rules: $resp');
-    //   return [];
-    // }
   }
 
   Rule fromJson(Map<String, dynamic> m) {
@@ -290,29 +254,11 @@ class SubmissionParser with RedditParser {
   List<Preview> parsePreview(dynamic map, List<dynamic> keys) {
     keys = keys + ['images'];
     final value = _get<List<dynamic>?>(map, keys, null);
-    // try {
-    // if (value == null || value == '') {
+
     if (value == null) {
       return [];
     }
-    // return (value['images'] as List<dynamic>)
-    //     .map((v) {
-    //       try {
-    //         v ??= v['variants']?['gif'];
-    //         final source =
-    //             PreviewItem.fromJson(v['source'] as Map<String, dynamic>);
-    //         final resolutions = ((v['resolutions'] as List<dynamic>?) ?? [])
-    //             .map((x) => PreviewItem.fromJson(x as Map<String, dynamic>))
-    //             .cast<PreviewItem>()
-    //             .toList();
-    //         return Preview(source: source, resolutions: resolutions);
-    //         // ignore: avoid_catching_errors
-    //       } on TypeError catch (e) {
-    //         _log.warning('$e: $v');
-    //       }
-    //     })
-    //     .whereType<Preview>()
-    //     .toList();
+
     return __parseIterable<dynamic, Preview>(value, (v) {
       v ??= _get<dynamic>(v, ['variants', 'gif'], null);
       final source =
@@ -325,35 +271,21 @@ class SubmissionParser with RedditParser {
       // ignore: avoid_catching_errors
     });
     // ignore: avoid_catching_errors
-    // } on TypeError catch (e) {
-    //   _log.warning('$e: $keys: $value');
-    //   return [];
-    // }
   }
 
   Video? parseVideo(dynamic map, List<dynamic> keys) {
     keys = keys + ['reddit_video'];
     final value = _get<Map<String, dynamic>?>(map, keys, null);
-    // try {
-    // final video = value['reddit_video'];
-    // if (value == null || value == '') {
+
     if (value == null) {
       return null;
     }
     return videoParser.fromJson(value);
     // ignore: avoid_catching_errors
-    // } on TypeError catch (e) {
-    // _log.warning('$e: $keys: $value');
-    // return null;
-    // }
   }
 
   PostHint parsePostHint(dynamic map, List<dynamic> keys) {
     final value = _get<String?>(map, keys, null);
-
-    // if (value == null || value == '') {
-    //   return PostHint.none;
-    // }
 
     switch (value) {
       case 'hosted:video':
@@ -425,7 +357,7 @@ class SubredditParser with RedditParser {
     if (value == null || value == '') {
       return '';
     }
-    // if (value is String && _colorRegExp.hasMatch(value)) {
+
     if (_colorRegExp.hasMatch(value)) {
       return value;
     }
@@ -511,53 +443,9 @@ class VideoParser with RedditParser {
 mixin RedditParser {
   late final _log = getLogger(runtimeType.toString());
 
-  // void _log(Object message, [String? name, StackTrace? st]) {
-  //   name != null
-  //       ? _parserLog.warning('$name: $message', null, st)
-  //       : _parserLog.warning(message, null, st);
-  // }
-
-  // dynamic _get<dynamic>(dynamic map, List<dynamic> keys) {
-  //   dynamic current = map;
-  //   for (final key in keys) {
-  //     // if (current is! Map) {
-  //     //   return null;
-  //     // }
-  //     // current = current[key];
-  //     if (current is List && key is int) {
-  //       current = current[key];
-  //     } else if (current is Map) {
-  //       current = current[key];
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  //   return current;
-  // }
-
-  // T _getWithType<T>(dynamic map, List<dynamic> keys, T defaultValue) {
-  //   final value = _get<dynamic>(map, keys);
-  //   if (value is T) {
-  //     return value;
-  //   }
-  //   _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
-  //   return defaultValue;
-  //   // try {
-  //   //   return value == null ? defaultValue : value as T;
-  //   //   // ignore: avoid_catching_errors
-  //   // } on TypeError catch (_) {
-  //   //   _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
-  //   //   return defaultValue;
-  //   // }
-  // }
-
   dynamic _getNestedValue(dynamic map, List<dynamic> keys) {
     dynamic current = map;
     for (final key in keys) {
-      // if (current is! Map) {
-      //   return null;
-      // }
-      // current = current[key];
       if (current is List && key is int) {
         current = current[key];
       } else if (current is Map) {
@@ -576,13 +464,6 @@ mixin RedditParser {
     }
     _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
     return defaultValue;
-    // try {
-    //   return value == null ? defaultValue : value as T;
-    //   // ignore: avoid_catching_errors
-    // } on TypeError catch (_) {
-    //   _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
-    //   return defaultValue;
-    // }
   }
 
   T _cast<T>(dynamic value, T defaultValue) {
@@ -590,38 +471,7 @@ mixin RedditParser {
       return value;
     }
     return defaultValue;
-    // try {
-    //   return value == null ? defaultValue : value as T;
-    //   // ignore: avoid_catching_errors
-    // } on TypeError catch (_) {
-    //   _log.warning('fail to cast: $keys:<${value.runtimeType}> to <$T>');
-    //   return defaultValue;
-    // }
   }
-
-  // Subreddit? parseSubreddit(dynamic map, List<dynamic> keys) {
-  //   final value = _get<dynamic>(map, keys);
-  //   if (value == null || value == '') {
-  //     return null;
-  //   }
-  //   if (value is Map<String, dynamic>) {
-  //     return subredditParser.fromJson(value);
-  //   }
-  //   _log.warning('fail to parse color: $keys: $value');
-  //   return null;
-  // }
-
-  // String parseBody(dynamic map, List<dynamic> keys) {
-  //   final value = _get<String?>(map, keys, null);
-  //   if (value == null || value == '') {
-  //     return '';
-  //   }
-  //   // if (value is String) {
-  //   return value.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
-  //   // }
-  //   // _log.warning('fail to parse body: $keys: $value');
-  //   // return '';
-  // }
 
   Like _parseLikes(dynamic map, List<dynamic> keys) {
     final value = _get<bool?>(map, keys, null);
@@ -629,14 +479,6 @@ mixin RedditParser {
       return Like.none;
     }
     return value ? Like.up : Like.down;
-    // if (value == true) {
-    //   return Like.up;
-    // }
-    // if (value == false) {
-    //   return Like.down;
-    // }
-    // _log.warning('fail to parse likes: $keys: $value');
-    // return Like.none;
   }
 
   String _parseUrl(dynamic map, List<dynamic> keys) {
@@ -649,7 +491,7 @@ mixin RedditParser {
         value == 'spoiler') {
       return '';
     }
-    // if (value is String &&
+
     if (value.startsWith('http://') || value.startsWith('https://')) {
       return value.replaceAll('&amp;', '&');
     }
@@ -671,21 +513,16 @@ mixin RedditParser {
     bool isUtc,
   ) {
     final value = double.tryParse(_get<dynamic>(map, keys, null).toString());
-    // if (value == null || value == '') {
+
     if (value == null) {
       return clock.now();
     }
-    // try {
+
     return DateTime.fromMillisecondsSinceEpoch(
-      // double.parse(value as String).round() * 1000,
       value.round() * 1000,
       isUtc: isUtc,
     );
     // ignore: avoid_catching_errors
-    // } on TypeError catch (_) {
-    //   _log.warning('fail to parse time: $keys: $value');
-    //   return clock.now();
-    // }
   }
 
   List<String> _parseAwardIcons(dynamic map, List<dynamic> keys) {
@@ -695,61 +532,16 @@ mixin RedditParser {
     if (value == null) {
       return [];
     }
-    // try {
-    //   if (value == null || value == '') {
-    //     return [];
-    //   }
-    //   final list =
-    //       _getWithType<List<dynamic>?>(value, ['data', 'children'], null);
-    // if (list == null) {
-    //   _log.warning('fail to parse replies: $keys: $value');
-    // }
+
     return value
         .map((v) => _parseUrl(v, ['resized_icons', 0, 'url']))
         .where((v) => v != '')
         .toList();
     // ignore: avoid_catching_errors
-    // } on TypeError catch (e) {
-    //   _log.warning('$e: $keys: $value');
-    //   return [];
-    // }
   }
-
-  // List<Rule>? parseRules(dynamic map, List<dynamic> keys) {
-  //   final value = _get<dynamic>(map, keys);
-  //   try {
-  //     if (value == null || value == '') {
-  //       return [];
-  //     }
-  //     return (value['rules'] as List<dynamic>)
-  //         .map((v) {
-  //           try {
-  //             return Rule.fromJson(v as Map<String, dynamic>);
-  //             // ignore: avoid_catching_errors
-  //           } on TypeError catch (e) {
-  //             _log.warning('$e: $v');
-  //           }
-  //         })
-  //         .whereType<Rule>()
-  //         .toList();
-  //     // ignore: avoid_catching_errors
-  //   } on TypeError catch (e) {
-  //     _log.warning('$e: $keys: $value');
-  //     return [];
-  //   }
-  // }
-
-  // double parsePositiveDouble(dynamic data, [String? name]) {
-  //   final d = parseDouble(data, name);
-  //   if (d < 0) {
-  //     return 0;
-  //   }
-  //   return d;
-  // }
 
   double _parseDouble(dynamic map, List<dynamic> keys) {
     final value = _get<dynamic>(map, keys, null);
-    // final value = _getNestedValue(map, keys);
 
     const defaultValue = 0.0;
     if (value == null) {
@@ -768,17 +560,8 @@ mixin RedditParser {
     return defaultValue;
   }
 
-  // int parsePositiveInt(dynamic data, [String? name]) {
-  //   final d = parseInt(data, name);
-  //   if (d < 0) {
-  //     return 0;
-  //   }
-  //   return d;
-  // }
-
   int _parseInt(dynamic map, List<dynamic> keys) {
     final value = _get<dynamic>(map, keys, null);
-    // final value = _getNestedValue(map, keys);
 
     const defaultValue = 0;
     if (value == null) {
@@ -800,15 +583,11 @@ mixin RedditParser {
   String _parseString(dynamic map, List<dynamic> keys) {
     final value = _get<String?>(map, keys, null);
 
-    // const defaultValue = '';
     if (value == null) {
       return '';
     }
-    // if (value is String) {
+
     return value;
-    // }
-    // _log.warning('fail to parse string: $keys: $value');
-    // return defaultValue;
   }
 
   final _markdownRegExp = RegExp('#+');
@@ -818,30 +597,23 @@ mixin RedditParser {
     if (value == null || value == '') {
       return '';
     }
-    // if (value is String) {
+
     return value
         .replaceAll('&lt;', '<')
         .replaceAll('&gt;', '>')
         .replaceAllMapped(_markdownRegExp, (m) {
       return ' ${m.group(0)} ';
     });
-    // }
-    // _log.warning('fail to parse markdown: $keys: $value');
-    // return '';
   }
 
   bool _parseBool(dynamic map, List<dynamic> keys) {
     final value = _get<bool?>(map, keys, null);
 
-    // const defaultValue = false;
     if (value == null) {
       return false;
     }
-    // if (value is bool) {
+
     return value;
-    // }
-    // _log.warning('fail to parse bool: $keys: $value');
-    // return defaultValue;
   }
 
   List<String> _parseListString(dynamic map, List<dynamic> keys) {
@@ -853,27 +625,7 @@ mixin RedditParser {
         .map((v) => _cast<String>(v, ''))
         .where((v) => v != '')
         .toList();
-    // if (value is! List<String>) {
-    // _log.warning('fail to parse List<string> $keys: $value');
-    // return [];
-    // }
-    // return value.cast<String>();
-    // return value;
   }
-
-  // List<T> parseList<T>(dynamic map, List<dynamic> keys) {
-  //   final value = _get<List<dynamic>?>(map, keys, null);
-
-  //   if (value == null) {
-  //     return [];
-  //   }
-  //   // if (value is! List<String>) {
-  //   // _log.warning('fail to parse List<string> $keys: $value');
-  //   // return [];
-  //   // }
-  //   // return value.cast<T>();
-  //   // return value;
-  // }
 
   ////////////////////////////
   List<R> __parseIterable<T, R>(Iterable<T> s, R Function(T) parser) {

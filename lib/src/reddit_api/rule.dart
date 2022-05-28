@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-// 
-
 class Rule extends Equatable {
   const Rule({
     required this.kind,
@@ -12,21 +10,6 @@ class Rule extends Equatable {
     required this.priority,
     required this.descriptionHtml,
   });
-
-  // factory Rule.fromJson(Map<String, dynamic> m) {
-  //   const f = 'Rule';
-  //   return Rule(
-  //     kind: parseString(m['kind'], '$f.kind'),
-  //     description: parseString(m['description'], '$f.description'),
-  //     shortName: parseString(m['short_name'], '$f.short_name'),
-  //     violationReason:
-  //         parseString(m['violation_reason'], '$f.violation_reason'),
-  //     createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-  //     priority: parseInt(m['priority'], '$f.priority'),
-  //     descriptionHtml:
-  //         parseString(m['description_html'], '$f.description_html'),
-  //   );
-  // }
 
   final String kind;
   final String description;

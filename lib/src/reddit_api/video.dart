@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-// import 'package:flutter_reddit_prototype/src/reddit_api/parse.dart';
 
 class Video extends Equatable {
   const Video({
@@ -11,20 +10,6 @@ class Video extends Equatable {
     required this.duration,
     required this.isGif,
   });
-
-  // factory Video.fromJson(Map<String, dynamic> m) {
-  //   const f = 'Video';
-  //   return Video(
-  //     bitrateKbps: parseInt(m['bitrate_kbps'], '$f.bitrate_kbps'),
-  //     fallbackUrl: parseUrl(m['fallback_url'], '$f.fallback_url'),
-  //     height: parseDouble(m['height'], '$f.height'),
-  //     width: parseDouble(m['width'], '$f.width'),
-  //     scrubberMediaUrl:
-  //         parseUrl(m['scrubber_media_url'], '$f.scrubber_media_url'),
-  //     duration: parseInt(m['duration'], '$f.duration'),
-  //     isGif: parseBool(m['is_gif'], '$f.is_gif'),
-  //   );
-  // }
 
   final int bitrateKbps;
   final String fallbackUrl;

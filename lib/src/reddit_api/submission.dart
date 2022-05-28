@@ -44,51 +44,6 @@ class Submission extends Equatable {
     required this.drawSubmission,
   });
 
-  // factory Submission.fromJson(
-  //   Map<String, dynamic> m, {
-  //   List<Comment>? comments,
-  //   draw.Submission? drawSubmission,
-  // }) {
-  //   const f = 'Submission';
-  //   return Submission(
-  //     author: parseString(m['author'], '$f.author'),
-  //     authorFlairText:
-  //         parseString(m['author_flair_text'], '$f.author_flair_text'),
-  //     awardIcons: parseAwardIcons(m['all_awardings'], '$f.all_awardings'),
-  //     created: parseTime(m['created'], '$f.created'),
-  //     createdUtc: parseTimeUtc(m['created_utc'], '$f.created_utc'),
-  //     domain: parseString(m['domain'], '$f.domain'),
-  //     downs: parseInt(m['downs'], '$f.downs'),
-  //     hidden: parseBool(m['hidden'], '$f.hidden'),
-  //     id: parseString(m['id'], '$f.id'),
-  //     isVideo: parseBool(m['is_video'], '$f.is_video'),
-  //     linkFlairText: parseString(m['link_flair_text'], '$f.link_flair_text'),
-  //     totalAwardsReceived:
-  //         parseInt(m['total_awards_received'], '$f.total_awards_received'),
-  //     numComments: parseInt(m['num_comments'], '$f.num_comments'),
-  //     over18: parseBool(m['over_18'], '$f.over_18'),
-  //     pinned: parseBool(m['pinned'], '$f.pinned'),
-  //     score: parseInt(m['score'], '$f.score'),
-  //     selftext: parseString(m['selftext'], '$f.selftext'),
-  //     subreddit: parseString(m['subreddit'], '$f.subreddit'),
-  //     subredditNamePrefixed: parseString(
-  //         m['subreddit_name_prefixed'], '$f.subreddit_name_prefixed'),
-  //     thumbnail: parseUrl(m['thumbnail'], '$f.thumbnail'),
-  //     title: parseString(m['title'], '$f.title'),
-  //     ups: parseInt(m['ups'], '$f.ups'),
-  //     url: parseUrl(m['url'], '$f.url'),
-  //     likes: parseLikes(m['likes'], '$f.likes'),
-  //     saved: parseBool(m['saved'], '$f.saved'),
-  //     preview: parsePreview(m['preview'], '$f.preview'),
-  //     video: parseVideo(m['media'], '$f.media'),
-  //     postHint: parsePostHint(m['post_hint'], m['url'], '$f.post_hint'),
-  //     authorIsBlocked:
-  //         parseBool(m['author_is_blocked'], '$f.author_is_blocked'),
-  //     comments: comments,
-  //     drawSubmission: drawSubmission,
-  //   );
-  // }
-
   final String author;
   final DateTime created;
   final DateTime createdUtc;

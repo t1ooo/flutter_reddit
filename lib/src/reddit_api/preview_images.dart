@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-
-
 class Preview extends Equatable {
   const Preview({
     required this.source,
@@ -31,15 +29,6 @@ class PreviewItem extends Equatable {
     required this.width,
     required this.height,
   });
-
-  // factory PreviewItem.fromJson(Map<String, dynamic> m) {
-  //   const f = 'SizedImage';
-  //   return PreviewItem(
-  //     url: parseUrl(m['url'], '$f.url'),
-  //     width: parseDouble(m['width'], '$f.width'),
-  //     height: parseDouble(m['height'], '$f.height'),
-  //   );
-  // }
 
   final String url;
   final double width;

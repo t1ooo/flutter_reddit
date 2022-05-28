@@ -7,7 +7,7 @@ import 'comment.dart';
 import 'credentials.dart';
 import 'like.dart';
 import 'message.dart';
-// 
+
 import 'parsers.dart';
 import 'reddit_api.dart';
 import 'rule.dart';
@@ -412,86 +412,4 @@ class RedditApiImpl implements RedditApi {
     );
     return ruleParser.fromResponse(resp);
   }
-
-  // Submission _parseSubmission(draw.Submission v) {
-  //   final drawComments = v.comments?.comments;
-  //   final comments = drawComments == null ? null : _parseComments(drawComments);
-  //   return submissionParser.fromJson(
-  //     v.data! as Map<String, dynamic>,
-  //     comments: comments,
-  //   );
-  // }
-
-  // Subreddit _parseSubreddit(draw.Subreddit v) {
-  //   return subredditParser.fromJson(
-  //     v.data! as Map<String, dynamic>,
-  //     drawSubreddit: v,
-  //   );
-  // }
-
-  // Message _parseMessage(draw.Message v) {
-  //   return messageParser.fromJson(v.data! as Map<String, dynamic>);
-  // }
-
-  // Comment _parseComment(draw.Comment v) {
-  //   return commentParser.fromJson(v.data! as Map<String, dynamic>, drawComment: v);
-  // }
-
-  // User _parseUser(draw.Redditor v) {
-  //   return userParser.fromJson(v.data! as Map<String, dynamic>,
-  //       drawRedditor: v);
-  // }
-
-  // Trophy _parseTrophy(draw.Trophy v) {
-  //   return trophyParser.fromJson(v.data! as Map<String, dynamic>);
-  // }
-
-  // List<R> _parse<T, R>(Iterable<T> s, R Function(T) parser) {
-  //   return s.map((v) => _try(() => parser(v))).whereType<R>().toList();
-  // }
-
-  // List<Submission> submissionParser
-  // .fromDraws(
-  //   Iterable<draw.UserContent> s,
-  // ) {
-  //   return _parse<draw.Submission, Submission>(
-  //       s.whereType<draw.Submission>(), _parseSubmission);
-  // }
-
-  // List<Comment> _parseComments(Iterable<dynamic> s) {
-  //   return _parse<draw.Comment, Comment>(
-  //     s.map((v) {
-  //       if (v is draw.MoreComments) {
-  //         _log.warning('MoreComments'); // TODO
-  //         return null;
-  //       }
-  //       return v;
-  //     }).whereType<draw.Comment>(),
-  //     commentParser.fromDraw,
-  //   );
-  // }
-
-  // List<Subreddit> _parseSubreddits(Iterable<draw.Subreddit> s) {
-  //   return _parse<draw.Subreddit, Subreddit>(s, _parseSubreddit);
-  // }
-
-  // List<Message> _parseMessages(Iterable<draw.Message> s) {
-  //   return _parse<draw.Message, Message>(s, _parseMessage);
-  // }
-
-  // List<Trophy> _parseTrophies(Iterable<draw.Trophy> s) {
-  //   return _parse<draw.Trophy, Trophy>(s, _parseTrophy);
-  // }
-
-  // T? _try<T>(T Function() fn) {
-  //   try {
-  //     return fn();
-  //     // ignore: avoid_catching_errors
-  //   } on TypeError catch (e, st) {
-  //     _log.warning('', e, st);
-  //   } on Exception catch (e, st) {
-  //     _log.warning('', e, st);
-  //   }
-  //   return null;
-  // }
 }
