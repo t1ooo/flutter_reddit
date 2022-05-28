@@ -182,7 +182,6 @@ class RuleParser with RedditParser {
   }
 }
 
-// TODO: rename from to parse
 class SubmissionParser with RedditParser {
   List<Submission> parseDraws(
     Iterable<draw.UserContent> s,
@@ -472,6 +471,7 @@ mixin RedditParser {
   List<String> _parseAwardIcons(dynamic map, List<dynamic> keys) {
     // ignore: parameter_assignments
     keys = keys + ['data', 'children'];
+
     final value = _get<List<dynamic>?>(map, keys, null);
     if (value == null) {
       return [];
@@ -540,11 +540,7 @@ mixin RedditParser {
   }
 
   String _parseString(dynamic map, List<dynamic> keys) {
-    final value = _get<String?>(map, keys, null);
-    if (value == null) {
-      return '';
-    }
-    return value;
+    return _get<String?>(map, keys, null) ?? '';
   }
 
   final _markdownRegExp = RegExp('#+');
