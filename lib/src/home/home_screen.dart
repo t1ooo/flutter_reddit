@@ -15,7 +15,6 @@ class HomeScreen extends StatelessWidget {
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
-          floatHeaderSlivers: true,
           headerSliverBuilder: (context, _) {
             return [
               PrimarySliverAppBar(
