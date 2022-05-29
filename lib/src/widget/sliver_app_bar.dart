@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import '../search/search_screen.dart';
@@ -70,23 +68,20 @@ class SpaceBarIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(), // TODO: remove padding
-      child: Container(
-        decoration: ShapeDecoration(
-          shadows: const [
-            BoxShadow(
-              color: Colors.white54,
-              blurRadius: 15,
-              spreadRadius: 15,
-            )
-          ],
-          shape: CircleBorder(),
-        ),
-        child: IconTheme(
-          data: appBarIconThemeDark,
-          child: Icon(icon),
-        ),
+    return Container(
+      decoration: ShapeDecoration(
+        shadows: const [
+          BoxShadow(
+            color: Colors.white54,
+            blurRadius: 15,
+            spreadRadius: 15,
+          )
+        ],
+        shape: CircleBorder(),
+      ),
+      child: IconTheme(
+        data: appBarIconThemeDark,
+        child: Icon(icon),
       ),
     );
   }
@@ -99,10 +94,7 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(), // TODO: remove padding
-      child: Text(text, style: Theme.of(context).textTheme.titleLarge),
-    );
+    return Text(text, style: Theme.of(context).textTheme.titleLarge);
   }
 }
 
@@ -113,15 +105,12 @@ class AppBarBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(), // TODO: remove padding
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          Navigator.maybePop(context);
-        },
-        icon: SpaceBarIcon(Icons.arrow_back),
-      ),
+    return IconButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        Navigator.maybePop(context);
+      },
+      icon: SpaceBarIcon(Icons.arrow_back),
     );
   }
 }
@@ -133,15 +122,12 @@ class AppBarAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(), // TODO: remove padding
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-        icon: SpaceBarIcon(Icons.account_circle),
-      ),
+    return IconButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        Scaffold.of(context).openDrawer();
+      },
+      icon: SpaceBarIcon(Icons.account_circle),
     );
   }
 }
@@ -153,15 +139,12 @@ class AppBarCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(), // TODO: remove padding
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          Navigator.maybePop(context);
-        },
-        icon: SpaceBarIcon(Icons.close),
-      ),
+    return IconButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        Navigator.maybePop(context);
+      },
+      icon: SpaceBarIcon(Icons.close),
     );
   }
 }
@@ -169,14 +152,14 @@ class AppBarCloseButton extends StatelessWidget {
 class SpaceBar extends StatelessWidget {
   const SpaceBar({
     Key? key,
-    this.src, // TODO: rename to backgroundImage
+    this.backgroundImage,
     this.backgroundColor,
     this.leading,
     this.title,
     this.trailing,
   }) : super(key: key);
 
-  final String? src;
+  final String? backgroundImage;
   final Color? backgroundColor;
   final Widget? leading;
   final Widget? title;
@@ -195,40 +178,44 @@ class SpaceBar extends StatelessWidget {
 
     return Stack(
       children: [
-        if (src != null && src != '')
+        if (backgroundImage != null && backgroundImage != '')
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             height:
                 _appBarExpandedHeight(context) + _safeAreaTopPadding(context),
-            child: CustomNetworkImage(src!, onData: (_, image) {
-              return Image(
-                image: image,
-                fit: BoxFit.cover,
-                errorBuilder: imageErrorBuilder,
-              );
-            }),
+            child: CustomNetworkImage(
+              backgroundImage!,
+              onData: (_, image) {
+                return Image(
+                  image: image,
+                  fit: BoxFit.cover,
+                  errorBuilder: imageErrorBuilder,
+                );
+              },
+            ),
           )
         else if (backgroundColor != null)
           Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height:
-                  _appBarExpandedHeight(context) + _safeAreaTopPadding(context),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                      backgroundColor!,
-                      Color(backgroundColor!.value - 100),
-                    ],
-                  ),
+            top: 0,
+            left: 0,
+            right: 0,
+            height:
+                _appBarExpandedHeight(context) + _safeAreaTopPadding(context),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    backgroundColor!,
+                    Color(backgroundColor!.value - 100),
+                  ],
                 ),
-              )),
+              ),
+            ),
+          ),
         Positioned(
           top: 0,
           left: 0,
@@ -289,43 +276,38 @@ class SearchForm extends StatelessWidget {
         _controller.clear();
         return true;
       },
-      child: SizedBox(
-        // TODO: remove
-
-        child: TextField(
-          controller: _controller,
-          textInputAction: TextInputAction.search,
-          onSubmitted: (query) {
-            query = query.trim();
-            if (query != '') {
-              navigatorPushOrReplace(
-                context,
-                MaterialPageRoute(
-                  settings: RouteSettings(name: routeName),
-                  builder: (_) => subreddit != null
-                      ? SearchBySubredditScreen(
-                          query: query,
-                          subreddit: subreddit!,
-                        )
-                      : SearchScreen(query: query),
-                ),
-              );
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon:
-                IconTheme(data: formIconTheme, child: Icon(Icons.search)),
-            suffixIcon: IconButton(
-              onPressed: _controller.clear,
-              icon: IconTheme(data: formIconTheme, child: Icon(Icons.cancel)),
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            hintText: subreddit != null ? '$subreddit' : 'Search',
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(),
-            isDense: true,
+      child: TextField(
+        controller: _controller,
+        textInputAction: TextInputAction.search,
+        onSubmitted: (query) {
+          query = query.trim();
+          if (query != '') {
+            navigatorPushOrReplace(
+              context,
+              MaterialPageRoute(
+                settings: RouteSettings(name: routeName),
+                builder: (_) => subreddit != null
+                    ? SearchBySubredditScreen(
+                        query: query,
+                        subreddit: subreddit!,
+                      )
+                    : SearchScreen(query: query),
+              ),
+            );
+          }
+        },
+        decoration: InputDecoration(
+          prefixIcon: IconTheme(data: formIconTheme, child: Icon(Icons.search)),
+          suffixIcon: IconButton(
+            onPressed: _controller.clear,
+            icon: IconTheme(data: formIconTheme, child: Icon(Icons.cancel)),
           ),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: subreddit != null ? '$subreddit' : 'Search',
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(),
+          isDense: true,
         ),
       ),
     );
@@ -333,7 +315,9 @@ class SearchForm extends StatelessWidget {
 }
 
 void navigatorPushOrReplace(
-    BuildContext context, MaterialPageRoute<dynamic> route) {
+  BuildContext context,
+  MaterialPageRoute<dynamic> route,
+) {
   final name = route.settings.name;
   if (name == null || name == '') {
     throw Exception('route name must not be empty');

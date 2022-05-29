@@ -19,16 +19,20 @@ class CurrentUserNotifier extends UserNotifier {
   }
 
   Future<void> loadSubreddits() {
-    return try_(() async {
-      if (_subreddits != null) return;
+    return try_(
+      () async {
+        if (_subreddits != null) return;
 
-      _subreddits = (await _redditApi.currentUserSubreddits(limit: limit))
-          .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
-          .toList();
-      _subreddits!
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-      notifyListeners();
-    }, 'fail to load subreddits');
+        _subreddits = (await _redditApi.currentUserSubreddits(limit: limit))
+            .map((v) => _addListener(SubredditNotifier(_redditApi, v)))
+            .toList();
+        _subreddits!.sort(
+          (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        );
+        notifyListeners();
+      },
+      'fail to load subreddits',
+    );
   }
 
   SubredditNotifier _addListener(SubredditNotifier t) {
@@ -47,14 +51,17 @@ class CurrentUserNotifier extends UserNotifier {
   }
 
   Future<void> loadInboxMessages() {
-    return try_(() async {
-      if (_inboxMessages != null) {
-        return;
-      }
-      _inboxMessages = (await _redditApi.inboxMessages())
-          .map((v) => MessageNotifier(_redditApi, v))
-          .toList();
-      notifyListeners();
-    }, 'fail to load inbox messages');
+    return try_(
+      () async {
+        if (_inboxMessages != null) {
+          return;
+        }
+        _inboxMessages = (await _redditApi.inboxMessages())
+            .map((v) => MessageNotifier(_redditApi, v))
+            .toList();
+        notifyListeners();
+      },
+      'fail to load inbox messages',
+    );
   }
 }

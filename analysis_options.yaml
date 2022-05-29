@@ -17,7 +17,8 @@ analyzer:
   exclude:
     - "build/**"
     - "lib/src/**.g.dart"
-    - "generated_plugin_registrant.dart"
+    - "lib/generated_plugin_registrant.dart"
+    - "lib/TODO.dart"
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -101,7 +102,7 @@ linter:
     - eol_at_end_of_file
     - exhaustive_cases
     - file_names
-    - flutter_style_todos
+    # - flutter_style_todos
     - hash_and_equals
     - implementation_imports
     - invariant_booleans
@@ -125,7 +126,7 @@ linter:
     - null_check_on_nullable_type_parameter
     - null_closures
     - omit_local_variable_types
-    - one_member_abstracts
+    # - one_member_abstracts
     - only_throw_errors
     - overridden_fields
     - package_api_docs

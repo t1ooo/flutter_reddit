@@ -10,17 +10,7 @@ import 'subreddit.dart';
 import 'trophy.dart';
 import 'user.dart';
 
-// TODO: move to file
 typedef Sort = draw.Sort;
-
-// TODO: move to subreddit
-String removeSubredditPrefix(String name) {
-  const prefix = 'r/';
-  if (name.startsWith(prefix)) {
-    return name.substring(prefix.length);
-  }
-  return name;
-}
 
 class UserSaved {
   UserSaved(this.submissions, this.comments);
@@ -28,7 +18,6 @@ class UserSaved {
   List<Comment> comments;
 }
 
-// TODO: merge saved|unaved etc to one method
 abstract class RedditApi {
   Future<List<Submission>> front({
     required int limit,

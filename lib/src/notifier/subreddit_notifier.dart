@@ -114,19 +114,4 @@ class SubredditNotifier extends SubmissionsNotifier<SubType> {
       'fail to load rules',
     );
   }
-
-  // TODO
-  Future<void> loadAbout() => throw UnimplementedError();
-  Object? _about;
-  get about => _about;
-
-  // TODO
-  Future<void> loadMenu() => throw UnimplementedError();
-  Object? _menu;
-  get menu => _menu;
-
-  // TODO
-  Future<void> loadWiki() => throw UnimplementedError();
-  Object? _wiki;
-  get wiki => _wiki;
 }

@@ -1,5 +1,4 @@
-// ignore_for_file: flutter_style_todos
-
+// TODO: future buttons
 // TODO: load all submission comment with CommentForest.replaceMore
 // TODO: reddit api cache
 // TODO: subreddit custom feed

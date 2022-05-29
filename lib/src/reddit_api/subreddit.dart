@@ -147,3 +147,11 @@ class Subreddit extends Equatable {
     ];
   }
 }
+
+String removeSubredditPrefix(String name) {
+  const prefix = 'r/';
+  if (name.startsWith(prefix)) {
+    return name.substring(prefix.length);
+  }
+  return name;
+}

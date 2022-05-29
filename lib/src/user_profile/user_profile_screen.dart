@@ -68,7 +68,7 @@ class _UserProfileScreen extends StatelessWidget {
               PrimarySliverAppBar(
                 flexibleSpace: SpaceBar(
                   leading: AppBarBackButton(),
-                  src: backgroundImage,
+                  backgroundImage: backgroundImage,
                   backgroundColor: backgroundColor,
                   trailing: _userMenu(context, notifier),
                 ),

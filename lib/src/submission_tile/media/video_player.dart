@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'const.dart';
 import 'sized_network_image.dart';
 
 abstract class BaseVideoPlayer extends StatefulWidget {
@@ -92,10 +91,11 @@ class VideoPlayer extends BaseVideoPlayer {
     required Size size,
     String? previewImageUrl,
   }) : super(
-            key: key,
-            videoUrl: videoUrl,
-            size: size,
-            previewImageUrl: previewImageUrl);
+          key: key,
+          videoUrl: videoUrl,
+          size: size,
+          previewImageUrl: previewImageUrl,
+        );
 
   static bool isSupportedPlatform =
       Platform.isLinux || Platform.isMacOS || Platform.isWindows;
@@ -181,10 +181,11 @@ class MobileVideoPlayer extends BaseVideoPlayer {
     required Size size,
     String? previewImageUrl,
   }) : super(
-            key: key,
-            videoUrl: videoUrl,
-            size: size,
-            previewImageUrl: previewImageUrl);
+          key: key,
+          videoUrl: videoUrl,
+          size: size,
+          previewImageUrl: previewImageUrl,
+        );
 
   static bool isSupportedPlatform =
       Platform.isAndroid || Platform.isIOS || kIsWeb;

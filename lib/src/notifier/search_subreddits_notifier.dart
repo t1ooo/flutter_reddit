@@ -19,14 +19,17 @@ class SearchSubredditsNotifier extends BaseNotifier {
   }
 
   Future<void> search(String query) {
-    return try_(() async {
-      if (_subreddits != null && _query == query) return;
-      _query = query;
+    return try_(
+      () async {
+        if (_subreddits != null && _query == query) return;
+        _query = query;
 
-      _subreddits = (await _redditApi.searchSubreddits(query, limit: limit))
-          .map((v) => SubredditNotifier(_redditApi, v))
-          .toList();
-      notifyListeners();
-    }, 'fail to search subreddits');
+        _subreddits = (await _redditApi.searchSubreddits(query, limit: limit))
+            .map((v) => SubredditNotifier(_redditApi, v))
+            .toList();
+        notifyListeners();
+      },
+      'fail to search subreddits',
+    );
   }
 }

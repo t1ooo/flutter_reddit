@@ -80,9 +80,11 @@ class SubmissionTile extends StatelessWidget {
               child: Text(submission.title, textScaleFactor: 1.8),
             ),
             SizedBox(height: 15),
-            LayoutBuilder(builder: (context, constraints) {
-              return _media(context, constraints, notifier) ?? Container();
-            }),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return _media(context, constraints, notifier) ?? Container();
+              },
+            ),
             SizedBox(height: 10),
             Text(
               submission.selftext,
@@ -262,16 +264,12 @@ class SubmissionTile extends StatelessWidget {
           icon: Icon(Icons.comment),
           text: Text(notifier.numReplies.toString()),
         ),
-        TextButton(
+        TextButton.icon(
           onPressed: () {
             notifier.share();
           },
-          // TODO: replace to TextButton.icon
-
-          child: IconText(
-            icon: Icon(Icons.share),
-            text: Text('Share'),
-          ),
+          icon: Icon(Icons.share),
+          label: Text('Share'),
         ),
         if (kDebugMode)
           TextButton(

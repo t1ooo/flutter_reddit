@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/auth_notifier.dart';
+import '../widget/future_elevated_button.dart';
 import '../widget/snackbar.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -17,10 +18,9 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TODO: disable button when login
-            ElevatedButton(
+            FutureElevatedButton(
               onPressed: () {
-                context
+                return context
                     .read<AuthNotifier>()
                     .login()
                     .catchError((e) => showErrorSnackBar(context, e));

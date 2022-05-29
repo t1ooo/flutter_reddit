@@ -65,15 +65,16 @@ class _SubredditScreen extends StatelessWidget {
                 flexibleSpace: SpaceBar(
                   leading: AppBarBackButton(),
                   title: SearchForm(subreddit: 'r/${notifier.name}'),
-                  src: backgroundImage,
+                  backgroundImage: backgroundImage,
                   backgroundColor: backgroundColor,
                   trailing: _subredditMenu(context, notifier),
                 ),
               ),
               SliverList(
-                  delegate: SliverChildListDelegate([
-                SubredditInfo(),
-              ])),
+                delegate: SliverChildListDelegate([
+                  SubredditInfo(),
+                ]),
+              ),
               SliverTabBar(
                 tabs: const [
                   Tab(text: 'Posts'),

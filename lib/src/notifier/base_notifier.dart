@@ -4,17 +4,18 @@ import '../logging.dart';
 import 'ui_exception.dart';
 
 class BaseNotifier with ChangeNotifier {
-  late final _log = getLogger(runtimeType.toString());
+  // ignore: no_runtimetype_tostring
+  late final log = getLogger(runtimeType.toString());
 
   Future<T> try_<T>(Future<T> Function() fn, String error) async {
     try {
       return await fn();
     } on Exception catch (e, st) {
-      _log.error('', e, st);
+      log.error('', e, st);
       throw UIException(error);
       // ignore: avoid_catching_errors
     } on TypeError catch (e, st) {
-      _log.error('', e, st);
+      log.error('', e, st);
       throw UIException(error);
     }
   }
@@ -35,7 +36,7 @@ class BaseNotifier with ChangeNotifier {
 
   @override
   void notifyListeners() {
-    _log.info('notifyListeners');
+    log.info('notifyListeners');
     super.notifyListeners();
   }
 }

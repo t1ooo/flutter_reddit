@@ -31,7 +31,6 @@ class CustomPopupMenuButton extends StatefulWidget {
   State<CustomPopupMenuButton> createState() => _CustomPopupMenuButtonState();
 }
 
-// TODO: remove enabled
 class _CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
   final Map<int, bool> enabled = {};
 
@@ -41,13 +40,9 @@ class _CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
       icon: widget.icon,
       child: widget.child,
       onSelected: (i) async {
-        setState(() {
-          enabled[i] = false;
-        });
+        setState(() => enabled[i] = false);
         await widget.items[i].onTap();
-        setState(() {
-          enabled[i] = true;
-        });
+        setState(() => enabled[i] = true);
       },
       itemBuilder: (context) => [
         for (var i = 0; i < widget.items.length; i++)

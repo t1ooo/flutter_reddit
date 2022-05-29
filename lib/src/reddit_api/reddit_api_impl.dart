@@ -18,20 +18,17 @@ import 'trophy.dart';
 import 'user.dart';
 
 class RedditApiImpl implements RedditApi {
-  RedditApiImpl(this.clientId, this.auth, this.credentials) {
-    if (clientId == '') {
+  RedditApiImpl(this._clientId, this._auth, this._credentials) {
+    if (_clientId == '') {
       throw Exception('clientId is empty');
     }
   }
 
-  // TODO: make fields private
-  final userAgent = 'Flutter Client';
-  final String clientId;
-
-  final Auth auth;
-  final Credentials credentials;
-
+  static const _userAgent = 'Flutter Client';
   static final _log = getLogger('RedditApiImpl');
+  final String _clientId;
+  final Auth _auth;
+  final Credentials _credentials;
 
   draw.Reddit? _reddit;
   draw.Reddit get reddit {
@@ -47,7 +44,7 @@ class RedditApiImpl implements RedditApi {
   @override
   Future<void> logout() async {
     _reddit = null;
-    await credentials.delete();
+    await _credentials.delete();
   }
 
   @override
@@ -56,16 +53,15 @@ class RedditApiImpl implements RedditApi {
       return true;
     }
 
-    final credentialsJson = await credentials.read() ?? '';
+    final credentialsJson = await _credentials.read() ?? '';
     if (credentialsJson == '') {
       return false;
     }
 
-    // TODO: replace to restoreInstalledAuthenticatedInstance
-    _reddit = draw.Reddit.restoreAuthenticatedInstance(
+    _reddit = draw.Reddit.restoreInstalledAuthenticatedInstance(
       credentialsJson,
-      clientId: clientId,
-      userAgent: userAgent,
+      clientId: _clientId,
+      userAgent: _userAgent,
     );
 
     return true;
@@ -78,19 +74,19 @@ class RedditApiImpl implements RedditApi {
     }
 
     _reddit = draw.Reddit.createInstalledFlowInstance(
-      clientId: clientId,
-      userAgent: userAgent,
-      redirectUri: auth.redirectUri,
+      clientId: _clientId,
+      userAgent: _userAgent,
+      redirectUri: _auth.redirectUri,
     );
 
     final authUrl = reddit.auth.url(['*'], 'state');
     // ignore: unawaited_futures
     launch(authUrl.toString());
 
-    final authCode = await auth.stream.first;
+    final authCode = await _auth.stream.first;
     await reddit.auth.authorize(authCode);
 
-    await credentials.write(reddit.auth.credentials.toJson());
+    await _credentials.write(reddit.auth.credentials.toJson());
   }
 
   @override
@@ -201,7 +197,6 @@ class RedditApiImpl implements RedditApi {
     }
   }
 
-  // TODO: MAYBE: add type support
   @override
   Future<List<Comment>> userComments(
     User user, {
@@ -212,10 +207,11 @@ class RedditApiImpl implements RedditApi {
     );
   }
 
-  // TODO: MAYBE: add type support
   @override
-  Future<List<Submission>> userSubmissions(User user,
-      {required int limit}) async {
+  Future<List<Submission>> userSubmissions(
+    User user, {
+    required int limit,
+  }) async {
     return submissionParser.parseDraws(
       await user.drawRedditor!.submissions.newest(limit: limit).toList(),
     );
@@ -233,7 +229,6 @@ class RedditApiImpl implements RedditApi {
         : subreddit.drawSubreddit!.unsubscribe();
   }
 
-  // TODO: merge with subredditUnfavorite
   @override
   Future<void> subredditFavorite(Subreddit subreddit, bool favorite) {
     return reddit.post(
@@ -345,8 +340,10 @@ class RedditApiImpl implements RedditApi {
   }
 
   @override
-  Future<List<Subreddit>> searchSubreddits(String query,
-      {required int limit}) async {
+  Future<List<Subreddit>> searchSubreddits(
+    String query, {
+    required int limit,
+  }) async {
     return subredditParser.parseDraws(
       await reddit.subreddits
           .search(query, limit: limit)
@@ -357,7 +354,8 @@ class RedditApiImpl implements RedditApi {
 
   @override
   Future<Comment> submissionReply(Submission submission, String body) async {
-    return commentParser.parseDraw(await submission.drawSubmission!.reply(body));
+    return commentParser
+        .parseDraw(await submission.drawSubmission!.reply(body));
   }
 
   @override

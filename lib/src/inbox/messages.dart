@@ -25,7 +25,6 @@ class Messages extends StatelessWidget {
         data: (_) => notifier.inboxMessages,
         onData: (_, messages) {
           return CustomListView(
-            shrinkWrap: true,
             children: [
               for (final message in messages) ...[
                 ChangeNotifierProvider<MessageNotifier>.value(

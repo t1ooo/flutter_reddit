@@ -7,12 +7,12 @@ typedef FutureVoidCallback = Future<void> Function();
 class FutureElevatedButton extends StatefulWidget {
   const FutureElevatedButton({
     Key? key,
-    this.onPressed,
+    required this.onPressed,
     this.style,
     this.child,
   }) : super(key: key);
 
-  final FutureVoidCallback? onPressed;
+  final FutureVoidCallback onPressed;
   final ButtonStyle? style;
   final Widget? child;
 
@@ -27,16 +27,15 @@ class _FutureElevatedButtonState extends State<FutureElevatedButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       key: widget.key,
-      onPressed: _disabled ? null : () => _call(widget.onPressed),
+      onPressed: _disabled ? null : () => _onPressed(),
       style: widget.style,
       child: widget.child,
     );
   }
 
-  Future<void> _call(FutureVoidCallback? fn) async {
-    if (fn == null) return;
+  Future<void> _onPressed() async {
     setState(() => _disabled = true);
-    await fn();
+    await widget.onPressed();
     setState(() => _disabled = false);
   }
 }

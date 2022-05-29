@@ -61,21 +61,22 @@ class _SubmitScreenState extends State<SubmitScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => ChooseSubredditScreen(onChanged: (v) {
-                  // TODO: remove bracket
-                  setState(() {
-                    _subreddit = v;
-                  });
-                }),
+                builder: (_) => ChooseSubredditScreen(
+                  onChanged: (v) {
+                    setState(() => _subreddit = v);
+                  },
+                ),
               ),
             );
           },
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             leading: SizedBox.square(
-                dimension: 40,
-                child: SubredditIcon(
-                    icon: _subreddit?.subreddit.communityIcon ?? '')),
+              dimension: 40,
+              child: SubredditIcon(
+                icon: _subreddit?.subreddit.communityIcon ?? '',
+              ),
+            ),
             title: Row(
               children: [
                 if (_subreddit != null)
@@ -115,7 +116,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
     );
   }
 
-  void _submit() async {
+  void _submit() {
     if (_subreddit == null) {
       showErrorSnackBar(context, 'please select a community');
       return;

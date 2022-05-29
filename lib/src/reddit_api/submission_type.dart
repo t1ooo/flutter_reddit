@@ -1,5 +1,3 @@
-// TODO: gilded
-
 /// submission type
 enum SubType {
   hot,

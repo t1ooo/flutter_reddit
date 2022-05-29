@@ -63,10 +63,13 @@ class AndroidAuth implements Auth {
     }
 
     _stream = _s.stream.asBroadcastStream();
-    getInitialLink().then((link) {
-      _add(link, true);
-      _sub = linkStream.listen(_add, onError: _onError);
-    }, onError: _onError);
+    getInitialLink().then(
+      (link) {
+        _add(link, true);
+        _sub = linkStream.listen(_add, onError: _onError);
+      },
+      onError: _onError,
+    );
   }
 
   static final _log = getLogger('AndroidAuth');

@@ -48,23 +48,21 @@ class ImageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-          headerSliverBuilder: (context, _) {
-            return [
-              PrimarySliverAppBar(
-                collapsed: true,
-                flexibleSpace: SpaceBar(
-                  leading: AppBarCloseButton(),
-                ),
+        headerSliverBuilder: (context, _) {
+          return [
+            PrimarySliverAppBar(
+              collapsed: true,
+              flexibleSpace: SpaceBar(
+                leading: AppBarCloseButton(),
               ),
-            ];
-          },
-          body: SizedNetworkImage(
-            imageUrl: imageUrl,
-            size: Size(
-              MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height,
             ),
-          )),
+          ];
+        },
+        body: SizedNetworkImage(
+          imageUrl: imageUrl,
+          size: MediaQuery.of(context).size,
+        ),
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:clock/clock.dart';
 import 'package:draw/draw.dart' as draw;
 

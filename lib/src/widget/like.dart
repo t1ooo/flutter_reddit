@@ -44,6 +44,6 @@ class LikeButton extends StatelessWidget {
     if (score < 1000) {
       return score.toString();
     }
-    return ((score * 10 / 1000).ceil() / 10).toString() + 'k';
+    return '${(score * 10 / 1000).ceil() / 10}k';
   }
 }

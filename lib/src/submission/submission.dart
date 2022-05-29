@@ -30,7 +30,6 @@ class SubmissionWidget extends StatelessWidget {
             data: (_) => notifier.comments,
             onData: (_, comments) {
               return CustomListView(
-                shrinkWrap: true,
                 children: [
                   for (final comment in comments)
                     ChangeNotifierProvider<CommentNotifier>.value(

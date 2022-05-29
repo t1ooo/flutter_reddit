@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../widget/swipe_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/search_notifier.dart';
 import '../reddit_api/reddit_api.dart';
 import '../submission_tile/submission_tiles.dart';
 import '../widget/snackbar.dart';
+import '../widget/swipe_to_refresh.dart';
 
 class SearchPosts extends StatelessWidget {
   const SearchPosts({

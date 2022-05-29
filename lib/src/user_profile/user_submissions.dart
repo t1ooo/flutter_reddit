@@ -27,7 +27,6 @@ class UserSubmissions extends StatelessWidget {
         data: (_) => notifier.submissions,
         onData: (_, submissions) {
           return CustomListView(
-            shrinkWrap: true,
             children: [
               for (final sub in submissions)
                 ChangeNotifierProvider<SubmissionNotifier>.value(

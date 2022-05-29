@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/logging.dart';
-import 'package:flutter_reddit_prototype/src/widget/loader.dart';
 import 'package:provider/provider.dart';
 
-import '../ui_logger.dart';
+import '../logging.dart';
 import '../notifier/submission_notifier.dart';
 import '../style.dart';
+import '../ui_logger.dart';
 import '../widget/icon_text.dart';
 import '../widget/list.dart';
+import '../widget/loader.dart';
 import 'submission_tile.dart';
 
 class SubmissionTiles<T> extends StatelessWidget {
@@ -57,7 +57,8 @@ class SubmissionTiles<T> extends StatelessWidget {
         style: ButtonStyle(
           padding: MaterialStateProperty.all(
             EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.width / 30),
+              vertical: MediaQuery.of(context).size.width / 30,
+            ),
           ),
         ),
         onPressed: () {
@@ -73,7 +74,7 @@ class SubmissionTiles<T> extends StatelessWidget {
               padding: const EdgeInsets.only(left: 20),
               child: IconText(
                 icon: _typeIcon(type),
-                text: Text(_typeToString(type) + ' POSTS'),
+                text: Text('${_typeToString(type)} POSTS'),
               ),
             ),
             Icon(Icons.expand_more),
@@ -175,9 +176,7 @@ class _RadioListState<T> extends State<_RadioList<T>> {
                 widget.iconBuilder != null ? widget.iconBuilder!(value) : null,
             title: widget.titleBuilder(value),
             onTap: () {
-              setState(() {
-                _value = value;
-              });
+              setState(() => _value = value);
               widget.onChanged(_value);
             },
             trailing: value == _value

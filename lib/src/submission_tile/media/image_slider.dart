@@ -31,16 +31,12 @@ class _ImageSliderState extends State<ImageSlider> {
 
   void _next() {
     _controller.nextPage();
-    setState(() {
-      _currentPage += 1;
-    });
+    setState(() => _currentPage += 1);
   }
 
   void _prev() {
     _controller.previousPage();
-    setState(() {
-      _currentPage -= 1;
-    });
+    setState(() => _currentPage -= 1);
   }
 
   @override
@@ -55,7 +51,7 @@ class _ImageSliderState extends State<ImageSlider> {
           items: widget.items,
           options: CarouselOptions(
             height: widget.height,
-            viewportFraction: 1.0,
+            viewportFraction: 1,
             enableInfiniteScroll: false,
           ),
           carouselController: _controller,

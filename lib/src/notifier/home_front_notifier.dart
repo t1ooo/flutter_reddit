@@ -1,4 +1,3 @@
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';

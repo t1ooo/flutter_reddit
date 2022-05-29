@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/subscriptions/subscriptions_screen.dart';
-import 'package:flutter_reddit_prototype/src/current_user/user_menu.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'home/home_screen.dart';
 import 'inbox/inbox_screen.dart';
 import 'submit/submit_screen.dart';
+import 'subscriptions/subscriptions_screen.dart';
 
 class Tabs extends StatelessWidget {
   const Tabs({Key? key}) : super(key: key);

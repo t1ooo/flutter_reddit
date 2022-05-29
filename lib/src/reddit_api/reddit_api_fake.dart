@@ -24,7 +24,7 @@ class FakeRedditApi implements RedditApi {
 
   static final _log = getLogger('FakeRedditApi');
 
-  static final _delay = Duration(seconds: 1 ~/ 2);
+  static final _delay = Duration(seconds: 1) ~/ 2;
 
   Map<String, dynamic> _addType(Map<String, dynamic> v, Enum type) {
     v['title'] = '$type: ${v['title']}';
@@ -288,7 +288,7 @@ class FakeRedditApi implements RedditApi {
     final submissions = <Submission>[];
     final comments = <Comment>[];
 
-    final items = (jsonDecode(data) as List<dynamic>)
+    (jsonDecode(data) as List<dynamic>)
         .take(limit)
         .map((v) => v as Map<String, dynamic>)
         .forEach((v) {

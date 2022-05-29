@@ -59,6 +59,7 @@ class Subscriptions extends StatelessWidget {
       subreddits.where((v) => v.subreddit.userHasFavorited).toList();
 
   List<SubredditNotifier> _filterUnfavorite(
-          List<SubredditNotifier> subreddits) =>
+    List<SubredditNotifier> subreddits,
+  ) =>
       subreddits.where((v) => !v.subreddit.userHasFavorited).toList();
 }

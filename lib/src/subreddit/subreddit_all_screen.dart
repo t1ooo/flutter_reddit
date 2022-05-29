@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,21 +33,23 @@ class SubredditAllScreen extends StatelessWidget {
               ),
             ];
           },
-          body: Builder(builder: (_) {
-            final notifier = context.watch<SubredditAllNotifier>();
+          body: Builder(
+            builder: (_) {
+              final notifier = context.watch<SubredditAllNotifier>();
 
-            return SwipeToRefresh(
-              onRefresh: () => notifier
-                  .reloadSubmissions()
-                  .catchError((e) => showErrorSnackBar(context, e)),
-              child: SubmissionTiles<SubType>(
-                type: notifier.subType,
-                types: SubType.values,
-                submissions: notifier.submissions,
-                load: notifier.loadSubmissions,
-              ),
-            );
-          }),
+              return SwipeToRefresh(
+                onRefresh: () => notifier
+                    .reloadSubmissions()
+                    .catchError((e) => showErrorSnackBar(context, e)),
+                child: SubmissionTiles<SubType>(
+                  type: notifier.subType,
+                  types: SubType.values,
+                  submissions: notifier.submissions,
+                  load: notifier.loadSubmissions,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-import '../logging.dart';
 import '../reddit_api/reddit_api.dart';
 import '../reddit_api/submission.dart';
 import '../reddit_api/submission_type.dart';
@@ -11,7 +10,6 @@ class HomePopularNotifier extends SubmissionsNotifier<SubType> {
 
   final RedditApi _redditApi;
 
-  // TODO: remove
   @override
   Future<List<Submission>> loadSubmissions_() {
     return _redditApi.popular(limit: limit, type: subType);

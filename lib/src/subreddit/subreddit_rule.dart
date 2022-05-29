@@ -29,7 +29,7 @@ class SubredditRule extends StatelessWidget {
           },
         ),
         AnimatedCrossFade(
-          firstChild: Container(height: 0.0),
+          firstChild: Container(height: 0),
           secondChild: Text(notifier.rule.description),
           crossFadeState: notifier.expanded
               ? CrossFadeState.showSecond

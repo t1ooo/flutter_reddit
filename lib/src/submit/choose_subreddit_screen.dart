@@ -9,7 +9,7 @@ import '../widget/loader.dart';
 import '../widget/sliver_app_bar.dart';
 
 class ChooseSubredditScreen extends StatelessWidget {
-  ChooseSubredditScreen({
+  const ChooseSubredditScreen({
     Key? key,
     required this.onChanged,
   }) : super(key: key);

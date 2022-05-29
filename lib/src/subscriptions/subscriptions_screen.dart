@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reddit_prototype/src/style.dart';
 
 import '../current_user/user_menu.dart';
+import '../style.dart';
 import '../widget/sliver_app_bar.dart';
 import 'subscriptions.dart';
 
