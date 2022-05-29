@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../notifier/auth_notifier.dart';
-import '../widget/future_elevated_button.dart';
+import '../widget/async_button_builder.dart';
 import '../widget/snackbar.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -18,14 +18,13 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FutureElevatedButton(
-              onPressed: () {
-                return context
-                    .read<AuthNotifier>()
-                    .login()
-                    .catchError((e) => showErrorSnackBar(context, e));
-              },
-              child: Text('Log in'),
+            AsyncButtonBuilder(
+              onPressed: () => context
+                  .read<AuthNotifier>()
+                  .login()
+                  .catchError((e) => showErrorSnackBar(context, e)),
+              builder: (_, onPressed) =>
+                  ElevatedButton(onPressed: onPressed, child: Text('Log in')),
             ),
           ],
         ),

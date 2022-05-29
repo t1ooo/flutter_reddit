@@ -6,6 +6,7 @@ import '../notifier/subreddit_notifier.dart';
 import '../style.dart';
 import '../submission/submission_screen.dart';
 import '../subreddit/subreddit_icon.dart';
+import '../widget/async_button_builder.dart';
 import '../widget/list.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/snackbar.dart';
@@ -36,9 +37,10 @@ class _SubmitScreenState extends State<SubmitScreen> {
               flexibleSpace: SpaceBar(
                 leading: AppBarCloseButton(),
                 title: AppBarTitle('Post'),
-                trailing: TextButton(
+                trailing: AsyncButtonBuilder(
                   onPressed: _submit,
-                  child: Text('POST'),
+                  builder: (_, onPressed) =>
+                      TextButton(onPressed: onPressed, child: Text('POST')),
                 ),
               ),
             ),
@@ -116,7 +118,7 @@ class _SubmitScreenState extends State<SubmitScreen> {
     );
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_subreddit == null) {
       showErrorSnackBar(context, 'please select a community');
       return;
@@ -130,9 +132,9 @@ class _SubmitScreenState extends State<SubmitScreen> {
 
     _message = _message.trim();
 
-    _subreddit!.submit(title: _title).then(
+    await _subreddit!.submit(title: _title).then(
       (s) {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (_) => ChangeNotifierProvider<SubmissionNotifier>.value(
@@ -144,7 +146,5 @@ class _SubmitScreenState extends State<SubmitScreen> {
       },
       onError: (e) => showErrorSnackBar(context, e),
     );
-
-    Navigator.pop(context);
   }
 }

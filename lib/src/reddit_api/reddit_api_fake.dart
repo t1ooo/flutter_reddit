@@ -23,8 +23,7 @@ class FakeRedditApi implements RedditApi {
   FakeRedditApi();
 
   static final _log = getLogger('FakeRedditApi');
-
-  static final _delay = Duration(seconds: 1) ~/ 2;
+  static final _delay = Duration(seconds: 1);
 
   Map<String, dynamic> _addType(Map<String, dynamic> v, Enum type) {
     v['title'] = '$type: ${v['title']}';

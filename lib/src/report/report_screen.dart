@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/reportable.dart';
 import '../style.dart';
+import '../widget/async_button_builder.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/snackbar.dart';
 
@@ -29,9 +30,10 @@ class _ReportScreenState extends State<ReportScreen> {
               flexibleSpace: SpaceBar(
                 leading: AppBarCloseButton(),
                 title: AppBarTitle('Report'),
-                trailing: TextButton(
+                trailing: AsyncButtonBuilder(
                   onPressed: _submit,
-                  child: Text('POST'),
+                  builder: (_, onPressed) =>
+                      TextButton(onPressed: onPressed, child: Text('POST')),
                 ),
               ),
             ),
@@ -59,18 +61,20 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     _reason = _reason.trim();
     if (_reason == '') {
       showErrorSnackBar(context, 'please enter a reason');
       return;
     }
 
-    context
+    final navigator = Navigator.of(context);
+
+    await context
         .read<Reportable>()
         .report(_reason)
         .catchError((e) => showErrorSnackBar(context, e));
 
-    Navigator.pop(context);
+    navigator.pop();
   }
 }
