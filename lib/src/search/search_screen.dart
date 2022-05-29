@@ -41,10 +41,12 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: const [
-                  Tab(text: 'Posts'),
-                  Tab(text: 'Subreddits'),
-                ],
+                tabBar: TabBar(
+                  tabs: const [
+                    Tab(text: 'Posts'),
+                    Tab(text: 'Subreddits'),
+                  ],
+                ),
               ),
             ];
           },

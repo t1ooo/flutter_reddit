@@ -75,11 +75,13 @@ class _UserProfileScreen extends StatelessWidget {
               ),
               SliverList(delegate: SliverChildListDelegate([UserInfo()])),
               SliverTabBar(
-                tabs: const [
-                  Tab(text: 'Posts'),
-                  Tab(text: 'Comments'),
-                  Tab(text: 'About'),
-                ],
+                tabBar: TabBar(
+                  tabs: const [
+                    Tab(text: 'Posts'),
+                    Tab(text: 'Comments'),
+                    Tab(text: 'About'),
+                  ],
+                ),
               ),
             ];
           },

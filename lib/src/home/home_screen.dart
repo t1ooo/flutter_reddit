@@ -25,10 +25,12 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: const [
-                  Tab(text: 'Home'),
-                  Tab(text: 'Popular'),
-                ],
+                tabBar: TabBar(
+                  tabs: const [
+                    Tab(text: 'Home'),
+                    Tab(text: 'Popular'),
+                  ],
+                ),
               ),
             ];
           },

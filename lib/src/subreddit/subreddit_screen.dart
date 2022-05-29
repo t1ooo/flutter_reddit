@@ -76,11 +76,13 @@ class _SubredditScreen extends StatelessWidget {
                 ]),
               ),
               SliverTabBar(
-                tabs: const [
-                  Tab(text: 'Posts'),
-                  Tab(text: 'About'),
-                  Tab(text: 'Menu'),
-                ],
+                tabBar: TabBar(
+                  tabs: const [
+                    Tab(text: 'Posts'),
+                    Tab(text: 'About'),
+                    Tab(text: 'Menu'),
+                  ],
+                ),
               ),
             ];
           },

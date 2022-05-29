@@ -43,9 +43,10 @@ class PrimarySliverAppBar extends StatelessWidget {
 class SliverTabBar extends StatelessWidget {
   const SliverTabBar({
     Key? key,
-    required this.tabs,
+    required this.tabBar,
   }) : super(key: key);
-  final List<Widget> tabs;
+
+  final TabBar tabBar;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class SliverTabBar extends StatelessWidget {
       pinned: true,
       automaticallyImplyLeading: false,
       toolbarHeight: kToolbarHeight - _safeAreaTopPadding(context),
-      flexibleSpace: TabBar(tabs: tabs),
+      flexibleSpace: tabBar,
     );
   }
 }

@@ -25,10 +25,12 @@ class SubscriptionsScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: const [
-                  Tab(text: 'Subscriptions'),
-                  Tab(text: 'Custom Feed'),
-                ],
+                tabBar: TabBar(
+                  tabs: const [
+                    Tab(text: 'Subscriptions'),
+                    Tab(text: 'Custom Feed'),
+                  ],
+                ),
               ),
             ];
           },

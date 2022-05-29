@@ -22,10 +22,12 @@ class SavedScreen extends StatelessWidget {
                 ),
               ),
               SliverTabBar(
-                tabs: const [
-                  Tab(child: Text('Posts')),
-                  Tab(child: Text('Comments')),
-                ],
+                tabBar: TabBar(
+                  tabs: const [
+                    Tab(child: Text('Posts')),
+                    Tab(child: Text('Comments')),
+                  ],
+                ),
               ),
             ];
           },
