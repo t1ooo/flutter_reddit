@@ -10,10 +10,8 @@ CustomPopupMenuItem savePopupMenuItem(BuildContext context, Savable savable) {
       savable.saved ? Icons.bookmark : Icons.bookmark_border,
     ),
     label: savable.saved ? 'Unsave' : 'Save',
-    onTap: () {
-      return savable
-          .save(!savable.saved)
-          .catchError((e) => showErrorSnackBar(context, e));
-    },
+    onTap: () => savable
+        .save(!savable.saved)
+        .catchError((e) => showErrorSnackBar(context, e)),
   );
 }

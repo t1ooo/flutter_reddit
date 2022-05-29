@@ -265,17 +265,13 @@ class SubmissionTile extends StatelessWidget {
           text: Text(notifier.numReplies.toString()),
         ),
         TextButton.icon(
-          onPressed: () {
-            notifier.share();
-          },
+          onPressed: () => notifier.share(),
           icon: Icon(Icons.share),
           label: Text('Share'),
         ),
         if (kDebugMode)
           TextButton(
-            onPressed: () {
-              showTodoSnackBar(context); // TODO
-            },
+            onPressed: () => showTodoSnackBar(context), // TODO
             child: Icon(Icons.star_outline),
           ),
       ],

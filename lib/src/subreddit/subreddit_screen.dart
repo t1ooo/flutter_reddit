@@ -103,41 +103,31 @@ class _SubredditScreen extends StatelessWidget {
         CustomPopupMenuItem(
           icon: Icon(Icons.share),
           label: 'Share',
-          onTap: () async {
-            return notifier.share();
-          },
+          onTap: () => notifier.share(),
         ),
         if (kDebugMode)
           CustomPopupMenuItem(
             icon: Icon(Icons.circle),
             label: 'Add to Custom Feed',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
+            onTap: () => showTodoSnackBar(context), // TODO
           ),
         if (kDebugMode)
           CustomPopupMenuItem(
             icon: Icon(Icons.circle),
             label: 'Change user flair',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
+            onTap: () => showTodoSnackBar(context), // TODO
           ),
         if (kDebugMode)
           CustomPopupMenuItem(
             icon: Icon(Icons.circle),
             label: 'Contact mods',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
+            onTap: () => showTodoSnackBar(context), // TODO
           ),
         if (kDebugMode)
           CustomPopupMenuItem(
             icon: Icon(Icons.circle),
             label: 'Add to home screen',
-            onTap: () {
-              showTodoSnackBar(context); // TODO
-            },
+            onTap: () => showTodoSnackBar(context), // TODO
           ),
       ],
     );

@@ -104,20 +104,16 @@ class _UserProfileScreen extends StatelessWidget {
         CustomPopupMenuItem(
           icon: Icon(Icons.share),
           label: 'Share',
-          onTap: () async {
-            return notifier.subreddit.share();
-          },
+          onTap: () => notifier.subreddit.share(),
         ),
         CustomPopupMenuItem(
           icon: Icon(
             user.isBlocked ? Icons.person_add : Icons.block,
           ),
           label: user.isBlocked ? 'Unblock' : 'Block',
-          onTap: () {
-            return notifier
-                .block(!user.isBlocked)
-                .catchError((e) => showErrorSnackBar(context, e));
-          },
+          onTap: () => notifier
+              .block(!user.isBlocked)
+              .catchError((e) => showErrorSnackBar(context, e)),
         ),
       ],
     );

@@ -26,24 +26,18 @@ class CommentPopupMenu extends StatelessWidget {
         CustomPopupMenuItem(
           icon: Icon(Icons.share),
           label: 'Share',
-          onTap: () async {
-            return notifier.share();
-          },
+          onTap: () => notifier.share(),
         ),
         CustomPopupMenuItem(
           icon: Icon(Icons.content_copy),
           label: 'Copy Text',
-          onTap: () async {
-            return notifier.copyText();
-          },
+          onTap: () => notifier.copyText(),
         ),
         if (showCollapse)
           CustomPopupMenuItem(
             icon: Icon(Icons.expand_less),
             label: 'Collapse thread',
-            onTap: () {
-              notifier.collapse();
-            },
+            onTap: () => notifier.collapse(),
           ),
         CustomPopupMenuItem(
           icon: Icon(Icons.circle),

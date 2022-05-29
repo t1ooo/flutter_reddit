@@ -30,14 +30,12 @@ class SubmissionPopupMenu extends StatelessWidget {
             submission.hidden ? Icons.visibility : Icons.visibility_off,
           ),
           label: submission.hidden ? 'Unhide' : 'Hide',
-          onTap: () {
-            return notifier.hide(!submission.hidden).then(
-              (_) {
-                if (fullpage && submission.hidden) Navigator.pop(context);
-              },
-              onError: (e) => showErrorSnackBar(context, e),
-            );
-          },
+          onTap: () => notifier.hide(!submission.hidden).then(
+            (_) {
+              if (fullpage && notifier.submission.hidden) Navigator.pop(context);
+            },
+            onError: (e) => showErrorSnackBar(context, e),
+          ),
         ),
         CustomPopupMenuItem(
           icon: Icon(Icons.report),
