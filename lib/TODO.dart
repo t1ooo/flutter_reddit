@@ -1,13 +1,9 @@
-// TODO: future buttons
 // TODO: load all submission comment with CommentForest.replaceMore
 // TODO: reddit api cache
 // TODO: subreddit custom feed
 // TODO: subreddit wiki
 // TODO: comment edit|delete
 // TODO: optimistic updates
-// TODO: remove unused containers
-// TODO: remove unused code
-// TODO: access to fields via notifier, make models mutable
 // TODO: show comment link_url image
 // TODO: submission tile show domain
 // TODO: inbox notifications
