@@ -12,7 +12,6 @@ import 'likable.dart';
 import 'replyable.dart';
 import 'reportable.dart';
 import 'savable.dart';
-import 'score.dart';
 
 class PreviewImage {
   PreviewImage(this.image, this.preview);
@@ -128,6 +127,83 @@ class SubmissionNotifier extends BaseNotifier
     );
   }
 
+  // Future<void> optimisticUpdate({copy, update, restore, action}) async {
+  //   final prev = copy();
+  //   update();
+  //   notifyListeners();
+  //   try {
+  //     await action();
+  //   } on Exception catch (e, st) {
+  //       restore();
+  //     // onError(e, st);
+  //     // ignore: avoid_catching_errors
+  //   } on TypeError catch (e, st) {
+  //     restore();
+  //     notifyListeners();
+  //   }
+  // }
+
+  // Future<void> hideOptimistically(bool hide) async {
+  //   if (_submission.hidden == hide) return;
+
+  //   optimisticUpdate(
+  //     copy: () => _submission.copyWith(),
+  //     update: () => _submission = _submission.copyWith(hidden: hide),
+  //     restore: (prev) => _submission = prev,
+  //     action: () =>  _redditApi.submissionHide(_submission, hide),
+  //   );
+
+  //   optimisticUpdate(
+  //     values: () => [Value(_submission)],
+  //     update: () => _submission = _submission.copyWith(hidden: hide),
+  //     action: () =>  _redditApi.submissionHide(_submission, hide),
+  //   );
+
+  //   // final prev = _submission.copyWith();
+
+  //   // _submission = _submission.copyWith(hidden: hide);
+  //   // notifyListeners();
+
+  //   // void onError(e, st) {
+  //   //   _submission = prev;
+  //   //   notifyListeners();
+  //   //   throw Exception('fail to${hide ? 'hide' : 'unhide'}');
+  //   // }
+
+  //   // _try(() => _redditApi.submissionHide(_submission, hide), () {
+  //   //   _submission = prev;
+  //   //   notifyListeners();
+  //   //   return 'fail to${hide ? 'hide' : 'unhide'}';
+  //   // });
+
+  //   // try {
+  //   //   await _redditApi.submissionHide(_submission, hide);
+  //   // } on Exception catch (e, st) {
+  //   //   onError(e, st);
+  //   //   // ignore: avoid_catching_errors
+  //   // } on TypeError catch (e, st) {
+  //   //   onError(e, st);
+  //   // }
+  //   // try {
+  //   //   await _redditApi.submissionHide(_submission, hide);
+  //   // } catch (e, st) {
+  //   //   if (e is Exception || e is TypeError)
+  //   //     onError(e, st);
+  //   //   else
+  //   //     rethrow;
+  //   // }
+
+  //   // await _redditApi
+  //   //     .submissionHide(_submission, hide)
+  //   //     .onError(onError, test: (e) => e is Exception || e is TypeError);
+
+  //   // _try(()=>_redditApi.submissionHide(_submission, hide), () {
+  //   //   _submission = prev;
+  //   //   notifyListeners();
+  //   //   return 'fail to${hide ? 'hide' : 'unhide'}';
+  //   // });
+  // }
+
   @override
   Like get likes => _submission.likes;
 
@@ -139,10 +215,7 @@ class SubmissionNotifier extends BaseNotifier
     return try_(
       () async {
         await _redditApi.submissionLike(_submission, like);
-        _submission = _submission.copyWith(
-          likes: like,
-          score: calcScore(_submission.score, _submission.likes, like),
-        );
+        _submission = _submission.setLike(like);
         notifyListeners();
       },
       'fail to like',
@@ -192,3 +265,6 @@ class SubmissionNotifier extends BaseNotifier
     );
   }
 }
+
+
+// class T extends Error implements Exception {}

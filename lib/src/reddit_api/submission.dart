@@ -7,6 +7,7 @@ import 'like.dart';
 
 import 'post_hint.dart';
 import 'preview_images.dart';
+import 'score.dart';
 import 'video.dart';
 
 class Submission extends Equatable {
@@ -113,6 +114,13 @@ class Submission extends Equatable {
       authorIsBlocked,
       drawSubmission,
     ];
+  }
+
+  Submission setLike(Like like) {
+    return copyWith(
+      likes: like,
+      score: calcScore(score, likes, like),
+    );
   }
 
   Submission copyWith({

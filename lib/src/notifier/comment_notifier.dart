@@ -11,7 +11,6 @@ import 'likable.dart';
 import 'replyable.dart';
 import 'reportable.dart';
 import 'savable.dart';
-import 'score.dart';
 
 class CommentNotifier extends BaseNotifier
     with Collapsible, Likable, Savable
@@ -74,10 +73,7 @@ class CommentNotifier extends BaseNotifier
     return try_(
       () async {
         await _redditApi.commentLike(_comment, like);
-        _comment = _comment.copyWith(
-          likes: like,
-          score: calcScore(_comment.score, _comment.likes, like),
-        );
+        _comment = _comment.setLike(like);
         notifyListeners();
       },
       'fail to like',

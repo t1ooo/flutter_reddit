@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'call.dart';
 import 'like.dart';
+import 'score.dart';
 
 class Comment extends Equatable {
   const Comment({
@@ -106,6 +107,13 @@ class Comment extends Equatable {
   String get shortLink => submissionId == '' || id == ''
       ? ''
       : 'https://www.reddit.com/comments/$submissionId/_/$id';
+
+  Comment setLike(Like like) {
+    return copyWith(
+      likes: like,
+      score: calcScore(score, likes, like),
+    );
+  }
 
   @override
   List<Object?> get props {
