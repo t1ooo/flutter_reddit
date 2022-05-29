@@ -5,8 +5,8 @@ import '../notifier/current_user_notifier.dart';
 import '../notifier/subreddit_notifier.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 import 'subscription_tile.dart';
 
 class Subscriptions extends StatelessWidget {
@@ -18,7 +18,7 @@ class Subscriptions extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<CurrentUserNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadSubreddits()
           .catchError((e) => showErrorSnackBar(context, e)),

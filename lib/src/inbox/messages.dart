@@ -5,8 +5,8 @@ import '../notifier/current_user_notifier.dart';
 import '../notifier/message_notifier.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 import 'message_tile.dart';
 
 class Messages extends StatelessWidget {
@@ -16,7 +16,7 @@ class Messages extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<CurrentUserNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadInboxMessages()
           .catchError((e) => showErrorSnackBar(context, e)),

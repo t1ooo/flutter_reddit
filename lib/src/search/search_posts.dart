@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../notifier/search_notifier.dart';
 import '../reddit_api/reddit_api.dart';
 import '../submission_tile/submission_tiles.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 
 class SearchPosts extends StatelessWidget {
   const SearchPosts({
@@ -21,7 +21,7 @@ class SearchPosts extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<SearchNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadSearch()
           .catchError((e) => showErrorSnackBar(context, e)),

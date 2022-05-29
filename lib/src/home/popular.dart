@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../notifier/home_popular_notifier.dart';
 import '../reddit_api/submission_type.dart';
 import '../submission_tile/submission_tiles.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 
 class Popular extends StatelessWidget {
   const Popular({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class Popular extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<HomePopularNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadSubmissions()
           .catchError((e) => showErrorSnackBar(context, e)),

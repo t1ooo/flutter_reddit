@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import '../notifier/subreddit_all_notifier.dart';
 import '../reddit_api/submission_type.dart';
 import '../submission_tile/submission_tiles.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/sliver_app_bar.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 
 class SubredditAllScreen extends StatelessWidget {
   const SubredditAllScreen({
@@ -37,7 +37,7 @@ class SubredditAllScreen extends StatelessWidget {
             builder: (_) {
               final notifier = context.watch<SubredditAllNotifier>();
 
-              return SwipeToRefresh(
+              return PullToRefresh(
                 onRefresh: () => notifier
                     .reloadSubmissions()
                     .catchError((e) => showErrorSnackBar(context, e)),

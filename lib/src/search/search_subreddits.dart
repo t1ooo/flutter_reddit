@@ -6,8 +6,8 @@ import '../notifier/subreddit_notifier.dart';
 import '../style.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 import 'search_subreddit.dart';
 
 class SearchSubreddits extends StatelessWidget {
@@ -22,7 +22,7 @@ class SearchSubreddits extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<SearchSubredditsNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadSearch()
           .catchError((e) => showErrorSnackBar(context, e)),

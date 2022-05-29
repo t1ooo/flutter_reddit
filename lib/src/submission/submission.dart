@@ -6,8 +6,8 @@ import '../notifier/submission_notifier.dart';
 import '../submission_tile/submission_tile.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 import 'submission_comment.dart';
 
 class SubmissionWidget extends StatelessWidget {
@@ -17,7 +17,7 @@ class SubmissionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<SubmissionNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadSubmission()
           .catchError((e) => showErrorSnackBar(context, e)),

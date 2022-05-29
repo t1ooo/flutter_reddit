@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../style.dart';
 
-class SwipeToRefresh extends StatelessWidget {
-  const SwipeToRefresh({
+class PullToRefresh extends StatelessWidget {
+  const PullToRefresh({
     Key? key,
     required this.child,
     required this.onRefresh,

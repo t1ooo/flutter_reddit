@@ -5,8 +5,8 @@ import '../notifier/comment_notifier.dart';
 import '../notifier/user_notifier.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
+import '../widget/pull_to_refresh.dart';
 import '../widget/snackbar.dart';
-import '../widget/swipe_to_refresh.dart';
 import 'user_comment.dart';
 
 class UserComments extends StatelessWidget {
@@ -18,7 +18,7 @@ class UserComments extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.read<UserNotifier>();
 
-    return SwipeToRefresh(
+    return PullToRefresh(
       onRefresh: () => notifier
           .reloadComments()
           .catchError((e) => showErrorSnackBar(context, e)),
