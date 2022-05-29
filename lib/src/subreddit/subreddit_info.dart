@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/subreddit_notifier.dart';
 import '../style.dart';
+import '../util/format_members.dart';
 import '../widget/subscribe_button.dart';
 import 'subreddit_icon.dart';
 
@@ -48,7 +49,7 @@ class SubredditInfo extends StatelessWidget {
               ],
             ),
             SizedBox(height: 30),
-            Text('${subreddit.subscribers} members'),
+            Text('${formatMembers(subreddit.subscribers)} members'),
             SizedBox(height: 20),
             Text(subreddit.publicDescription),
             SizedBox(height: 50),

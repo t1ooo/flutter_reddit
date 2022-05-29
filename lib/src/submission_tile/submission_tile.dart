@@ -43,7 +43,7 @@ class SubmissionTile extends StatelessWidget {
       return Card(
         child: Padding(
           padding: cardPadding,
-          child: header(context, notifier),
+          child: _header(context, notifier),
         ),
       );
     }
@@ -54,7 +54,7 @@ class SubmissionTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            header(context, notifier),
+            _header(context, notifier),
             whenDebug(() => Text(submission.postHint.toString())),
             whenDebug(() => Text(submission.url)),
             Awards(
@@ -92,7 +92,7 @@ class SubmissionTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 10),
-            footer(context, notifier),
+            _footer(context, notifier),
           ],
         ),
       ),
@@ -210,7 +210,7 @@ class SubmissionTile extends StatelessWidget {
     }
   }
 
-  Widget header(BuildContext context, SubmissionNotifier notifier) {
+  Widget _header(BuildContext context, SubmissionNotifier notifier) {
     final submission = notifier.submission;
 
     return ListTile(
@@ -255,14 +255,14 @@ class SubmissionTile extends StatelessWidget {
     );
   }
 
-  Widget footer(BuildContext context, SubmissionNotifier notifier) {
+  Widget _footer(BuildContext context, SubmissionNotifier notifier) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         LikeButton(likable: notifier),
         IconText(
           icon: Icon(Icons.comment),
-          text: Text(notifier.numReplies.toString()),
+          text: Text(_formatNumReplies(notifier.numReplies)),
         ),
         TextButton.icon(
           onPressed: () => notifier.share(),
@@ -276,5 +276,12 @@ class SubmissionTile extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  String _formatNumReplies(int score) {
+    if (score < 1000) {
+      return score.toString();
+    }
+    return '${(score * 10 / 1000).ceil() / 10}k';
   }
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../notifier/subreddit_notifier.dart';
 import '../style.dart';
 import '../subreddit/subreddit_icon.dart';
+import '../util/format_members.dart';
 import '../widget/async_button_builder.dart';
 import '../widget/snackbar.dart';
 
@@ -23,7 +24,7 @@ class SearchSubreddit extends StatelessWidget {
         child: SubredditIcon(icon: subreddit.communityIcon),
       ),
       title: Text(notifier.name),
-      subtitle: Text('${subreddit.subscribers} members'),
+      subtitle: Text('${formatMembers(subreddit.subscribers)} members'),
       trailing: AsyncButtonBuilder(
         onPressed: () => notifier
             .subscribe(!subreddit.userIsSubscriber)
