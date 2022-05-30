@@ -17,7 +17,7 @@ class SubredditAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<SubredditNotifier>();
+    final notifier = context.watch<SubredditNotifier>();
     final subreddit = notifier.subreddit;
     final titleStyle = TextStyle(fontWeight: FontWeight.bold);
 

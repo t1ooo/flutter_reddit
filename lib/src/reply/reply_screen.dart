@@ -50,7 +50,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
   Widget _form(BuildContext context) {
     return CustomListView(
       children: [
-        Text(context.read<Replyable>().replyToMessage),
+        Text(context.watch<Replyable>().replyToMessage),
         Divider(),
         TextField(
           onChanged: (v) => _message = v,

@@ -38,7 +38,7 @@ class ChooseSubredditScreen extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    final notifier = context.read<CurrentUserNotifier>();
+    final notifier = context.watch<CurrentUserNotifier>();
 
     return Loader<List<SubredditNotifier>>(
       load: (_) => notifier.loadSubreddits(),

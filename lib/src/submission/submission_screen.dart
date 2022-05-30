@@ -24,7 +24,7 @@ class SubmissionScreen extends StatelessWidget {
       return _SubmissionScreen();
     }
 
-    final notifier = context.read<SubmissionLoaderNotifier>();
+    final notifier = context.watch<SubmissionLoaderNotifier>();
 
     return Loader<SubmissionNotifier>(
       load: (_) => notifier.loadSubmission(id!),
@@ -46,7 +46,7 @@ class _SubmissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final submission = context.read<SubmissionNotifier>().submission;
+    final submission = context.watch<SubmissionNotifier>().submission;
 
     return Scaffold(
       bottomNavigationBar: ReplyField(),

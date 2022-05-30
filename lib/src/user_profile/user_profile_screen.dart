@@ -31,7 +31,7 @@ class UserProfileScreen extends StatelessWidget {
       return _UserProfileScreen();
     }
 
-    final notifier = context.read<UserLoaderNotifier>();
+    final notifier = context.watch<UserLoaderNotifier>();
 
     return Loader<UserNotifier>(
       load: (_) => notifier.loadUser(name!),

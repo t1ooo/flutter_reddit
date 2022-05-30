@@ -15,7 +15,7 @@ class UserAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserNotifier>().user;
+    final user = context.watch<UserNotifier>().user;
 
     return Container(
       color: primaryColor,

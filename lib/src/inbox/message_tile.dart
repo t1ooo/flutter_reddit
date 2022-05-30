@@ -10,7 +10,7 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<MessageNotifier>();
+    final notifier = context.watch<MessageNotifier>();
     final message = notifier.message;
 
     return ListTile(

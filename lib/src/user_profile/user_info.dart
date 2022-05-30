@@ -21,7 +21,7 @@ class UserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<UserNotifier>();
+    final notifier = context.watch<UserNotifier>();
     final subreddit = notifier.subreddit.subreddit;
     final user = notifier.user;
 

@@ -14,7 +14,7 @@ class UserComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<CommentNotifier>();
+    final notifier = context.watch<CommentNotifier>();
     final comment = notifier.comment;
 
     return Container(

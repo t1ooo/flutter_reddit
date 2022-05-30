@@ -20,7 +20,7 @@ class SearchSubreddits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.read<SearchSubredditsNotifier>();
+    final notifier = context.watch<SearchSubredditsNotifier>();
 
     return PullToRefresh(
       onRefresh: () => notifier

@@ -27,7 +27,7 @@ class SubredditScreen extends StatelessWidget {
       return _SubredditScreen();
     }
 
-    final notifier = context.read<SubredditLoaderNotifier>();
+    final notifier = context.watch<SubredditLoaderNotifier>();
 
     return Loader<SubredditNotifier>(
       load: (_) => notifier.loadSubreddit(name!),
