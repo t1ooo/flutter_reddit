@@ -23,16 +23,19 @@ class UserTrophies extends StatelessWidget {
       load: (_) => notifier.loadTrophies(),
       data: (_) => notifier.trophies,
       onData: (_, trophies) {
-        return PrimaryColorListView(
-          children: [
-            ListTitle('trophies'),
-            SizedBox(height: 10),
-            CustomListView(
-              children: [
-                for (final trophy in trophies) _userTrophy(context, trophy),
-              ],
-            ),
-          ],
+        return Container(
+          color: primaryColor,
+          child: CustomListView(
+            children: [
+              ListTitle('trophies'),
+              SizedBox(height: 10),
+              CustomListView(
+                children: [
+                  for (final trophy in trophies) _userTrophy(context, trophy),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

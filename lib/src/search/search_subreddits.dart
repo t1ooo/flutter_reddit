@@ -30,15 +30,18 @@ class SearchSubreddits extends StatelessWidget {
         load: (_) => notifier.search(query),
         data: (_) => notifier.subreddits,
         onData: (_, subreddits) {
-          return PrimaryColorListView(
-            key: PageStorageKey(runtimeType.toString()),
-            children: [
-              for (final subreddit in subreddits)
-                ChangeNotifierProvider<SubredditNotifier>.value(
-                  value: subreddit,
-                  child: SearchSubreddit(),
-                )
-            ],
+          return Container(
+            color: primaryColor,
+            child: CustomListView(
+              key: PageStorageKey(runtimeType.toString()),
+              children: [
+                for (final subreddit in subreddits)
+                  ChangeNotifierProvider<SubredditNotifier>.value(
+                    value: subreddit,
+                    child: SearchSubreddit(),
+                  )
+              ],
+            ),
           );
         },
       ),

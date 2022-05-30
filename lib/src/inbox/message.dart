@@ -17,39 +17,42 @@ class MessageWidget extends StatelessWidget {
     final notifier = context.read<MessageNotifier>();
     final message = notifier.message;
 
-    return PrimaryColorListView(
+    return Container(
+      color: primaryColor,
       padding: pagePadding,
-      children: [
-        SizedBox(height: 20),
-        Text(
-          message.subject,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10),
-        Divider(),
-        Row(
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => UserProfileScreen(name: message.author),
-                  ),
-                );
-              },
-              child: Text(
-                'u/${message.author}',
-                style: TextStyle(color: Colors.red),
+      child: CustomListView(
+        children: [
+          SizedBox(height: 20),
+          Text(
+            message.subject,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          Divider(),
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => UserProfileScreen(name: message.author),
+                    ),
+                  );
+                },
+                child: Text(
+                  'u/${message.author}',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
-            ),
-            Text(' • '),
-            Text(formatDateTime(message.created)),
-          ],
-        ),
-        SizedBox(height: 10),
-        Markdown(message.body, baseUrl: redditBaseUrl),
-      ],
+              Text(' • '),
+              Text(formatDateTime(message.created)),
+            ],
+          ),
+          SizedBox(height: 10),
+          Markdown(message.body, baseUrl: redditBaseUrl),
+        ],
+      ),
     );
   }
 }

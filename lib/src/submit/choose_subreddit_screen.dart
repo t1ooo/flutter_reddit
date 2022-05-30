@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/current_user_notifier.dart';
 import '../notifier/subreddit_notifier.dart';
+import '../style.dart';
 import '../subreddit/subreddit_icon.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
@@ -43,22 +44,26 @@ class ChooseSubredditScreen extends StatelessWidget {
       load: (_) => notifier.loadSubreddits(),
       data: (_) => notifier.subreddits,
       onData: (_, subreddits) {
-        return PrimaryColorListView(
-          children: [
-            ListTitle('JOINED'),
-            for (final subreddit in subreddits)
-              ListTile(
-                onTap: () {
-                  onChanged(subreddit);
-                  Navigator.of(context).pop();
-                },
-                leading: SizedBox.square(
-                  dimension: 40,
-                  child: SubredditIcon(icon: subreddit.subreddit.communityIcon),
-                ),
-                title: Text(subreddit.subreddit.displayNamePrefixed),
-              )
-          ],
+        return Container(
+          color: primaryColor,
+          child: CustomListView(
+            children: [
+              ListTitle('JOINED'),
+              for (final subreddit in subreddits)
+                ListTile(
+                  onTap: () {
+                    onChanged(subreddit);
+                    Navigator.of(context).pop();
+                  },
+                  leading: SizedBox.square(
+                    dimension: 40,
+                    child:
+                        SubredditIcon(icon: subreddit.subreddit.communityIcon),
+                  ),
+                  title: Text(subreddit.subreddit.displayNamePrefixed),
+                )
+            ],
+          ),
         );
       },
     );

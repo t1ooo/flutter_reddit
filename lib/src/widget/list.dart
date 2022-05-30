@@ -1,30 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../style.dart';
-
-class PrimaryColorListView extends StatelessWidget {
-  const PrimaryColorListView({
-    Key? key,
-    required this.children,
-    this.padding,
-  }) : super(key: key);
-
-  final List<Widget> children;
-  final EdgeInsetsGeometry? padding;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: primaryColor,
-      padding: padding,
-      child: CustomListView(
-        key: key,
-        children: children,
-      ),
-    );
-  }
-}
-
 class CustomListView extends StatelessWidget {
   const CustomListView({
     Key? key,
@@ -37,29 +12,9 @@ class CustomListView extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final bool shrinkWrap;
 
-//   @override
-//   State<CustomListView> createState() => _CustomListViewState();
-// }
-
-// class _CustomListViewState extends State<CustomListView> {
-//   late final ScrollController _controller;
-
-//   @override
-//   void initState() {
-//     _controller = ScrollController();
-//     super.initState();
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
   @override
   Widget build(BuildContext context) {
     return ListView(
-      // controller: _controller,
       key: key,
       primary: false,
       padding: padding,

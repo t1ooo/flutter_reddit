@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../notifier/current_user_notifier.dart';
 import '../notifier/subreddit_notifier.dart';
+import '../style.dart';
 import '../widget/list.dart';
 import '../widget/loader.dart';
 import '../widget/pull_to_refresh.dart';
@@ -29,27 +30,30 @@ class Subscriptions extends StatelessWidget {
           final favorite = _filterFavorite(subreddits);
           final unfavorite = _filterUnfavorite(subreddits);
 
-          return PrimaryColorListView(
-            key: PageStorageKey(runtimeType.toString()),
-            children: [
-              SubscriptionAllTile(),
-              if (favorite.isNotEmpty) ...[
-                ListTitle('favorited'),
-                for (final subreddit in favorite)
-                  ChangeNotifierProvider<SubredditNotifier>.value(
-                    value: subreddit,
-                    child: SubscriptionTile(),
-                  ),
+          return Container(
+            color: primaryColor,
+            child: CustomListView(
+              key: PageStorageKey(runtimeType.toString()),
+              children: [
+                SubscriptionAllTile(),
+                if (favorite.isNotEmpty) ...[
+                  ListTitle('favorited'),
+                  for (final subreddit in favorite)
+                    ChangeNotifierProvider<SubredditNotifier>.value(
+                      value: subreddit,
+                      child: SubscriptionTile(),
+                    ),
+                ],
+                if (unfavorite.isNotEmpty) ...[
+                  ListTitle('communites'),
+                  for (final subreddit in unfavorite)
+                    ChangeNotifierProvider<SubredditNotifier>.value(
+                      value: subreddit,
+                      child: SubscriptionTile(),
+                    ),
+                ]
               ],
-              if (unfavorite.isNotEmpty) ...[
-                ListTitle('communites'),
-                for (final subreddit in unfavorite)
-                  ChangeNotifierProvider<SubredditNotifier>.value(
-                    value: subreddit,
-                    child: SubscriptionTile(),
-                  ),
-              ]
-            ],
+            ),
           );
         },
       ),
