@@ -1,6 +1,7 @@
 #!/bin/bash
 
 deps=(
+    html_character_entities
     logging
     markdown
     quiver

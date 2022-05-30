@@ -2,6 +2,7 @@
 
 import 'package:clock/clock.dart';
 import 'package:draw/draw.dart' as draw;
+import 'package:html_character_entities/html_character_entities.dart';
 
 import '../logging.dart';
 import 'comment.dart';
@@ -538,15 +539,12 @@ mixin RedditParser {
   }
 
   final _markdownRegExp = RegExp('#+');
+  final _htmlEntity = RegExp(r'(&\w+;|&#\d+;|#x\d+;)');
 
   String _parseMarkdown(dynamic map, List<dynamic> keys) {
     final value = _getN<String>(map, keys) ?? '';
-    return value
-        .replaceAll('&lt;', '<')
-        .replaceAll('&gt;', '>')
-        .replaceAllMapped(_markdownRegExp, (m) {
-      return ' ${m.group(0)} ';
-    });
+    return HtmlCharacterEntities.decode(value)
+        .replaceAllMapped(_markdownRegExp, (m) => '${m.group(0)} ');
   }
 
   bool _parseBool(dynamic map, List<dynamic> keys) {
