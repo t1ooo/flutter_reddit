@@ -50,22 +50,19 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final notifier = context.watch<AuthNotifier>();
-        return CustomFutureBuilder<bool>(
-          future: notifier.loginSilently(),
-          onData: (_, ok) {
-            if (ok) {
-              return Tabs();
-            }
-            return LoginScreen();
-          },
-          onError: (_, e) {
-            uiLogger.error('$e');
-            return LoginScreen();
-          },
-        );
+    final notifier = context.watch<AuthNotifier>();
+
+    return CustomFutureBuilder<bool>(
+      future: notifier.loginSilently(),
+      onData: (_, ok) {
+        if (ok) {
+          return Tabs();
+        }
+        return LoginScreen();
+      },
+      onError: (_, e) {
+        uiLogger.error('$e');
+        return LoginScreen();
       },
     );
   }

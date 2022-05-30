@@ -45,7 +45,9 @@ class Loader<T> extends StatelessWidget {
   }
 
   Widget onLoadingDefault(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
+    return context.findAncestorStateOfType<ScaffoldState>() == null
+        ? Scaffold(body: Center(child: CircularProgressIndicator()))
+        : Center(child: CircularProgressIndicator());
   }
 }
 
