@@ -157,7 +157,7 @@ class _VideoBuilderState extends _BaseVideoPlayerState<VideoPlayer> {
     }
 
     if (autoPlay) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _player!.play();
       });
     }
@@ -218,7 +218,7 @@ class _MobileVideoBuilderState
 
   @override
   Widget videoBuilder([bool autoPlay = false]) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!_videoController.value.isInitialized) {
         await _videoController.initialize();
       }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const _margin = EdgeInsets.only(left: 20, right: 20, bottom: 20);
 
 void showErrorSnackBar(BuildContext context, dynamic error) {
-  WidgetsBinding.instance?.addPostFrameCallback((_) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         margin: _margin,
@@ -15,7 +15,7 @@ void showErrorSnackBar(BuildContext context, dynamic error) {
 }
 
 void showTodoSnackBar(BuildContext context) {
-  WidgetsBinding.instance?.addPostFrameCallback((_) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         margin: _margin,

@@ -269,7 +269,7 @@ class SearchForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.text = query ?? '';
     });
     return WillPopScope(
