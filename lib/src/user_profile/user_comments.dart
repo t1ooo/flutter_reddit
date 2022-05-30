@@ -27,6 +27,7 @@ class UserComments extends StatelessWidget {
         data: (_) => notifier.comments,
         onData: (_, comments) {
           return CustomListView(
+            key: PageStorageKey(runtimeType.toString()),
             children: [
               for (final comment in comments)
                 ChangeNotifierProvider<CommentNotifier>.value(

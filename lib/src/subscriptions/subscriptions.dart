@@ -30,6 +30,7 @@ class Subscriptions extends StatelessWidget {
           final unfavorite = _filterUnfavorite(subreddits);
 
           return PrimaryColorListView(
+            key: PageStorageKey(runtimeType.toString()),
             children: [
               SubscriptionAllTile(),
               if (favorite.isNotEmpty) ...[

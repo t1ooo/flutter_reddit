@@ -26,6 +26,7 @@ class SearchPosts extends StatelessWidget {
           .reloadSearch()
           .catchError((e) => showErrorSnackBar(context, e)),
       child: SubmissionTiles<Sort>(
+        key: PageStorageKey(runtimeType.toString()),
         type: notifier.sort,
         types: Sort.values,
         submissions: notifier.submissions,

@@ -22,6 +22,7 @@ class SubredditAbout extends StatelessWidget {
     final titleStyle = TextStyle(fontWeight: FontWeight.bold);
 
     return CustomListView(
+      key: PageStorageKey(runtimeType.toString()),
       children: [
         SizedBox(height: 10),
         if (subreddit.description != '') ...[

@@ -18,13 +18,14 @@ class PrimaryColorListView extends StatelessWidget {
       color: primaryColor,
       padding: padding,
       child: CustomListView(
+        key: key,
         children: children,
       ),
     );
   }
 }
 
-class CustomListView extends StatefulWidget {
+class CustomListView extends StatelessWidget {
   const CustomListView({
     Key? key,
     required this.children,
@@ -36,32 +37,34 @@ class CustomListView extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final bool shrinkWrap;
 
-  @override
-  State<CustomListView> createState() => _CustomListViewState();
-}
+//   @override
+//   State<CustomListView> createState() => _CustomListViewState();
+// }
 
-class _CustomListViewState extends State<CustomListView> {
-  late final ScrollController _controller;
+// class _CustomListViewState extends State<CustomListView> {
+//   late final ScrollController _controller;
 
-  @override
-  void initState() {
-    _controller = ScrollController();
-    super.initState();
-  }
+//   @override
+//   void initState() {
+//     _controller = ScrollController();
+//     super.initState();
+//   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      controller: _controller,
-      padding: widget.padding,
-      shrinkWrap: widget.shrinkWrap,
-      children: widget.children,
+      // controller: _controller,
+      key: key,
+      primary: false,
+      padding: padding,
+      shrinkWrap: shrinkWrap,
+      children: children,
     );
   }
 }

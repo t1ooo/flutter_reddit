@@ -16,9 +16,10 @@ class UserAbout extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.read<UserNotifier>().user;
     return PrimaryColorListView(
+      key: PageStorageKey(runtimeType.toString()),
       children: [
         ListDivider(height: 10),
-        PrimaryColorListView(
+        CustomListView(
           children: [
             SizedBox(height: 50),
             Table(

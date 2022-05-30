@@ -34,6 +34,7 @@ class SubmissionTiles<T> extends StatelessWidget {
       data: (_) => submissions,
       onData: (context, submissions) {
         return CustomListView(
+          key: key,
           children: [
             _typeSelector(context),
             for (final sub in submissions)

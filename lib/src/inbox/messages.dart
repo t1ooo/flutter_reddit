@@ -25,6 +25,7 @@ class Messages extends StatelessWidget {
         data: (_) => notifier.inboxMessages,
         onData: (_, messages) {
           return CustomListView(
+            key: PageStorageKey(runtimeType.toString()),
             children: [
               for (final message in messages) ...[
                 ChangeNotifierProvider<MessageNotifier>.value(

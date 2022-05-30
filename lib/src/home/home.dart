@@ -19,6 +19,7 @@ class Home extends StatelessWidget {
           .reloadSubmissions()
           .catchError((e) => showErrorSnackBar(context, e)),
       child: SubmissionTiles<FrontSubType>(
+        key: PageStorageKey(runtimeType.toString()),
         type: notifier.subType,
         types: FrontSubType.values,
         submissions: notifier.submissions,

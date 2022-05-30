@@ -22,6 +22,7 @@ class SubmissionWidget extends StatelessWidget {
           .reloadSubmission()
           .catchError((e) => showErrorSnackBar(context, e)),
       child: CustomListView(
+        key: PageStorageKey(runtimeType.toString()),
         children: [
           SubmissionTile(fullpage: true),
           SizedBox(height: 50),

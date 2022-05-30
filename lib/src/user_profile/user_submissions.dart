@@ -27,6 +27,7 @@ class UserSubmissions extends StatelessWidget {
         data: (_) => notifier.submissions,
         onData: (_, submissions) {
           return CustomListView(
+            key: PageStorageKey(runtimeType.toString()),
             children: [
               for (final sub in submissions)
                 ChangeNotifierProvider<SubmissionNotifier>.value(

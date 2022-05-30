@@ -21,6 +21,7 @@ class SubredditSubmission extends StatelessWidget {
           .reloadSubmissions()
           .catchError((e) => showErrorSnackBar(context, e)),
       child: SubmissionTiles<SubType>(
+        key: PageStorageKey(runtimeType.toString()),
         type: notifier.subType,
         types: SubType.values,
         submissions: notifier.submissions,

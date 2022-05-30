@@ -27,13 +27,10 @@ class UserTrophies extends StatelessWidget {
           children: [
             ListTitle('trophies'),
             SizedBox(height: 10),
-            Container(
-              color: primaryColor,
-              child: CustomListView(
-                children: [
-                  for (final trophy in trophies) _userTrophy(context, trophy),
-                ],
-              ),
+            CustomListView(
+              children: [
+                for (final trophy in trophies) _userTrophy(context, trophy),
+              ],
             ),
           ],
         );
